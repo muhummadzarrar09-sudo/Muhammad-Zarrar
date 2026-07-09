@@ -1,0 +1,140 @@
+import { animate, motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { profile, stats } from "@/data/portfolio";
+import { Reveal, SectionHeading } from "@/components/primitives";
+import { sound } from "@/lib/sound";
+
+function Counter({ value, suffix }: { value: number; suffix: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-20% 0px" });
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(0, value, {
+      duration: 1.6,
+      ease: [0.16, 1, 0.3, 1],
+      onUpdate: (v) => setN(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [inView, value]);
+  return (
+    <span ref={ref}>
+      {n}
+      {suffix}
+    </span>
+  );
+}
+
+const principles = [
+  "Research before pixels",
+  "Systems over shortcuts",
+  "Motion with meaning",
+  "Ship, then refine",
+];
+
+/* Plays a subtle whoosh when the section enters the viewport */
+function useWhoosh() {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-25% 0px" });
+  const fired = useRef(false);
+  useEffect(() => {
+    if (inView && !fired.current) {
+      fired.current = true;
+      sound.whoosh();
+    }
+  }, [inView]);
+  return ref;
+}
+
+export default function About() {
+  const sectionRef = useWhoosh();
+  return (
+    <section id="about" ref={sectionRef} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+      {/* decorative background number */}
+      <span
+        className="pointer-events-none absolute -left-4 top-8 select-none font-display text-[14rem] font-light leading-none tracking-tightest text-ink/[0.025] sm:-left-8"
+        aria-hidden
+      >
+        01
+      </span>
+      <SectionHeading
+        index="01"
+        label="About"
+        title={
+          <>
+            Part engineer,
+            <br />
+            <span className="italic text-spark">part design-obsessive.</span>
+          </>
+        }
+      />
+
+      <div className="mt-14 grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
+        <Reveal>
+          <p className="font-display text-2xl font-light leading-snug tracking-tight text-ink text-balance sm:text-[1.7rem]">
+            I’m {profile.name} — a full-stack developer who treats every product
+            like a small studio would: research, branding, layout and motion
+            working as one.
+          </p>
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-ink-soft text-pretty">
+            My work lives where applied AI meets careful engineering. I build
+            autonomous agents that listen and act, voice interfaces that feel
+            natural, and full-stack products engineered from the database to the
+            last pixel. I care about the unglamorous infrastructure just as much
+            as the moments that make people smile — because the details{" "}
+            <em className="not-italic text-spark">are</em> the product.
+          </p>
+
+          <div className="mt-9 flex flex-wrap gap-2.5">
+            {principles.map((p) => (
+              <span
+                key={p}
+                className="rounded-full border border-line bg-surface/70 px-4 py-2 text-sm text-ink-soft"
+              >
+                {p}
+              </span>
+            ))}
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.12}>
+          <div className="relative h-full min-h-[280px] overflow-hidden rounded-3xl edge lift">
+            <img
+              src={profile.avatar}
+              alt="Muhammad Zarrar"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-ink/5 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-6">
+              <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-canvas/60">
+                Status
+              </div>
+              <div className="mt-1 font-display text-2xl font-light text-canvas">
+                {profile.bio}
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+
+      {/* Stats */}
+      <div className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line bg-line lg:grid-cols-4">
+        {stats.map((s, i) => (
+          <motion.div
+            key={s.label}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{ delay: i * 0.08, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-canvas px-6 py-8"
+          >
+            <div className="font-display text-4xl font-light tracking-tightest text-ink sm:text-5xl">
+              <Counter value={s.value} suffix={s.suffix} />
+            </div>
+            <div className="mt-2 text-sm text-muted">{s.label}</div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}

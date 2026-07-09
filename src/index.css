@@ -1,0 +1,221 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   DESIGN SYSTEM — "VIVID+CO" inspired warm editorial palette
+   A warm paper-like command center with a single vivid spark of life.
+   ========================================================================= */
+
+@theme {
+  /* Surfaces — warm bone / parchment, never pure white */
+  --color-canvas: #f4f1ea;
+  --color-canvas-deep: #ece7dc;
+  --color-surface: #fbfaf6;
+  --color-surface-2: #f0ece2;
+  --color-line: #ddd6c8;
+  --color-line-soft: #e7e1d4;
+
+  /* Ink — warm espresso near-black, never pure #000 */
+  --color-ink: #17150f;
+  --color-ink-soft: #3a362d;
+  --color-muted: #837d6f;
+  --color-faint: #a9a292;
+
+  /* The vivid spark — rationed, only where life is needed */
+  --color-spark: #ff4d17;
+  --color-spark-soft: #ff6a3d;
+  --color-ember: #ffb347;
+
+  /* Supporting cool counterpoint (used sparingly) */
+  --color-circuit: #1c5d4f;
+  --color-volt: #b9f24a;
+
+  /* Fonts */
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Easing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+
+  /* Animations */
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-marquee-rev: marquee-rev 38s linear infinite;
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-drift: drift 22s ease-in-out infinite;
+  --animate-spin-slow: spin 26s linear infinite;
+  --animate-shimmer: shimmer 3s linear infinite;
+  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-expo) infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-rev {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(2deg); }
+}
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(6%, -4%, 0) scale(1.08); }
+  66% { transform: translate3d(-5%, 5%, 0) scale(0.96); }
+}
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.85); opacity: 0.7; }
+  70% { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* =========================================================================
+   BASE
+   ========================================================================= */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv01";
+    overflow-x: hidden;
+  }
+  /* Hide native cursor only on fine-pointer (desktop) devices */
+  @media (pointer: fine) {
+    * { cursor: none !important; }
+  }
+  ::selection {
+    background: var(--color-spark);
+    color: #fff;
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--color-canvas-deep); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line);
+    border-radius: 99px;
+    border: 2px solid var(--color-canvas-deep);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-muted); }
+}
+
+/* =========================================================================
+   UTILITIES
+   ========================================================================= */
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+  .font-mono { font-family: var(--font-mono); }
+
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  /* Editorial display tracking */
+  .tracking-tightest { letter-spacing: -0.04em; }
+
+  /* Warm hairline card edge (inset, paper-like) */
+  .edge {
+    box-shadow:
+      0 0 0 1px var(--color-line) inset,
+      0 1px 0 0 rgba(255, 255, 255, 0.6) inset;
+  }
+  .edge-soft {
+    box-shadow: 0 0 0 1px var(--color-line-soft) inset;
+  }
+
+  .lift {
+    box-shadow:
+      0 1px 1px rgba(23, 21, 15, 0.04),
+      0 8px 24px -12px rgba(23, 21, 15, 0.18);
+  }
+
+  /* Film grain overlay */
+  .grain::before {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    z-index: 60;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grainshift 0.6s steps(2) infinite;
+  }
+  @keyframes grainshift {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(-4%, 3%); }
+    100% { transform: translate(3%, -2%); }
+  }
+
+  /* Underline-on-hover for links */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s var(--ease-out-expo);
+  }
+  .link-underline:hover { background-size: 100% 1px; }
+
+  /* Animated gradient text */
+  .text-shimmer {
+    background: linear-gradient(
+      100deg,
+      var(--color-ink) 30%,
+      var(--color-spark) 45%,
+      var(--color-ink) 60%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: var(--animate-shimmer);
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(var(--color-line) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  .blend-difference { mix-blend-mode: difference; }
+  .blend-multiply { mix-blend-mode: multiply; }
+
+  /* 3D tilt glare — a radial highlight that follows the cursor */
+  .tilt-card {
+    transition: transform 0.25s ease-out;
+    transform-style: preserve-3d;
+  }
+  .tilt-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      600px circle at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+      rgba(255, 255, 255, 0.08),
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 1;
+  }
+  .tilt-card:hover::after {
+    opacity: 1;
+  }
+
+  .no-scroll { overflow: hidden; }
+}
