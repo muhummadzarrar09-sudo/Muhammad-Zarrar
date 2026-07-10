@@ -19,7 +19,7 @@ const STREAKS = [
   { top: "66%", w: 9, dur: 1.5, delay: 0.7 },
 ];
 
-function SoundToggle() {
+export function SoundToggle() {
   const { ambientOn, toggle } = useSound();
   return (
     <button

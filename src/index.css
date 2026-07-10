@@ -218,4 +218,21 @@
   }
 
   .no-scroll { overflow: hidden; }
+
+  /* Business sub-site — SAME warm palette as the portfolio. */
+  .biz-card {
+    background: var(--color-surface);
+    box-shadow:
+      0 0 0 1px var(--color-line) inset,
+      0 1px 0 0 rgba(255, 255, 255, 0.6) inset;
+  }
+  .biz-card-hover {
+    transition: transform 0.45s var(--ease-out-expo), box-shadow 0.4s ease;
+  }
+  .biz-card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 0 0 1px rgba(255, 77, 23, 0.45) inset,
+      0 16px 36px -18px rgba(23, 21, 15, 0.28);
+  }
 }

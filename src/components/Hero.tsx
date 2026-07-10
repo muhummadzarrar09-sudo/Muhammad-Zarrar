@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { profile } from "@/data/portfolio";
 import { MagneticButton, RevealWords } from "@/components/primitives";
 import Terminal from "@/components/Terminal";
+import { navigate } from "@/router";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -104,6 +105,22 @@ export default function Hero() {
               Get in touch
             </MagneticButton>
           </motion.div>
+
+          {/* Entry point to the local-business / clinics sub-site */}
+          <motion.button
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.8, ease: EASE }}
+            onClick={() => navigate("/business")}
+            data-hover
+            data-cursor-label="Open"
+            className="group mt-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface/50 px-4 py-2 text-xs text-muted backdrop-blur transition-colors hover:border-spark/50 hover:text-ink"
+          >
+            <span>For clinics & local businesses</span>
+            <span className="font-medium text-spark transition-transform duration-300 group-hover:translate-x-0.5">
+              View the studio site →
+            </span>
+          </motion.button>
 
           <motion.div
             initial={{ opacity: 0 }}
