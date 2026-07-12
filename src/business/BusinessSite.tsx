@@ -2,17 +2,18 @@ import { useEffect } from "react";
 import BusinessNav from "@/business/BusinessNav";
 import BusinessHero from "@/business/BusinessHero";
 import BizMarquee from "@/business/BizMarquee";
-import { BizServices, BizWhyMe } from "@/business/BusinessSections";
+import { BizServices, BizWhyUs } from "@/business/BusinessSections";
+import RetailFlow from "@/business/RetailFlow";
 import BusinessProjects from "@/business/BusinessProjects";
-import ClinicLaunch from "@/business/ClinicLaunch";
 import BusinessProcess from "@/business/BusinessProcess";
 import BusinessContact from "@/business/BusinessContact";
 import BusinessFooter from "@/business/BusinessFooter";
 
 /**
- * The business sub-site — a complete, separate experience sharing the SAME warm
- * Vivid+Co palette as the portfolio. Has its own nav (sitemap), sections, and
- * contact flow, plus the global premium chrome (cursor, sound, scroll progress).
+ * Zarrar.Solutions — business landing page. Shares the SAME warm Vivid+Co
+ * palette as the portfolio, plus the global premium chrome (cursor, sound,
+ * scroll progress). Brand-first studio positioning; RetailFlow is the star
+ * productized offer.
  */
 export default function BusinessSite() {
   useEffect(() => {
@@ -26,10 +27,10 @@ export default function BusinessSite() {
         <BusinessHero />
         <BizMarquee />
         <BizServices />
+        <RetailFlow />
         <BusinessProjects />
-        <ClinicLaunch />
         <BusinessProcess />
-        <BizWhyMe />
+        <BizWhyUs />
         <BusinessContact />
       </main>
       <BusinessFooter />

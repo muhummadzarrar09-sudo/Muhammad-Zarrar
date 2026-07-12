@@ -1,7 +1,7 @@
 import { biz, bizLinks } from "@/business/data";
 import { navigate } from "@/router";
 
-/** Mirrors the portfolio Footer exactly — same wordmark, columns, back-to-top. */
+/** Mirrors the portfolio Footer exactly — brand-first, honest founder line. */
 export default function BusinessFooter() {
   const year = new Date().getFullYear();
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -11,11 +11,10 @@ export default function BusinessFooter() {
         <div className="flex flex-col justify-between gap-10 md:flex-row">
           <div className="max-w-sm">
             <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="font-display text-3xl font-light tracking-tightest">
-              Zarrar<span className="text-spark">.studio</span>
+              Zarrar<span className="text-spark">.Solutions</span>
             </button>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              Premium websites, booking systems & AI tools for businesses that
-              want more leads and better operations.
+              Websites, catalog systems, booking systems, dashboards, and automation tools for local businesses.
             </p>
             <button onClick={() => navigate("/")} data-hover className="link-underline mt-4 w-fit text-xs text-muted transition-colors hover:text-ink">
               ← View the main portfolio
@@ -26,14 +25,14 @@ export default function BusinessFooter() {
             <div className="flex flex-col gap-2.5">
               <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Navigate</div>
               {bizLinks.map((l) => (
-                <button key={l.id} onClick={() => go(l.id)} className="link-underline w-fit text-sm capitalize text-ink-soft">
+                <button key={l.id} onClick={() => go(l.id)} className="link-underline w-fit text-sm text-ink-soft">
                   {l.label}
                 </button>
               ))}
             </div>
             <div className="flex flex-col gap-2.5">
               <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Elsewhere</div>
-              <a href={`https://wa.me/${biz.whatsapp}`} target="_blank" rel="noreferrer" className="link-underline w-fit text-sm text-ink-soft">
+              <a href={biz.whatsappCta} target="_blank" rel="noreferrer" className="link-underline w-fit text-sm text-ink-soft">
                 WhatsApp ↗
               </a>
               <a href={`mailto:${biz.email}`} className="link-underline w-fit text-sm text-ink-soft">
@@ -46,16 +45,11 @@ export default function BusinessFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-line pt-6 sm:flex-row sm:items-center">
+        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-line pt-6 sm:flex-row sm:items-center">
           <p className="font-mono text-xs text-muted">
-            © {year} {biz.name} — Designed & engineered, end to end.
+            © {year} {biz.brand}. Websites, catalog systems, booking systems, dashboards & automation.
           </p>
-          <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="group flex items-center gap-2 font-mono text-xs text-muted transition-colors hover:text-ink">
-            Back to top
-            <span className="grid h-7 w-7 place-items-center rounded-full border border-line transition-all group-hover:-translate-y-0.5 group-hover:border-spark">
-              ↑
-            </span>
-          </button>
+          <p className="font-mono text-[11px] text-muted/70">Built & operated by {biz.founder}.</p>
         </div>
       </div>
     </footer>

@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { bizProcess } from "@/business/data";
 import { Reveal, SectionHeading } from "@/components/primitives";
+import { useSectionWhoosh } from "@/business/useSectionWhoosh";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -12,9 +13,10 @@ export default function BusinessProcess() {
     offset: ["start 70%", "end 70%"],
   });
   const lineH = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const whooshRef = useSectionWhoosh();
 
   return (
-    <section id="process" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+    <section id="process" ref={whooshRef} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       <span className="pointer-events-none absolute -left-4 top-8 select-none font-display text-[14rem] font-light leading-none tracking-tightest text-ink/[0.025] sm:-left-8" aria-hidden>
         04
       </span>

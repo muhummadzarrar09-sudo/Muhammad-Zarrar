@@ -20,6 +20,15 @@ export function BizIcon({ name, className }: { name: string; className?: string 
           <path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5 -2.5 15 0 18" />
         </svg>
       );
+    case "grid":
+      return (
+        <svg {...p}>
+          <rect x="3" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" />
+        </svg>
+      );
     case "calendar":
       return (
         <svg {...p}>

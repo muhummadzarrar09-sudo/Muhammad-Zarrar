@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { bizProjects, type BizProject } from "@/business/data";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { useTilt3D } from "@/hooks/useTilt3D";
+import { useSectionWhoosh } from "@/business/useSectionWhoosh";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -44,7 +45,7 @@ function ProjectCard({ p, i }: { p: BizProject; i: number }) {
       {/* body */}
       <div className="relative z-10 flex flex-1 flex-col gap-4 p-6">
         <div className="font-mono text-[11px] uppercase tracking-wider text-muted">{p.tag}</div>
-        <p className="text-sm leading-relaxed text-ink-soft text-pretty">{p.problem}</p>
+        <p className="text-sm leading-relaxed text-ink-soft text-pretty">{p.business}</p>
         <div className="flex flex-wrap gap-1.5">
           {p.features.map((f) => (
             <span key={f} className="rounded-full border border-line px-2.5 py-0.5 text-[11px] text-muted">{f}</span>
@@ -56,7 +57,7 @@ function ProjectCard({ p, i }: { p: BizProject; i: number }) {
               <span key={t} className="font-mono text-[10px] text-muted">{t}</span>
             ))}
           </div>
-          <span className="text-[11px] text-spark">Code ↗</span>
+          <span className="text-[11px] text-spark transition-transform duration-300 group-hover:translate-x-0.5">Code ↗</span>
         </div>
       </div>
     </motion.a>
@@ -64,26 +65,28 @@ function ProjectCard({ p, i }: { p: BizProject; i: number }) {
 }
 
 export default function BusinessProjects() {
+  const ref = useSectionWhoosh();
   return (
-    <section id="work" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+    <section id="work" ref={ref} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       <span className="pointer-events-none absolute -left-4 top-8 select-none font-display text-[14rem] font-light leading-none tracking-tightest text-ink/[0.025] sm:-left-8" aria-hidden>
-        02
+        03
       </span>
+
       <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <SectionHeading
-          index="02"
-          label="Featured work"
+          index="03"
+          label="Work & Systems"
           title={
             <>
-              Real systems,
+              Systems we've
               <br />
-              <span className="italic text-spark">shipped & working.</span>
+              <span className="italic text-spark">designed & built.</span>
             </>
           }
         />
         <Reveal delay={0.1}>
           <p className="max-w-sm text-base leading-relaxed text-ink-soft">
-            A few of the full-stack and AI systems I've designed, built and shipped end to end.
+            Proof of capability — the infrastructure behind catalogs, forms, booking, and automation, built and shipped end to end.
           </p>
         </Reveal>
       </div>

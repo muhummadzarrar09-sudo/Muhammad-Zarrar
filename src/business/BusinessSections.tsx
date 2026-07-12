@@ -1,23 +1,26 @@
 import { motion } from "framer-motion";
-import { services, whyMe } from "@/business/data";
+import { services, whyUs } from "@/business/data";
 import { BizIcon } from "@/business/ui";
 import { Reveal, SectionHeading } from "@/components/primitives";
+import { useSectionWhoosh } from "@/business/useSectionWhoosh";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function BizServices() {
+  const ref = useSectionWhoosh();
   return (
-    <section id="services" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+    <section id="services" ref={ref} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       <span className="pointer-events-none absolute -left-4 top-8 select-none font-display text-[14rem] font-light leading-none tracking-tightest text-ink/[0.025] sm:-left-8" aria-hidden>
         01
       </span>
+
       <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <SectionHeading
           index="01"
           label="Services"
           title={
             <>
-              What I can
+              What we
               <br />
               <span className="italic text-spark">build for you.</span>
             </>
@@ -25,12 +28,12 @@ export function BizServices() {
         />
         <Reveal delay={0.1}>
           <p className="max-w-sm text-base leading-relaxed text-ink-soft">
-            Every service is engineered to move a real business metric — more leads, more bookings, less manual work.
+            Lean digital systems that solve practical business problems — product visibility, lead capture, appointment flow, and admin control.
           </p>
         </Reveal>
       </div>
 
-      <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:mt-20">
+      <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((s, i) => (
           <motion.div
             key={s.title}
@@ -67,33 +70,35 @@ export function BizServices() {
   );
 }
 
-export function BizWhyMe() {
+export function BizWhyUs() {
+  const ref = useSectionWhoosh();
   return (
-    <section id="why" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+    <section id="why" ref={ref} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       <span className="pointer-events-none absolute -left-4 top-8 select-none font-display text-[14rem] font-light leading-none tracking-tightest text-ink/[0.025] sm:-left-8" aria-hidden>
         05
       </span>
+
       <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
         <SectionHeading
           index="05"
-          label="Why me"
+          label="Why Zarrar.Solutions"
           title={
             <>
-              Young. Sharp.
+              Built for how
               <br />
-              <span className="italic text-spark">Serious about shipping.</span>
+              <span className="italic text-spark">businesses really work.</span>
             </>
           }
         />
         <Reveal delay={0.1}>
           <p className="max-w-sm text-base leading-relaxed text-ink-soft">
-            I'm 18, full-stack, and fluent in modern AI and web tools. I build working systems — not just pretty pages.
+            We don't build generic templates. We build practical systems that help you sell, organize, and respond faster.
           </p>
         </Reveal>
       </div>
 
       <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {whyMe.map((w, i) => (
+        {whyUs.map((w, i) => (
           <motion.div
             key={w.title}
             initial={{ opacity: 0, y: 20 }}

@@ -50,7 +50,7 @@ export default function BusinessNav() {
           <div className="flex items-center gap-3 pl-2">
             <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               <span className="font-display text-base font-medium tracking-tight">
-                Zarrar<span className="text-spark">.studio</span>
+                Zarrar<span className="text-spark">.Solutions</span>
               </span>
             </button>
             <span className="h-4 w-px bg-line" />
