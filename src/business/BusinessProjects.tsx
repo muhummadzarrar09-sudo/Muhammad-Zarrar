@@ -1,99 +1,48 @@
-import { motion } from "framer-motion";
-import { bizProjects, type BizProject } from "@/business/data";
-import { Reveal, SectionHeading } from "@/components/primitives";
-import { useTilt3D } from "@/hooks/useTilt3D";
-import { useSectionWhoosh } from "@/business/useSectionWhoosh";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { bizProjects } from "@/business/data";
+import { SectionHeading } from "@/components/primitives";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+function Card({ p, i, total }: { p: any; i: number; total: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 80%", "end 20%"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [0.94, 1]);
+  const y = useTransform(scrollYProgress, [0, 1], [60, 0]);
+  const imgScale = useTransform(scrollYProgress, [0, 1], [1.3, 1]);
 
-function ProjectCard({ p, i }: { p: BizProject; i: number }) {
-  const { ref, move, leave } = useTilt3D(10);
   return (
-    <motion.a
-      ref={ref as React.RefObject<HTMLAnchorElement>}
-      href={p.github}
-      target="_blank"
-      rel="noreferrer"
-      onMouseMove={move as unknown as React.MouseEventHandler}
-      onMouseLeave={leave}
-      data-cursor="view"
-      data-cursor-label="Open ↗"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-8% 0px" }}
-      transition={{ delay: (i % 3) * 0.1, duration: 0.8, ease: EASE }}
-      className="tilt-card group relative flex flex-col overflow-hidden rounded-3xl border border-line bg-surface lift"
-    >
-      {/* visual */}
-      <div className="relative aspect-[16/9] overflow-hidden">
-        <div
-          className="absolute inset-0"
-          style={{ background: `radial-gradient(120% 120% at 20% 0%, ${p.accent}22, transparent 60%), radial-gradient(100% 100% at 100% 100%, ${p.accent}33, transparent 55%)` }}
-        />
-        <div className="dot-grid absolute inset-0 opacity-40" />
-        <span className="pointer-events-none absolute -right-1 -top-3 select-none font-display text-[6rem] font-light leading-none tracking-tightest text-ink/[0.05]" aria-hidden>
-          0{i + 1}
-        </span>
-        <div className="absolute inset-x-5 bottom-4 flex items-end justify-between">
-          <h3 className="font-display text-4xl font-light tracking-tightest text-ink sm:text-5xl">{p.name}</h3>
-          <span className="rounded-full px-2.5 py-1 text-[10px] font-medium" style={{ background: `${p.accent}22`, color: p.accent }}>
-            {p.status}
-          </span>
-        </div>
-      </div>
-
-      {/* body */}
-      <div className="relative z-10 flex flex-1 flex-col gap-4 p-6">
-        <div className="font-mono text-[11px] uppercase tracking-wider text-muted">{p.tag}</div>
-        <p className="text-sm leading-relaxed text-ink-soft text-pretty">{p.business}</p>
-        <div className="flex flex-wrap gap-1.5">
-          {p.features.map((f) => (
-            <span key={f} className="rounded-full border border-line px-2.5 py-0.5 text-[11px] text-muted">{f}</span>
-          ))}
-        </div>
-        <div className="mt-auto flex items-center justify-between border-t border-line pt-4">
-          <div className="flex flex-wrap gap-2">
-            {p.tech.map((t) => (
-              <span key={t} className="font-mono text-[10px] text-muted">{t}</span>
-            ))}
+    <div ref={ref} className="sticky top-[16vh] pb-[8vh]" style={{ zIndex: i }}>
+      <motion.div style={{ scale, y }} className="group">
+        <a href={p.github} target="_blank" rel="noreferrer" className="block">
+          <div className="mb-3 flex items-center gap-3 font-mono text-[11px] uppercase tracking-wide text-muted">
+            <span className="text-spark">0{i + 1}</span><span className="h-px w-8 bg-line" /><span>{p.tag}</span><span className="ml-auto rounded-full px-2 py-0.5 text-[10px]" style={{ background: `${p.accent}20`, color: p.accent }}>{p.status}</span>
           </div>
-          <span className="text-[11px] text-spark transition-transform duration-300 group-hover:translate-x-0.5">Code ↗</span>
-        </div>
-      </div>
-    </motion.a>
+          <div className="relative overflow-hidden rounded-[1.6rem] border border-line bg-surface aspect-[16/9.5] shadow-[0_24px_70px_-30px_rgba(23,21,15,0.25)]">
+            <motion.div style={{ scale: imgScale }} className="absolute inset-0">
+              <div className="absolute inset-0" style={{ background: `radial-gradient(120% at 20% 0%, ${p.accent}22, transparent 60%), radial-gradient(100% at 100% 100%, ${p.accent}28, transparent 60%)` }} />
+              <div className="absolute inset-0 dot-grid opacity-30" />
+              <div className="absolute inset-0 grid place-items-center"><span className="font-display text-[8rem] font-light opacity-[0.03]">{p.name}</span></div>
+            </motion.div>
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-ink/70 to-transparent p-6">
+              <h3 className="font-display text-4xl font-light text-canvas">{p.name}</h3>
+              <p className="mt-2 text-sm text-canvas/70 max-w-[56ch]">{p.business}</p>
+            </div>
+          </div>
+        </a>
+      </motion.div>
+    </div>
   );
 }
 
 export default function BusinessProjects() {
-  const ref = useSectionWhoosh();
   return (
-    <section id="work" ref={ref} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
-      <span className="pointer-events-none absolute -left-4 top-8 select-none font-display text-[14rem] font-light leading-none tracking-tightest text-ink/[0.025] sm:-left-8" aria-hidden>
-        03
-      </span>
-
-      <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
-        <SectionHeading
-          index="03"
-          label="Work & Systems"
-          title={
-            <>
-              Systems we've
-              <br />
-              <span className="italic text-spark">designed & built.</span>
-            </>
-          }
-        />
-        <Reveal delay={0.1}>
-          <p className="max-w-sm text-base leading-relaxed text-ink-soft">
-            Proof of capability — the infrastructure behind catalogs, forms, booking, and automation, built and shipped end to end.
-          </p>
-        </Reveal>
+    <section id="work" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+      <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <SectionHeading index="04" label="Proof • Act 04 Sticky Stack" title={<>Systems we've<br /><span className="italic text-spark">designed & built.</span></>} />
       </div>
-
-      <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {bizProjects.map((p, i) => (
-          <ProjectCard key={p.name} p={p} i={i} />
+      <div className="mt-16">
+        {bizProjects.slice(0, 4).map((p, i) => (
+          <Card key={p.name} p={p} i={i} total={4} />
         ))}
       </div>
     </section>

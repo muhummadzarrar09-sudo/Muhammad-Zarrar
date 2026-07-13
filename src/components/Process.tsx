@@ -1,108 +1,49 @@
-import { motion, useInView } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { process } from "@/data/portfolio";
-import { Reveal, SectionHeading } from "@/components/primitives";
-import { cn } from "@/utils/cn";
-import { sound } from "@/lib/sound";
-
-function useWhoosh() {
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-25% 0px" });
-  const fired = useRef(false);
-  useEffect(() => {
-    if (inView && !fired.current) { fired.current = true; sound.whoosh(); }
-  }, [inView]);
-  return ref;
-}
+import { SectionHeading } from "@/components/primitives";
 
 export default function Process() {
-  const [active, setActive] = useState(0);
-  const sectionRef = useWhoosh();
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 70%", "end 40%"] });
+  const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
   return (
-    <section id="process" ref={sectionRef} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
-      {/* decorative background number */}
-      <span
-        className="pointer-events-none absolute -left-4 top-8 select-none font-display text-[14rem] font-light leading-none tracking-tightest text-ink/[0.025] sm:-left-8"
-        aria-hidden
-      >
-        04
-      </span>
-      <SectionHeading
-        index="04"
-        label="Process"
-        title={
-          <>
-            Like a studio — research,
-            <br />
-            <span className="italic text-spark">brand, build, repeat.</span>
-          </>
-        }
-      />
+    <section id="process" ref={ref} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+      <SectionHeading index="04" label="Protocol" title={<>Studio method —<br /><span className="italic text-spark">research, brand, build.</span></>} />
 
-      <div className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-4">
-        {process.map((s, i) => (
-          <motion.div
-            key={s.no}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10% 0px" }}
-            transition={{ delay: i * 0.08, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            onMouseEnter={() => setActive(i)}
-            data-hover
-            data-cursor-label={active === i ? "Active" : "Hover"}
-            className={cn(
-              "relative flex flex-col gap-5 bg-canvas p-7 transition-colors duration-500 sm:p-8",
-              active === i ? "bg-ink text-canvas" : "",
-            )}
-          >
-            <div className="flex items-center justify-between">
-              <span
-                className={cn(
-                  "font-display text-5xl font-light tracking-tightest transition-colors",
-                  active === i ? "text-spark" : "text-ink/15",
-                )}
-              >
-                {s.no}
-              </span>
-              <span
-                className={cn(
-                  "h-2.5 w-2.5 rounded-full transition-all duration-500",
-                  active === i ? "scale-100 bg-spark" : "scale-50 bg-line",
-                )}
-              />
-            </div>
-            <div>
-              <h3 className="font-display text-2xl font-medium tracking-tight">
-                {s.title}
-              </h3>
-              <div
-                className={cn(
-                  "mt-1 font-mono text-[11px] uppercase tracking-[0.18em]",
-                  active === i ? "text-spark-soft" : "text-spark",
-                )}
-              >
-                {s.role}
-              </div>
-            </div>
-            <p
-              className={cn(
-                "text-sm leading-relaxed",
-                active === i ? "text-canvas/70" : "text-muted",
-              )}
+      <div className="relative mt-16">
+        {/* line */}
+        <div className="absolute left-[18px] top-0 hidden h-full w-px bg-line md:block">
+          <motion.div style={{ scaleY: pathLength, originY: 0 }} className="h-full w-full bg-spark" />
+        </div>
+
+        <div className="grid gap-10 md:gap-0">
+          {process.map((s, i) => (
+            <motion.div
+              key={s.no}
+              initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.7 }}
+              className="relative grid gap-4 md:grid-cols-[48px_1fr] md:gap-8"
             >
-              {s.body}
-            </p>
-          </motion.div>
-        ))}
+              <div className="relative hidden md:block">
+                <div className="grid h-9 w-9 place-items-center rounded-full border border-line bg-canvas font-mono text-xs text-spark">
+                  {s.no}
+                </div>
+              </div>
+              <div className="border-l border-line pl-6 md:border-l-0 md:pl-0 pb-10">
+                <div className="flex items-baseline gap-3">
+                  <h3 className="font-display text-2xl font-light tracking-tight">{s.title}</h3>
+                  <span className="font-mono text-[11px] uppercase tracking-wide text-muted">{s.role}</span>
+                </div>
+                <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">{s.body}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
-
-      <Reveal delay={0.1}>
-        <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted">
-          Whether it’s an autonomous agent or a full product, the same belief
-          holds: great software is part research, part branding, part layout and
-          part motion — then the engineering to make it real.
-        </p>
-      </Reveal>
     </section>
   );
 }

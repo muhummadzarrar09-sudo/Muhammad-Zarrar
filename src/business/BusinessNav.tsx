@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { bizLinks } from "@/business/data";
 import { navigate } from "@/router";
 import { cn } from "@/utils/cn";
-import { SoundToggle } from "@/components/Nav";
 
 export default function BusinessNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -85,7 +84,6 @@ export default function BusinessNav() {
           </div>
 
           <div className="flex items-center gap-2">
-            <SoundToggle />
             <button
               onClick={() => go("contact")}
               data-hover
