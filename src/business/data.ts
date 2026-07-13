@@ -259,3 +259,57 @@ export const bizLinks = [
   { id: "why", label: "Why us" },
   { id: "contact", label: "Contact" },
 ];
+
+export const clinic = {
+  name: "ClinicLaunch System",
+  tagline:
+    "A premium appointment-booking website system for clinics that want more patient inquiries through WhatsApp, forms, and Google search.",
+  plans: [
+    {
+      name: "Starter",
+      price: "Rs. 25,000",
+      suffix: "+",
+      desc: "A clean, fast clinic website with booking + WhatsApp capture.",
+      featured: false,
+      period: "one-time",
+      features: [
+        "Professional clinic website",
+        "Appointment booking form",
+        "WhatsApp lead capture",
+        "Mobile responsive design",
+        "Delivered in 7 days",
+      ],
+    },
+    {
+      name: "Professional",
+      price: "Rs. 50,000",
+      suffix: "+",
+      desc: "Full system: site, booking, dashboard, automations & SEO.",
+      featured: true,
+      period: "one-time",
+      features: [
+        "Everything in Starter",
+        "Admin dashboard / Sheet sync",
+        "Doctor & service sections",
+        "Google reviews CTA",
+        "Basic SEO setup",
+        "Priority support",
+      ],
+    },
+    {
+      name: "Monthly Care",
+      price: "Rs. 8,000",
+      suffix: "/month+",
+      desc: "Hosting, updates, tweaks & ongoing improvements.",
+      featured: false,
+      period: "per month",
+      features: [
+        "Hosting & SSL",
+        "Monthly updates",
+        "Content tweaks",
+        "Performance checks",
+        "Ongoing improvements",
+      ],
+    },
+  ],
+};

@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { SoundProvider } from "@/context/SoundContext";
 import Cursor from "@/components/Cursor";
 import Background from "@/components/Background";
-import LenisProvider from "@/components/LenisProvider";
+import AmbientParticles from "@/components/AmbientParticles";
 import ScrollProgress from "@/components/ScrollProgress";
 import Preloader from "@/components/Preloader";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import About from "@/components/About";
-import HorizontalManifesto from "@/components/HorizontalManifesto";
+import Expertise from "@/components/Expertise";
 import Work from "@/components/Work";
 import Process from "@/components/Process";
 import Contact from "@/components/Contact";
@@ -17,6 +17,7 @@ import Footer from "@/components/Footer";
 import { usePathname } from "@/router";
 import BusinessSite from "@/business/BusinessSite";
 
+// The existing portfolio — unchanged.
 function Portfolio() {
   return (
     <>
@@ -25,7 +26,7 @@ function Portfolio() {
         <Hero />
         <Marquee />
         <About />
-        <HorizontalManifesto />
+        <Expertise />
         <Work />
         <Process />
         <Contact />
@@ -44,21 +45,23 @@ export default function App() {
     document.body.classList.toggle("no-scroll", loading);
   }, [loading]);
 
+  // Reset scroll position whenever the route changes.
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [isBusiness]);
 
   return (
     <SoundProvider>
-      <LenisProvider>
-        <div className="grain relative min-h-screen overflow-x-clip">
-          <Cursor />
-          <ScrollProgress />
-          <Background />
-          {loading && <Preloader onDone={() => setLoading(false)} />}
-          {isBusiness ? <BusinessSite /> : <Portfolio />}
-        </div>
-      </LenisProvider>
+      <div className="grain relative min-h-screen overflow-x-clip">
+        <Cursor />
+        <ScrollProgress />
+        {/* Both sites share the SAME warm Vivid+Co canvas */}
+        <Background />
+        <AmbientParticles />
+        {loading && <Preloader onDone={() => setLoading(false)} />}
+
+        {isBusiness ? <BusinessSite /> : <Portfolio />}
+      </div>
     </SoundProvider>
   );
 }

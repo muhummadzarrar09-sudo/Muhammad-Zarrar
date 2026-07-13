@@ -32,7 +32,7 @@ export default function ClinicLaunch() {
 
       {/* Pricing — premium payment-card style, each tier lists its own features */}
       <div className="mt-14 grid items-start gap-5 md:grid-cols-3">
-        {clinic.plans.map((plan, i) => (
+        {clinic.plans.map((plan: { name: string; price: string; suffix: string; desc: string; featured: boolean; period: string; features: string[] }, i: number) => (
           <motion.div
             key={plan.name}
             initial={{ opacity: 0, y: 28 }}
@@ -94,7 +94,7 @@ export default function ClinicLaunch() {
 
             {/* features */}
             <ul className="relative flex flex-col gap-3">
-              {plan.features.map((f) => (
+              {plan.features.map((f: string) => (
                 <li key={f} className="flex items-start gap-2.5 text-sm">
                   <span
                     className={`mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full text-[10px] ${
