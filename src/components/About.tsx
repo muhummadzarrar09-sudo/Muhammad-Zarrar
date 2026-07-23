@@ -2,6 +2,9 @@ import { animate, motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { profile, stats } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
+import { KineticText } from "@/components/KineticText";
+import { CinematicChapter } from "@/components/CinematicChapter";
+import { CinematicSpacer } from "@/components/CinematicSpacer";
 import { sound } from "@/lib/sound";
 
 function Counter({ value, suffix }: { value: number; suffix: string }) {
@@ -62,14 +65,28 @@ export default function About() {
         label="About"
         title={
           <>
-            Part engineer,
+            <KineticText text="Part engineer," mode="stagger" delay={0.02} />
             <br />
-            <span className="italic text-spark">part design-obsessive.</span>
+            <KineticText 
+              text="part design-obsessive." 
+              mode="refined" 
+              delay={0.38} 
+              className="italic text-spark" 
+            />
           </>
         }
       />
 
-      <div className="mt-14 grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
+      {/* FULL CINEMATIC CHAPTER — Origin */}
+      <CinematicChapter 
+        image="/images/cinematic-02.jpg"
+        chapter="CHAPTER 01 — ORIGIN"
+        title="I treat every project like a small film."
+        body="Research. Light. Shadow. Intention. Every decision is directed with certainty."
+        variant="slowZoom"
+      />
+
+      <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
         <Reveal>
           <p className="font-display text-2xl font-light leading-snug tracking-tight text-ink text-balance sm:text-[1.7rem]">
             I’m {profile.name} — a full-stack developer who treats every product
@@ -80,9 +97,7 @@ export default function About() {
             My work lives where applied AI meets careful engineering. I build
             autonomous agents that listen and act, voice interfaces that feel
             natural, and full-stack products engineered from the database to the
-            last pixel. I care about the unglamorous infrastructure just as much
-            as the moments that make people smile — because the details{" "}
-            <em className="not-italic text-spark">are</em> the product.
+            last pixel.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-2.5">
@@ -98,24 +113,41 @@ export default function About() {
         </Reveal>
 
         <Reveal delay={0.12}>
-          <div className="relative h-full min-h-[280px] overflow-hidden rounded-3xl edge lift">
+          <div className="relative h-full min-h-[280px] overflow-hidden rounded-3xl">
             <img
-              src={profile.avatar}
-              alt="Muhammad Zarrar"
+              src="/images/cinematic-06.jpg"
+              alt=""
               className="h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-ink/5 to-transparent" />
-            <div className="absolute bottom-0 left-0 p-6">
-              <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-canvas/60">
-                Status
-              </div>
-              <div className="mt-1 font-display text-2xl font-light text-canvas">
-                {profile.bio}
-              </div>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/80" />
           </div>
         </Reveal>
       </div>
+
+      {/* Extra cinematic beat after About */}
+      <div className="mt-12">
+        <CinematicChapter 
+          image="/images/cinematic-01.jpg"
+          chapter="INTERLUDE"
+          title="The work is the story."
+          body="Not the pixels. Not the code. The feeling when someone uses it and it just works — quietly, beautifully."
+          variant="parallax"
+        />
+      </div>
+
+      <CinematicSpacer height={140} />
+
+      {/* Cinematic closer for About */}
+      <CinematicChapter 
+        image="/images/cinematic-06.jpg"
+        chapter="THE DETAILS"
+        title="The seams disappear."
+        body="Craft is not decoration. It is the story itself."
+        variant="parallax"
+      />
+
+      {/* Final cinematic frame for the chapter */}
+      <div className="mt-8 text-center text-xs font-mono tracking-[3px] text-muted">— END OF CHAPTER 01 —</div>
 
       {/* Stats */}
       <div className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line bg-line lg:grid-cols-4">

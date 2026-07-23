@@ -159,7 +159,152 @@ export const bizProjects: BizProject[] = [
   },
 ];
 
-// --- RetailFlow (the productized offer) -----------------------------------
+// --- Pricing Packages (public offers) ------------------------------------
+export type PricingPackage = {
+  id: string;
+  name: string;
+  price: string;
+  priceSecondary?: string;
+  description: string;
+  bestFor: string;
+  includes: string[];
+  delivery?: string;
+  notes: string[];
+};
+
+export const pricingPackages: PricingPackage[] = [
+  {
+    id: "starter",
+    name: "Starter Website",
+    price: "Rs. 29,999",
+    description:
+      "A focused one-page business website built to make your business look professional, explain your services clearly, and send visitors toward WhatsApp or inquiry forms.",
+    bestFor:
+      "Small businesses, shops, service providers, clinics, salons, academies, and local brands that need a clean online presence.",
+    includes: [
+      "1-page custom website",
+      "Mobile responsive design",
+      "Smooth animations",
+      "WhatsApp button / CTA",
+      "Contact form or inquiry section",
+      "Services/products overview",
+      "Basic SEO setup",
+      "Basic speed optimization",
+      "Deployment included",
+      "Demo/reference before build",
+    ],
+    delivery: "7 days after confirmation and advance payment.",
+    notes: [
+      "Domain is not included.",
+      "Domain purchase/setup can be added depending on actual domain cost.",
+      "Basic SEO only.",
+      "Add-ons cost extra.",
+    ],
+  },
+  {
+    id: "retailflow",
+    name: "RetailFlow Catalog System",
+    price: "Rs. 25,000+",
+    description:
+      "An online catalog system for retailers. Customers can view products, prices, categories, stock status, and order/check availability through WhatsApp.",
+    bestFor:
+      "Clothing stores, boutiques, stationery shops, cosmetics shops, shoe stores, gift shops, bookshops, and small local brands.",
+    includes: [
+      "Public product catalog",
+      "Product categories",
+      "Product detail pages",
+      "Product images and prices",
+      "WhatsApp order/check availability button",
+      "Mobile responsive design",
+      "Basic deployment",
+    ],
+    notes: [
+      "Final price depends on features and number of products.",
+      "Professional version can include: Admin dashboard, Add/edit/delete products, Stock status, Size/color variants, Search and filters, Featured/new arrivals, Inquiry/order tracking.",
+      "Add-ons cost extra.",
+    ],
+  },
+  {
+    id: "professional",
+    name: "Professional Website",
+    price: "Rs. 70,000+",
+    description:
+      "A premium multi-page website for businesses that need stronger credibility, better structure, more content, and a better inquiry flow.",
+    bestFor:
+      "Businesses that need service pages, reviews, location pages, stronger CTAs, better structure, and a more premium online presence.",
+    includes: [
+      "Everything in Starter Website",
+      "Up to 5 pages/sub-pages",
+      "Premium design system",
+      "Advanced scroll animations",
+      "About page",
+      "Services/category pages",
+      "Reviews/testimonials section",
+      "Credibility section",
+      "Location page",
+      "FAQ section",
+      "Stronger CTA structure",
+      "Basic analytics setup",
+      "Improved technical SEO foundation",
+      "WhatsApp inquiry flow",
+    ],
+    delivery: "7–14 days depending on scope, content, and client response time.",
+    notes: [
+      "Priority delivery is available as an add-on depending on deadline.",
+      "Add-ons cost extra.",
+    ],
+  },
+  {
+    id: "care",
+    name: "Monthly / Yearly Care",
+    price: "Rs. 25,000/month",
+    priceSecondary: "Rs. 258,000/year",
+    description:
+      "Ongoing support, updates, improvements, technical maintenance, and basic SEO monitoring for your website or catalog system.",
+    bestFor: "Businesses that want their website or system maintained professionally after launch.",
+    includes: [
+      "Website maintenance",
+      "Bug fixes",
+      "Minor design/content changes",
+      "Hosting/deployment support",
+      "Product/service updates",
+      "WhatsApp CTA updates",
+      "Form/inquiry flow checks",
+      "Basic SEO maintenance",
+      "Monthly performance check",
+      "Technical issue checks",
+      "Monthly improvement suggestions",
+    ],
+    notes: [
+      "SEO Note: SEO improvements are aimed at strengthening visibility, technical health, and local relevance. Rankings are not guaranteed.",
+      "Advanced SEO campaigns are quoted separately.",
+      "Add-ons cost extra.",
+    ],
+  },
+];
+
+// --- Add-ons -------------------------------------------------------------
+export const addons = [
+  "Domain purchase/setup",
+  "Extra pages",
+  "Priority delivery",
+  "Advanced SEO setup",
+  "Google Business Profile optimization",
+  "Location pages",
+  "Review/testimonial system",
+  "Product upload/import support",
+  "Admin dashboard",
+  "Stock management",
+  "Search and filters",
+  "WhatsApp automation",
+  "Analytics/Search Console setup",
+  "Blog/content pages",
+  "Payment integration",
+  "Hosting/email setup",
+  "Maintenance and monthly reporting",
+];
+
+// --- RetailFlow (kept for reference / detailed section) ------------------
 export const retailFlow = {
   name: "RetailFlow",
   title: "RetailFlow system.",
@@ -178,59 +323,7 @@ export const retailFlow = {
     "Gift shops",
     "Small local brands",
   ],
-  plans: [
-    {
-      name: "Starter",
-      price: "Rs. 25,000",
-      suffix: "+",
-      desc: "A clean product catalog website with WhatsApp ordering.",
-      featured: false,
-      period: "one-time",
-      features: [
-        "Product catalog website",
-        "Categories",
-        "Product detail pages",
-        "Product images and prices",
-        "WhatsApp order / check availability",
-        "Mobile responsive design",
-        "Basic deployment",
-      ],
-    },
-    {
-      name: "Professional",
-      price: "Rs. 50,000",
-      suffix: "+",
-      desc: "Catalog, stock status, variants, search, and admin tools.",
-      featured: true,
-      period: "one-time",
-      features: [
-        "Everything in Starter",
-        "Admin dashboard",
-        "Add / edit / delete products",
-        "Stock status",
-        "Size / color variants",
-        "Search and filters",
-        "Featured / new arrivals",
-        "Inquiry / order tracking",
-      ],
-    },
-    {
-      name: "Monthly Care",
-      price: "Rs. 8,000",
-      suffix: "/month+",
-      desc: "Ongoing support, updates, hosting help, and improvements.",
-      featured: false,
-      period: "per month",
-      features: [
-        "Hosting support",
-        "Bug fixes",
-        "Small updates",
-        "Product upload support",
-        "Minor design / content edits",
-        "Monthly check-in",
-      ],
-    },
-  ],
+  // Note: Public pricing now lives in pricingPackages. This is kept for detailed description.
   note: "First local case-study builds may qualify for a discounted starter setup. Ask on WhatsApp.",
 };
 
@@ -253,6 +346,8 @@ export const whyUs = [
 // sections for the business nav — matches the page sequence
 export const bizLinks = [
   { id: "services", label: "Services" },
+  { id: "pricing", label: "Pricing" },
+  { id: "addons", label: "Add-ons" },
   { id: "retailflow", label: "RetailFlow" },
   { id: "work", label: "Work" },
   { id: "process", label: "Process" },

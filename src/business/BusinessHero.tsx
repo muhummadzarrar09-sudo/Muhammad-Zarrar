@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { biz } from "@/business/data";
 import { MagneticButton, RevealWords } from "@/components/primitives";
+import { CalmSculpture } from "./CalmSculpture";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -153,7 +154,31 @@ export default function BusinessHero() {
           </motion.div>
         </motion.div>
 
-        {/* RIGHT — single focal device + one accent (clean, focused) */}
+          {/* RIGHT — strong cinematic calm 3D sculpture + phone (business is calmer but still cinematic) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.45, duration: 1.1, ease: EASE }}
+          className="relative hidden lg:block h-[480px]"
+        >
+          <div className="absolute inset-0 rounded-[3rem] overflow-hidden">
+            <img 
+              src="/images/cinematic-04.jpg" 
+              alt="" 
+              className="w-full h-full object-cover opacity-75" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-ink/70 via-ink/25 to-ink/60" />
+          </div>
+
+          {/* Calm editorial 3D sculpture for the business side */}
+          <div className="absolute inset-0 z-10">
+            <CalmSculpture />
+          </div>
+
+          <div className="absolute -bottom-2 right-6 z-20">
+            <PhoneStorefront />
+          </div>
+        </motion.div>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

@@ -236,3 +236,49 @@
       0 16px 36px -18px rgba(23, 21, 15, 0.28);
   }
 }
+
+/* =====================================================
+   PERMANENT CINEMATIC MODE — Director's Cut is DEFAULT
+   No toggles. Everything is slow, deliberate, premium.
+   ===================================================== */
+.directors-cut {
+  --ease-out-expo: cubic-bezier(0.1, 1, 0.1, 1);
+}
+
+.directors-cut * {
+  transition-duration: 2.45s !important;
+  animation-duration: 3.4s !important;
+}
+
+/* Make scroll-driven elements even slower and smoother */
+.directors-cut .kinetic-text span,
+.directors-cut [style*="transform"] {
+  transition-timing-function: cubic-bezier(0.1, 1, 0.1, 1) !important;
+}
+
+/* Stronger permanent projector film effects */
+.directors-cut .grain::before {
+  opacity: 0.055 !important;
+  animation-duration: 0.38s !important;
+}
+
+.directors-cut .CinematicFilmStrip,
+.directors-cut #film-strip {
+  filter: contrast(1.09) saturate(0.94) brightness(0.96);
+}
+
+/* Permanent projector flicker on film reel + images */
+.directors-cut #film-strip img,
+.directors-cut .cinematic-img {
+  transition: transform 1550ms cubic-bezier(0.1,1,0.1,1), filter 70ms linear !important;
+}
+
+/* Auto-drift film strip gets extra cinematic treatment */
+.directors-cut #film-strip {
+  scroll-behavior: smooth;
+}
+
+/* Extra cinematic depth on all sculptures */
+.directors-cut canvas {
+  filter: contrast(1.04) saturate(0.98);
+}

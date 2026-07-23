@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
 import { profile } from "@/data/portfolio";
-import { MagneticButton, RevealWords } from "@/components/primitives";
+import { MagneticButton } from "@/components/primitives";
+import { KineticText } from "@/components/KineticText";
+import { CinematicImage } from "@/components/CinematicImage";
+import { CinematicSculpture } from "@/components/CinematicSculpture";
 import Terminal from "@/components/Terminal";
+import { CinematicSequence } from "@/components/CinematicSequence";
+import { CinematicSpacer } from "@/components/CinematicSpacer";
 import { navigate } from "@/router";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -77,9 +82,18 @@ export default function Hero() {
           </motion.div>
 
           <h1 className="font-display text-[clamp(3.2rem,11vw,8.5rem)] font-light leading-[0.92] tracking-tightest">
-            <RevealWords text="Muhammad" delay={0.05} />
-            <br />
-            <RevealWords text="Zarrar" className="italic text-spark" delay={0.25} />
+            <KineticText 
+              text="Muhammad" 
+              mode="stagger" 
+              delay={0.05} 
+              className="block" 
+            />
+            <KineticText 
+              text="Zarrar" 
+              mode="refined" 
+              delay={0.38} 
+              className="block italic text-spark" 
+            />
           </h1>
 
           <motion.p
@@ -105,6 +119,13 @@ export default function Hero() {
               Get in touch
             </MagneticButton>
           </motion.div>
+
+          {/* Primary cinematic sequence player — the full film experience */}
+          <div className="mt-6">
+            <CinematicSequence />
+          </div>
+
+          <CinematicSpacer height={90} />
 
           {/* Entry point to the local-business / clinics sub-site */}
           <motion.button
@@ -141,14 +162,31 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* RIGHT — the live terminal */}
+        {/* RIGHT — cinematic 3D sculpture + terminal (the hero moment) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 1, ease: EASE }}
-          className="hidden lg:block"
+          className="hidden lg:block relative h-[520px]"
         >
-          <TerminalStage />
+          <div className="absolute inset-0 rounded-[3.5rem] overflow-hidden">
+            <CinematicImage 
+              src="/images/cinematic-01.jpg" 
+              variant="slowZoom" 
+              intensity={0.5}
+              className="w-full h-full" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-ink/80 via-ink/30 to-ink/70" />
+          </div>
+
+          {/* The actual 3D cinematic sculpture — slow, certain, premium */}
+          <div className="absolute inset-0 z-10">
+            <CinematicSculpture />
+          </div>
+
+          <div className="absolute bottom-8 right-8 z-20">
+            <TerminalStage />
+          </div>
         </motion.div>
       </div>
 
@@ -166,7 +204,7 @@ export default function Hero() {
           <motion.span
             className="absolute left-0 top-0 h-4 w-full bg-spark"
             animate={{ y: [-16, 40] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
           />
         </span>
       </motion.div>

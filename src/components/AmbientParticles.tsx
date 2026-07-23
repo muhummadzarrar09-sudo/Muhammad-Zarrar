@@ -45,7 +45,7 @@ export default function AmbientParticles() {
             opacity: [0, 0.7, 0.4, 0.8, 0],
           }}
           transition={{
-            duration: p.d,
+            duration: p.d * 1.65,   // ultra-slow, luxurious breathing — quality, not movement
             repeat: Infinity,
             ease: "easeInOut",
             delay: p.dl,

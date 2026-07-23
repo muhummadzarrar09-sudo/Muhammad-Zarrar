@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import BusinessNav from "@/business/BusinessNav";
 import BusinessHero from "@/business/BusinessHero";
 import BizMarquee from "@/business/BizMarquee";
-import { BizServices, BizWhyUs } from "@/business/BusinessSections";
+import { BizServices, BizWhyUs, Pricing, Addons } from "@/business/BusinessSections";
 import RetailFlow from "@/business/RetailFlow";
 import BusinessProjects from "@/business/BusinessProjects";
 import BusinessProcess from "@/business/BusinessProcess";
@@ -27,6 +27,8 @@ export default function BusinessSite() {
         <BusinessHero />
         <BizMarquee />
         <BizServices />
+        <Pricing />
+        <Addons />
         <RetailFlow />
         <BusinessProjects />
         <BusinessProcess />

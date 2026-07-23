@@ -18,7 +18,7 @@ export default function BusinessProcess() {
   return (
     <section id="process" ref={whooshRef} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       <span className="pointer-events-none absolute -left-4 top-8 select-none font-display text-[14rem] font-light leading-none tracking-tightest text-ink/[0.025] sm:-left-8" aria-hidden>
-        04
+        06
       </span>
 
       <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
