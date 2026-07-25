@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ElementType } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -72,9 +72,18 @@ export function KineticText({
 
       // STAGGER — Precise, confident reveal
       if (mode === "stagger") {
-        const tl = gsap.timeline({ delay });
+        const tl = gsap.timeline({
+          delay,
+          scrollTrigger: scrollTrigger
+            ? {
+                trigger: el,
+                start: "top 86%",
+                toggleActions: "play none none reverse",
+              }
+            : undefined,
+        });
 
-        const anim = tl.to(letters, {
+        tl.to(letters, {
           y: 0,
           opacity: 1,
           scale: 1,
@@ -82,14 +91,6 @@ export function KineticText({
           ease: "power3.out",
           stagger,
         });
-
-        if (scrollTrigger) {
-          anim.scrollTrigger = ScrollTrigger.create({
-            trigger: el,
-            start: "top 86%",
-            toggleActions: "play none none reverse",
-          });
-        }
       }
 
       // REFINED — THE CERTAINTY SIGNATURE
@@ -97,7 +98,16 @@ export function KineticText({
       // Slow. Grounded. Weighted. No flair. No randomness.
       // Every letter arrives with confidence.
       if (mode === "refined") {
-        const tl = gsap.timeline({ delay });
+        const tl = gsap.timeline({
+          delay,
+          scrollTrigger: scrollTrigger
+            ? {
+                trigger: el,
+                start: "top 88%",
+                once: true,
+              }
+            : undefined,
+        });
 
         letters.forEach((letter, i) => {
           const centerOffset = (i - (letters.length - 1) / 2) * 0.45;
@@ -114,14 +124,6 @@ export function KineticText({
             i * stagger * 1.05 + Math.abs(centerOffset) * 0.008
           );
         });
-
-        if (scrollTrigger) {
-          ScrollTrigger.create({
-            trigger: el,
-            start: "top 88%",
-            once: true,
-          });
-        }
       }
 
       // SCRUB — Controlled, linear, certain cinematic motion
@@ -132,6 +134,7 @@ export function KineticText({
 
           gsap.to(letter, {
             y: yValue,
+            opacity: 1,
             scale: 0.987 + progress * 0.026,
             scrollTrigger: {
               trigger: el,
@@ -161,11 +164,11 @@ export function KineticText({
     return () => ctx.revert();
   }, [text, mode, delay, stagger, scrollTrigger]);
 
-  const Tag = as as any;
+  const Tag: ElementType = as;
 
   return (
     <Tag
-      ref={containerRef as any}
+      ref={(node) => { containerRef.current = node; }}
       className={`kinetic-text inline-block overflow-hidden align-bottom ${className}`}
       aria-label={text}
     />

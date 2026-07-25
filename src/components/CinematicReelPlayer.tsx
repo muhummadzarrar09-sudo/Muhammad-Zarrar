@@ -1,96 +1,83 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
- * Cinematic Reel Player — full film projector simulation.
- * Always-on permanent slow projector experience.
- * Slow deliberate auto-scroll + subtle projector flicker.
+ * Cinematic Reel Player — optional auto-scroll for the horizontal film strip.
+ * All timers are owned by the component so playback stops cleanly on unmount.
  */
 export function CinematicReelPlayer({ targetId = "film-strip" }: { targetId?: string }) {
   const [playing, setPlaying] = useState(false);
   const intervalRef = useRef<number | null>(null);
   const flickerRef = useRef<number | null>(null);
+  const stopTimerRef = useRef<number | null>(null);
+  const flickerTimerRef = useRef<number | null>(null);
   const elRef = useRef<HTMLElement | null>(null);
 
-  const toggle = () => {
-    const el = document.getElementById(targetId);
-    if (!el) return;
-    elRef.current = el;
+  const clearPlaybackTimers = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (flickerRef.current) clearInterval(flickerRef.current);
+    if (stopTimerRef.current) clearTimeout(stopTimerRef.current);
+    if (flickerTimerRef.current) clearTimeout(flickerTimerRef.current);
+    intervalRef.current = null;
+    flickerRef.current = null;
+    stopTimerRef.current = null;
+    flickerTimerRef.current = null;
+  }, []);
 
-    if (playing) {
-      stopPlayback();
-      return;
-    }
-
-    setPlaying(true);
-    startPlayback();
-  };
-
-  const startPlayback = () => {
-    const el = elRef.current;
-    if (!el) return;
-
-    // ULTRA-SLOW, luxurious projector auto-scroll (QUALITY, not anxiety)
-    // ~2.5–3px per second — calm, editorial, expensive film-like
-    intervalRef.current = window.setInterval(() => {
-      if (el) {
-        el.scrollLeft += 0.25;
-      }
-    }, 115);
-
-    // Extremely rare, ultra-subtle projector "heartbeat"
-    // Once every ~7.2 seconds — soft, almost imperceptible, pure quality
-    flickerRef.current = window.setInterval(() => {
-      if (el) {
-        el.style.transitionDuration = "180ms";
-        el.style.filter = "brightness(0.975) contrast(1.008)";
-        setTimeout(() => {
-          if (el) {
-            el.style.transitionDuration = "1400ms";
-            el.style.filter = "";
-          }
-        }, 220);
-      }
-    }, 7200);
-
-    // Auto stop after a full, unhurried cinematic pass
-    setTimeout(() => {
-      if (playing) stopPlayback();
-    }, 32000);
-  };
-
-  const stopPlayback = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-    if (flickerRef.current) {
-      clearInterval(flickerRef.current);
-      flickerRef.current = null;
-    }
+  const stopPlayback = useCallback((updateState = true) => {
+    clearPlaybackTimers();
     const el = elRef.current;
     if (el) {
       el.style.filter = "";
       el.style.transitionDuration = "";
     }
-    setPlaying(false);
+    if (updateState) setPlaying(false);
+  }, [clearPlaybackTimers]);
+
+  const startPlayback = (el: HTMLElement) => {
+    elRef.current = el;
+    setPlaying(true);
+
+    intervalRef.current = window.setInterval(() => {
+      el.scrollLeft += 0.25;
+    }, 115);
+
+    flickerRef.current = window.setInterval(() => {
+      el.style.transitionDuration = "180ms";
+      el.style.filter = "brightness(0.975) contrast(1.008)";
+      flickerTimerRef.current = window.setTimeout(() => {
+        el.style.transitionDuration = "1400ms";
+        el.style.filter = "";
+        flickerTimerRef.current = null;
+      }, 220);
+    }, 7200);
+
+    stopTimerRef.current = window.setTimeout(() => stopPlayback(), 32000);
   };
 
-  // Cleanup on unmount
+  const toggle = () => {
+    if (playing) {
+      stopPlayback();
+      return;
+    }
+
+    const el = document.getElementById(targetId);
+    if (!el) return;
+    startPlayback(el);
+  };
+
   useEffect(() => {
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      if (flickerRef.current) clearInterval(flickerRef.current);
-    };
-  }, []);
+    return () => stopPlayback(false);
+  }, [stopPlayback]);
 
   return (
     <button
+      type="button"
       onClick={toggle}
       className={`inline-flex items-center gap-2 rounded-full border px-6 py-2 text-sm font-mono tracking-widest transition-all ${
-        playing 
-          ? "border-spark bg-spark text-canvas" 
+        playing
+          ? "border-spark bg-spark text-canvas"
           : "border-line hover:border-spark/60 hover:text-spark"
       }`}
     >

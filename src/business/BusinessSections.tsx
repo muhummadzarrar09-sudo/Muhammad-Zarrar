@@ -94,25 +94,29 @@ export function Pricing() {
     const container = cardsRef.current;
     if (!container) return;
 
-    const cards = container.querySelectorAll(".pricing-card");
-    cards.forEach((card, i) => {
-      gsap.fromTo(card,
-        { y: 92, opacity: 0.5, scale: 0.96 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 1.5,
-          ease: "expo.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 84%",
-            end: "bottom 30%",
-            scrub: 2.1,
-          },
-        }
-      );
-    });
+    const ctx = gsap.context(() => {
+      const cards = container.querySelectorAll(".pricing-card");
+      cards.forEach((card) => {
+        gsap.fromTo(card,
+          { y: 92, opacity: 0.5, scale: 0.96 },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1.5,
+            ease: "expo.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 84%",
+              end: "bottom 30%",
+              scrub: 2.1,
+            },
+          }
+        );
+      });
+    }, container);
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -141,7 +145,7 @@ export function Pricing() {
       </div>
 
       <div ref={cardsRef} className="mt-14 grid items-start gap-5 md:grid-cols-2 xl:grid-cols-4">
-        {pricingPackages.map((pkg, i) => (
+        {pricingPackages.map((pkg) => (
           <div
             key={pkg.id}
             className="pricing-card group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-line bg-surface p-7 transition-all duration-500 hover:-translate-y-1 hover:border-spark/30"

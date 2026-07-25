@@ -1,17 +1,30 @@
 import { motion, useInView } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { process } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { KineticText } from "@/components/KineticText";
 import { CinematicImage } from "@/components/CinematicImage";
 import { CinematicChapter } from "@/components/CinematicChapter";
-import { CinematicSculpture } from "@/components/CinematicSculpture";
-import { ScrollReactiveSculpture } from "@/components/ScrollReactiveSculpture";
 import { CinematicSpacer } from "@/components/CinematicSpacer";
+import { CinematicLoadingFrame } from "@/components/LazyFallback";
 import { cn } from "@/utils/cn";
 import { sound } from "@/lib/sound";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+const CinematicSculpture = lazy(() =>
+  import("@/components/CinematicSculpture").then((module) => ({ default: module.CinematicSculpture })),
+);
+const MiniCinematicSculpture = lazy(() =>
+  import("@/components/MiniCinematicSculpture").then((module) => ({ default: module.MiniCinematicSculpture })),
+);
+const ScrollReactiveSculpture = lazy(() =>
+  import("@/components/ScrollReactiveSculpture").then((module) => ({ default: module.ScrollReactiveSculpture })),
+);
+
+function LazyCinematic({ children, label, title }: { children: React.ReactNode; label: string; title: string }) {
+  return <Suspense fallback={<CinematicLoadingFrame label={label} title={title} />}>{children}</Suspense>;
+}
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,6 +40,7 @@ function useWhoosh() {
 
 export default function Process() {
   const [active, setActive] = useState(0);
+  const activeRef = useRef(0);
   const sectionRef = useWhoosh();
   const stepsRef = useRef<HTMLDivElement>(null);
 
@@ -34,24 +48,29 @@ export default function Process() {
     const el = stepsRef.current;
     if (!el) return;
 
-    // Scroll-driven cinematic highlight on process cards
-    const cards = el.querySelectorAll(".process-step");
+    const ctx = gsap.context(() => {
+      // Scroll-driven cinematic highlight on process cards
+      const cards = el.querySelectorAll(".process-step");
 
-    cards.forEach((card, i) => {
-      gsap.to(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: "top 72%",
-          end: "bottom 28%",
-          scrub: 1.4,
-          onUpdate: (self) => {
-            if (self.progress > 0.5 && active !== i) {
-              setActive(i);
-            }
+      cards.forEach((card, i) => {
+        gsap.to(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: "top 72%",
+            end: "bottom 28%",
+            scrub: 1.4,
+            onUpdate: (self) => {
+              if (self.progress > 0.5 && activeRef.current !== i) {
+                activeRef.current = i;
+                setActive(i);
+              }
+            },
           },
-        },
+        });
       });
-    });
+    }, el);
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -142,7 +161,7 @@ export default function Process() {
 
       {/* 3D sculpture as the final physical manifestation of the process */}
       <div className="mt-16">
-        <CinematicSculpture />
+        <LazyCinematic label="Loading sculpture" title="Form follows certainty."><CinematicSculpture /></LazyCinematic>
       </div>
 
       {/* SCROLL-REACTIVE SCULPTURE — the process lives in the scroll (pure kinetic + cinematic) */}
@@ -150,14 +169,14 @@ export default function Process() {
         <div className="text-center mb-5">
           <div className="font-mono text-xs tracking-[3px] text-spark">PROCESS IN MOTION</div>
         </div>
-        <ScrollReactiveSculpture />
+        <LazyCinematic label="Loading scroll sculpture" title="The form moves with you."><ScrollReactiveSculpture /></LazyCinematic>
       </div>
 
       <CinematicSpacer height={130} />
 
       {/* Closing calm 3D moment */}
       <div className="mt-10">
-        <MiniCinematicSculpture />
+        <LazyCinematic label="Loading sculpture" title="A quieter physical moment."><MiniCinematicSculpture /></LazyCinematic>
       </div>
 
       <div ref={stepsRef} className="mt-6 grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-4">
@@ -168,7 +187,7 @@ export default function Process() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10% 0px" }}
             transition={{ delay: i * 0.07, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            onMouseEnter={() => { setActive(i); sound.pew(); }}
+            onMouseEnter={() => { activeRef.current = i; setActive(i); sound.pew(); }}
             data-hover
             data-cursor-label={active === i ? "Active" : "Hover"}
             className={cn(

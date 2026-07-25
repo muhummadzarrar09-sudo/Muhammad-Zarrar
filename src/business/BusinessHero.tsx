@@ -1,7 +1,12 @@
+import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { biz } from "@/business/data";
 import { MagneticButton, RevealWords } from "@/components/primitives";
-import { CalmSculpture } from "./CalmSculpture";
+import { CinematicLoadingFrame } from "@/components/LazyFallback";
+
+const CalmSculpture = lazy(() =>
+  import("./CalmSculpture").then((module) => ({ default: module.CalmSculpture })),
+);
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -172,7 +177,9 @@ export default function BusinessHero() {
 
           {/* Calm editorial 3D sculpture for the business side */}
           <div className="absolute inset-0 z-10">
-            <CalmSculpture />
+            <Suspense fallback={<CinematicLoadingFrame label="Loading sculpture" title="Calm systems, clearly presented." />}>
+              <CalmSculpture />
+            </Suspense>
           </div>
 
           <div className="absolute -bottom-2 right-6 z-20">

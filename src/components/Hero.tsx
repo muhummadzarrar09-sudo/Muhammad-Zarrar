@@ -1,13 +1,18 @@
+import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
-import { profile } from "@/data/portfolio";
+import { heroProof, profile } from "@/data/portfolio";
 import { MagneticButton } from "@/components/primitives";
 import { KineticText } from "@/components/KineticText";
 import { CinematicImage } from "@/components/CinematicImage";
-import { CinematicSculpture } from "@/components/CinematicSculpture";
 import Terminal from "@/components/Terminal";
 import { CinematicSequence } from "@/components/CinematicSequence";
 import { CinematicSpacer } from "@/components/CinematicSpacer";
+import { CinematicLoadingFrame } from "@/components/LazyFallback";
 import { navigate } from "@/router";
+
+const CinematicSculpture = lazy(() =>
+  import("@/components/CinematicSculpture").then((module) => ({ default: module.CinematicSculpture })),
+);
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -105,10 +110,25 @@ export default function Hero() {
             {profile.role}. {profile.tagline}
           </motion.p>
 
+
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65, duration: 0.8, ease: EASE }}
+            transition={{ delay: 0.58, duration: 0.8, ease: EASE }}
+            className="mt-7 grid max-w-2xl gap-2 sm:grid-cols-3"
+          >
+            {heroProof.map((item) => (
+              <div key={item.label} className="rounded-2xl border border-line bg-surface/60 p-3 backdrop-blur">
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-spark">{item.label}</div>
+                <div className="mt-1 text-xs leading-relaxed text-ink-soft">{item.value}</div>
+              </div>
+            ))}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.72, duration: 0.8, ease: EASE }}
             className="mt-9 flex flex-wrap items-center gap-3"
           >
             <MagneticButton href="#work" cursorLabel="Explore">
@@ -181,7 +201,9 @@ export default function Hero() {
 
           {/* The actual 3D cinematic sculpture — slow, certain, premium */}
           <div className="absolute inset-0 z-10">
-            <CinematicSculpture />
+            <Suspense fallback={<CinematicLoadingFrame label="Loading sculpture" title="Form follows certainty." />}>
+              <CinematicSculpture />
+            </Suspense>
           </div>
 
           <div className="absolute bottom-8 right-8 z-20">

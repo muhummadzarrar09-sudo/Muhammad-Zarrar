@@ -3,7 +3,7 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
-import { useScroll, useTransform } from "framer-motion";
+import { useReducedMotion, useScroll } from "framer-motion";
 
 /**
  * Scroll-reactive 3D sculpture — FULLY CINEMATIC.
@@ -26,13 +26,13 @@ function ReactiveSculpture({ scrollProgress, mouse }: { scrollProgress: number; 
     // Scrolling now feels like you're physically orbiting, circling, leaning over,
     // and walking toward a giant real sculpture in a dark cinematic space.
     // These multipliers are deliberately very high for addictive immersion.
-    const scrollOrbit = p * 58;         // MASSIVE full 360° orbits (you circle it)
-    const scrollTilt = p * 34;          // extreme dramatic lean/tilt
-    const scrollRoll = p * 16;          // powerful cinematic roll
-    const scrollScale = 1 + p * 2.4;    // huge breathing + getting closer (dolly)
-    const scrollLift = p * -19;         // powerful vertical rise/fall
-    const scrollDolly = p * 16;         // strong push toward the viewer
-    const scrollSway = p * 9;           // lateral movement
+    const scrollOrbit = p * 8;
+    const scrollTilt = p * 3.2;
+    const scrollRoll = p * 1.8;
+    const scrollScale = 1 + p * 0.45;
+    const scrollLift = p * -1.6;
+    const scrollDolly = p * 1.2;
+    const scrollSway = p * 0.9;
 
     if (group.current) {
       // MAIN BODY — EXTREMELY responsive, feels like a real heavy physical object
@@ -75,7 +75,7 @@ function ReactiveSculpture({ scrollProgress, mouse }: { scrollProgress: number; 
       {/* Extremely complex torus knot — high entropy, flowing, sculptural */}
       {/* MASSIVE segment count (820 radial / 96 tubular) for silky smooth professional mesh */}
       <mesh>
-        <torusKnotGeometry args={[1.12, 0.36, 820, 96, 2, 5]} />
+        <torusKnotGeometry args={[1.12, 0.36, 360, 56, 2, 5]} />
         <meshPhongMaterial
           color="#ff6a3d"
           emissive="#1c1914"
@@ -88,7 +88,7 @@ function ReactiveSculpture({ scrollProgress, mouse }: { scrollProgress: number; 
       {/* Ultra-smooth high-poly core sphere */}
       <group ref={core}>
         <mesh position={[0, 1.22, 0]}>
-          <sphereGeometry args={[0.79, 72, 56]} />
+          <sphereGeometry args={[0.79, 56, 40]} />
           <meshPhongMaterial
             color="#f4f1ea"
             shininess={118}
@@ -140,6 +140,7 @@ function ReactiveSculpture({ scrollProgress, mouse }: { scrollProgress: number; 
 export function ScrollReactiveSculpture() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const prefersReducedMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll();
 
@@ -150,6 +151,18 @@ export function ScrollReactiveSculpture() {
     });
     return unsubscribe;
   }, [scrollYProgress]);
+
+  if (prefersReducedMotion) {
+    return (
+      <div className="relative grid h-[320px] w-full place-items-center overflow-hidden rounded-3xl bg-[#0f0d09] text-canvas">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/12 via-transparent to-black/78" />
+        <div className="relative px-8 text-center">
+          <div className="font-mono text-[10px] tracking-[4.8px] text-spark/70">SCULPTURE 02</div>
+          <div className="mt-2 font-display text-[36px] leading-none tracking-[-1.6px]">The form moves with you.</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -168,7 +181,6 @@ export function ScrollReactiveSculpture() {
         gl={{
           antialias: true,
           alpha: true,
-          preserveDrawingBuffer: true,
           powerPreference: "high-performance",
         }}
       >

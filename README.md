@@ -20,10 +20,18 @@ Both share the same premium chrome: the custom physics cursor, click/"pew" hover
 ```bash
 npm install
 npm run dev      # local dev
-npm run build    # production build -> dist/index.html (single file)
+npm run build    # production build -> dist/ assets and chunks
 ```
 
-Deploy `dist/` to Vercel, Netlify, or any static host. For deep links to `/business` to work on refresh, enable **SPA fallback** (rewrite all routes to `index.html`). On Vercel/Netlify this is the default for single-page apps.
+Deploy `dist/` to Vercel, Netlify, Cloudflare Pages, or any static host. For deep links to `/business` to work on refresh, enable **SPA fallback** (rewrite all routes to `index.html`).
+
+SEO/security defaults currently use `https://muhummadzarrar.vercel.app` as the canonical production URL. If you deploy to a different domain, update it in:
+
+- `index.html`
+- `public/robots.txt`
+- `public/sitemap.xml`
+- `src/components/SeoRouteMeta.tsx`
+
 
 ## Where to edit content
 

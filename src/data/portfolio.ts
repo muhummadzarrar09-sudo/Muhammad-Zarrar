@@ -34,11 +34,17 @@ export const profile = {
   ].join("\n"),
   bio: "Compiling...",
   tagline:
-    "I design and engineer intelligent, end-to-end products — from the database to the pixel — with a soft spot for autonomous agents, voice interfaces and the small details that make software feel alive.",
+    "I build full-stack products, AI agents, voice interfaces, and polished web experiences — turning rough ideas into usable systems from database to pixel.",
   heroLine1: "Full-Stack",
   heroLine2: "Developer",
   heroEmphasis: "& AI Engineer",
 };
+
+export const heroProof = [
+  { label: "Builds", value: "AI agents, dashboards, booking flows, web systems" },
+  { label: "Stack", value: "TypeScript, React, Python, automation, full-stack" },
+  { label: "Style", value: "Useful first, cinematic where it supports the product" },
+];
 
 export const stats = [
   { value: 14, suffix: "+", label: "Shipped repositories" },
@@ -103,6 +109,8 @@ export type Project = {
   stack: string[];
   blurb: string;
   description: string;
+  outcome: string;
+  proof: string[];
   url: string;
   accent: string;
   featured?: boolean;
@@ -116,7 +124,9 @@ export const projects: Project[] = [
     stack: ["Python", "Voice AI", "Browser Automation", "MIT"],
     blurb: "A voice-controlled autonomous agent with push-to-talk, browser automation and local AI.",
     description:
-      "OMNI listens, reasons and acts. Push-to-talk activation triggers a locally-aware agent that can drive the browser, automate tasks and process language on-device — engineered for accessibility and loved by everyone who tries it.",
+      "OMNI listens, reasons and acts. Push-to-talk activation triggers a locally-aware agent that can drive the browser, automate tasks and process language on-device — engineered for accessibility and practical hands-free workflows.",
+    outcome: "Hands-free browser/task automation with push-to-talk control and local-first assistant behavior.",
+    proof: ["Voice activation", "Browser automation", "Local AI workflow", "Accessibility-first interaction"],
     url: "https://github.com/muhummadzarrar09-sudo/Omni",
     accent: "#ff4d17",
     featured: true,
@@ -129,6 +139,8 @@ export const projects: Project[] = [
     blurb: "Just A Rather Very Intelligent System — a personal AI assistant that actually helps.",
     description:
       "An intelligent assistant that ties natural language understanding to real tool-use. JARVIS orchestrates models, memory and actions into a single conversational interface that feels less like software and more like a collaborator.",
+    outcome: "A personal automation assistant that connects natural language to tool-use and task execution.",
+    proof: ["Tool orchestration", "Conversation loop", "Task automation", "Assistant architecture"],
     url: "https://github.com/muhummadzarrar09-sudo/JARVIS",
     accent: "#1c5d4f",
     featured: true,
@@ -141,6 +153,8 @@ export const projects: Project[] = [
     blurb: "An operating layer for autonomous operators.",
     description:
       "Operator-OS explores what an interface looks like when the user is an agent, not a human — a cross-platform system built in Dart for orchestrating and supervising autonomous work.",
+    outcome: "A cross-platform supervision layer for coordinating autonomous operator workflows.",
+    proof: ["Cross-platform UI", "Agent supervision", "System architecture", "Dart / Flutter base"],
     url: "https://github.com/muhummadzarrar09-sudo/Operator-OS",
     accent: "#b9f24a",
   },
@@ -152,6 +166,8 @@ export const projects: Project[] = [
     blurb: "A typed, end-to-end forms engine.",
     description:
       "A developer-friendly forms system: strongly-typed schemas, validation and rendering handled from a single source of truth, so building complex inputs feels effortless.",
+    outcome: "A typed forms foundation that keeps schemas, validation, and UI rendering aligned.",
+    proof: ["Schema-driven fields", "Validation flow", "Typed rendering", "Reusable form patterns"],
     url: "https://github.com/muhummadzarrar09-sudo/forms",
     accent: "#ff6a3d",
   },
@@ -162,7 +178,9 @@ export const projects: Project[] = [
     stack: ["TypeScript", "Full-Stack"],
     blurb: "Scheduling, made simple and reliable.",
     description:
-      "A full-stack booking application handling availability, conflicts, payments-flows and notifications — the unglamorous infrastructure that makes a product feel trustworthy.",
+      "A full-stack booking application handling availability, conflicts, payment-flow foundations and notifications — the unglamorous infrastructure that makes a product feel trustworthy.",
+    outcome: "Scheduling infrastructure for availability, booking flow, and operational reliability.",
+    proof: ["Availability logic", "Conflict handling", "Notification flow", "Full-stack structure"],
     url: "https://github.com/muhummadzarrar09-sudo/bookings",
     accent: "#ffb347",
   },
@@ -174,6 +192,8 @@ export const projects: Project[] = [
     blurb: "Lighting the way data becomes insight.",
     description:
       "An ongoing experiment in turning raw input into clear, luminous output — a sandbox for ideas about interfaces, intelligence and motion.",
+    outcome: "An interface and AI sandbox for transforming raw inputs into clearer outputs.",
+    proof: ["Interface experiments", "AI-assisted output", "Motion studies", "TypeScript foundation"],
     url: "https://github.com/muhummadzarrar09-sudo/Luminar",
     accent: "#837d6f",
   },
