@@ -25,18 +25,24 @@ const INTERACTIVE = "a, button, [data-hover], input, textarea, [role='button']";
 export function SoundProvider({ children }: { children: ReactNode }) {
   // The ambient breeze + birds bed is OFF by default; the visitor opts in.
   // UI feedback (pew on hover, click) stays live so the site always feels alive.
-  const [ambientOn, setAmbientOn] = useState(false);
+  const [ambientOn, setAmbientOn] = useState(() => {
+    try {
+      return localStorage.getItem("mz-ambient") === "1";
+    } catch {
+      return false;
+    }
+  });
   const lastHover = useRef<Element | null>(null);
 
-  useEffect(() => {
-    const saved = localStorage.getItem("mz-ambient");
-    if (saved === "1") setAmbientOn(true);
-  }, []);
 
   useEffect(() => {
     if (ambientOn) sound.startAmbient();
     else sound.stopAmbient();
-    localStorage.setItem("mz-ambient", ambientOn ? "1" : "0");
+    try {
+      localStorage.setItem("mz-ambient", ambientOn ? "1" : "0");
+    } catch {
+      /* ignore unavailable storage */
+    }
   }, [ambientOn]);
 
   const toggle = useCallback(() => {
@@ -46,7 +52,11 @@ export function SoundProvider({ children }: { children: ReactNode }) {
       if (next) sound.startAmbient();
       else sound.stopAmbient();
       if (next) sound.chime();
-      localStorage.setItem("mz-ambient", next ? "1" : "0");
+      try {
+        localStorage.setItem("mz-ambient", next ? "1" : "0");
+      } catch {
+        /* ignore unavailable storage */
+      }
       return next;
     });
   }, []);

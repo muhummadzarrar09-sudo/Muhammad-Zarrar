@@ -20,6 +20,7 @@ export function useTilt3D(intensity = 12) {
     (e: React.MouseEvent) => {
       const el = ref.current;
       if (!el) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const r = el.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width; // 0..1
       const y = (e.clientY - r.top) / r.height;

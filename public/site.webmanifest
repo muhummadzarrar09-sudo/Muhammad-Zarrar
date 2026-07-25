@@ -1,0 +1,17 @@
+{
+  "name": "Muhammad Zarrar / Zarrar.Solutions",
+  "short_name": "MZ",
+  "description": "Full-stack developer, AI systems engineer, and digital studio building web systems, agents, catalogs, booking flows, and dashboards.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f1ea",
+  "theme_color": "#f4f1ea",
+  "icons": [
+    {
+      "src": "/og-image.svg",
+      "sizes": "1200x630",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

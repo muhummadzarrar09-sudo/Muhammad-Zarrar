@@ -1,6 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
+import { useReducedMotion } from "framer-motion";
 import { useRef, useState } from "react";
 import * as THREE from "three";
 
@@ -50,7 +51,7 @@ function Sculpture({ mouse }: { mouse: { x: number; y: number } }) {
       {/* Extremely complex organic torus knot — very high entropy, flowing, sculptural */}
       {/* MASSIVE segment count (1100 radial / 128 tubular) for silky-smooth, professional mesh like a real sculptor */}
       <mesh>
-        <torusKnotGeometry args={[1.05, 0.42, 1100, 128, 2, 7]} />
+        <torusKnotGeometry args={[1.05, 0.42, 420, 64, 2, 7]} />
         <meshPhongMaterial
           color="#ff6a3d"
           emissive="#1c1914"
@@ -77,7 +78,7 @@ function Sculpture({ mouse }: { mouse: { x: number; y: number } }) {
       {/* Ultra-smooth high-poly organic core */}
       <group ref={core}>
         <mesh position={[0, 1.12, 0]}>
-          <sphereGeometry args={[0.81, 80, 64]} />
+          <sphereGeometry args={[0.81, 56, 40]} />
           <meshPhongMaterial
             color="#f4f1ea"
             shininess={125}
@@ -134,6 +135,19 @@ function Sculpture({ mouse }: { mouse: { x: number; y: number } }) {
 
 export function CinematicSculpture() {
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const prefersReducedMotion = useReducedMotion();
+
+  if (prefersReducedMotion) {
+    return (
+      <div className="relative grid h-[360px] w-full place-items-center overflow-hidden rounded-3xl bg-[#100e0a] text-canvas">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/75" />
+        <div className="relative text-center">
+          <div className="font-mono text-[10px] tracking-[4.5px] text-spark/70">SCULPTURE 01</div>
+          <div className="mt-2 font-display text-[42px] leading-none tracking-[-1.8px]">Form follows certainty.</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div 
@@ -151,7 +165,6 @@ export function CinematicSculpture() {
         gl={{ 
           antialias: true, 
           alpha: true, 
-          preserveDrawingBuffer: true,
           powerPreference: "high-performance"
         }}
       >

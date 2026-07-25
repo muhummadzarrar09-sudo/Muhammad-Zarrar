@@ -13,10 +13,11 @@ export function CinematicProjectorAudio() {
     // Start a very subtle permanent cinematic ambient bed (projector room feel)
     // This is gentle — air + distant pad. Perfect for film experience.
     const startCinematicBed = () => {
-      if (typeof window !== "undefined" && (window as any).sound?.startAmbient) {
-        try {
-          sound.startAmbient();
-        } catch {}
+      if (typeof window === "undefined") return;
+      try {
+        sound.startAmbient();
+      } catch {
+        /* Audio is enhancement-only; never break rendering. */
       }
     };
 
@@ -33,13 +34,8 @@ export function CinematicProjectorAudio() {
       const y = window.scrollY;
       if (Math.abs(y - lastScroll) > 680) {
         lastScroll = y;
-        try {
-          // Extremely gentle cue only
-          if ((window as any).sound?.chime) {
-            // We don't want to call pew — too sharp. Only very faint chime if needed.
-            // Actually keep it silent for pure visual quality
-          }
-        } catch {}
+        // Keep this intentionally silent for pure visual quality. The scroll
+        // listener only tracks large jumps in case future cues are added.
       }
     };
 

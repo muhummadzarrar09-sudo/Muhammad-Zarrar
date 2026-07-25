@@ -1,6 +1,12 @@
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 
+declare global {
+  interface Window {
+    __lenis?: Lenis;
+  }
+}
+
 /**
  * Premium smooth scrolling (Lenis).
  * Use in App.tsx or a top-level component.
@@ -11,6 +17,7 @@ export function useLenis(enabled = true) {
 
   useEffect(() => {
     if (!enabled || typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
       duration: 2.8, // Always cinematic slow + deliberate (Director's Cut default)
@@ -25,23 +32,30 @@ export function useLenis(enabled = true) {
 
     lenisRef.current = lenis;
 
-    // RAF loop
+    // RAF loop. Keep the id so route changes/unmounts do not leave an
+    // orphaned animation frame calling into a destroyed Lenis instance.
+    let rafId = 0;
+    let active = true;
     function raf(time: number) {
+      if (!active) return;
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     // Expose globally for debugging + advanced control
-    (window as any).__lenis = lenis;
+    window.__lenis = lenis;
 
     return () => {
+      active = false;
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
+      if (window.__lenis === lenis) delete window.__lenis;
     };
   }, [enabled]);
 
-  return lenisRef.current;
+  return null;
 }
 
 export default useLenis;

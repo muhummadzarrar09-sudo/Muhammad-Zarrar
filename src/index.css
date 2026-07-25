@@ -94,9 +94,10 @@
     font-feature-settings: "ss01", "cv01";
     overflow-x: hidden;
   }
-  /* Hide native cursor only on fine-pointer (desktop) devices */
+  /* Hide native cursor only after the React cursor confirms it is active. */
   @media (pointer: fine) {
-    * { cursor: none !important; }
+    .custom-cursor-active,
+    .custom-cursor-active * { cursor: none !important; }
   }
   ::selection {
     background: var(--color-spark);
@@ -281,4 +282,26 @@
 /* Extra cinematic depth on all sculptures */
 .directors-cut canvas {
   filter: contrast(1.04) saturate(0.98);
+}
+
+
+/* Accessibility: respect users who request less motion. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+  .grain::before,
+  .directors-cut .grain::before {
+    animation: none !important;
+  }
+  .custom-cursor-active,
+  .custom-cursor-active * {
+    cursor: auto !important;
+  }
 }

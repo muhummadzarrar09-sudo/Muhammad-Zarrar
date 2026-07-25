@@ -103,6 +103,7 @@ export function MagneticButton({
   strength = 0.4,
   variant = "solid",
   cursorLabel,
+  type = "button",
 }: {
   children: ReactNode;
   className?: string;
@@ -111,6 +112,7 @@ export function MagneticButton({
   strength?: number;
   variant?: "solid" | "ghost" | "outline";
   cursorLabel?: string;
+  type?: "button" | "submit" | "reset";
 }) {
   const ref = useRef<HTMLAnchorElement & HTMLButtonElement>(null);
   const x = useMotionValue(0);
@@ -169,6 +171,7 @@ export function MagneticButton({
   return (
     <button
       ref={ref as React.RefObject<HTMLButtonElement>}
+      type={type}
       onClick={onClick}
       data-hover
       data-cursor-label={cursorLabel}

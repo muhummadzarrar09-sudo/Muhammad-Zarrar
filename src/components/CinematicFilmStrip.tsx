@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
 /**
  * Full cinematic horizontal film-strip.
@@ -49,6 +49,7 @@ const filmFrames = [
 
 export function CinematicFilmStrip() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   const { scrollXProgress } = useScroll({
     container: containerRef,
@@ -61,7 +62,7 @@ export function CinematicFilmStrip() {
   // Stops on user interaction for calm, deliberate experience.
   useEffect(() => {
     const el = containerRef.current;
-    if (!el) return;
+    if (!el || prefersReducedMotion) return;
 
     let raf: number | null = null;
     let paused = false;
@@ -84,6 +85,7 @@ export function CinematicFilmStrip() {
     el.addEventListener('touchstart', pauseDrift);
     el.addEventListener('mouseleave', resumeDrift);
     el.addEventListener('mouseup', resumeDrift);
+    el.addEventListener('touchend', resumeDrift);
 
     raf = requestAnimationFrame(drift);
 
@@ -94,8 +96,9 @@ export function CinematicFilmStrip() {
       el.removeEventListener('touchstart', pauseDrift);
       el.removeEventListener('mouseleave', resumeDrift);
       el.removeEventListener('mouseup', resumeDrift);
+      el.removeEventListener('touchend', resumeDrift);
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <div className="relative my-24">

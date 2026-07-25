@@ -33,7 +33,7 @@ export function CinematicBreak({ image, label, headline, sub, align = "left" }: 
         src={image}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ scale }}
+        style={{ y, scale }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-ink/75 via-ink/40 to-ink/85" />
 

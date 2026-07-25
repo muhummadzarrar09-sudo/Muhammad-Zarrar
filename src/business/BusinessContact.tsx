@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { biz } from "@/business/data";
 import { MagneticButton, Reveal } from "@/components/primitives";
 import Dropdown from "@/business/Dropdown";
@@ -24,20 +24,43 @@ export default function BusinessContact() {
   const [form, setForm] = useState<FormState>(empty);
   const [sent, setSent] = useState(false);
   const [copied, setCopied] = useState(false);
+  const timers = useRef<number[]>([]);
+
+  const schedule = (callback: () => void, delay: number) => {
+    const timer = window.setTimeout(() => {
+      timers.current = timers.current.filter((item) => item !== timer);
+      callback();
+    }, delay);
+    timers.current.push(timer);
+  };
+
+  useEffect(() => {
+    return () => timers.current.forEach((timer) => clearTimeout(timer));
+  }, []);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const text =
-      `Assalamualaikum Zarrar.Solutions,%0A%0A` +
-      `Name: ${form.name || "—"}%0A` +
-      `Business: ${form.business || "—"}%0A` +
-      `Business type: ${form.type || "—"}%0A` +
-      `Phone/WhatsApp: ${form.phone || "—"}%0A` +
-      `Need: ${form.need || "—"}%0A` +
-      `Message: ${form.message || "—"}`;
-    window.open(`https://wa.me/${biz.whatsapp}?text=${text}`, "_blank");
+    const text = encodeURIComponent(
+      `Assalamualaikum Zarrar.Solutions,
+
+` +
+        `Name: ${form.name || "—"}
+` +
+        `Business: ${form.business || "—"}
+` +
+        `Business type: ${form.type || "—"}
+` +
+        `Phone/WhatsApp: ${form.phone || "—"}
+` +
+        `Need: ${form.need || "—"}
+` +
+        `Message: ${form.message || "—"}`,
+    );
+    const url = `https://wa.me/${biz.whatsapp}?text=${text}`;
+    const opened = window.open(url, "_blank", "noopener,noreferrer");
+    if (!opened) window.location.href = url;
     setSent(true);
-    setTimeout(() => setSent(false), 2500);
+    schedule(() => setSent(false), 2500);
   };
 
   const set = (k: keyof FormState, v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -45,9 +68,9 @@ export default function BusinessContact() {
     try {
       await navigator.clipboard.writeText(biz.email);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
+      schedule(() => setCopied(false), 1800);
     } catch {
-      /* ignore */
+      window.location.href = `mailto:${biz.email}`;
     }
   };
 
@@ -156,7 +179,7 @@ export default function BusinessContact() {
             <Field label="Message" dark>
               <textarea rows={3} value={form.message} onChange={(e) => set("message", e.target.value)} placeholder="A sentence or two about your business and goals…" className={`${inputDark} resize-none`} />
             </Field>
-            <MagneticButton onClick={() => {}} className="w-full justify-center bg-spark text-canvas hover:bg-canvas hover:text-ink" cursorLabel="Send">
+            <MagneticButton type="submit" className="w-full justify-center bg-spark text-canvas hover:bg-canvas hover:text-ink" cursorLabel="Send">
               <AnimatePresence mode="wait">
                 {sent ? (
                   <motion.span key="ok" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>Opening WhatsApp… ✓</motion.span>

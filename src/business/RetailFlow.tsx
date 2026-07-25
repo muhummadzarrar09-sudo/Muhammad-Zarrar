@@ -1,9 +1,6 @@
-import { motion } from "framer-motion";
-import { biz, retailFlow } from "@/business/data";
-import { MagneticButton, Reveal, SectionHeading } from "@/components/primitives";
+import { retailFlow } from "@/business/data";
+import { Reveal, SectionHeading } from "@/components/primitives";
 import { useSectionWhoosh } from "@/business/useSectionWhoosh";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function RetailFlow() {
   const ref = useSectionWhoosh();

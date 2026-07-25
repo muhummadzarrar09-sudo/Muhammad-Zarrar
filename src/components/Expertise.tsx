@@ -7,7 +7,6 @@ import { CinematicChapter } from "@/components/CinematicChapter";
 import { MiniCinematicSculpture } from "@/components/MiniCinematicSculpture";
 import { CinematicSpacer } from "@/components/CinematicSpacer";
 import { sound } from "@/lib/sound";
-import { gsap } from "gsap";
 
 function useWhoosh() {
   const ref = useRef<HTMLElement>(null);

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { sound } from "@/lib/sound";
 
 /**
@@ -10,8 +11,19 @@ import { sound } from "@/lib/sound";
  */
 export function CinematicSequence() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const runId = useRef(0);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    return () => {
+      runId.current += 1;
+    };
+  }, []);
 
   const playSequence = async () => {
+    if (prefersReducedMotion) return;
+    const currentRun = runId.current + 1;
+    runId.current = currentRun;
     setIsPlaying(true);
 
     // Gentle cinematic chime to start the film
@@ -33,14 +45,17 @@ export function CinematicSequence() {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
       await new Promise(resolve => setTimeout(resolve, section.delay));
+      if (runId.current !== currentRun) return;
     }
 
     // Beautiful closing moment + return to top
     await new Promise(resolve => setTimeout(resolve, 1500));
+    if (runId.current !== currentRun) return;
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     // Final soft chime on arrival
     setTimeout(() => {
+      if (runId.current !== currentRun) return;
       sound.chime();
       setIsPlaying(false);
     }, 2300);

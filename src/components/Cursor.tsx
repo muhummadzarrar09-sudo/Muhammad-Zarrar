@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Anything that should trigger a contextual tooltip.
 const MATCH =
@@ -19,7 +19,11 @@ function labelFor(el: HTMLElement): string {
 }
 
 export default function Cursor() {
-  const [enabled, setEnabled] = useState(false);
+  const [enabled] = useState(() =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(pointer: fine)").matches &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
   const [hovering, setHovering] = useState(false);
   const [label, setLabel] = useState("");
   const [down, setDown] = useState(false);
@@ -28,6 +32,7 @@ export default function Cursor() {
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>(
     [],
   );
+  const rippleTimers = useRef<number[]>([]);
 
   // Raw pointer
   const x = useMotionValue(-100);
@@ -40,8 +45,8 @@ export default function Cursor() {
   const tipY = useSpring(y, { stiffness: 650, damping: 38, mass: 0.5 });
 
   useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches) return;
-    setEnabled(true);
+    if (!enabled) return;
+    document.body.classList.add("custom-cursor-active");
 
     const move = (e: MouseEvent) => {
       x.set(e.clientX);
@@ -65,7 +70,11 @@ export default function Cursor() {
     const click = (e: MouseEvent) => {
       const id = Date.now();
       setRipples((r) => [...r, { id, x: e.clientX, y: e.clientY }]);
-      setTimeout(() => setRipples((r) => r.filter((rp) => rp.id !== id)), 600);
+      const timer = window.setTimeout(() => {
+        setRipples((r) => r.filter((rp) => rp.id !== id));
+        rippleTimers.current = rippleTimers.current.filter((t) => t !== timer);
+      }, 600);
+      rippleTimers.current.push(timer);
     };
 
     window.addEventListener("mousemove", move, { passive: true });
@@ -79,8 +88,11 @@ export default function Cursor() {
       window.removeEventListener("mousedown", dn);
       window.removeEventListener("mouseup", up);
       window.removeEventListener("click", click);
+      rippleTimers.current.forEach((timer) => clearTimeout(timer));
+      rippleTimers.current = [];
+      document.body.classList.remove("custom-cursor-active");
     };
-  }, [x, y]);
+  }, [enabled, x, y]);
 
   if (!enabled) return null;
 

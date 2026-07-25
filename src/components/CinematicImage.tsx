@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionStyle } from "framer-motion";
 
 /**
  * Cinematic Image — built for kinetic storytelling
@@ -34,9 +34,10 @@ export function CinematicImage({
   const y = useTransform(scrollYProgress, [0, 1], [intensity * -28, intensity * 34]);
   const scale = useTransform(scrollYProgress, [0, 1], [0.985, 1.035]);
   const x = useTransform(scrollYProgress, [0, 1], [intensity * -14, intensity * 14]);
+  const revealY = useTransform(scrollYProgress, [0, 1], [80, 0]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.55, 1, 1, 0.88]);
 
-  let motionProps: any = { opacity };
+  let motionProps: MotionStyle = { opacity };
 
   if (variant === "parallax") {
     motionProps = { y, scale, opacity };
@@ -45,7 +46,7 @@ export function CinematicImage({
   } else if (variant === "horizontal") {
     motionProps = { x, opacity };
   } else if (variant === "reveal") {
-    motionProps = { y: useTransform(scrollYProgress, [0, 1], [80, 0]), opacity };
+    motionProps = { y: revealY, opacity };
   }
 
   return (

@@ -1,22 +1,42 @@
 import { motion, useInView } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import { projects, type Project } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { KineticText } from "@/components/KineticText";
 import { CinematicImage } from "@/components/CinematicImage";
-import { CinematicFilmStrip } from "@/components/CinematicFilmStrip";
 import { CinematicChapter } from "@/components/CinematicChapter";
-import { CinematicSculpture } from "@/components/CinematicSculpture";
-import { MiniCinematicSculpture } from "@/components/MiniCinematicSculpture";
-import { CinematicSystems } from "@/components/CinematicSystems";
-import { CinematicLightStudy } from "@/components/CinematicLightStudy";
-import { CinematicReelPlayer } from "@/components/CinematicReelPlayer";
-import { ScrollReactiveSculpture } from "@/components/ScrollReactiveSculpture";
 import { CinematicSpacer } from "@/components/CinematicSpacer";
+import { CinematicLoadingFrame } from "@/components/LazyFallback";
 import { useTilt3D } from "@/hooks/useTilt3D";
 import { sound } from "@/lib/sound";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+const CinematicFilmStrip = lazy(() =>
+  import("@/components/CinematicFilmStrip").then((module) => ({ default: module.CinematicFilmStrip })),
+);
+const CinematicReelPlayer = lazy(() =>
+  import("@/components/CinematicReelPlayer").then((module) => ({ default: module.CinematicReelPlayer })),
+);
+const ScrollReactiveSculpture = lazy(() =>
+  import("@/components/ScrollReactiveSculpture").then((module) => ({ default: module.ScrollReactiveSculpture })),
+);
+const CinematicLightStudy = lazy(() =>
+  import("@/components/CinematicLightStudy").then((module) => ({ default: module.CinematicLightStudy })),
+);
+const CinematicSculpture = lazy(() =>
+  import("@/components/CinematicSculpture").then((module) => ({ default: module.CinematicSculpture })),
+);
+const MiniCinematicSculpture = lazy(() =>
+  import("@/components/MiniCinematicSculpture").then((module) => ({ default: module.MiniCinematicSculpture })),
+);
+const CinematicSystems = lazy(() =>
+  import("@/components/CinematicSystems").then((module) => ({ default: module.CinematicSystems })),
+);
+
+function LazyCinematic({ children, label, title }: { children: React.ReactNode; label: string; title: string }) {
+  return <Suspense fallback={<CinematicLoadingFrame label={label} title={title} />}>{children}</Suspense>;
+}
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,24 +51,28 @@ function FeaturedCard({ p, i }: { p: Project; i: number }) {
     const el = cardRef.current;
     if (!el) return;
 
-    // Scroll-scrub kinetic title inside the card
-    const titleEl = el.querySelector(".kinetic-project-name");
-    if (titleEl) {
-      gsap.fromTo(
-        titleEl,
-        { y: 30, opacity: 0.6 },
-        {
-          y: 0,
-          opacity: 1,
-          scrollTrigger: {
-            trigger: el,
-            start: "top 78%",
-            end: "bottom 25%",
-            scrub: 1.8,
-          },
-        }
-      );
-    }
+    const ctx = gsap.context(() => {
+      // Scroll-scrub kinetic title inside the card
+      const titleEl = el.querySelector(".kinetic-project-name");
+      if (titleEl) {
+        gsap.fromTo(
+          titleEl,
+          { y: 30, opacity: 0.6 },
+          {
+            y: 0,
+            opacity: 1,
+            scrollTrigger: {
+              trigger: el,
+              start: "top 78%",
+              end: "bottom 25%",
+              scrub: 1.8,
+            },
+          }
+        );
+      }
+    }, el);
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -101,6 +125,18 @@ function FeaturedCard({ p, i }: { p: Project; i: number }) {
       {/* body */}
       <div className="relative z-10 flex flex-1 flex-col gap-4 p-6">
         <p className="text-base leading-relaxed text-ink-soft text-pretty">{p.description}</p>
+        <div className="rounded-2xl border border-line/70 bg-canvas/60 p-4">
+          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-spark">Outcome</div>
+          <p className="mt-1 text-sm leading-relaxed text-ink-soft">{p.outcome}</p>
+        </div>
+        <div className="grid gap-1.5 text-sm text-muted sm:grid-cols-2">
+          {p.proof.map((item) => (
+            <span key={item} className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-spark" />
+              {item}
+            </span>
+          ))}
+        </div>
         <div className="mt-auto flex flex-wrap gap-2 pt-2">
           {p.stack.map((s) => (
             <span key={s} className="rounded-full border border-line px-3 py-1 font-mono text-[11px] text-muted">
@@ -137,7 +173,7 @@ function Row({ p, i }: { p: Project; i: number }) {
           </h3>
           <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: p.accent }} />
         </div>
-        <p className="mt-1 truncate text-sm text-muted">{p.blurb}</p>
+        <p className="mt-1 truncate text-sm text-muted" title={p.outcome}>{p.outcome}</p>
       </div>
       <div className="flex items-center gap-4">
         <span className="hidden font-mono text-xs text-muted sm:block">{p.year}</span>
@@ -146,6 +182,48 @@ function Row({ p, i }: { p: Project; i: number }) {
         </span>
       </div>
     </motion.a>
+  );
+}
+
+function ProofSnapshot({ items }: { items: Project[] }) {
+  const highlights = [
+    { label: "Core focus", value: "AI agents + full-stack systems" },
+    { label: "Proof style", value: "Public repos, real interfaces, working flows" },
+    { label: "Delivery bias", value: "Typed, shippable, maintainable builds" },
+  ];
+
+  return (
+    <div className="mt-12 rounded-3xl border border-line bg-surface p-6 sm:p-8">
+      <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div>
+          <div className="font-mono text-[11px] uppercase tracking-[0.24em] text-spark">Proof snapshot</div>
+          <h3 className="mt-3 font-display text-3xl font-light tracking-tightest text-ink sm:text-4xl">
+            What the projects demonstrate.
+          </h3>
+        </div>
+        <p className="max-w-md text-sm leading-relaxed text-ink-soft">
+          Not just visuals — each project shows a concrete engineering capability: orchestration, automation, typed UI systems, or production workflow design.
+        </p>
+      </div>
+
+      <div className="mt-7 grid gap-3 md:grid-cols-3">
+        {highlights.map((item) => (
+          <div key={item.label} className="rounded-2xl border border-line/70 bg-canvas/70 p-4">
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">{item.label}</div>
+            <div className="mt-2 text-sm font-medium leading-snug text-ink">{item.value}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-7 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {items.flatMap((project) => project.proof.slice(0, 2).map((proof) => `${project.name}: ${proof}`)).slice(0, 6).map((proof) => (
+          <div key={proof} className="flex items-center gap-2 rounded-full border border-line bg-canvas px-3 py-2 text-xs text-ink-soft">
+            <span className="h-1.5 w-1.5 rounded-full bg-spark" />
+            {proof}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -198,6 +276,14 @@ export default function Work() {
         ))}
       </div>
 
+      <ProofSnapshot items={projects} />
+
+      <div className="mt-14 border-t border-line">
+        {rest.map((p, i) => (
+          <Row key={p.name} p={p} i={i} />
+        ))}
+      </div>
+
       {/* MASSIVE CINEMATIC CHAPTER — the turning point */}
       <div className="my-20 relative h-[520px] rounded-3xl overflow-hidden">
         <CinematicImage 
@@ -225,11 +311,11 @@ export default function Work() {
 
       {/* THE KINETIC CINEMATIC FILM STRIP — the emotional core of the entire portfolio */}
       <div id="film-strip">
-        <CinematicFilmStrip />
+        <LazyCinematic label="Loading film strip" title="A cinematic journey through craft."><CinematicFilmStrip /></LazyCinematic>
       </div>
 
       <div className="flex justify-center mt-6">
-        <CinematicReelPlayer targetId="film-strip" />
+        <Suspense fallback={null}><CinematicReelPlayer targetId="film-strip" /></Suspense>
       </div>
 
       <CinematicSpacer height={200} />
@@ -239,14 +325,14 @@ export default function Work() {
         <div className="text-center mb-5">
           <div className="font-mono text-xs tracking-[3px] text-spark">04 — MOTION WITH THE SCROLL</div>
         </div>
-        <ScrollReactiveSculpture />
+        <LazyCinematic label="Loading scroll sculpture" title="The form moves with you."><ScrollReactiveSculpture /></LazyCinematic>
       </div>
 
       <CinematicSpacer height={160} />
 
       {/* Cinematic Light Study as a breathing room between film and rest */}
       <div className="my-20">
-        <CinematicLightStudy />
+        <LazyCinematic label="Loading light study" title="Light defines the frame."><CinematicLightStudy /></LazyCinematic>
       </div>
 
       {/* 3D cinematic sculpture moment — the physical heart */}
@@ -254,41 +340,35 @@ export default function Work() {
         <div className="text-center mb-6">
           <div className="font-mono text-xs tracking-[3px] text-spark">03 — FORM</div>
         </div>
-        <CinematicSculpture />
+        <LazyCinematic label="Loading sculpture" title="Form follows certainty."><CinematicSculpture /></LazyCinematic>
       </div>
 
       <CinematicSpacer height={110} />
 
       {/* Second sculpture — different angle / moment */}
       <div className="my-10">
-        <MiniCinematicSculpture />
+        <LazyCinematic label="Loading sculpture" title="A quieter physical moment."><MiniCinematicSculpture /></LazyCinematic>
       </div>
 
       <CinematicSpacer height={90} />
 
       {/* Systems sculpture */}
       <div className="mt-12">
-        <CinematicSystems />
+        <LazyCinematic label="Loading systems study" title="Systems become visible."><CinematicSystems /></LazyCinematic>
       </div>
 
       <CinematicSpacer height={100} />
 
       {/* Light study — pure cinematic light & form */}
       <div className="mt-14">
-        <CinematicLightStudy />
+        <LazyCinematic label="Loading light study" title="Light defines the frame."><CinematicLightStudy /></LazyCinematic>
       </div>
 
       <CinematicSpacer height={85} />
 
       {/* Final 3D systems moment */}
       <div className="mt-12">
-        <CinematicSystems />
-      </div>
-
-      <div className="mt-14 border-t border-line">
-        {rest.map((p, i) => (
-          <Row key={p.name} p={p} i={i} />
-        ))}
+        <LazyCinematic label="Loading systems study" title="Systems become visible."><CinematicSystems /></LazyCinematic>
       </div>
 
       {/* Closing cinematic chapter */}
