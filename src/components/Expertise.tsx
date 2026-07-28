@@ -3,7 +3,6 @@ import { expertise } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { KineticText } from "@/components/KineticText";
 import { CinematicChapter } from "@/components/CinematicChapter";
-import { MiniCinematicSculpture } from "@/components/MiniCinematicSculpture";
 import { CinematicSpacer } from "@/components/CinematicSpacer";
 import { sound } from "@/lib/sound";
 import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
@@ -47,7 +46,6 @@ export default function Expertise() {
 
       {/* Subtle 3D precision moment */}
       <div className="my-8">
-        <MiniCinematicSculpture />
       </div>
 
       <CinematicSpacer height={120} />

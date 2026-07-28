@@ -1,4 +1,3 @@
-import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { heroProof, profile } from "@/data/portfolio";
 import { MagneticButton } from "@/components/primitives";
@@ -7,10 +6,7 @@ import { CinematicImage } from "@/components/CinematicImage";
 import Terminal from "@/components/Terminal";
 import { CinematicSequence } from "@/components/CinematicSequence";
 import { CinematicSpacer } from "@/components/CinematicSpacer";
-import { CinematicLoadingFrame } from "@/components/LazyFallback";
 import { navigate } from "@/router";
-
-const CinematicSculpture = lazy(() => import("@/components/CinematicSculpture"));
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -156,7 +152,7 @@ export default function Hero() {
             className="group mt-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface/50 px-4 py-2 text-xs text-muted backdrop-blur transition-colors hover:border-spark/50 hover:text-ink"
           >
             <span>For clinics & local businesses</span>
-            <span className="font-medium text-spark transition-transform duration-300 group-hover:translate-x-0.5">
+            <span className="font-medium text-spark transition-transform duration-300 group-hover.translate-x-0.5">
               View the studio site →
             </span>
           </motion.button>
@@ -180,7 +176,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* RIGHT — cinematic 3D sculpture + terminal (the hero moment) */}
+        {/* RIGHT — cinematic image treatment (no 3D) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -197,11 +193,9 @@ export default function Hero() {
             <div className="absolute inset-0 bg-gradient-to-br from-ink/80 via-ink/30 to-ink/70" />
           </div>
 
-          {/* The actual 3D cinematic sculpture — slow, certain, premium */}
-          <div className="absolute inset-0 z-10">
-            <Suspense fallback={<CinematicLoadingFrame label="Loading sculpture" title="Form follows certainty." />}>
-              <CinematicSculpture />
-            </Suspense>
+          {/* Elegant cinematic treatment (no 3D) */}
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <div className="text-center text-canvas/70 font-display text-sm tracking-[3px] uppercase">Form follows certainty</div>
           </div>
 
           <div className="absolute bottom-8 right-8 z-20">

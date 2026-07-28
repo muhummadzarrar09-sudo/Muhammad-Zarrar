@@ -17,13 +17,13 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    // Always log for visibility; DEV gets stack, prod gets error message
+    // Always log full details for visibility in both dev and prod
     console.error("Portfolio render error", error, info);
     // Future: send to monitoring service (e.g., Sentry) in production
     try {
-      // Keep error visible in console even in prod for post-mortem
       if (!import.meta.env.DEV) {
-        console.warn("ErrorBoundary caught:", error.message);
+        // Ensure stack trace is available for post-mortems
+        console.error("ErrorBoundary stack:", error.stack);
       }
     } catch {
       /* ignore logging failure */

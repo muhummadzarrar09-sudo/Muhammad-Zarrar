@@ -15,11 +15,6 @@ import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
 
 const CinematicFilmStrip = lazy(() => import("@/components/CinematicFilmStrip"));
 const CinematicReelPlayer = lazy(() => import("@/components/CinematicReelPlayer"));
-const ScrollReactiveSculpture = lazy(() => import("@/components/ScrollReactiveSculpture"));
-const CinematicLightStudy = lazy(() => import("@/components/CinematicLightStudy"));
-const CinematicSculpture = lazy(() => import("@/components/CinematicSculpture"));
-const MiniCinematicSculpture = lazy(() => import("@/components/MiniCinematicSculpture"));
-const CinematicSystems = lazy(() => import("@/components/CinematicSystems"));
 
 function LazyCinematic({ children, label, title }: { children: React.ReactNode; label: string; title: string }) {
   return <Suspense fallback={<CinematicLoadingFrame label={label} title={title} />}>{children}</Suspense>;
@@ -299,14 +294,12 @@ export default function Work() {
         <div className="text-center mb-5">
           <div className="font-mono text-xs tracking-[3px] text-spark">04 — MOTION WITH THE SCROLL</div>
         </div>
-        <LazyCinematic label="Loading scroll sculpture" title="The form moves with you."><ScrollReactiveSculpture /></LazyCinematic>
       </div>
 
       <CinematicSpacer height={160} />
 
       {/* Cinematic Light Study as a breathing room between film and rest */}
       <div className="my-20">
-        <LazyCinematic label="Loading light study" title="Light defines the frame."><CinematicLightStudy /></LazyCinematic>
       </div>
 
       {/* 3D cinematic sculpture moment — the physical heart */}
@@ -314,35 +307,30 @@ export default function Work() {
         <div className="text-center mb-6">
           <div className="font-mono text-xs tracking-[3px] text-spark">03 — FORM</div>
         </div>
-        <LazyCinematic label="Loading sculpture" title="Form follows certainty."><CinematicSculpture /></LazyCinematic>
       </div>
 
       <CinematicSpacer height={110} />
 
       {/* Second sculpture — different angle / moment */}
       <div className="my-10">
-        <LazyCinematic label="Loading sculpture" title="A quieter physical moment."><MiniCinematicSculpture /></LazyCinematic>
       </div>
 
       <CinematicSpacer height={90} />
 
       {/* Systems sculpture */}
       <div className="mt-12">
-        <LazyCinematic label="Loading systems study" title="Systems become visible."><CinematicSystems /></LazyCinematic>
       </div>
 
       <CinematicSpacer height={100} />
 
       {/* Light study — pure cinematic light & form */}
       <div className="mt-14">
-        <LazyCinematic label="Loading light study" title="Light defines the frame."><CinematicLightStudy /></LazyCinematic>
       </div>
 
       <CinematicSpacer height={85} />
 
       {/* Final 3D systems moment */}
       <div className="mt-12">
-        <LazyCinematic label="Loading systems study" title="Systems become visible."><CinematicSystems /></LazyCinematic>
       </div>
 
       {/* Closing cinematic chapter */}

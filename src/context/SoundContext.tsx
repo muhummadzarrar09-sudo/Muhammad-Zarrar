@@ -80,12 +80,14 @@ export function SoundProvider({ children }: { children: ReactNode }) {
       sound.click();
     };
 
-    window.addEventListener("pointerdown", unlock, { once: true });
-    window.addEventListener("pointerdown", unlock);
+    const unlockOnce = () => {
+      unlock();
+      window.removeEventListener("pointerdown", unlockOnce);
+    };
+    window.addEventListener("pointerdown", unlockOnce, { once: true });
     document.addEventListener("mouseover", onHover);
     document.addEventListener("click", onClick);
     return () => {
-      window.removeEventListener("pointerdown", unlock);
       document.removeEventListener("mouseover", onHover);
       document.removeEventListener("click", onClick);
     };
