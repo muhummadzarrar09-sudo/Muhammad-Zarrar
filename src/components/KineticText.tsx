@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useRef, type ElementType } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { initGsap, gsap } from "@/lib/gsap";
 
-gsap.registerPlugin(ScrollTrigger);
+initGsap();
 
 /**
  * CERTAINTY KINETIC TYPOGRAPHY
@@ -49,7 +48,8 @@ export function KineticText({
 
     const chars = text.split("");
     lettersRef.current = [];
-    el.innerHTML = "";
+    // Use replaceChildren for safety instead of innerHTML
+    el.replaceChildren();
 
     chars.forEach((char) => {
       const span = document.createElement("span");

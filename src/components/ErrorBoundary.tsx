@@ -17,8 +17,16 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    if (import.meta.env.DEV) {
-      console.error("Portfolio render error", error, info);
+    // Always log for visibility; DEV gets stack, prod gets error message
+    console.error("Portfolio render error", error, info);
+    // Future: send to monitoring service (e.g., Sentry) in production
+    try {
+      // Keep error visible in console even in prod for post-mortem
+      if (!import.meta.env.DEV) {
+        console.warn("ErrorBoundary caught:", error.message);
+      }
+    } catch {
+      /* ignore logging failure */
     }
   }
 

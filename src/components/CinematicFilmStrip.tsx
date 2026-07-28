@@ -58,20 +58,26 @@ export function CinematicFilmStrip() {
 
   const progress = useTransform(scrollXProgress, [0, 1], ["0%", "100%"]);
 
-  // PERMANENT but ultra-gentle cinematic drift — QUALITY over movement.
-  // Stops on user interaction for calm, deliberate experience.
+  // Gentle cinematic drift — bounded, pauses when offscreen or on interaction
   useEffect(() => {
     const el = containerRef.current;
     if (!el || prefersReducedMotion) return;
 
     let raf: number | null = null;
     let paused = false;
+    let visible = true;
 
     const drift = () => {
-      if (!paused && el) {
-        // Extremely slow, elegant drift — barely perceptible, luxurious
-        // Quality > motion. This is a still film, not a video.
-        el.scrollLeft += 0.048;
+      if (!paused && visible && el) {
+        const max = el.scrollWidth - el.clientWidth;
+        if (max > 0) {
+          if (el.scrollLeft >= max - 0.5) {
+            // Loop back to start for elegant infinite feel, or pause at end
+            el.scrollLeft = 0;
+          } else {
+            el.scrollLeft += 0.048;
+          }
+        }
       }
       raf = requestAnimationFrame(drift);
     };
@@ -79,7 +85,15 @@ export function CinematicFilmStrip() {
     const pauseDrift = () => { paused = true; };
     const resumeDrift = () => { paused = false; };
 
-    // Pause on any interaction for calm, high-quality feel
+    // Only drift when visible in viewport to save CPU
+    const io = new IntersectionObserver(
+      (entries) => {
+        visible = entries[0]?.isIntersecting ?? true;
+      },
+      { threshold: 0.1 }
+    );
+    io.observe(el);
+
     el.addEventListener('mouseenter', pauseDrift);
     el.addEventListener('mousedown', pauseDrift);
     el.addEventListener('touchstart', pauseDrift);
@@ -91,6 +105,7 @@ export function CinematicFilmStrip() {
 
     return () => {
       if (raf) cancelAnimationFrame(raf);
+      io.disconnect();
       el.removeEventListener('mouseenter', pauseDrift);
       el.removeEventListener('mousedown', pauseDrift);
       el.removeEventListener('touchstart', pauseDrift);
@@ -162,3 +177,5 @@ export function CinematicFilmStrip() {
     </div>
   );
 }
+
+export default CinematicFilmStrip;

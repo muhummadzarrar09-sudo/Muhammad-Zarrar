@@ -1,5 +1,4 @@
-import { motion, useInView } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { expertise } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { KineticText } from "@/components/KineticText";
@@ -7,19 +6,10 @@ import { CinematicChapter } from "@/components/CinematicChapter";
 import { MiniCinematicSculpture } from "@/components/MiniCinematicSculpture";
 import { CinematicSpacer } from "@/components/CinematicSpacer";
 import { sound } from "@/lib/sound";
-
-function useWhoosh() {
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-25% 0px" });
-  const fired = useRef(false);
-  useEffect(() => {
-    if (inView && !fired.current) { fired.current = true; sound.whoosh(); }
-  }, [inView]);
-  return ref;
-}
+import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
 
 export default function Expertise() {
-  const sectionRef = useWhoosh();
+  const sectionRef = useSectionWhoosh();
 
   return (
     <section id="expertise" ref={sectionRef} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">

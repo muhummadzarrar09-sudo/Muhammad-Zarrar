@@ -1,23 +1,6 @@
 import { useEffect } from "react";
 import { usePathname } from "@/router";
-
-const SITE_URL = "https://muhummadzarrar.vercel.app";
-const OG_IMAGE = `${SITE_URL}/og-image.svg`;
-
-const META = {
-  portfolio: {
-    title: "Muhammad Zarrar / Zarrar.Solutions — Full-Stack Developer & AI Systems Engineer",
-    description:
-      "Full-stack products, AI agents, voice interfaces, catalog systems, booking flows, dashboards, and design-led web experiences.",
-    path: "/",
-  },
-  business: {
-    title: "Zarrar.Solutions — Websites, Catalog Systems & Booking Flows for Local Businesses",
-    description:
-      "Digital studio building websites, RetailFlow catalog systems, booking systems, dashboards, and WhatsApp workflows for retailers, clinics, salons, academies, and service businesses.",
-    path: "/business",
-  },
-};
+import { SITE_URL, OG_IMAGE, META } from "@/lib/site";
 
 function setMetaByName(name: string, content: string) {
   const el = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);

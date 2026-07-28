@@ -28,3 +28,5 @@ export function CinematicSpacer({ height = 180 }: { height?: number }) {
     </div>
   );
 }
+
+export default CinematicSpacer;

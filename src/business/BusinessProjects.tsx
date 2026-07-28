@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { bizProjects, type BizProject } from "@/business/data";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { useTilt3D } from "@/hooks/useTilt3D";
-import { useSectionWhoosh } from "@/business/useSectionWhoosh";
+import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -13,7 +13,7 @@ function ProjectCard({ p, i }: { p: BizProject; i: number }) {
       ref={ref as React.RefObject<HTMLAnchorElement>}
       href={p.github}
       target="_blank"
-      rel="noreferrer"
+      rel="noopener noreferrer"
       onMouseMove={move as unknown as React.MouseEventHandler}
       onMouseLeave={leave}
       data-cursor="view"

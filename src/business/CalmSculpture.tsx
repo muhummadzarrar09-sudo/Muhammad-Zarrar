@@ -52,3 +52,5 @@ export function CalmSculpture() {
     </div>
   );
 }
+
+export default CalmSculpture;

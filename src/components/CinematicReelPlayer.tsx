@@ -72,8 +72,7 @@ export function CinematicReelPlayer({ targetId = "film-strip" }: { targetId?: st
   }, [stopPlayback]);
 
   return (
-    <button
-      type="button"
+    <button type="button"
       onClick={toggle}
       className={`inline-flex items-center gap-2 rounded-full border px-6 py-2 text-sm font-mono tracking-widest transition-all ${
         playing
@@ -85,3 +84,4 @@ export function CinematicReelPlayer({ targetId = "film-strip" }: { targetId?: st
     </button>
   );
 }
+export default CinematicReelPlayer;

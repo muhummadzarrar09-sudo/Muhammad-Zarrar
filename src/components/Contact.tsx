@@ -8,9 +8,7 @@ import { CinematicChapter } from "@/components/CinematicChapter";
 import { CinematicSpacer } from "@/components/CinematicSpacer";
 import { CinematicLoadingFrame } from "@/components/LazyFallback";
 
-const ScrollReactiveSculpture = lazy(() =>
-  import("@/components/ScrollReactiveSculpture").then((module) => ({ default: module.ScrollReactiveSculpture })),
-);
+const ScrollReactiveSculpture = lazy(() => import("@/components/ScrollReactiveSculpture"));
 
 type FormState = {
   name: string;
@@ -48,9 +46,12 @@ function buildMailto(form: FormState) {
 function validate(form: FormState): FormErrors {
   const errors: FormErrors = {};
   if (!form.name.trim()) errors.name = "Please enter your name.";
+  else if (form.name.length > 80) errors.name = "Name must be under 80 characters.";
   if (!form.email.trim()) errors.email = "Please enter your email.";
-  else if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) errors.email = "Please enter a valid email address.";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) errors.email = "Please enter a valid email address.";
+  else if (form.email.length > 120) errors.email = "Email must be under 120 characters.";
   if (!form.message.trim()) errors.message = "Please describe the project briefly.";
+  else if (form.message.length > 1000) errors.message = "Message must be under 1000 characters.";
   return errors;
 }
 
@@ -85,7 +86,9 @@ export default function Contact() {
       setCopied(true);
       schedule(() => setCopied(false), 1800);
     } catch {
-      window.location.href = `mailto:${profile.email}`;
+      // Clipboard failed — do not navigate away; keep email visible as fallback
+      setCopied(false);
+      // Fallback UI will show the mailto link in success state; no destructive navigation
     }
   };
 
@@ -107,6 +110,12 @@ export default function Contact() {
     }
 
     const mailto = buildMailto(form);
+    if (mailto.length > 2000) {
+      setErrors({ message: "Message too long for email draft. Please shorten it (under ~1000 chars)." });
+      sound.pew();
+      return;
+    }
+
     setLastMailto(mailto);
     setStatus("transmitting");
     setTxLog([]);
@@ -125,7 +134,11 @@ export default function Contact() {
         setTxLog((p) => [...p, log]);
         if (log.includes("✓")) {
           sound.chime();
-          window.location.href = mailto;
+          try {
+            window.location.href = mailto;
+          } catch {
+            // Fallback: keep success state visible with manual link
+          }
           schedule(() => setStatus("success"), 420);
         } else {
           sound.pew();
@@ -205,7 +218,7 @@ export default function Contact() {
 
             <div className="mt-14 flex flex-wrap gap-x-10 gap-y-6 border-t border-canvas/10 pt-8">
               {socials.map((s) => (
-                <a key={s.label} href={s.url} target={s.url.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className="group">
+                <a key={s.label} href={s.url} target={s.url.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="group">
                   <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-canvas/40">{s.label}</div>
                   <div className="mt-1 flex items-center gap-1.5 text-canvas/90 group-hover:text-spark">
                     <span className="link-underline">{s.handle}</span> ↗
@@ -225,6 +238,7 @@ export default function Contact() {
                       <input
                         id="contact-name"
                         required
+                        maxLength={80}
                         value={form.name}
                         onChange={(e) => set("name", e.target.value)}
                         aria-invalid={Boolean(errors.name)}
@@ -239,6 +253,7 @@ export default function Contact() {
                       <input
                         id="contact-email"
                         required
+                        maxLength={120}
                         value={form.email}
                         type="email"
                         onChange={(e) => set("email", e.target.value)}
@@ -255,8 +270,7 @@ export default function Contact() {
                     <div className="block font-mono text-xs text-canvas/40 mb-2" id="contact-type-label">WHAT ARE WE BUILDING?</div>
                     <div className="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="contact-type-label">
                       {PROJECT_TYPES.map((t) => (
-                        <button
-                          type="button"
+                        <button type="button"
                           key={t}
                           role="radio"
                           aria-checked={form.type === t}
@@ -274,6 +288,7 @@ export default function Contact() {
                     <textarea
                       id="contact-message"
                       required
+                      maxLength={1000}
                       rows={4}
                       value={form.message}
                       onChange={(e) => set("message", e.target.value)}

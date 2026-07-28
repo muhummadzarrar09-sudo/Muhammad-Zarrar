@@ -50,3 +50,5 @@ export function CinematicChapter({
     </div>
   );
 }
+
+export default CinematicChapter;

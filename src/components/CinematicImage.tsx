@@ -63,3 +63,5 @@ export function CinematicImage({
     </div>
   );
 }
+
+export default CinematicImage;

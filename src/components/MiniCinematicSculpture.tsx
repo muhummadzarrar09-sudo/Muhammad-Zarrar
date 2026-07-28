@@ -8,7 +8,7 @@ function Mini({ mouse }: { mouse?: { x: number; y: number } }) {
   const g = useRef<THREE.Group>(null!);
 
   useFrame((state) => {
-    const t = state.clock.getElapsedTime() * 0.015; // ultra-slow, calm, editorial
+    const t = state.clock.getElapsedTime() * 0.015;
     if (g.current) {
       g.current.rotation.y = t * 0.61 + (mouse?.x || 0) * 0.48;
       g.current.rotation.x = Math.sin(t * 0.17) * 0.072 + (mouse?.y || 0) * 0.36;
@@ -17,27 +17,16 @@ function Mini({ mouse }: { mouse?: { x: number; y: number } }) {
 
   return (
     <group ref={g}>
-      {/* HIGH-ENTROPY SMOOTH MINI SCULPTURE — real 3D designer feel */}
-      {/* Complex smooth torus knot */}
       <mesh>
-        <torusKnotGeometry args={[1.05, 0.32, 210, 28, 2, 4]} />
-        <meshPhongMaterial 
-          color="#c08532" 
-          shininess={52} 
-          specular="#ff6a3d"
-          flatShading={false}
-        />
+        <torusKnotGeometry args={[1.05, 0.32, 64, 12, 2, 4]} />
+        <meshPhongMaterial color="#c08532" shininess={52} specular="#ff6a3d" flatShading={false} />
       </mesh>
-
-      {/* Ultra-smooth high-poly core sphere */}
       <mesh position={[0, 0.85, 0]}>
-        <sphereGeometry args={[0.44, 56, 42]} />
+        <sphereGeometry args={[0.44, 20, 14]} />
         <meshPhongMaterial color="#f4f1ea" shininess={95} specular="#ff6a3d" flatShading={false} />
       </mesh>
-
-      {/* Smooth delicate orbiting ring */}
       <mesh position={[0, -0.65, 0]} rotation={[0.9, 0.6, 0]}>
-        <torusGeometry args={[1.38, 0.01, 14, 82]} />
+        <torusGeometry args={[1.38, 0.01, 8, 24]} />
         <meshPhongMaterial color="#f4f1ea" transparent opacity={0.28} flatShading={false} />
       </mesh>
     </group>
@@ -55,3 +44,5 @@ export function MiniCinematicSculpture() {
     </div>
   );
 }
+
+export default MiniCinematicSculpture;

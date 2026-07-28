@@ -5,7 +5,7 @@ import { Reveal, SectionHeading } from "@/components/primitives";
 import { KineticText } from "@/components/KineticText";
 import { CinematicChapter } from "@/components/CinematicChapter";
 import { CinematicSpacer } from "@/components/CinematicSpacer";
-import { sound } from "@/lib/sound";
+import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
 
 function Counter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -35,22 +35,8 @@ const principles = [
   "Ship, then refine",
 ];
 
-/* Plays a subtle whoosh when the section enters the viewport */
-function useWhoosh() {
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-25% 0px" });
-  const fired = useRef(false);
-  useEffect(() => {
-    if (inView && !fired.current) {
-      fired.current = true;
-      sound.whoosh();
-    }
-  }, [inView]);
-  return ref;
-}
-
 export default function About() {
-  const sectionRef = useWhoosh();
+  const sectionRef = useSectionWhoosh();
   return (
     <section id="about" ref={sectionRef} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       {/* decorative background number */}

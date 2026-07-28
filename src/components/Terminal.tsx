@@ -65,8 +65,14 @@ export default function Terminal() {
   useEffect(() => {
     let lineIdx = 0;
     let charIdx = 0;
-    let timer: ReturnType<typeof setTimeout>;
     let cancelled = false;
+    const timers: number[] = [];
+
+    const schedule = (cb: () => void, delay: number) => {
+      const t = window.setTimeout(cb, delay);
+      timers.push(t);
+      return t;
+    };
 
     const type = () => {
       if (cancelled) return;
@@ -83,23 +89,23 @@ export default function Terminal() {
       const speed = SPEEDS[line.kind];
 
       if (finished) {
-        timer = setTimeout(() => {
+        schedule(() => {
           if (cancelled) return;
           setCompleted((c) => [...c, line]);
           setCurrent(null);
           lineIdx += 1;
           charIdx = 0;
-          timer = setTimeout(type, line.kind === "cmd" ? 140 : 360);
+          schedule(type, line.kind === "cmd" ? 140 : 360);
         }, line.kind === "cmd" ? 60 : 20);
       } else {
-        timer = setTimeout(type, speed);
+        schedule(type, speed);
       }
     };
 
-    timer = setTimeout(type, 700);
+    schedule(type, 700);
     return () => {
       cancelled = true;
-      clearTimeout(timer);
+      timers.forEach((t) => clearTimeout(t));
     };
   }, []);
 

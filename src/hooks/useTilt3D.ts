@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 /**
  * 3D perspective tilt on mouse move — the single interaction that separates
@@ -43,6 +43,13 @@ export function useTilt3D(intensity = 12) {
     el.style.setProperty("--tilt-gx", "50%");
     el.style.setProperty("--tilt-gy", "50%");
   }, []);
+
+  // Ensure transform resets on unmount to avoid stray inline styles
+  useEffect(() => {
+    return () => {
+      leave();
+    };
+  }, [leave]);
 
   return { ref, move, leave };
 }

@@ -158,7 +158,7 @@ export function MagneticButton({
         ref={ref as React.RefObject<HTMLAnchorElement>}
         href={href}
         target={href.startsWith("http") ? "_blank" : undefined}
-        rel="noreferrer"
+        rel="noopener noreferrer"
         data-hover
         data-cursor-label={cursorLabel}
         onMouseMove={handleMove}
@@ -214,5 +214,4 @@ export function SectionHeading({
     </div>
   );
 }
-
 

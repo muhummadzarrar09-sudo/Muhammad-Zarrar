@@ -1,6 +1,6 @@
 import { retailFlow } from "@/business/data";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import { useSectionWhoosh } from "@/business/useSectionWhoosh";
+import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
 
 export default function RetailFlow() {
   const ref = useSectionWhoosh();
@@ -69,7 +69,7 @@ export default function RetailFlow() {
             <p className="mt-1 text-sm text-ink-soft">Starter from Rs. 25,000+ — Professional versions include admin tools, variants, and stock management.</p>
           </div>
           <div>
-            <button
+            <button type="button"
               onClick={scrollToPricing}
               data-hover
               className="inline-flex items-center justify-center rounded-full border border-ink/20 px-7 py-3.5 text-sm font-medium text-ink transition-colors hover:border-spark/60 hover:text-spark"
