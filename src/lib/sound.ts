@@ -37,10 +37,8 @@ class SoundEngine {
       this.analyser = this.ctx.createAnalyser();
       this.analyser.fftSize = 256;
       this.analyser.smoothingTimeConstant = 0.8;
-      this.freq = new Uint8Array(
-        new ArrayBuffer(this.analyser.frequencyBinCount),
-      );
-      this.time = new Uint8Array(new ArrayBuffer(this.analyser.fftSize));
+      this.freq = new Uint8Array(this.analyser.frequencyBinCount);
+      this.time = new Uint8Array(this.analyser.fftSize);
       this.master.connect(this.analyser);
       this.analyser.connect(this.ctx.destination);
     }

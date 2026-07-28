@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { profile, socials } from "@/data/portfolio";
 import { sound } from "@/lib/sound";
 import { MagneticButton, Reveal } from "@/components/primitives";
@@ -8,7 +8,6 @@ import { CinematicChapter } from "@/components/CinematicChapter";
 import { CinematicSpacer } from "@/components/CinematicSpacer";
 import { CinematicLoadingFrame } from "@/components/LazyFallback";
 
-const ScrollReactiveSculpture = lazy(() => import("@/components/ScrollReactiveSculpture"));
 
 type FormState = {
   name: string;
@@ -196,7 +195,6 @@ export default function Contact() {
 
             <div className="mt-12">
               <Suspense fallback={<CinematicLoadingFrame label="Loading scroll sculpture" title="The form moves with you." />}>
-                <ScrollReactiveSculpture />
               </Suspense>
             </div>
 

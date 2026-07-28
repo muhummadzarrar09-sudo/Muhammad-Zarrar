@@ -1,25 +1,16 @@
 import { motion } from "framer-motion";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { process } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { KineticText } from "@/components/KineticText";
 import { CinematicImage } from "@/components/CinematicImage";
 import { CinematicChapter } from "@/components/CinematicChapter";
 import { CinematicSpacer } from "@/components/CinematicSpacer";
-import { CinematicLoadingFrame } from "@/components/LazyFallback";
 import { cn } from "@/utils/cn";
 import { sound } from "@/lib/sound";
 import { gsap } from "gsap";
 import { initGsap } from "@/lib/gsap";
 import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
-
-const CinematicSculpture = lazy(() => import("@/components/CinematicSculpture"));
-const MiniCinematicSculpture = lazy(() => import("@/components/MiniCinematicSculpture"));
-const ScrollReactiveSculpture = lazy(() => import("@/components/ScrollReactiveSculpture"));
-
-function LazyCinematic({ children, label, title }: { children: React.ReactNode; label: string; title: string }) {
-  return <Suspense fallback={<CinematicLoadingFrame label={label} title={title} />}>{children}</Suspense>;
-}
 
 initGsap();
 
@@ -145,25 +136,7 @@ export default function Process() {
         variant="slowZoom"
       />
 
-      {/* 3D sculpture as the final physical manifestation of the process */}
-      <div className="mt-16">
-        <LazyCinematic label="Loading sculpture" title="Form follows certainty."><CinematicSculpture /></LazyCinematic>
-      </div>
-
-      {/* SCROLL-REACTIVE SCULPTURE — the process lives in the scroll (pure kinetic + cinematic) */}
-      <div className="mt-12">
-        <div className="text-center mb-5">
-          <div className="font-mono text-xs tracking-[3px] text-spark">PROCESS IN MOTION</div>
-        </div>
-        <LazyCinematic label="Loading scroll sculpture" title="The form moves with you."><ScrollReactiveSculpture /></LazyCinematic>
-      </div>
-
       <CinematicSpacer height={130} />
-
-      {/* Closing calm 3D moment */}
-      <div className="mt-10">
-        <LazyCinematic label="Loading sculpture" title="A quieter physical moment."><MiniCinematicSculpture /></LazyCinematic>
-      </div>
 
       <div ref={stepsRef} className="mt-6 grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-4">
         {process.map((s, i) => (

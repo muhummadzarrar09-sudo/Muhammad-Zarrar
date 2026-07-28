@@ -10,9 +10,8 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import Footer from "@/components/Footer";
-import { FilmGrain } from "@/components/FilmGrain";
-import { ProjectorVignette } from "@/components/ProjectorVignette";
 import { CinematicProjectorAudio } from "@/components/CinematicProjectorAudio";
+import { WebGLCanvas } from "@/components/WebGLCanvas";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { usePathname } from "@/router";
 import { useLenis } from "@/hooks/useLenis";
@@ -64,7 +63,10 @@ export default function App() {
   // Reset scroll position + Lenis on route change
   // ALWAYS enable full cinematic (Director's Cut) mode on portfolio — permanent, no toggle
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Use rAF to avoid jank on route change
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+    });
 
     if (!isBusiness) {
       document.documentElement.classList.add("directors-cut");
@@ -96,9 +98,8 @@ export default function App() {
           )}
         </ErrorBoundary>
         
-        {/* Cinematic mode is ALWAYS ON — permanent full film experience */}
-        <FilmGrain />
-        <ProjectorVignette />
+        {/* Clean modern WebGL layer (no cinematic projector look) */}
+        <WebGLCanvas />
         {!isBusiness && <CinematicProjectorAudio />}
       </div>
     </SoundProvider>

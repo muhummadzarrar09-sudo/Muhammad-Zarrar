@@ -1,10 +1,6 @@
-import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { biz } from "@/business/data";
 import { MagneticButton, RevealWords } from "@/components/primitives";
-import { CinematicLoadingFrame } from "@/components/LazyFallback";
-
-const CalmSculpture = lazy(() => import("./CalmSculpture"));
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -157,7 +153,7 @@ export default function BusinessHero() {
           </motion.div>
         </motion.div>
 
-          {/* RIGHT — strong cinematic calm 3D sculpture + phone (business is calmer but still cinematic) */}
+        {/* RIGHT — elegant cinematic image treatment (no 3D) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -173,11 +169,9 @@ export default function BusinessHero() {
             <div className="absolute inset-0 bg-gradient-to-br from-ink/70 via-ink/25 to-ink/60" />
           </div>
 
-          {/* Calm editorial 3D sculpture for the business side */}
-          <div className="absolute inset-0 z-10">
-            <Suspense fallback={<CinematicLoadingFrame label="Loading sculpture" title="Calm systems, clearly presented." />}>
-              <CalmSculpture />
-            </Suspense>
+          {/* Elegant cinematic treatment (no 3D) */}
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <div className="text-center text-canvas/70 font-display text-sm tracking-[3px] uppercase">Calm systems, clearly presented</div>
           </div>
 
           <div className="absolute -bottom-2 right-6 z-20">
