@@ -22,7 +22,7 @@ const STREAKS = [
 export function SoundToggle() {
   const { ambientOn, toggle } = useSound();
   return (
-    <button
+    <button type="button"
       onClick={toggle}
       role="switch"
       aria-checked={ambientOn}
@@ -115,13 +115,28 @@ export default function Nav() {
       },
       { rootMargin: "-45% 0px -50% 0px" },
     );
-    LINKS.forEach((l) => {
-      const el = document.getElementById(l.id);
-      if (el) obs.observe(el);
-    });
+
+    const observeAll = () => {
+      LINKS.forEach((l) => {
+        const el = document.getElementById(l.id);
+        if (el) obs.observe(el);
+      });
+    };
+
+    observeAll();
+
+    // Lazy sections may mount after this effect; re-observe when DOM changes
+    const mo = new MutationObserver(() => observeAll());
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    // Also poll once after 2s in case Suspense chunks load later
+    const timer = window.setTimeout(observeAll, 2000);
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       obs.disconnect();
+      mo.disconnect();
+      clearTimeout(timer);
     };
   }, []);
 
@@ -146,7 +161,7 @@ export default function Nav() {
               : "border border-transparent bg-transparent",
           )}
         >
-          <button
+          <button type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="group flex items-center gap-2.5 pl-2"
           >
@@ -160,7 +175,7 @@ export default function Nav() {
 
           <div className="hidden items-center gap-1 md:flex">
             {LINKS.map((l) => (
-              <button
+              <button type="button"
                 key={l.id}
                 onClick={() => go(l.id)}
                 className={cn(
@@ -182,14 +197,14 @@ export default function Nav() {
 
           <div className="flex items-center gap-2">
             <SoundToggle />
-            <button
+            <button type="button"
               onClick={() => go("contact")}
               data-cursor-label="Contact"
               className="hidden rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-canvas transition-colors hover:bg-spark sm:block"
             >
               Let's talk
             </button>
-            <button
+            <button type="button"
               onClick={() => setOpen((o) => !o)}
               aria-label="Menu"
               className="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface/60 md:hidden"

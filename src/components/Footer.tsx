@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
         <div className="flex flex-col justify-between gap-10 md:flex-row">
           <div className="max-w-sm">
-            <button
+            <button type="button"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className="font-display text-3xl font-light tracking-tightest"
             >
@@ -27,7 +27,7 @@ export default function Footer() {
                 Navigate
               </div>
               {["work", "about", "expertise", "process", "contact"].map((l) => (
-                <button
+                <button type="button"
                   key={l}
                   onClick={() => go(l)}
                   className="link-underline w-fit text-sm capitalize text-ink-soft"
@@ -43,7 +43,7 @@ export default function Footer() {
               <a
                 href={profile.github}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="link-underline w-fit text-sm text-ink-soft"
               >
                 GitHub ↗
@@ -62,7 +62,7 @@ export default function Footer() {
           <p className="font-mono text-xs text-muted">
             © {year} Muhammad Zarrar — Designed & engineered, end to end.
           </p>
-          <button
+          <button type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="group flex items-center gap-2 font-mono text-xs text-muted transition-colors hover:text-ink"
           >

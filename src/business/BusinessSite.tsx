@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import BusinessNav from "@/business/BusinessNav";
 import BusinessHero from "@/business/BusinessHero";
-import BizMarquee from "@/business/BizMarquee";
+import BusinessMarquee from "@/business/BusinessMarquee";
 import { BizServices, BizWhyUs, Pricing, Addons } from "@/business/BusinessSections";
 import RetailFlow from "@/business/RetailFlow";
 import BusinessProjects from "@/business/BusinessProjects";
@@ -25,7 +25,7 @@ export default function BusinessSite() {
       <BusinessNav />
       <main>
         <BusinessHero />
-        <BizMarquee />
+        <BusinessMarquee />
         <BizServices />
         <Pricing />
         <Addons />

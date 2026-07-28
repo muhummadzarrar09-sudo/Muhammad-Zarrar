@@ -33,6 +33,7 @@ export default function Cursor() {
     [],
   );
   const rippleTimers = useRef<number[]>([]);
+  const rippleIdRef = useRef(0);
 
   // Raw pointer
   const x = useMotionValue(-100);
@@ -68,7 +69,7 @@ export default function Cursor() {
     const dn = () => setDown(true);
     const up = () => setDown(false);
     const click = (e: MouseEvent) => {
-      const id = Date.now();
+      const id = ++rippleIdRef.current;
       setRipples((r) => [...r, { id, x: e.clientX, y: e.clientY }]);
       const timer = window.setTimeout(() => {
         setRipples((r) => r.filter((rp) => rp.id !== id));

@@ -2,14 +2,14 @@ import { motion } from "framer-motion";
 import { services, whyUs, pricingPackages, addons } from "@/business/data";
 import { BizIcon } from "@/business/ui";
 import { Reveal, SectionHeading, MagneticButton } from "@/components/primitives";
-import { useSectionWhoosh } from "@/business/useSectionWhoosh";
+import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
 import { KineticText } from "@/components/KineticText";
 import { biz } from "@/business/data";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { initGsap } from "@/lib/gsap";
 import { useEffect, useRef } from "react";
 
-gsap.registerPlugin(ScrollTrigger);
+initGsap();
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -89,8 +89,9 @@ export function Pricing() {
     document.getElementById("addons")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  // Cinematic scroll-driven cards
+  // Cinematic scroll-driven cards — respects reduced motion
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const container = cardsRef.current;
     if (!container) return;
 
@@ -226,7 +227,7 @@ export function Pricing() {
             <MagneticButton href={biz.whatsappCta} className="bg-spark text-canvas hover:bg-canvas hover:text-ink">
               Talk on WhatsApp
             </MagneticButton>
-            <button onClick={() => document.getElementById("addons")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center justify-center rounded-full border border-ink/20 px-7 py-3.5 text-sm font-medium text-ink transition-colors hover:border-spark/60 hover:text-spark">
+            <button type="button" onClick={() => document.getElementById("addons")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center justify-center rounded-full border border-ink/20 px-7 py-3.5 text-sm font-medium text-ink transition-colors hover:border-spark/60 hover:text-spark">
               View Add-ons
             </button>
           </div>

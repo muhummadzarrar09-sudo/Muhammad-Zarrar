@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { bizProcess } from "@/business/data";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import { useSectionWhoosh } from "@/business/useSectionWhoosh";
+import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 

@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { lazy, Suspense, useEffect, useRef } from "react";
 import { projects, type Project } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
@@ -10,35 +10,22 @@ import { CinematicLoadingFrame } from "@/components/LazyFallback";
 import { useTilt3D } from "@/hooks/useTilt3D";
 import { sound } from "@/lib/sound";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { initGsap } from "@/lib/gsap";
+import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
 
-const CinematicFilmStrip = lazy(() =>
-  import("@/components/CinematicFilmStrip").then((module) => ({ default: module.CinematicFilmStrip })),
-);
-const CinematicReelPlayer = lazy(() =>
-  import("@/components/CinematicReelPlayer").then((module) => ({ default: module.CinematicReelPlayer })),
-);
-const ScrollReactiveSculpture = lazy(() =>
-  import("@/components/ScrollReactiveSculpture").then((module) => ({ default: module.ScrollReactiveSculpture })),
-);
-const CinematicLightStudy = lazy(() =>
-  import("@/components/CinematicLightStudy").then((module) => ({ default: module.CinematicLightStudy })),
-);
-const CinematicSculpture = lazy(() =>
-  import("@/components/CinematicSculpture").then((module) => ({ default: module.CinematicSculpture })),
-);
-const MiniCinematicSculpture = lazy(() =>
-  import("@/components/MiniCinematicSculpture").then((module) => ({ default: module.MiniCinematicSculpture })),
-);
-const CinematicSystems = lazy(() =>
-  import("@/components/CinematicSystems").then((module) => ({ default: module.CinematicSystems })),
-);
+const CinematicFilmStrip = lazy(() => import("@/components/CinematicFilmStrip"));
+const CinematicReelPlayer = lazy(() => import("@/components/CinematicReelPlayer"));
+const ScrollReactiveSculpture = lazy(() => import("@/components/ScrollReactiveSculpture"));
+const CinematicLightStudy = lazy(() => import("@/components/CinematicLightStudy"));
+const CinematicSculpture = lazy(() => import("@/components/CinematicSculpture"));
+const MiniCinematicSculpture = lazy(() => import("@/components/MiniCinematicSculpture"));
+const CinematicSystems = lazy(() => import("@/components/CinematicSystems"));
 
 function LazyCinematic({ children, label, title }: { children: React.ReactNode; label: string; title: string }) {
   return <Suspense fallback={<CinematicLoadingFrame label={label} title={title} />}>{children}</Suspense>;
 }
 
-gsap.registerPlugin(ScrollTrigger);
+initGsap();
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -80,7 +67,7 @@ function FeaturedCard({ p, i }: { p: Project; i: number }) {
       ref={ref as React.RefObject<HTMLAnchorElement>}
       href={p.url}
       target="_blank"
-      rel="noreferrer"
+      rel="noopener noreferrer"
       data-cursor="view"
       data-cursor-label="Open ↗"
       onMouseMove={move as unknown as React.MouseEventHandler}
@@ -155,7 +142,7 @@ function Row({ p, i }: { p: Project; i: number }) {
     <motion.a
       href={p.url}
       target="_blank"
-      rel="noreferrer"
+      rel="noopener noreferrer"
       data-cursor="view"
       data-cursor-label="Open ↗"
       initial={{ opacity: 0, y: 20 }}
@@ -227,19 +214,6 @@ function ProofSnapshot({ items }: { items: Project[] }) {
   );
 }
 
-function useSectionWhoosh() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-25% 0px" });
-  const fired = useRef(false);
-  useEffect(() => {
-    if (inView && !fired.current) {
-      fired.current = true;
-      sound.whoosh();
-    }
-  }, [inView]);
-  return ref;
-}
-
 export default function Work() {
   const featured = projects.filter((p) => p.featured);
   const rest = projects.filter((p) => !p.featured);
@@ -264,7 +238,7 @@ export default function Work() {
           }
         />
         <Reveal delay={0.1}>
-          <a href="https://github.com/muhummadzarrar09-sudo" target="_blank" rel="noreferrer" className="link-underline font-mono text-sm text-ink-soft">
+          <a href="https://github.com/muhummadzarrar09-sudo" target="_blank" rel="noopener noreferrer" className="link-underline font-mono text-sm text-ink-soft">
             View all on GitHub ↗
           </a>
         </Reveal>

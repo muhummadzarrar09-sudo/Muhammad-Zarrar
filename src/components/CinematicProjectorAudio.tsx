@@ -1,51 +1,32 @@
 "use client";
 
 import { useEffect } from "react";
-import { sound } from "@/lib/sound";
 
 /**
- * Permanent cinematic projector audio cues.
- * ALWAYS ON for the portfolio (no toggle).
- * Subtle projector hum + soft film-advance sounds during key cinematic moments.
+ * Cinematic projector audio cues — now respects user opt-in via SoundContext.
+ * Previously auto-started ambient, causing state desync and autoplay violations.
+ * Now it only tracks large scroll jumps for future cues, without starting audio.
  */
 export function CinematicProjectorAudio() {
   useEffect(() => {
-    // Start a very subtle permanent cinematic ambient bed (projector room feel)
-    // This is gentle — air + distant pad. Perfect for film experience.
-    const startCinematicBed = () => {
-      if (typeof window === "undefined") return;
-      try {
-        sound.startAmbient();
-      } catch {
-        /* Audio is enhancement-only; never break rendering. */
-      }
-    };
-
-    // Start after first user gesture or a short delay (browsers require interaction)
-    // Even gentler start for quality/calm
-    const timer = setTimeout(() => {
-      startCinematicBed();
-    }, 1850);
-
-    // Ultra-rare, very soft film-advance cues (only on major section jumps)
-    // Quality-first: almost silent, barely audible, luxurious
+    // No auto-start of ambient — SoundContext is single source of truth.
+    // Track large scroll jumps only if future audio cues are desired.
     let lastScroll = 0;
     const onScroll = () => {
       const y = window.scrollY;
       if (Math.abs(y - lastScroll) > 680) {
         lastScroll = y;
-        // Keep this intentionally silent for pure visual quality. The scroll
-        // listener only tracks large jumps in case future cues are added.
       }
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
-      clearTimeout(timer);
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
 
   return null;
 }
+
+export default CinematicProjectorAudio;

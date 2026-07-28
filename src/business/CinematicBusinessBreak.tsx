@@ -36,3 +36,5 @@ export function CinematicBusinessBreak({
     </div>
   );
 }
+
+export default CinematicBusinessBreak;

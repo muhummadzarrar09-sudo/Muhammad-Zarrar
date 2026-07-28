@@ -24,7 +24,14 @@ export default function BusinessContact() {
   const [form, setForm] = useState<FormState>(empty);
   const [sent, setSent] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const [fallbackUrl, setFallbackUrl] = useState<string | null>(null);
   const timers = useRef<number[]>([]);
+
+  const MAX_NAME = 80;
+  const MAX_BUSINESS = 100;
+  const MAX_PHONE = 30;
+  const MAX_MESSAGE = 500;
 
   const schedule = (callback: () => void, delay: number) => {
     const timer = window.setTimeout(() => {
@@ -38,51 +45,73 @@ export default function BusinessContact() {
     return () => timers.current.forEach((timer) => clearTimeout(timer));
   }, []);
 
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const text = encodeURIComponent(
-      `Assalamualaikum Zarrar.Solutions,
-
-` +
-        `Name: ${form.name || "—"}
-` +
-        `Business: ${form.business || "—"}
-` +
-        `Business type: ${form.type || "—"}
-` +
-        `Phone/WhatsApp: ${form.phone || "—"}
-` +
-        `Need: ${form.need || "—"}
-` +
-        `Message: ${form.message || "—"}`,
-    );
-    const url = `https://wa.me/${biz.whatsapp}?text=${text}`;
-    const opened = window.open(url, "_blank", "noopener,noreferrer");
-    if (!opened) window.location.href = url;
-    setSent(true);
-    schedule(() => setSent(false), 2500);
+  const validate = (f: FormState): Partial<Record<keyof FormState, string>> => {
+    const e: Partial<Record<keyof FormState, string>> = {};
+    if (!f.name.trim()) e.name = "Name is required.";
+    else if (f.name.length > MAX_NAME) e.name = `Name must be under ${MAX_NAME} chars.`;
+    if (f.business.length > MAX_BUSINESS) e.business = `Business name must be under ${MAX_BUSINESS} chars.`;
+    if (f.phone.length > MAX_PHONE) e.phone = `Phone must be under ${MAX_PHONE} chars.`;
+    if (f.message.length > MAX_MESSAGE) e.message = `Message must be under ${MAX_MESSAGE} chars.`;
+    return e;
   };
 
-  const set = (k: keyof FormState, v: string) => setForm((f) => ({ ...f, [k]: v }));
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const nextErrors = validate(form);
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      return;
+    }
+    setErrors({});
+    const raw =
+      `Assalamualaikum Zarrar.Solutions,\n\n` +
+      `Name: ${form.name.trim() || "—"}\n` +
+      `Business: ${form.business.trim() || "—"}\n` +
+      `Business type: ${form.type || "—"}\n` +
+      `Phone/WhatsApp: ${form.phone.trim() || "—"}\n` +
+      `Need: ${form.need || "—"}\n` +
+      `Message: ${form.message.trim() || "—"}`;
+
+    const text = encodeURIComponent(raw);
+    const url = `https://wa.me/${biz.whatsapp}?text=${text}`;
+    if (url.length > 1800) {
+      setErrors({ message: "Message too long for WhatsApp link. Please shorten it." });
+      return;
+    }
+    try {
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
+      if (!opened) {
+        setFallbackUrl(url);
+      }
+    } catch {
+      setFallbackUrl(url);
+    }
+    setSent(true);
+    schedule(() => setSent(false), 3500);
+  };
+
+  const setField = (k: keyof FormState, v: string) => {
+    setForm((f) => ({ ...f, [k]: v }));
+    if (k in errors) setErrors((prev) => ({ ...prev, [k]: undefined }));
+  };
+
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(biz.email);
       setCopied(true);
       schedule(() => setCopied(false), 1800);
     } catch {
-      window.location.href = `mailto:${biz.email}`;
+      setFallbackUrl(`mailto:${biz.email}`);
     }
   };
 
   return (
     <section id="contact" className="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
-      {/* Same dark "ink" card as the main portfolio Contact */}
       <div className="relative overflow-hidden rounded-[2rem] border border-line bg-ink px-6 py-16 text-canvas sm:px-12 sm:py-20">
         <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-spark/30 blur-[90px]" />
         <div className="pointer-events-none absolute -bottom-24 -left-10 h-72 w-72 rounded-full bg-circuit/30 blur-[90px]" />
 
         <div className="relative grid gap-12 lg:grid-cols-[1fr_1.1fr]">
-          {/* LEFT — pitch + CTAs */}
           <div>
             <Reveal>
               <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-canvas/50">
@@ -107,7 +136,7 @@ export default function BusinessContact() {
                 <MagneticButton href={biz.whatsappCta} cursorLabel="WhatsApp" className="bg-spark text-canvas hover:bg-canvas hover:text-ink">
                   <WhatsAppIcon /> Talk on WhatsApp
                 </MagneticButton>
-                <button
+                <button type="button"
                   onClick={copy}
                   data-hover
                   data-cursor-label="Copy email"
@@ -124,7 +153,6 @@ export default function BusinessContact() {
               </div>
             </Reveal>
 
-            {/* contact rows */}
             <Reveal delay={0.32}>
               <div className="mt-10 flex flex-wrap gap-x-10 gap-y-6 border-t border-canvas/10 pt-8">
                 {[
@@ -135,7 +163,7 @@ export default function BusinessContact() {
                   <div key={s.label}>
                     <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-canvas/40">{s.label}</div>
                     {s.url ? (
-                      <a href={s.url} target={s.url.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className="group mt-1 flex items-center gap-1.5">
+                      <a href={s.url} target={s.url.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="group mt-1 flex items-center gap-1.5">
                         <span className="link-underline text-canvas/90 transition-colors group-hover:text-spark">{s.handle}</span>
                         <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
                       </a>
@@ -148,7 +176,6 @@ export default function BusinessContact() {
             </Reveal>
           </div>
 
-          {/* RIGHT — functional form → WhatsApp, dark-styled */}
           <motion.form
             onSubmit={submit}
             initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
@@ -156,28 +183,29 @@ export default function BusinessContact() {
             viewport={{ once: true, margin: "-12% 0px" }}
             transition={{ delay: 0.12, duration: 0.8, ease: EASE }}
             className="space-y-4 rounded-2xl border border-canvas/12 bg-canvas/[0.03] p-6"
+            noValidate
           >
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Your name" dark>
-                <input required value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Ahmed" className={inputDark} />
+              <Field label="Your name" error={errors.name} dark>
+                <input required maxLength={MAX_NAME} value={form.name} onChange={(e) => setField("name", e.target.value)} placeholder="e.g. Ahmed" className={inputDark} />
               </Field>
-              <Field label="Business name" dark>
-                <input value={form.business} onChange={(e) => set("business", e.target.value)} placeholder="e.g. Al-Madina Garments" className={inputDark} />
+              <Field label="Business name" error={errors.business} dark>
+                <input maxLength={MAX_BUSINESS} value={form.business} onChange={(e) => setField("business", e.target.value)} placeholder="e.g. Al-Madina Garments" className={inputDark} />
               </Field>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Business type" dark>
-                <Dropdown dark value={form.type} options={BUSINESS_TYPES} onChange={(v) => set("type", v)} />
+                <Dropdown dark value={form.type} options={BUSINESS_TYPES} onChange={(v) => setField("type", v)} />
               </Field>
-              <Field label="Phone / WhatsApp" dark>
-                <input value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="03xx-xxxxxxx" className={inputDark} />
+              <Field label="Phone / WhatsApp" error={errors.phone} dark>
+                <input maxLength={MAX_PHONE} value={form.phone} onChange={(e) => setField("phone", e.target.value)} placeholder="03xx-xxxxxxx" className={inputDark} />
               </Field>
             </div>
             <Field label="What do you need?" dark>
-              <Dropdown dark value={form.need} options={NEEDS} onChange={(v) => set("need", v)} />
+              <Dropdown dark value={form.need} options={NEEDS} onChange={(v) => setField("need", v)} />
             </Field>
-            <Field label="Message" dark>
-              <textarea rows={3} value={form.message} onChange={(e) => set("message", e.target.value)} placeholder="A sentence or two about your business and goals…" className={`${inputDark} resize-none`} />
+            <Field label="Message" error={errors.message} dark>
+              <textarea rows={3} maxLength={MAX_MESSAGE} value={form.message} onChange={(e) => setField("message", e.target.value)} placeholder="A sentence or two about your business and goals…" className={`${inputDark} resize-none`} />
             </Field>
             <MagneticButton type="submit" className="w-full justify-center bg-spark text-canvas hover:bg-canvas hover:text-ink" cursorLabel="Send">
               <AnimatePresence mode="wait">
@@ -188,6 +216,15 @@ export default function BusinessContact() {
                 )}
               </AnimatePresence>
             </MagneticButton>
+            {fallbackUrl && (
+              <p className="rounded-lg bg-canvas/10 p-3 text-center text-xs text-canvas/80">
+                Popup blocked?{" "}
+                <a href={fallbackUrl} target="_blank" rel="noopener noreferrer" className="underline">
+                  Open WhatsApp link
+                </a>{" "}
+                or copy email.
+              </p>
+            )}
             <p className="text-center font-mono text-[10px] uppercase tracking-wider text-canvas/30">
               Your details open a ready-to-send WhatsApp message
             </p>
@@ -201,11 +238,12 @@ export default function BusinessContact() {
 const inputDark =
   "w-full rounded-lg border border-canvas/20 bg-canvas/5 px-3.5 py-2.5 text-sm text-canvas placeholder-canvas/30 outline-none transition-colors focus:border-spark/60";
 
-function Field({ label, children, dark }: { label: string; children: React.ReactNode; dark?: boolean }) {
+function Field({ label, children, dark, error }: { label: string; children: React.ReactNode; dark?: boolean; error?: string }) {
   return (
     <label className="block">
       <span className={`mb-1.5 block font-mono text-[11px] uppercase tracking-wider ${dark ? "text-canvas/40" : "text-muted"}`}>{label}</span>
       {children}
+      {error && <span className="mt-1 block text-xs text-spark-soft">{error}</span>}
     </label>
   );
 }

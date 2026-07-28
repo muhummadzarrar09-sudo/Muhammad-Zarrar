@@ -3,6 +3,9 @@
 import { marquee } from "@/data/portfolio";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { initGsap } from "@/lib/gsap";
+
+initGsap();
 
 /**
  * Cinematic marquee — Awwwards style.
@@ -15,6 +18,7 @@ export default function Marquee() {
   const row = [...marquee, ...marquee];
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const el = containerRef.current;
     if (!el) return;
 
@@ -27,20 +31,25 @@ export default function Marquee() {
       repeat: -1,
     });
 
-    // Scroll influence — slower when scrolling down
+    // Scroll influence — slower when scrolling down, throttled
     let lastY = window.scrollY;
+    let ticking = false;
     const onScroll = () => {
-      const currentY = window.scrollY;
-      const delta = currentY - lastY;
-      lastY = currentY;
-
-      if (Math.abs(delta) > 1) {
-        const speed = delta > 0 ? 0.6 : 1.4;
-        anim.timeScale(speed);
-        setTimeout(() => {
-          if (anim) anim.timeScale(1);
-        }, 800);
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const currentY = window.scrollY;
+        const delta = currentY - lastY;
+        lastY = currentY;
+        if (Math.abs(delta) > 1 && anim) {
+          const speed = delta > 0 ? 0.6 : 1.4;
+          anim.timeScale(speed);
+          window.setTimeout(() => {
+            if (anim) anim.timeScale(1);
+          }, 800);
+        }
+        ticking = false;
+      });
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });

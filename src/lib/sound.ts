@@ -187,16 +187,20 @@ class SoundEngine {
       nodes.forEach((n) => {
         try {
           n.stop();
-        } catch {
-          /* already stopped */
+        } catch (err) {
+          if (import.meta.env.DEV) console.warn("SoundEngine stop failed (already stopped)", err);
         }
         try {
           n.disconnect();
-        } catch {
-          /* noop */
+        } catch (err) {
+          if (import.meta.env.DEV) console.warn("SoundEngine disconnect failed", err);
         }
       });
-      this.ambientGain?.disconnect();
+      try {
+        this.ambientGain?.disconnect();
+      } catch (err) {
+        if (import.meta.env.DEV) console.warn("ambientGain disconnect failed", err);
+      }
       this.ambientNodes = [];
       this.ambientStopTimer = null;
     }, 760);

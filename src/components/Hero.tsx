@@ -10,9 +10,7 @@ import { CinematicSpacer } from "@/components/CinematicSpacer";
 import { CinematicLoadingFrame } from "@/components/LazyFallback";
 import { navigate } from "@/router";
 
-const CinematicSculpture = lazy(() =>
-  import("@/components/CinematicSculpture").then((module) => ({ default: module.CinematicSculpture })),
-);
+const CinematicSculpture = lazy(() => import("@/components/CinematicSculpture"));
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -174,7 +172,7 @@ export default function Hero() {
             <a
               href={profile.github}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="link-underline"
             >
               @{profile.handle}

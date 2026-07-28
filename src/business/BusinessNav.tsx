@@ -18,13 +18,21 @@ export default function BusinessNav() {
       (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
       { rootMargin: "-45% 0px -50% 0px" },
     );
-    bizLinks.forEach((l) => {
-      const el = document.getElementById(l.id);
-      if (el) obs.observe(el);
-    });
+    const observeAll = () => {
+      bizLinks.forEach((l) => {
+        const el = document.getElementById(l.id);
+        if (el) obs.observe(el);
+      });
+    };
+    observeAll();
+    const mo = new MutationObserver(() => observeAll());
+    mo.observe(document.body, { childList: true, subtree: true });
+    const timer = window.setTimeout(observeAll, 2000);
     return () => {
       window.removeEventListener("scroll", onScroll);
       obs.disconnect();
+      mo.disconnect();
+      clearTimeout(timer);
     };
   }, []);
 
@@ -48,13 +56,13 @@ export default function BusinessNav() {
           )}
         >
           <div className="flex items-center gap-3 pl-2">
-            <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               <span className="font-display text-base font-medium tracking-tight">
                 Zarrar<span className="text-spark">.Solutions</span>
               </span>
             </button>
             <span className="h-4 w-px bg-line" />
-            <button
+            <button type="button"
               onClick={() => navigate("/")}
               data-hover
               data-cursor-label="Back"
@@ -67,7 +75,7 @@ export default function BusinessNav() {
 
           <div className="hidden items-center gap-1 md:flex">
             {bizLinks.map((l) => (
-              <button
+              <button type="button"
                 key={l.id}
                 onClick={() => go(l.id)}
                 data-hover
@@ -86,7 +94,7 @@ export default function BusinessNav() {
 
           <div className="flex items-center gap-2">
             <SoundToggle />
-            <button
+            <button type="button"
               onClick={() => go("contact")}
               data-hover
               data-cursor-label="Hire"
@@ -94,7 +102,7 @@ export default function BusinessNav() {
             >
               Start a project
             </button>
-            <button
+            <button type="button"
               onClick={() => setOpen((o) => !o)}
               aria-label="Menu"
               data-hover
@@ -148,7 +156,7 @@ export default function BusinessNav() {
 
 export function BackToPortfolio() {
   return (
-    <button
+    <button type="button"
       onClick={() => navigate("/")}
       data-hover
       data-cursor-label="Back"

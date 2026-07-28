@@ -49,3 +49,5 @@ export function CinematicBreak({ image, label, headline, sub, align = "left" }: 
     </div>
   );
 }
+
+export default CinematicBreak;

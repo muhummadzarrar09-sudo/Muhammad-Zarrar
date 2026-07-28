@@ -4,9 +4,7 @@ import { biz } from "@/business/data";
 import { MagneticButton, RevealWords } from "@/components/primitives";
 import { CinematicLoadingFrame } from "@/components/LazyFallback";
 
-const CalmSculpture = lazy(() =>
-  import("./CalmSculpture").then((module) => ({ default: module.CalmSculpture })),
-);
+const CalmSculpture = lazy(() => import("./CalmSculpture"));
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 

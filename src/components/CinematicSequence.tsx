@@ -62,7 +62,7 @@ export function CinematicSequence() {
   };
 
   return (
-    <button
+    <button type="button"
       onClick={playSequence}
       disabled={isPlaying}
       className="group inline-flex items-center gap-3 rounded-full border border-spark/40 bg-spark/5 px-9 py-4 text-sm font-mono tracking-[2.2px] text-spark transition-all hover:bg-spark hover:text-canvas active:scale-[0.985] disabled:opacity-60"
@@ -72,3 +72,4 @@ export function CinematicSequence() {
     </button>
   );
 }
+export default CinematicSequence;

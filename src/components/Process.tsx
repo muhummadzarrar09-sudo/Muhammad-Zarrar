@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { process } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
@@ -10,41 +10,27 @@ import { CinematicLoadingFrame } from "@/components/LazyFallback";
 import { cn } from "@/utils/cn";
 import { sound } from "@/lib/sound";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { initGsap } from "@/lib/gsap";
+import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
 
-const CinematicSculpture = lazy(() =>
-  import("@/components/CinematicSculpture").then((module) => ({ default: module.CinematicSculpture })),
-);
-const MiniCinematicSculpture = lazy(() =>
-  import("@/components/MiniCinematicSculpture").then((module) => ({ default: module.MiniCinematicSculpture })),
-);
-const ScrollReactiveSculpture = lazy(() =>
-  import("@/components/ScrollReactiveSculpture").then((module) => ({ default: module.ScrollReactiveSculpture })),
-);
+const CinematicSculpture = lazy(() => import("@/components/CinematicSculpture"));
+const MiniCinematicSculpture = lazy(() => import("@/components/MiniCinematicSculpture"));
+const ScrollReactiveSculpture = lazy(() => import("@/components/ScrollReactiveSculpture"));
 
 function LazyCinematic({ children, label, title }: { children: React.ReactNode; label: string; title: string }) {
   return <Suspense fallback={<CinematicLoadingFrame label={label} title={title} />}>{children}</Suspense>;
 }
 
-gsap.registerPlugin(ScrollTrigger);
-
-function useWhoosh() {
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-25% 0px" });
-  const fired = useRef(false);
-  useEffect(() => {
-    if (inView && !fired.current) { fired.current = true; sound.whoosh(); }
-  }, [inView]);
-  return ref;
-}
+initGsap();
 
 export default function Process() {
   const [active, setActive] = useState(0);
   const activeRef = useRef(0);
-  const sectionRef = useWhoosh();
+  const sectionRef = useSectionWhoosh();
   const stepsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const el = stepsRef.current;
     if (!el) return;
 
