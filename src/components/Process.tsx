@@ -1,214 +1,60 @@
-import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { process } from "@/data/portfolio";
+import { process as processData } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import { KineticText } from "@/components/KineticText";
-import { CinematicImage } from "@/components/CinematicImage";
-import { CinematicChapter } from "@/components/CinematicChapter";
-import { CinematicSpacer } from "@/components/CinematicSpacer";
-import { cn } from "@/utils/cn";
-import { sound } from "@/lib/sound";
-import { gsap } from "gsap";
-import { initGsap } from "@/lib/gsap";
-import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
-
-initGsap();
 
 export default function Process() {
-  const [active, setActive] = useState(0);
-  const activeRef = useRef(0);
-  const sectionRef = useSectionWhoosh();
-  const stepsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const el = stepsRef.current;
-    if (!el) return;
-
-    const ctx = gsap.context(() => {
-      // Scroll-driven cinematic highlight on process cards
-      const cards = el.querySelectorAll(".process-step");
-
-      cards.forEach((card, i) => {
-        gsap.to(card, {
-          scrollTrigger: {
-            trigger: card,
-            start: "top 72%",
-            end: "bottom 28%",
-            scrub: 1.4,
-            onUpdate: (self) => {
-              if (self.progress > 0.5 && activeRef.current !== i) {
-                activeRef.current = i;
-                setActive(i);
-              }
-            },
-          },
-        });
-      });
-    }, el);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section id="process" ref={sectionRef} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
-      <span className="pointer-events-none absolute -left-4 top-8 select-none font-display text-[14rem] font-light leading-none tracking-tightest text-ink/[0.025] sm:-left-8" aria-hidden>
-        04
-      </span>
-
+    <section id="process" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <SectionHeading
           index="04"
           label="Process"
           title={
             <>
-              Like a studio —
+              How I like to
               <br />
-              <KineticText text="research, brand, build, repeat." mode="refined" className="italic text-spark" />
+              <span className="italic text-clay">actually work.</span>
             </>
           }
         />
-        <Reveal delay={0.1}>
-          <p className="max-w-sm text-base leading-relaxed text-ink-soft">
-            Four phases. Every decision is deliberate. Every detail earns its place.
+        <Reveal delay={0.08} className="max-w-sm">
+          <p className="text-[14px] leading-relaxed text-muted">
+            No big agency deck. Just 4 simple steps I keep coming back to. Research first, then
+            build small and ship.
           </p>
         </Reveal>
       </div>
 
-      {/* Opening cinematic chapter for Process */}
-      <CinematicChapter 
-        image="/images/cinematic-01.jpg"
-        chapter="ACT I — THE APPROACH"
-        title="We don’t start with code."
-        body="We start with light, with silence, with the problem. Then we build the story."
-        variant="slowZoom"
-      />
+      <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {processData.map((s, i) => (
+          <Reveal key={s.no} delay={i * 0.06}>
+            <div className="human-card flex h-full flex-col rounded-[1.4rem] border border-line bg-surface p-7">
+              <div className="flex items-baseline justify-between">
+                <span className="font-display text-5xl font-light tracking-tightest text-ink/10">
+                  {s.no}
+                </span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay">{s.role}</span>
+              </div>
+              <h3 className="mt-6 font-display text-xl font-medium tracking-tight">{s.title}</h3>
+              <p className="mt-3 text-[13.5px] leading-relaxed text-ink-soft">{s.body}</p>
 
-      {/* Cinematic process opener — strong kinetic still */}
-      <div className="mb-8 relative h-[320px] rounded-3xl overflow-hidden">
-        <CinematicImage 
-          src="/images/cinematic-04.jpg" 
-          variant="parallax" 
-          intensity={1.4}
-          className="h-full w-full" 
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/75" />
-        <div className="absolute inset-x-8 bottom-10">
-          <div className="font-mono tracking-[3px] text-spark text-xs mb-3">THE METHOD</div>
-          <KineticText 
-            text="Research. Define. Design. Deploy." 
-            mode="refined" 
-            className="font-display text-[38px] leading-none text-canvas tracking-[-1.2px]" 
-          />
-        </div>
-      </div>
-
-      {/* FULL SHORT FILM — Process as a 4-act cinematic experience */}
-      <CinematicChapter 
-        image="/images/cinematic-02.jpg"
-        chapter="ACT I — RESEARCH"
-        title="We listen before we build."
-        body="The first frame is always the problem. We sit with it until it tells us what it needs."
-        variant="slowZoom"
-      />
-
-      <CinematicChapter 
-        image="/images/cinematic-05.jpg"
-        chapter="ACT II — DEFINE"
-        title="We turn chaos into story."
-        body="Every system needs a clear point of view. We write the script before we shoot the pixels."
-        variant="parallax"
-      />
-
-      <CinematicChapter 
-        image="/images/cinematic-03.jpg"
-        chapter="ACT III — DESIGN & MOTION"
-        title="Light and motion are the actors."
-        body="This is where the film comes alive. Every transition, every shadow, every hover has intention."
-        variant="slowZoom"
-      />
-
-      <CinematicChapter 
-        image="/images/cinematic-06.jpg"
-        chapter="ACT IV — DEPLOY"
-        title="Then we ship with certainty."
-        body="No loose ends. The final cut is clean, deliberate, and ready for the audience."
-        variant="slowZoom"
-      />
-
-      <CinematicSpacer height={130} />
-
-      <div ref={stepsRef} className="mt-6 grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-4">
-        {process.map((s, i) => (
-          <motion.div
-            key={s.no}
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10% 0px" }}
-            transition={{ delay: i * 0.07, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            onMouseEnter={() => { activeRef.current = i; setActive(i); sound.pew(); }}
-            data-hover
-            data-cursor-label={active === i ? "Active" : "Hover"}
-            className={cn(
-              "process-step relative flex flex-col gap-5 bg-canvas p-7 transition-all duration-500 sm:p-8",
-              active === i ? "bg-ink text-canvas scale-[1.005] shadow-2xl shadow-ink/40" : ""
-            )}
-          >
-            <div className="flex items-center justify-between">
-              <span
-                className={cn(
-                  "font-display text-6xl font-light tracking-tighter transition-colors",
-                  active === i ? "text-spark" : "text-ink/10"
-                )}
-              >
-                {s.no}
-              </span>
-              <span
-                className={cn(
-                  "h-2.5 w-2.5 rounded-full transition-all duration-500",
-                  active === i ? "scale-100 bg-spark" : "scale-50 bg-line"
-                )}
-              />
-            </div>
-
-            <div>
-              <h3 className="font-display text-[26px] font-medium tracking-tight leading-none">
-                <KineticText text={s.title} mode="stagger" scrollTrigger={false} />
-              </h3>
-              <div className={cn("mt-2.5 font-mono text-[11px] uppercase tracking-[0.18em]", active === i ? "text-spark-soft" : "text-spark")}>
-                {s.role}
+              {/* Human note */}
+              <div className="mt-auto pt-6 font-mono text-[10px] leading-relaxed text-faint">
+                {i === 0 && "I ask a lot of dumb questions here."}
+                {i === 1 && "If I can't sketch it on paper, I don't start coding."}
+                {i === 2 && "Motion only if it helps understanding."}
+                {i === 3 && "Ship, then listen, then fix."}
               </div>
             </div>
-
-            <p className={cn("text-sm leading-relaxed", active === i ? "text-canvas/70" : "text-muted")}>
-              {s.body}
-            </p>
-          </motion.div>
+          </Reveal>
         ))}
       </div>
 
-      <Reveal delay={0.1}>
-        <p className="mt-9 max-w-2xl text-sm leading-relaxed text-muted">
-          Whether it’s an autonomous agent or a full product, the same belief holds: great software is part research, part branding, part layout and part motion — then the engineering to make it real.
-        </p>
-      </Reveal>
-
-      {/* Cinematic closer for process */}
-      <div className="mt-16 relative h-[220px] rounded-3xl overflow-hidden">
-        <CinematicImage 
-          src="/images/cinematic-06.jpg" 
-          variant="reveal" 
-          intensity={0.7}
-          className="h-full w-full" 
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/70" />
-        <div className="absolute inset-0 flex items-center px-8">
-          <div className="max-w-md text-canvas">
-            <div className="font-mono text-xs tracking-widest text-spark mb-1">END OF PHASE</div>
-            <div className="font-display text-3xl tracking-tight">Then we ship with certainty.</div>
-          </div>
+      <Reveal delay={0.16} className="mt-10">
+        <div className="rounded-[1.2rem] border border-line bg-canvas-deep/50 px-6 py-5 font-mono text-xs leading-relaxed text-muted">
+          My belief: great software is 30% code, 70% understanding the problem. So I spend more time
+          listening than typing at the start.
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
