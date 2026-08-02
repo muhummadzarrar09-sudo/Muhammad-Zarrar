@@ -10,7 +10,7 @@ export default function Hero() {
       className="relative mx-auto max-w-6xl px-5 pt-32 pb-20 sm:px-8 sm:pt-40 sm:pb-28"
     >
       <div className="mx-auto max-w-[820px]">
-        {/* Eyebrow — personal, handwritten feel */}
+        {/* Eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -18,7 +18,7 @@ export default function Hero() {
           className="mb-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted"
         >
           <span className="h-px w-8 bg-line" />
-          <span>Personal folio — {new Date().getFullYear()}</span>
+          <span>Personal folio — {new Date().getFullYear()} • {profile.bio}</span>
           <span className="hidden h-1 w-1 rounded-full bg-muted sm:block" />
           <span className="hidden sm:block">{profile.location}</span>
         </motion.div>
@@ -30,9 +30,7 @@ export default function Hero() {
           className="font-display text-[clamp(2.8rem,9vw,5.6rem)] font-light leading-[0.95] tracking-tightest text-balance"
         >
           <span className="block">I&apos;m Zarrar —</span>
-          <span className="block font-light italic text-clay tracking-human">
-            I build things people
-          </span>
+          <span className="block font-light italic text-clay tracking-human">I build things people</span>
           <span className="block font-light italic text-clay tracking-human">actually use.</span>
         </motion.h1>
 
@@ -43,22 +41,23 @@ export default function Hero() {
           className="mt-10 max-w-[66ch] space-y-5 text-[17px] leading-[1.75] text-ink-soft text-pretty sm:text-[18px]"
         >
           <p>
-            Hey — I&apos;m <span className="font-medium text-ink">Muhammad Zarrar</span>, a
-            full-stack developer and AI systems guy from Rawalpindi. I like taking rough,
-            messy ideas and turning them into working software — voice agents that
-            listen, dashboards that don&apos;t suck, booking flows, catalog systems,
-            little automations that delete boring work.
+            Hey — I&apos;m <span className="font-medium text-ink">{profile.name}</span>, a {profile.role.toLowerCase()} from Rawalpindi.
+            I like taking messy ideas and turning them into working software — whether that&apos;s{" "}
+            <span className="text-ink">voice agents that listen</span>,{" "}
+            <span className="text-ink">a study OS that keeps me locked in</span>, or{" "}
+            <span className="text-ink">Kotlin apps that analyze golf swings frame-by-frame</span>.
           </p>
           <p className="text-[16px] leading-[1.7] text-muted">
-            No agency fluff. I design it, build it, ship it, fix it. I care about speed,
-            clarity, and the feeling when something just works. Right now I&apos;m deep
-            in <span className="text-ink">Omni</span> — a push-to-talk voice agent with
-            local AI + browser automation — and <span className="text-ink">Operator-OS</span>, a supervision layer for
-            autonomous operators.
+            No agency fluff. I design it, build it, ship it, harden it. Right now I&apos;m deep in{" "}
+            <span className="text-ink">Omni</span> (push-to-talk browser agent, 36 commits, 14 test
+            suites), <span className="text-ink">LOCK-IN</span> (Next.js + Supabase study OS, 121
+            commits, 8 branches, auth audits), and{" "}
+            <span className="text-ink">SwingFrame</span> (Kotlin video engine + AI diagnostics for golf,
+            custom graffiti golfer logo, last shipped 2 days ago).
           </p>
         </motion.div>
 
-        {/* Human meta strip — avatar + tiny notes */}
+        {/* Human meta strip */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -86,11 +85,10 @@ export default function Hero() {
               @{profile.handle}
             </a>
             <span className="hidden h-3 w-px bg-line-soft sm:block" />
-            <span>14+ repos shipped</span>
+            <span>21+ repos • 437 contributions</span>
           </div>
         </motion.div>
 
-        {/* CTAs — human, no magnetic trick */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -118,30 +116,37 @@ export default function Hero() {
           </a>
         </motion.div>
 
-        {/* Now / handwritten note block */}
+        {/* Now */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.85, duration: 0.8 }}
           className="mt-16 grid gap-3 rounded-[1.6rem] border border-line bg-surface/80 p-6 sm:grid-cols-[auto_1fr] sm:items-start sm:gap-6 sm:p-7"
         >
-          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay">Now</div>
-          <div className="space-y-2 text-[13.5px] leading-relaxed text-ink-soft">
+          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay">Now — Aug 2 2026</div>
+          <div className="space-y-2.5 text-[13.5px] leading-relaxed text-ink-soft">
             <div className="flex gap-3">
               <span className="mt-[9px] h-px w-6 shrink-0 bg-clay/40" />
               <span>
-                Building voice-first UX — push-to-talk, local inference, browser as an API.
-                Obsessed with latency &lt; 300ms.
+                <span className="text-ink">Omni:</span> Push-to-talk + local inference. Obsessed with &lt;300ms. 14 test
+                suites green.
+              </span>
+            </div>
+            <div className="flex gap-3">
+              <span className="mt-[9px] h-px w-6 shrink-0 bg-clay/30" />
+              <span>
+                <span className="text-ink">LOCK-IN:</span> Supabase RLS hardening + data-leak audit + premium UX. My own study OS I actually use.
               </span>
             </div>
             <div className="flex gap-3 text-muted">
               <span className="mt-[9px] h-px w-6 shrink-0 bg-line" />
-              <span>Learning: edge TTS, tool-use evals, designing for hands-free.</span>
+              <span>
+                <span className="text-ink">SwingFrame:</span> Kotlin video engine for golf — graffiti human golfer logo, cold-boot splash, AI diagnostics. Shipped phase 1 & 2 Jul 31.
+              </span>
             </div>
           </div>
         </motion.div>
 
-        {/* Scroll cue — minimal */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -150,7 +155,7 @@ export default function Hero() {
         >
           <span>Scroll</span>
           <span className="h-px w-12 bg-line-soft" />
-          <span className="text-muted">work & notes below</span>
+          <span className="text-muted">live work below — from GitHub</span>
         </motion.div>
       </div>
     </section>
