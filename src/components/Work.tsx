@@ -63,22 +63,6 @@ export default function Work() {
                 <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">Outcome</div>
                 <div className="mt-1 text-[13px] leading-relaxed text-ink-soft">{p.outcome}</div>
               </div>
-
-              <div className="mt-5 flex flex-wrap gap-1.5">
-                {p.proof.map((proof) => (
-                  <span key={proof} className="rounded-full border border-line bg-canvas-deep/60 px-3 py-1 font-mono text-[10px] text-ink-soft">
-                    {proof}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mt-auto flex flex-wrap gap-1.5 pt-5">
-                {p.stack.map((s) => (
-                  <span key={s} className="rounded-full bg-canvas-deep px-3 py-1 font-mono text-[10px] text-muted">
-                    {s}
-                  </span>
-                ))}
-              </div>
             </a>
           </Reveal>
         ))}
