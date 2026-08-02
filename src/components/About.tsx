@@ -41,11 +41,13 @@ export default function About() {
                 why you see Kotlin Android next to Python voice agents on my GitHub.
               </p>
               <p className="text-muted">
-                Day-to-day now is TypeScript + Next.js + Supabase (LOCK-IN: 121 commits, auth audits,
-                RLS hardening), Kotlin Android (SwingFrame golf video engine + AI diagnostics — shipped
-                phase 1 & 2 Jul 31), and Python voice (Omni: push-to-talk, local AI, 14 test suites).
-                Plus experimental stuff like Recto — 35 commits, console errors side-by-side so crashes
-                are visible.
+                Day-to-day now is TypeScript + Next.js + Supabase (LOCK-IN: CLIENT PROJECT — 121
+                commits Jul 30, auth audits, RLS hardening, Cloudflare — not personal OS), Kotlin
+                Android (SwingFrame golf video engine + AI diagnostics — shipped phase 1 & 2 Jul 31),
+                and Python voice (Omni: push-to-talk, local AI, 14 test suites). Plus latest Aug 1:
+                Recto — 35 commits, console errors side-by-side so crashes are visible — and Jul 22-23
+                TheStandard enrollment v2 + retailflow Marigold & Clay storefront + TheDesiEdit
+                GSAP/Lenis landing.
               </p>
               <p className="text-muted">
                 Outside code — quiet mornings, long walks, notes I&apos;ll never organize. Learning to write
@@ -93,12 +95,13 @@ export default function About() {
                 </div>
                 <div className="flex justify-between">
                   <span>Now</span>
-                  <span className="text-clay">Omni / LOCK-IN / SwingFrame</span>
+                  <span className="text-clay">Recto / SwingFrame / LOCK-IN CLIENT</span>
                 </div>
                 <div className="h-px bg-line-soft" />
                 <div className="text-[12px] leading-relaxed text-ink-soft">
-                  {profile.availability}. I build in public — 4 pinned repos, 21+ public repos, 437
-                  contributions last year. Best way is email.
+                  {profile.availability}. Latest by commit: Recto Aug1, SwingFrame Aug1, forms Jul30,
+                  LOCK-IN CLIENT Jul30, TheStandard Jul23, retailflow Jul22, Omni Jul19, TheDesiEdit
+                  Jul16. Best way is email.
                 </div>
               </div>
               <a
@@ -125,7 +128,7 @@ export default function About() {
                 ))}
               </div>
               <p className="mt-4 text-[12px] leading-relaxed text-muted">
-                Pinned: Omni, forms, bookings, LOCK-IN. Last shippings: SwingFrame Jul 31, Recto Jul 16, forms + LOCK-IN Jul 30, Omni Jul 19.
+                Ordered by latest commit (not pinned): Recto Aug1, SwingFrame Aug1, forms Jul30, LOCK-IN CLIENT Jul30, TheStandard Jul23, retailflow Jul22, Omni Jul19, TheDesiEdit Jul16.
               </p>
             </div>
           </Reveal>
