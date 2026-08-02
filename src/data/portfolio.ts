@@ -122,20 +122,6 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    name: "forms",
-    tag: "Forms Engine",
-    year: "2026",
-    stack: ["TypeScript", "Next.js", "Prisma"],
-    blurb: "Free/cheap Typeform alternative you can embed anywhere. Built with audit trail and isolated test DB.",
-    description:
-      "Jul 30 2026, 86 commits, 6 branches. Docs: handoff-audit, ui-ux-audit, revival-plan, TESTING.md (isolated DB), DEPLOYMENT.md Supabase/Vercel, batches/ reports. Full story in docs, not in tag.",
-    outcome: "Embeddable forms with real handoff docs and deploy runbook.",
-    proof: ["Next.js", "Prisma", "Audit Trail", "E2E Isolation"],
-    url: "https://github.com/muhummadzarrar09-sudo/forms",
-    accent: "#D88A6E",
-    featured: true,
-  },
-  {
     name: "LOCK-IN",
     tag: "Client Project",
     year: "2026",
@@ -147,6 +133,20 @@ export const projects: Project[] = [
     proof: ["Client", "Supabase", "Cloudflare", "Auth Hardening"],
     url: "https://github.com/muhummadzarrar09-sudo/LOCK-IN",
     accent: "#2D3A32",
+    featured: true,
+  },
+  {
+    name: "forms",
+    tag: "Forms Engine",
+    year: "2026",
+    stack: ["TypeScript", "Next.js", "Prisma"],
+    blurb: "Free/cheap Typeform alternative you can embed anywhere. Built with audit trail and isolated test DB.",
+    description:
+      "Jul 30 2026, 86 commits, 6 branches. Docs: handoff-audit, ui-ux-audit, revival-plan, TESTING.md (isolated DB), DEPLOYMENT.md Supabase/Vercel, batches/ reports. Full story in docs, not in tag.",
+    outcome: "Embeddable forms with real handoff docs and deploy runbook.",
+    proof: ["Next.js", "Prisma", "Audit Trail", "E2E Isolation"],
+    url: "https://github.com/muhummadzarrar09-sudo/forms",
+    accent: "#D88A6E",
     featured: false,
   },
   {
