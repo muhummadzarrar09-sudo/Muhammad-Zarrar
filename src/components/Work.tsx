@@ -1,6 +1,6 @@
 import { projects } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import { Fold, Staple, Marginalia, Stamp, Redline } from "@/components/Brutalist";
+import { Fold, Staple, Marginalia, Stamp, Redline, ClientCircled } from "@/components/Brutalist";
 
 export default function Work() {
   const featured = projects.filter((p) => p.featured); // 3 working: Recto, SwingFrame, LOCK-IN client
@@ -74,10 +74,16 @@ export default function Work() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full" style={{ background: p.accent || "var(--color-clay)" }} />
-                    <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">{p.tag}</span>
+                    <span className="font-caption text-[11px] uppercase tracking-[0.18em] text-muted">{p.tag}</span>
                     <span className="font-mono text-[11px] text-faint">• {p.year}</span>
                   </div>
-                  <Stamp>{p.name === "LOCK-IN" ? "CLIENT" : "WORKING"}</Stamp>
+                  {p.name === "LOCK-IN" ? (
+                    <ClientCircled>
+                      <Stamp>CLIENT</Stamp>
+                    </ClientCircled>
+                  ) : (
+                    <Stamp>{p.name === "LOCK-IN" ? "CLIENT" : "WORKING"}</Stamp>
+                  )}
                 </div>
 
                 <h3 className="mt-6 font-display text-[1.9rem] font-light leading-[1.05] tracking-tightest">{p.name}</h3>

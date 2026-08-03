@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 // Fold line that unfolds as you scroll into it — no 3D, just scaleX
 export function Fold({ label }: { label?: string }) {
@@ -25,7 +25,7 @@ export function Fold({ label }: { label?: string }) {
           />
         </div>
         {label && (
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-faint whitespace-nowrap">
+          <span className="font-caption text-[10px] uppercase tracking-[0.2em] text-faint whitespace-nowrap">
             — {label} —
           </span>
         )}
@@ -83,9 +83,107 @@ export function Marginalia({
 // Rubber stamp
 export function Stamp({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex rotate-[-8deg] items-center justify-center rounded-[3px] border-[1.5px] border-clay/70 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.15em] text-clay/80">
+    <span className="inline-flex rotate-[-8deg] items-center justify-center rounded-[3px] border-[1.5px] border-clay/70 px-2 py-0.5 font-caption text-[9px] font-bold uppercase tracking-[0.15em] text-clay/80">
       {children}
     </span>
+  );
+}
+
+// Hand-drawn circle arrow around CLIENT — Awwwards detail
+export function ClientCircled({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-10% 0px" });
+  return (
+    <div ref={ref} className="relative inline-flex">
+      {/* Hand-drawn SVG circle — imperfect ellipse + arrow head */}
+      <motion.svg
+        width="78"
+        height="36"
+        viewBox="0 0 78 36"
+        className="pointer-events-none absolute -left-2 -top-2 text-clay"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={inView ? { pathLength: 1, opacity: 0.9 } : { pathLength: 0, opacity: 0 }}
+        transition={{ duration: 0.9, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
+      >
+        <motion.path
+          d="M 6 18 C 6 6, 22 2, 39 3 C 56 4, 72 7, 72 18 C 72 29, 55 33, 39 33 C 23 33, 6 30, 6 18 Z
+             M 68 12 L 73 18 L 67 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeDasharray="2 3"
+          initial={{ pathLength: 0 }}
+          animate={inView ? { pathLength: 1 } : { pathLength: 0 }}
+          transition={{ duration: 1.1, ease: [0.25, 1, 0.5, 1], delay: 0.3 }}
+          style={{ filter: "url(#rough)" }}
+        />
+      </motion.svg>
+      <div className="relative z-10">{children}</div>
+    </div>
+  );
+}
+
+// Sticky page numbers p.01 / 05 — updates on scroll, brutalist left margin
+export function PageNumbers() {
+  const [active, setActive] = useState("top");
+  useEffect(() => {
+    const ids = ["top", "about", "expertise", "work", "process", "contact"];
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    const observe = () => {
+      ids.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) obs.observe(el);
+      });
+    };
+    observe();
+    const mo = new MutationObserver(observe);
+    mo.observe(document.body, { childList: true, subtree: true });
+    const t = window.setTimeout(observe, 1000);
+    return () => {
+      obs.disconnect();
+      mo.disconnect();
+      clearTimeout(t);
+    };
+  }, []);
+
+  const map: Record<string, number> = {
+    top: 0,
+    about: 1,
+    expertise: 2,
+    work: 3,
+    process: 4,
+    contact: 5,
+  };
+  const current = map[active] ?? 0;
+
+  return (
+    <div className="pointer-events-none fixed left-0 top-1/2 z-30 hidden -translate-y-1/2 lg:flex flex-col items-center gap-3 pl-4">
+      <div className="font-caption text-[10px] font-bold tracking-[0.2em] text-faint rotate-[-90deg] origin-center whitespace-nowrap">
+        p.{String(current).padStart(2, "0")} / 05
+      </div>
+      <div className="flex flex-col gap-1.5">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <span
+            key={i}
+            className={`h-[18px] w-px transition-all duration-500 ${
+              i === current ? "bg-clay h-[28px]" : "bg-line"
+            }`}
+          />
+        ))}
+      </div>
+      <div className="font-mono text-[9px] text-faint rotate-[-90deg] whitespace-nowrap tracking-[0.15em]">
+        brutalist notebook
+      </div>
+    </div>
   );
 }
 
