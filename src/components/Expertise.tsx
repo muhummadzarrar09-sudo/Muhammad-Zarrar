@@ -1,100 +1,65 @@
-import { motion } from "framer-motion";
 import { expertise } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import { KineticText } from "@/components/KineticText";
-import { CinematicChapter } from "@/components/CinematicChapter";
-import { CinematicSpacer } from "@/components/CinematicSpacer";
-import { sound } from "@/lib/sound";
-import { useSectionWhoosh } from "@/hooks/useSectionWhoosh";
 
 export default function Expertise() {
-  const sectionRef = useSectionWhoosh();
-
   return (
-    <section id="expertise" ref={sectionRef} className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
-      <span className="pointer-events-none absolute -left-4 top-8 select-none font-display text-[14rem] font-light leading-none tracking-tightest text-ink/[0.025] sm:-left-8" aria-hidden>
-        02
-      </span>
-
-      <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+    <section id="expertise" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+      <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <SectionHeading
           index="02"
           label="Expertise"
           title={
             <>
-              <KineticText text="A full-stack range," mode="stagger" />
-              <br />
-              <KineticText text="depth where it counts." mode="refined" className="italic text-spark" />
+              What I&apos;m good at —<br />
+              <span className="italic text-clay">and what I enjoy.</span>
             </>
           }
         />
-        <Reveal delay={0.1}>
-          <p className="max-w-sm text-base leading-relaxed text-ink-soft">
-            From the model layer to the last animation frame — the disciplines I move between to ship complete products.
+        <Reveal delay={0.08} className="max-w-xs">
+          <p className="text-[14px] leading-relaxed text-muted">
+            I move between product, AI, and systems, but I like being responsible
+            from database to pixel.
           </p>
         </Reveal>
       </div>
 
-      {/* Cinematic Expertise acts — film structure */}
-      <CinematicChapter 
-        image="/images/cinematic-05.jpg"
-        chapter="ACT III — THE RANGE"
-        title="Depth where it counts."
-        body="We move between layers so the final product feels inevitable."
-        variant="slowZoom"
-      />
-
-      {/* Subtle 3D precision moment */}
-      <div className="my-8">
-      </div>
-
-      <CinematicSpacer height={120} />
-
-      <div className="mt-6 grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-3">
+      <div className="mt-14 grid gap-4 md:grid-cols-3">
         {expertise.map((g, gi) => (
-          <motion.div
-            key={g.group}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10% 0px" }}
-            transition={{ delay: gi * 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col gap-6 bg-canvas p-7 sm:p-8 group"
-            onMouseEnter={() => sound.pew()}
-          >
-            <div>
-              <div className="font-mono text-xs uppercase tracking-[0.2em] text-spark">0{gi + 1}</div>
-              <h3 className="mt-2 font-display text-2xl font-medium tracking-tight">
-                <KineticText text={g.group} mode="stagger" scrollTrigger={false} />
+          <Reveal key={g.group} delay={gi * 0.08} className="h-full">
+            <div className="human-card flex h-full flex-col rounded-[1.4rem] border border-line bg-surface p-7">
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay">0{gi + 1} — {g.group}</div>
+              <h3 className="mt-3 font-display text-[1.4rem] font-medium leading-tight tracking-tight">
+                {g.group}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{g.blurb}</p>
-            </div>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-muted">{g.blurb}</p>
 
-            <div className="mt-auto flex flex-col gap-4">
-              {g.skills.map((s, si) => (
-                <div key={s.name} className="group/skill">
-                  <div className="mb-1.5 flex items-baseline justify-between">
-                    <span className="text-sm text-ink-soft">{s.name}</span>
-                    <span className="font-mono text-[11px] text-muted">{s.level}</span>
-                  </div>
-                  <div className="h-1 w-full overflow-hidden rounded-full bg-canvas-deep">
-                    <motion.div
-                      className="h-full rounded-full bg-gradient-to-r from-ink via-spark to-ember"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${s.level}%` }}
-                      viewport={{ once: true, margin: "-10% 0px" }}
-                      transition={{
-                        delay: gi * 0.1 + si * 0.08 + 0.2,
-                        duration: 1.4,
-                        ease: [0.16, 1, 0.3, 1],
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
+              <ul className="mt-6 space-y-2.5">
+                {g.skills.map((s) => (
+                  <li key={s.name} className="flex items-center justify-between gap-3 text-[13px] text-ink-soft">
+                    <span className="flex items-center gap-2">
+                      <span className="h-px w-3 bg-line" />
+                      {s.name}
+                    </span>
+                    <span className="font-mono text-[10px] text-faint">{s.level}%</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-auto pt-6 font-mono text-[10px] uppercase tracking-wide text-faint">
+                Worked in production, not just tutorials.
+              </div>
             </div>
-          </motion.div>
+          </Reveal>
         ))}
       </div>
+
+      {/* Personal tools note */}
+      <Reveal delay={0.2} className="mt-8">
+        <div className="rounded-[1.2rem] border border-line-soft bg-canvas-deep/60 px-6 py-4 font-mono text-xs text-muted sm:flex sm:items-center sm:justify-between">
+          <span>Current favorite stack: TypeScript + React + Python + Postgres + Lenis? nope, native scroll now.</span>
+          <span className="mt-2 hidden text-ink-soft sm:mt-0 sm:block">— less is more</span>
+        </div>
+      </Reveal>
     </section>
   );
 }

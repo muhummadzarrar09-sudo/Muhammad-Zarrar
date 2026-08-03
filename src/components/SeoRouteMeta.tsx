@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { usePathname } from "@/router";
 import { SITE_URL, OG_IMAGE, META } from "@/lib/site";
 
 function setMetaByName(name: string, content: string) {
@@ -13,11 +12,8 @@ function setMetaByProperty(property: string, content: string) {
 }
 
 export function SeoRouteMeta() {
-  const pathname = usePathname();
-
   useEffect(() => {
-    const isBusiness = pathname === "/business" || pathname.startsWith("/business/");
-    const meta = isBusiness ? META.business : META.portfolio;
+    const meta = META.portfolio;
     const url = `${SITE_URL}${meta.path}`;
 
     document.title = meta.title;
@@ -32,7 +28,7 @@ export function SeoRouteMeta() {
 
     const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (canonical) canonical.href = url;
-  }, [pathname]);
+  }, []);
 
   return null;
 }

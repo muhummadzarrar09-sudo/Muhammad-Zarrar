@@ -1,91 +1,74 @@
 @import "tailwindcss";
 
 /* =========================================================================
-   DESIGN SYSTEM — "VIVID+CO" inspired warm editorial palette
-   A warm paper-like command center with a single vivid spark of life.
+   DESIGN SYSTEM — Personal Human Palette
+   Warm paper, ink, clay, forest — film-stock Kodak Portra vibes.
+   No heavy cinematic dirt. Human, quiet, personal.
    ========================================================================= */
 
 @theme {
-  /* Surfaces — warm bone / parchment, never pure white */
-  --color-canvas: #f4f1ea;
-  --color-canvas-deep: #ece7dc;
-  --color-surface: #fbfaf6;
-  --color-surface-2: #f0ece2;
-  --color-line: #ddd6c8;
-  --color-line-soft: #e7e1d4;
+  /* Paper */
+  --color-canvas: #FCFAF7;
+  --color-canvas-deep: #F1E9DD;
+  --color-surface: #FFFEFB;
+  --color-surface-2: #F5EEE4;
+  --color-line: #E6DCCF;
+  --color-line-soft: #EEE6DB;
 
-  /* Ink — warm espresso near-black, never pure #000 */
-  --color-ink: #17150f;
-  --color-ink-soft: #3a362d;
-  --color-muted: #837d6f;
-  --color-faint: #a9a292;
+  /* Ink — warm near-black, human */
+  --color-ink: #17130F;
+  --color-ink-soft: #4E4740;
+  --color-muted: #8C857C;
+  --color-faint: #B8B0A3;
 
-  /* The vivid spark — rationed, only where life is needed */
-  --color-spark: #ff4d17;
-  --color-spark-soft: #ff6a3d;
-  --color-ember: #ffb347;
+  /* Human accents — clay is primary now, not neon spark */
+  --color-clay: #C46B4D;
+  --color-clay-soft: #D88A6E;
+  --color-clay-deep: #A85A41;
+  --color-clay-wash: #F6E8E0;
 
-  /* Supporting cool counterpoint (used sparingly) */
-  --color-circuit: #1c5d4f;
-  --color-volt: #b9f24a;
+  --color-forest: #2D3A32;
+  --color-forest-soft: #3E5248;
+  --color-moss: #7A8E7E;
+  --color-sand: #D7C9AF;
 
-  /* Fonts */
+  /* Legacy compat — map old tokens to new human ones */
+  --color-spark: #C46B4D;
+  --color-spark-soft: #D88A6E;
+  --color-ember: #D7C9AF;
+  --color-circuit: #2D3A32;
+  --color-volt: #D7C9AF;
+
+  /* Fonts — 3-font editorial system per user: 2 mains + 1 bold caption */
+  /* Main 1: Fraunces — serif display editorial (light, italic human) */
   --font-display: "Fraunces", ui-serif, Georgia, serif;
-  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  /* Main 2: JetBrains Mono — typewriter, honest engineer log, main body */
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* Designed Caption: Syne — bold, extra-bold editorial, for stamps/tags/marginalia */
+  --font-sans: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-caption: "Syne", ui-sans-serif, system-ui, sans-serif;
 
-  /* Easing */
+  /* Easing — human, not bouncy */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-human: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
-
-  /* Animations */
-  --animate-marquee: marquee 38s linear infinite;
-  --animate-marquee-rev: marquee-rev 38s linear infinite;
-  --animate-float: float 9s ease-in-out infinite;
-  --animate-drift: drift 22s ease-in-out infinite;
-  --animate-spin-slow: spin 26s linear infinite;
-  --animate-shimmer: shimmer 3s linear infinite;
-  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-expo) infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-@keyframes marquee-rev {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-18px) rotate(2deg); }
-}
-@keyframes drift {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  33% { transform: translate3d(6%, -4%, 0) scale(1.08); }
-  66% { transform: translate3d(-5%, 5%, 0) scale(0.96); }
-}
-@keyframes shimmer {
-  from { background-position: 200% 0; }
-  to { background-position: -200% 0; }
-}
-@keyframes pulse-ring {
-  0% { transform: scale(0.85); opacity: 0.7; }
-  70% { transform: scale(1.6); opacity: 0; }
-  100% { transform: scale(1.6); opacity: 0; }
+/* Minimal keyframes — keep one gentle float for tiny accents */
+@keyframes slow-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
 /* =========================================================================
-   BASE
+   BASE — personal reset
    ========================================================================= */
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
+    background: var(--color-canvas);
   }
   body {
     background-color: var(--color-canvas);
@@ -93,15 +76,11 @@
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv01";
     overflow-x: hidden;
-  }
-  /* Hide native cursor only after the React cursor confirms it is active. */
-  @media (pointer: fine) {
-    .custom-cursor-active,
-    .custom-cursor-active * { cursor: none !important; }
+    line-height: 1.6;
   }
   ::selection {
-    background: var(--color-spark);
-    color: #fff;
+    background: var(--color-clay-wash);
+    color: var(--color-ink);
   }
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--color-canvas-deep); }
@@ -114,7 +93,7 @@
 }
 
 /* =========================================================================
-   UTILITIES
+   UTILITIES — human, quiet
    ========================================================================= */
 @layer utilities {
   .font-display { font-family: var(--font-display); }
@@ -122,15 +101,14 @@
 
   .text-balance { text-wrap: balance; }
   .text-pretty { text-wrap: pretty; }
-
-  /* Editorial display tracking */
   .tracking-tightest { letter-spacing: -0.04em; }
+  .tracking-human { letter-spacing: -0.02em; }
 
-  /* Warm hairline card edge (inset, paper-like) */
+  /* Card edge — paper-like, no heavy shadow */
   .edge {
     box-shadow:
       0 0 0 1px var(--color-line) inset,
-      0 1px 0 0 rgba(255, 255, 255, 0.6) inset;
+      0 1px 0 0 rgba(255, 255, 255, 0.7) inset;
   }
   .edge-soft {
     box-shadow: 0 0 0 1px var(--color-line-soft) inset;
@@ -138,161 +116,116 @@
 
   .lift {
     box-shadow:
-      0 1px 1px rgba(23, 21, 15, 0.04),
-      0 8px 24px -12px rgba(23, 21, 15, 0.18);
+      0 1px 1px rgba(23, 19, 15, 0.04),
+      0 8px 24px -16px rgba(23, 19, 15, 0.18);
   }
 
-  /* Film grain overlay */
-  .grain::before {
-    content: "";
-    position: fixed;
-    inset: -50%;
-    width: 200%;
-    height: 200%;
-    pointer-events: none;
-    z-index: 60;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    animation: grainshift 0.6s steps(2) infinite;
-  }
-  @keyframes grainshift {
-    0% { transform: translate(0, 0); }
-    50% { transform: translate(-4%, 3%); }
-    100% { transform: translate(3%, -2%); }
-  }
-
-  /* Underline-on-hover for links */
+  /* Link underline — human, slow */
   .link-underline {
     background-image: linear-gradient(currentColor, currentColor);
     background-size: 0% 1px;
     background-position: 0 100%;
     background-repeat: no-repeat;
-    transition: background-size 0.5s var(--ease-out-expo);
+    transition: background-size 0.6s var(--ease-human);
   }
   .link-underline:hover { background-size: 100% 1px; }
 
-  /* Animated gradient text */
-  .text-shimmer {
-    background: linear-gradient(
-      100deg,
-      var(--color-ink) 30%,
-      var(--color-spark) 45%,
-      var(--color-ink) 60%
-    );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: var(--animate-shimmer);
+  /* Personal grain — 90% lighter than before, almost invisible */
+  .grain::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    opacity: 0.012;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   .dot-grid {
     background-image: radial-gradient(var(--color-line) 1px, transparent 1px);
-    background-size: 26px 26px;
-  }
-
-  .blend-difference { mix-blend-mode: difference; }
-  .blend-multiply { mix-blend-mode: multiply; }
-
-  /* 3D tilt glare — a radial highlight that follows the cursor */
-  .tilt-card {
-    transition: transform 0.25s ease-out;
-    transform-style: preserve-3d;
-  }
-  .tilt-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: radial-gradient(
-      600px circle at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
-      rgba(255, 255, 255, 0.08),
-      transparent 50%
-    );
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    z-index: 1;
-  }
-  .tilt-card:hover::after {
-    opacity: 1;
+    background-size: 28px 28px;
   }
 
   .no-scroll { overflow: hidden; }
 
-  /* Business sub-site — SAME warm palette as the portfolio. */
-  .biz-card {
+  /* Personal note marker — handwritten style accent */
+  .note-mark {
+    position: relative;
+  }
+  .note-mark::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 0.5em;
+    width: 20px;
+    height: 1px;
+    background: var(--color-clay);
+    opacity: 0.6;
+  }
+
+  /* Quiet hover lift — no cinematic filter */
+  .human-card {
+    transition: transform 0.5s var(--ease-human), box-shadow 0.4s ease, border-color 0.4s ease;
+  }
+  .human-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -16px rgba(23, 19, 15, 0.18);
+    border-color: var(--color-clay-soft);
+  }
+
+  /* Brutalist notebook — red margin line like composition book */
+  .notebook {
+    position: relative;
+  }
+  .notebook::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(196, 107, 77, 0.22);
+    transform: translateX(48px);
+    pointer-events: none;
+  }
+  @media (min-width: 1024px) {
+    .notebook::before {
+      transform: translateX(64px);
+    }
+  }
+
+  /* Notebook page with staple + fold shadow */
+  .notebook-page {
+    position: relative;
     background: var(--color-surface);
-    box-shadow:
-      0 0 0 1px var(--color-line) inset,
-      0 1px 0 0 rgba(255, 255, 255, 0.6) inset;
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.8) inset, 0 1px 2px rgba(23,19,15,0.04);
   }
-  .biz-card-hover {
-    transition: transform 0.45s var(--ease-out-expo), box-shadow 0.4s ease;
+  .notebook-page::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 12px;
+    background: radial-gradient(ellipse at center, rgba(23,19,15,0.06) 0%, transparent 70%);
+    pointer-events: none;
   }
-  .biz-card-hover:hover {
-    transform: translateY(-5px);
-    box-shadow:
-      0 0 0 1px rgba(255, 77, 23, 0.45) inset,
-      0 16px 36px -18px rgba(23, 21, 15, 0.28);
+
+  .typewriter {
+    font-family: var(--font-mono);
+    font-variant-ligatures: none;
   }
 }
 
-/* =====================================================
-   PERMANENT CINEMATIC MODE — Director's Cut is DEFAULT
-   Scoped, no global * !important — only cinematic layers.
-   ===================================================== */
-.directors-cut {
-  --ease-out-expo: cubic-bezier(0.1, 1, 0.1, 1);
-}
-
-/* Only cinematic imagery gets extra slow treatment — not inputs/buttons */
-.directors-cut .cinematic-img,
-.directors-cut .CinematicFilmStrip img,
-.directors-cut #film-strip img {
-  transition: transform 1550ms cubic-bezier(0.1,1,0.1,1), filter 180ms linear;
-}
-
-.directors-cut .kinetic-text span {
-  transition-timing-function: cubic-bezier(0.1, 1, 0.1, 1);
-}
-
-.directors-cut .grain::before {
-  opacity: 0.055;
-  animation-duration: 0.38s;
-}
-
-.directors-cut .CinematicFilmStrip,
-.directors-cut #film-strip {
-  filter: contrast(1.09) saturate(0.94) brightness(0.96);
-}
-
-.directors-cut #film-strip {
-  scroll-behavior: smooth;
-}
-
-.directors-cut canvas {
-  filter: contrast(1.04) saturate(0.98);
-}
-
-
-/* Accessibility: respect users who request less motion. */
+/* Personal reduced-motion — simpler than before */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto !important; }
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
     transition-duration: 0.001ms !important;
-  }
-  .grain::before,
-  .directors-cut .grain::before {
-    animation: none !important;
-  }
-  .custom-cursor-active,
-  .custom-cursor-active * {
-    cursor: auto !important;
+    scroll-behavior: auto !important;
   }
 }

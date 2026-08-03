@@ -3,18 +3,17 @@ export const OG_IMAGE = `${SITE_URL}/og-image.svg`;
 
 export const META = {
   portfolio: {
-    title: "Muhammad Zarrar / Zarrar.Solutions — Full-Stack Developer & AI Systems Engineer",
+    title: "Muhammad Zarrar — Full-Stack & AI Engineer building things people actually use",
     description:
-      "Full-stack products, AI agents, voice interfaces, catalog systems, booking flows, dashboards, and design-led web experiences.",
+      "I'm Zarrar, a full-stack developer and AI systems engineer from Rawalpindi. I build voice agents, dashboards, booking flows, and product systems that feel real and get used.",
     path: "/",
   },
+  // legacy business meta kept for backwards compat but unused now — personal portfolio is single route
   business: {
-    title: "Zarrar.Solutions — Websites, Catalog Systems & Booking Flows for Local Businesses",
-    description:
-      "Digital studio building websites, RetailFlow catalog systems, booking systems, dashboards, and WhatsApp workflows for retailers, clinics, salons, academies, and service businesses.",
-    path: "/business",
+    title: "Muhammad Zarrar — Full-Stack & AI Engineer",
+    description: "Personal portfolio of Muhammad Zarrar",
+    path: "/",
   },
 };
 
 export { CSP_JSON_LD_HASH, CSP_POLICY_CORE, CSP_META, CSP_HEADER } from "./csp";
-
