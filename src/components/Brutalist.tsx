@@ -14,7 +14,7 @@ export function Fold({ label }: { label?: string }) {
             initial={{ scaleX: 0 }}
             animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
             transition={{ duration: 0.9, ease: [0.25, 1, 0.5, 1] }}
-            className="absolute inset-0 origin-left border-t border-dashed border-line"
+            className="absolute inset-0 origin-left border-t-[1.5px] border-dashed border-line-strong"
           />
           <motion.div
             initial={{ scaleX: 0 }}
@@ -74,7 +74,7 @@ export function Marginalia({
       initial={{ opacity: 0, x: side === "right" ? 12 : -12, rotate: side === "right" ? 1.2 : -1.2 }}
       animate={inView ? { opacity: 1, x: 0, rotate: side === "right" ? 1 : -0.8 } : {}}
       transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-      className={`hidden ${showFrom} absolute ${top} z-10 font-display italic text-[13px] leading-[1.4] text-clay-deep max-w-[150px] ${
+      className={`hidden ${showFrom} absolute ${top} z-10 font-display italic font-medium text-[14px] leading-[1.4] text-clay-deep max-w-[150px] ${
         side === "right" ? "right-[-172px] text-left" : "left-[-172px] text-right"
       }`}
     >

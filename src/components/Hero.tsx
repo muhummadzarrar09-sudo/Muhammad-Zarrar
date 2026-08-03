@@ -19,7 +19,7 @@ export default function Hero() {
           transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
           className="mb-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted"
         >
-          <span className="h-px w-8 bg-line" />
+          <span className="h-px w-8 bg-line-strong" />
           <span>Latest commits: Aug 1 • {profile.bio}</span>
           <span className="hidden h-1 w-1 rounded-full bg-muted sm:block" />
           <span className="hidden sm:block">{profile.location}</span>
@@ -104,7 +104,7 @@ export default function Hero() {
           </a>
           <a
             href="#work"
-            className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-6 py-3 text-sm font-medium text-ink-soft transition-colors hover:border-clay-soft hover:text-ink"
+            className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-6 py-3 text-sm font-medium text-ink-soft transition-colors hover:border-clay-soft hover:text-ink"
           >
             Latest work — Aug 1
           </a>
@@ -120,7 +120,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.85, duration: 0.8 }}
-          className="mt-16 grid gap-3 rounded-[1.6rem] border border-line bg-surface/80 p-6 sm:grid-cols-[auto_1fr] sm:items-start sm:gap-6 sm:p-7 notebook-page"
+          className="mt-16 grid gap-3 rounded-[1.6rem] border border-line-strong bg-surface/80 p-6 sm:grid-cols-[auto_1fr] sm:items-start sm:gap-6 sm:p-7 notebook-page"
         >
           <div className="font-caption text-[10px] uppercase tracking-[0.2em] text-clay-deep">Now — latest commit order</div>
           <div className="space-y-2.5 text-[13.5px] leading-relaxed text-ink-soft typewriter">
@@ -138,7 +138,7 @@ export default function Hero() {
               </span>
             </div>
             <div className="flex gap-3 text-muted">
-              <span className="mt-[9px] h-px w-6 shrink-0 bg-line" />
+              <span className="mt-[9px] h-px w-6 shrink-0 bg-line-strong" />
               <span>
                 <span className="text-ink">Jul 16-23:</span> TheStandard magic link v2, retailflow Marigold & Clay demo, Omni PTT 36c/14 suites, TheDesiEdit GSAP+Lenis scroll.
               </span>

@@ -5,7 +5,7 @@ export default function Footer() {
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <footer className="border-t border-line bg-canvas-deep/40">
+    <footer className="border-t border-line-strong bg-canvas-deep/40">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
         <div className="flex flex-col justify-between gap-10 md:flex-row">
           <div className="max-w-sm">
@@ -24,7 +24,7 @@ export default function Footer() {
 
           <div className="flex flex-wrap gap-x-12 gap-y-6">
             <div className="flex flex-col gap-2.5">
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-faint">Navigate</div>
+              <div className="font-mono text-[12px] uppercase tracking-[0.2em] text-muted">Navigate</div>
               {["about", "work", "process", "contact"].map((l) => (
                 <button
                   key={l}
@@ -37,7 +37,7 @@ export default function Footer() {
               ))}
             </div>
             <div className="flex flex-col gap-2.5">
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-faint">Contact</div>
+              <div className="font-mono text-[12px] uppercase tracking-[0.2em] text-muted">Contact</div>
               <a href={`mailto:${profile.email}`} className="link-underline w-fit text-sm text-ink-soft">
                 {profile.email}
               </a>
@@ -53,7 +53,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-line pt-6 sm:flex-row sm:items-center">
+        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-line-strong pt-6 sm:flex-row sm:items-center">
           <p className="font-mono text-xs text-faint">
             © {year} Muhammad Zarrar — Built without templates, one commit at a time.
           </p>
