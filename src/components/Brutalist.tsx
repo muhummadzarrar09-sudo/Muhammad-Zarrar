@@ -191,3 +191,61 @@ export function PageNumbers() {
 export function TornEdge() {
   return <div className="pointer-events-none h-[18px] w-full bg-canvas" style={{ clipPath: "polygon(0 0, 3% 100%, 7% 20%, 11% 90%, 15% 10%, 20% 85%, 26% 15%, 32% 95%, 38% 5%, 44% 80%, 50% 10%, 56% 90%, 62% 20%, 68% 100%, 74% 15%, 80% 85%, 86% 10%, 92% 90%, 96% 20%, 100% 100%, 100% 0)" }} />;
 }
+
+// Hand-drawn arrow pointing to red margin line — brutalist annotation
+export function MarginArrow({ label = "red margin — composition book" }: { label?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-20% 0px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, x: -10 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+      className="pointer-events-none absolute left-[52px] lg:left-[68px] top-0 hidden sm:flex items-center gap-2 z-20"
+    >
+      <svg width="40" height="20" viewBox="0 0 40 20" className="text-clay/60">
+        <motion.path
+          d="M 0 10 Q 12 2, 22 10 T 38 10 M 32 6 L 38 10 L 32 14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1"
+          strokeDasharray="2 2"
+          initial={{ pathLength: 0 }}
+          animate={inView ? { pathLength: 1 } : {}}
+          transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+        />
+      </svg>
+      <span className="font-caption text-[9px] uppercase tracking-[0.15em] text-clay/70 whitespace-nowrap">{label}</span>
+    </motion.div>
+  );
+}
+
+// Envelope that seals — for Contact section
+export function Envelope({ isSealed, children }: { isSealed: boolean; children: ReactNode }) {
+  return (
+    <div className="relative">
+      {/* Flap */}
+      <motion.div
+        className="absolute -top-[28px] left-0 right-0 h-[30px] origin-bottom bg-surface border border-line border-b-0"
+        style={{
+          clipPath: "polygon(0 0, 50% 100%, 100% 0)",
+          transformOrigin: "50% 100%",
+        }}
+        animate={{ rotateX: isSealed ? 0 : -35, y: isSealed ? 0 : -8 }}
+        transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+      />
+      {/* Seal dot */}
+      <motion.div
+        className="absolute -top-2 left-1/2 z-10 h-6 w-6 -translate-x-1/2 rounded-full bg-clay grid place-items-center text-canvas font-bold text-[10px]"
+        animate={{ scale: isSealed ? 1 : 0.85, opacity: isSealed ? 1 : 0.6 }}
+        transition={{ duration: 0.4 }}
+      >
+        M
+      </motion.div>
+      <div className="relative rounded-t-none rounded-b-[1.8rem] border border-line bg-surface p-6 sm:p-8 pt-8">
+        {children}
+      </div>
+    </div>
+  );
+}

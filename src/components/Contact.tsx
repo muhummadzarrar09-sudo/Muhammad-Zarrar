@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { profile, socials } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
+import { Envelope } from "@/components/Brutalist";
 
 type FormState = {
   name: string;
@@ -172,7 +173,7 @@ export default function Contact() {
         </div>
 
         <Reveal delay={0.1} className="relative">
-          <div className="rounded-[1.8rem] border border-line bg-surface p-6 sm:p-8 lift">
+          <Envelope isSealed={status === "sent"}>
             {status === "idle" ? (
               <form onSubmit={submit} className="space-y-5" noValidate>
                 <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay">
@@ -259,7 +260,7 @@ export default function Contact() {
 
                 <p className="font-mono text-[10px] leading-relaxed text-faint text-center">
                   No backend, no tracking. This just opens your email app with the text pre-filled. If it
-                  doesn&apos;t open, copy the email above.
+                  doesn&apos;t open, copy the email above. Envelope seals on send — brutalist detail.
                 </p>
               </form>
             ) : (
@@ -267,9 +268,9 @@ export default function Contact() {
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-clay-wash text-clay">
                   ✓
                 </div>
-                <h3 className="mt-5 font-display text-2xl tracking-tight">Draft ready.</h3>
+                <h3 className="mt-5 font-display text-2xl tracking-tight">Draft sealed.</h3>
                 <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-muted">
-                  Your email app should have a draft open. If not, use the link below. I&apos;ll reply soon.
+                  Your email app should have a draft open. Envelope sealed. If not, use link below. I&apos;ll reply soon.
                 </p>
                 <div className="mt-6 flex flex-wrap justify-center gap-3">
                   {lastMailto && (
@@ -285,15 +286,15 @@ export default function Contact() {
                     onClick={reset}
                     className="rounded-full border border-line px-5 py-2.5 text-sm text-ink-soft hover:border-clay-soft"
                   >
-                    Send another
+                    Unseal + send another
                   </button>
                 </div>
               </div>
             )}
-          </div>
+          </Envelope>
 
           <div className="mt-5 rounded-xl border border-dashed border-line-soft bg-canvas-deep/40 px-4 py-3 font-mono text-[11px] leading-relaxed text-muted">
-            Prefer async? Email directly at <span className="text-ink">{profile.email}</span> — I read every one.
+            Prefer async? Email directly at <span className="text-ink">{profile.email}</span> — I read every one. Envelope seal is pure CSS + Framer Motion, no canvas.
           </div>
         </Reveal>
       </div>

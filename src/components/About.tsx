@@ -1,6 +1,6 @@
 import { profile, stats } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import { Marginalia, Staple, Stamp } from "@/components/Brutalist";
+import { Marginalia, Staple, Stamp, MarginArrow } from "@/components/Brutalist";
 
 const principles = [
   { k: "ship", v: "Ship fast, then refine — real feedback > perfect plan" },
@@ -12,6 +12,9 @@ const principles = [
 export default function About() {
   return (
     <section id="about" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+      <div className="relative h-0">
+        <MarginArrow label="red margin — composition book • brutalist" />
+      </div>
       <SectionHeading
         index="01"
         label="About"
