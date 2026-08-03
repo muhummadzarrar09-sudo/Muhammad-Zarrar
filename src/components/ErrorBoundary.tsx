@@ -34,7 +34,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return this.props.fallback ?? (
         <div className="mx-auto max-w-2xl px-5 py-24 text-center">
-          <div className="font-mono text-xs uppercase tracking-[0.24em] text-spark">Something slipped</div>
+          <div className="font-mono text-xs uppercase tracking-[0.24em] text-clay-deep">Something slipped</div>
           <h1 className="mt-4 font-display text-4xl font-light tracking-tightest text-ink">This section failed to render.</h1>
           <p className="mt-4 text-ink-soft">Refresh the page, or contact Muhammad directly if the issue continues.</p>
         </div>

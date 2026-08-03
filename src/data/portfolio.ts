@@ -24,7 +24,7 @@ export const profile = {
     "• Who I am: ",
     "• Idea: ",
   ].join("\n"),
-  bio: "Compiling ....",
+  bio: "Full-stack, AI & mobile engineer",
   tagline:
     "Building in Kotlin, TypeScript, Python — from golf video AI to catalog demos. Latest by commit, not pinned.",
 };

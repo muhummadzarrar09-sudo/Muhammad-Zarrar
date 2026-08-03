@@ -29,10 +29,10 @@ export default function Process() {
           <Reveal key={s.no} delay={i * 0.06}>
             <div className="human-card flex h-full flex-col rounded-[1.4rem] border border-line bg-surface p-7">
               <div className="flex items-baseline justify-between">
-                <span className="font-display text-5xl font-light tracking-tightest text-ink/10">
+                <span className="font-display text-5xl font-light tracking-tightest text-ink/50">
                   {s.no}
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay">{s.role}</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">{s.role}</span>
               </div>
               <h3 className="mt-6 font-display text-xl font-medium tracking-tight">{s.title}</h3>
               <p className="mt-3 text-[13.5px] leading-relaxed text-ink-soft">{s.body}</p>

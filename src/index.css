@@ -14,12 +14,14 @@
   --color-surface-2: #F5EEE4;
   --color-line: #E6DCCF;
   --color-line-soft: #EEE6DB;
+  --color-line-strong: #8F816F;
+  --color-input: #F5EEE4;
 
   /* Ink — warm near-black, human */
   --color-ink: #17130F;
   --color-ink-soft: #4E4740;
-  --color-muted: #8C857C;
-  --color-faint: #B8B0A3;
+  --color-muted: #6E675E;
+  --color-faint: #6E675E;
 
   /* Human accents — clay is primary now, not neon spark */
   --color-clay: #C46B4D;
@@ -85,11 +87,16 @@
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--color-canvas-deep); }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-line);
+    background: var(--color-line-strong);
     border-radius: 99px;
     border: 2px solid var(--color-canvas-deep);
   }
   ::-webkit-scrollbar-thumb:hover { background: var(--color-muted); }
+  :focus-visible {
+    outline: 2px solid var(--color-clay-deep);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
 }
 
 /* =========================================================================
@@ -142,7 +149,7 @@
   }
 
   .dot-grid {
-    background-image: radial-gradient(var(--color-line) 1px, transparent 1px);
+    background-image: radial-gradient(var(--color-muted) 1px, transparent 1px);
     background-size: 28px 28px;
   }
 
@@ -184,13 +191,18 @@
     top: 0;
     bottom: 0;
     width: 1px;
-    background: rgba(196, 107, 77, 0.22);
-    transform: translateX(48px);
+    background: rgba(196, 107, 77, 0.60);
+    transform: translateX(6px);
     pointer-events: none;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 640px) {
     .notebook::before {
-      transform: translateX(64px);
+      transform: translateX(12px);
+    }
+  }
+  @media (min-width: 1280px) {
+    .notebook::before {
+      transform: translateX(calc((100vw - 1152px) / 2 + 8px));
     }
   }
 

@@ -32,7 +32,7 @@ export default function ScrollProgress() {
   return (
     <div className="fixed left-0 right-0 top-0 z-[200] h-[1px] pointer-events-none">
       <motion.div
-        className="h-full origin-left bg-gradient-to-r from-spark via-spark to-ember"
+        className="h-full origin-left bg-gradient-to-r from-spark via-spark to-clay-deep"
         style={{ width }}
         animate={{ opacity: show ? 1 : 0 }}
         transition={{ duration: 0.3 }}

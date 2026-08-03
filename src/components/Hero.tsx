@@ -51,7 +51,7 @@ export default function Hero() {
             <span className="text-ink">SwingFrame</span> (golf video AI Aug 1),{" "}
             <span className="text-ink">forms</span> (86 commits engine Jul 30),{" "}
             <span className="text-ink">LOCK-IN</span> — that one is a{" "}
-            <span className="font-semibold text-clay">CLIENT PROJECT</span> (Next.js + Supabase + Cloudflare, 121
+            <span className="font-semibold text-clay-deep">CLIENT PROJECT</span> (Next.js + Supabase + Cloudflare, 121
             commits Jul 30) — not a personal OS successor.
           </p>
           <p className="text-[16px] leading-[1.7] text-muted typewriter">
@@ -122,7 +122,7 @@ export default function Hero() {
           transition={{ delay: 0.85, duration: 0.8 }}
           className="mt-16 grid gap-3 rounded-[1.6rem] border border-line bg-surface/80 p-6 sm:grid-cols-[auto_1fr] sm:items-start sm:gap-6 sm:p-7 notebook-page"
         >
-          <div className="font-caption text-[10px] uppercase tracking-[0.2em] text-clay">Now — latest commit order</div>
+          <div className="font-caption text-[10px] uppercase tracking-[0.2em] text-clay-deep">Now — latest commit order</div>
           <div className="space-y-2.5 text-[13.5px] leading-relaxed text-ink-soft typewriter">
             <div className="flex gap-3">
               <span className="mt-[9px] h-px w-6 shrink-0 bg-clay/60" />
@@ -133,7 +133,7 @@ export default function Hero() {
             <div className="flex gap-3">
               <span className="mt-[9px] h-px w-6 shrink-0 bg-clay/40" />
               <span>
-                <span className="text-ink">Jul 30:</span> forms 86c + LOCK-IN <span className="text-clay font-semibold">CLIENT PROJECT</span>{" "}
+                <span className="text-ink">Jul 30:</span> forms 86c + LOCK-IN <span className="text-clay-deep font-semibold">CLIENT PROJECT</span>{" "}
                 121c/8 branches — auth deep-dive + Cloudflare.
               </span>
             </div>

@@ -64,7 +64,7 @@ export default function About() {
           <Reveal delay={0.16}>
             <div className="mt-10 rounded-[1.2rem] border border-line bg-surface p-5 notebook-page">
               <Staple />
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay flex items-center gap-2">
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep flex items-center gap-2">
                 How I work now — Aug 2026 <Stamp>BRUTALIST</Stamp>
               </div>
               <ul className="mt-3 space-y-3">
@@ -111,7 +111,7 @@ export default function About() {
                 </div>
                 <div className="flex justify-between">
                   <span>Now</span>
-                  <span className="text-clay">Recto / SwingFrame / CLIENT</span>
+                  <span className="text-clay-deep">Recto / SwingFrame / CLIENT</span>
                 </div>
                 <div className="h-px bg-line-soft" />
                 <div className="text-[12px] leading-relaxed text-ink-soft">

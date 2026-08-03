@@ -135,7 +135,7 @@ export default function Contact() {
               <button
                 type="button"
                 onClick={copy}
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-6 py-3 text-sm text-ink-soft hover:border-clay-soft"
+                className={`inline-flex items-center gap-2 rounded-full border px-6 py-3 text-sm ${copied ? "border-clay-deep bg-clay-wash text-ink" : "border-line bg-surface text-ink-soft hover:border-clay-soft"}`}
               >
                 {copied ? "Copied ✓" : "Copy email"}
               </button>
@@ -176,7 +176,7 @@ export default function Contact() {
           <Envelope isSealed={status === "sent"}>
             {status === "idle" ? (
               <form onSubmit={submit} className="space-y-5" noValidate>
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay">
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">
                   Write me a note — it opens in your email
                 </div>
 
@@ -191,9 +191,9 @@ export default function Contact() {
                       onChange={(e) => set("name", e.target.value)}
                       maxLength={80}
                       placeholder="Zarrar"
-                      className="w-full rounded-xl border border-line bg-canvas px-4 py-3 text-sm text-ink placeholder:text-faint focus:border-clay-soft focus:outline-none"
+                      className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                     />
-                    {errors.name && <p className="mt-1 text-xs text-clay-deep">{errors.name}</p>}
+                    {errors.name && <p className="mt-1 text-xs text-[#B3261E]">{errors.name}</p>}
                   </div>
                   <div>
                     <label htmlFor="c-email" className="mb-1.5 block font-mono text-[11px] text-muted">
@@ -206,9 +206,9 @@ export default function Contact() {
                       onChange={(e) => set("email", e.target.value)}
                       maxLength={120}
                       placeholder="you@company.com"
-                      className="w-full rounded-xl border border-line bg-canvas px-4 py-3 text-sm text-ink placeholder:text-faint focus:border-clay-soft focus:outline-none"
+                      className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                     />
-                    {errors.email && <p className="mt-1 text-xs text-clay-deep">{errors.email}</p>}
+                    {errors.email && <p className="mt-1 text-xs text-[#B3261E]">{errors.email}</p>}
                   </div>
                 </div>
 
@@ -222,8 +222,8 @@ export default function Contact() {
                         onClick={() => set("type", t)}
                         className={`rounded-full border px-4 py-1.5 font-mono text-xs transition ${
                           form.type === t
-                            ? "border-clay bg-clay text-canvas"
-                            : "border-line bg-canvas text-muted hover:border-clay-soft hover:text-ink"
+                            ? "border-clay-deep bg-clay-deep text-canvas"
+                            : "border-line-strong bg-surface-2 text-muted hover:border-clay-deep hover:text-ink"
                         }`}
                       >
                         {t}
@@ -243,10 +243,10 @@ export default function Contact() {
                     maxLength={1000}
                     rows={5}
                     placeholder="I'm building a..."
-                    className="w-full resize-none rounded-xl border border-line bg-canvas px-4 py-3 text-sm leading-relaxed text-ink placeholder:text-faint focus:border-clay-soft focus:outline-none"
+                    className="w-full resize-none rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm leading-relaxed text-ink placeholder:text-muted focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                   />
                   <div className="mt-1.5 flex justify-between">
-                    <div>{errors.message && <span className="text-xs text-clay-deep">{errors.message}</span>}</div>
+                    <div>{errors.message && <span className="text-xs text-[#B3261E]">{errors.message}</span>}</div>
                     <div className="font-mono text-[10px] text-faint">{form.message.length}/1000</div>
                   </div>
                 </div>
@@ -260,12 +260,12 @@ export default function Contact() {
 
                 <p className="font-mono text-[10px] leading-relaxed text-faint text-center">
                   No backend, no tracking. This just opens your email app with the text pre-filled. If it
-                  doesn&apos;t open, copy the email above. Envelope seals on send — brutalist detail.
+                  doesn&apos;t open, copy the email above. 
                 </p>
               </form>
             ) : (
               <div className="py-16 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-clay-wash text-clay">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-clay-wash text-forest">
                   ✓
                 </div>
                 <h3 className="mt-5 font-display text-2xl tracking-tight">Draft sealed.</h3>
@@ -294,7 +294,7 @@ export default function Contact() {
           </Envelope>
 
           <div className="mt-5 rounded-xl border border-dashed border-line-soft bg-canvas-deep/40 px-4 py-3 font-mono text-[11px] leading-relaxed text-muted">
-            Prefer async? Email directly at <span className="text-ink">{profile.email}</span> — I read every one. Envelope seal is pure CSS + Framer Motion, no canvas.
+            Prefer async? Email directly at <span className="text-ink">{profile.email}</span> — I read every one.
           </div>
         </Reveal>
       </div>

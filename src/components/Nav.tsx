@@ -73,7 +73,7 @@ export default function Nav() {
               {profile.initials}
             </span>
             <span className="hidden font-display text-[15px] font-medium tracking-tight sm:block">
-              Zarrar<span className="text-clay">.</span>
+              Zarrar<span className="text-clay-deep">.</span>
             </span>
           </button>
 
@@ -128,7 +128,7 @@ export default function Nav() {
                 className="py-3 text-left font-display text-[2.6rem] font-light leading-none tracking-tightest text-ink"
               >
                 <span className="inline-flex items-baseline gap-3">
-                  <span className="font-mono text-[10px] tracking-[0.2em] text-clay">0{l.id.length}</span>
+                  <span className="font-mono text-[10px] tracking-[0.2em] text-clay-deep">{String(LINKS.indexOf(l)+1).padStart(2,"0")}</span>
                   {l.label}
                 </span>
               </button>
