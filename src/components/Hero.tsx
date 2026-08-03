@@ -1,15 +1,18 @@
 import { motion } from "framer-motion";
 import { profile } from "@/data/portfolio";
+import { TypewriterCursor, PaperClip, Tape, CoffeeStain } from "@/components/Brutalist";
 
 const EASE = [0.25, 1, 0.5, 1] as const;
 
 export default function Hero() {
   return (
-    <section
-      id="top"
-      className="relative mx-auto max-w-6xl px-5 pt-32 pb-20 sm:px-8 sm:pt-40 sm:pb-28"
-    >
-      <div className="mx-auto max-w-[820px]">
+    <section id="top" className="relative mx-auto max-w-6xl px-5 pt-32 pb-20 sm:px-8 sm:pt-40 sm:pb-28">
+      <div className="mx-auto max-w-[820px] relative">
+        {/* Surreal desk artifacts — paper clip + tape + coffee stain */}
+        <PaperClip className="-right-4 -top-2 hidden sm:block rotate-12" />
+        <Tape className="left-12 -top-6 hidden sm:block" rotate={-14} />
+        <CoffeeStain className="right-20 top-24 hidden sm:block" />
+
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -30,7 +33,10 @@ export default function Hero() {
         >
           <span className="block">I&apos;m Zarrar —</span>
           <span className="block font-light italic text-clay tracking-human">I build things people</span>
-          <span className="block font-light italic text-clay tracking-human">actually use.</span>
+          <span className="block font-light italic text-clay tracking-human">
+            actually use.
+            <TypewriterCursor />
+          </span>
         </motion.h1>
 
         <motion.div
@@ -39,7 +45,7 @@ export default function Hero() {
           transition={{ delay: 0.32, duration: 0.8, ease: EASE }}
           className="mt-10 max-w-[66ch] space-y-5 text-[17px] leading-[1.75] text-ink-soft text-pretty sm:text-[18px]"
         >
-          <p>
+          <p className="typewriter">
             Hey — I&apos;m <span className="font-medium text-ink">{profile.name}</span>, {profile.role.toLowerCase()} from Rawalpindi.
             Latest by commit date: <span className="text-ink">Recto</span> (Kotlin lab Aug 1, 35 commits),{" "}
             <span className="text-ink">SwingFrame</span> (golf video AI Aug 1),{" "}
@@ -48,7 +54,7 @@ export default function Hero() {
             <span className="font-semibold text-clay">CLIENT PROJECT</span> (Next.js + Supabase + Cloudflare, 121
             commits Jul 30) — not a personal OS successor.
           </p>
-          <p className="text-[16px] leading-[1.7] text-muted">
+          <p className="text-[16px] leading-[1.7] text-muted typewriter">
             Then: <span className="text-ink">TheStandard</span> enrollment v2 magic link Jul 23,{" "}
             <span className="text-ink">retailflow</span> Marigold & Clay demo storefront Jul 22,{" "}
             <span className="text-ink">Omni</span> voice agent PTT Jul 19 (36 commits, 14 suites),{" "}
@@ -114,10 +120,10 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.85, duration: 0.8 }}
-          className="mt-16 grid gap-3 rounded-[1.6rem] border border-line bg-surface/80 p-6 sm:grid-cols-[auto_1fr] sm:items-start sm:gap-6 sm:p-7"
+          className="mt-16 grid gap-3 rounded-[1.6rem] border border-line bg-surface/80 p-6 sm:grid-cols-[auto_1fr] sm:items-start sm:gap-6 sm:p-7 notebook-page"
         >
-          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay">Now — latest commit order</div>
-          <div className="space-y-2.5 text-[13.5px] leading-relaxed text-ink-soft">
+          <div className="font-caption text-[10px] uppercase tracking-[0.2em] text-clay">Now — latest commit order</div>
+          <div className="space-y-2.5 text-[13.5px] leading-relaxed text-ink-soft typewriter">
             <div className="flex gap-3">
               <span className="mt-[9px] h-px w-6 shrink-0 bg-clay/60" />
               <span>
@@ -148,7 +154,7 @@ export default function Hero() {
         >
           <span>Scroll</span>
           <span className="h-px w-12 bg-line-soft" />
-          <span className="text-muted">work ordered by latest commit, not pinned</span>
+          <span className="text-muted">work ordered by latest commit, not pinned — surreal paper</span>
         </motion.div>
       </div>
     </section>

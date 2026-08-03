@@ -249,3 +249,78 @@ export function Envelope({ isSealed, children }: { isSealed: boolean; children: 
     </div>
   );
 }
+
+// Paper clip — brutalist desk artifact
+export function PaperClip({ className = "" }: { className?: string }) {
+  return (
+    <div className={`pointer-events-none absolute select-none ${className}`}>
+      <svg width="18" height="42" viewBox="0 0 18 42" fill="none" className="text-ink/20">
+        <path d="M 6 2 C 12 2, 16 6, 16 14 L 16 32 C 16 38, 12 40, 8 40 C 4 40, 2 38, 2 32 L 2 10 C 2 6, 4 4, 8 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" fill="none" />
+      </svg>
+    </div>
+  );
+}
+
+// Washi tape — semi-transparent tape over corner
+export function Tape({ rotate = -6, className = "" }: { rotate?: number; className?: string }) {
+  return (
+    <div
+      className={`pointer-events-none absolute h-6 w-20 bg-sand/70 backdrop-blur-[1px] border border-sand/50 ${className}`}
+      style={{ transform: `rotate(${rotate}deg)`, clipPath: "polygon(2% 0, 98% 0, 100% 15%, 98% 100%, 2% 100%, 0 85%)" }}
+    />
+  );
+}
+
+// Scribble underline — hand-drawn underline on hover, surreal
+export function ScribbleLink({ children, href }: { children: ReactNode; href: string }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <a
+      href={href}
+      target={href.startsWith("http") ? "_blank" : undefined}
+      rel="noopener noreferrer"
+      className="relative inline-flex"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <span className="relative z-10">{children}</span>
+      <motion.svg
+        width="100%"
+        height="8"
+        viewBox="0 0 100 8"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute bottom-0 left-0 w-full text-clay/50"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={hover ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+        transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+      >
+        <motion.path
+          d="M 0 5 Q 10 1, 20 4 T 40 5 T 60 4 T 80 5 T 100 4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeDasharray="0.5 2"
+        />
+      </motion.svg>
+    </a>
+  );
+}
+
+// Typewriter cursor blink — surreal
+export function TypewriterCursor() {
+  return (
+    <motion.span
+      animate={{ opacity: [1, 0] }}
+      transition={{ duration: 0.7, repeat: Infinity, ease: "linear" } as any}
+      className="inline-block h-[1em] w-[2px] bg-clay ml-1 translate-y-[2px]"
+    />
+  );
+}
+
+// Coffee stain — surreal desk detail, ultra-subtle
+export function CoffeeStain({ className = "" }: { className?: string }) {
+  return (
+    <div className={`pointer-events-none absolute rounded-full bg-[#9C6B4A]/[0.06] blur-[1px] ${className}`} style={{ width: 64, height: 64 }} />
+  );
+}

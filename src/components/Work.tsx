@@ -1,6 +1,6 @@
 import { projects } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import { Fold, Staple, Marginalia, Stamp, Redline, ClientCircled } from "@/components/Brutalist";
+import { Fold, Staple, Marginalia, Stamp, Redline, ClientCircled, PaperClip, Tape, CoffeeStain, ScribbleLink } from "@/components/Brutalist";
 
 export default function Work() {
   const featured = projects.filter((p) => p.featured); // 3 working: Recto, SwingFrame, LOCK-IN client
@@ -67,9 +67,13 @@ export default function Work() {
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="notebook-page human-card group relative flex h-full flex-col p-7 sm:p-8 pt-10"
+                className="notebook-page human-card group relative flex h-full flex-col p-7 sm:p-8 pt-10 overflow-hidden"
               >
                 <Staple />
+                <PaperClip className="-right-1 top-6 rotate-12 hidden sm:block" />
+                {p.name === "Recto" && <Tape className="-left-3 top-4" rotate={-12} />}
+                {p.name === "SwingFrame" && <CoffeeStain className="right-6 bottom-16 hidden sm:block" />}
+                {p.name === "LOCK-IN" && <Tape className="right-8 -top-2" rotate={14} />}
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -107,21 +111,15 @@ export default function Work() {
       </div>
 
       <Reveal delay={0.12} className="mt-10">
-        <div className="rounded-[1.2rem] border border-dashed border-line bg-canvas-deep/50 px-6 py-5 typewriter">
+        <div className="rounded-[1.2rem] border border-dashed border-line bg-canvas-deep/50 px-6 py-5 typewriter relative">
+          <Tape className="left-10 -top-3 hidden sm:block" rotate={-8} />
           <div className="flex gap-3 text-[13px] leading-relaxed text-ink-soft">
             <span className="mt-2 h-px w-6 shrink-0 bg-clay/50" />
             <p className="max-w-3xl">
               Only 3 working builds for now (Recto Aug1, SwingFrame Aug1, LOCK-IN client Jul30). Older —{" "}
               <span className="text-ink">forms, TheStandard (predecessor of LOCK-IN), retailflow demo (catalog demo), Omni, TheDesiEdit</span> — live in GitHub via{" "}
-              <a
-                href="https://github.com/muhummadzarrar09-sudo?tab=repositories"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline decoration-dotted"
-              >
-                View all projects
-              </a>
-              . No pills, just name + honest description per your note. <span className="text-clay">[brutalist notebook — staple + redline + marginalia]</span>
+              <ScribbleLink href="https://github.com/muhummadzarrar09-sudo?tab=repositories">View all projects</ScribbleLink>. No pills, just name + honest
+              description per your note. <span className="text-clay">[brutalist notebook — staple + tape + coffee stain + redline + marginalia — surreal]</span>
             </p>
           </div>
         </div>
