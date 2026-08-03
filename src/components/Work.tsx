@@ -7,6 +7,26 @@ export default function Work() {
 
   return (
     <section id="work" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+      {/* Marginalia — section-anchored, outer gutters only (>=1500px where the gutter fits them) */}
+      <Marginalia side="left" top="top-[380px]" showFrom="min-[1500px]:block">
+        Aug 1 — 35 commits
+        <br />"so if it crashes we now know why"
+        <br />
+        <span className="font-mono text-[10px] not-italic text-faint">→ console mirroring</span>
+      </Marginalia>
+      <Marginalia side="left" top="top-[520px]" showFrom="min-[1500px]:block">
+        graffiti human golfer
+        <br />launcher icon
+        <br />
+        <span className="font-mono text-[10px] not-italic text-faint">Phase 1 & 2 Jul31</span>
+      </Marginalia>
+      <Marginalia side="right" top="top-[380px]" showFrom="min-[1500px]:block">
+        <Redline oldText="personal OS" newText="CLIENT PROJECT" />
+        <br />
+        <span className="mt-1 block font-mono text-[10px] not-italic text-faint">
+          TheStandard is predecessor
+        </span>
+      </Marginalia>
       <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <SectionHeading
           index="03"
@@ -36,38 +56,11 @@ export default function Work() {
         {featured.map((p, i) => (
           <Reveal key={p.name} delay={i * 0.08} className="relative">
             <div className="relative">
-              {/* Marginalia — handwritten notes outside card */}
-              {p.name === "Recto" && (
-                <Marginalia side="right">
-                  Aug 1 — 35 commits
-                  <br />"so if it crashes we now know why"
-                  <br />
-                  <span className="font-mono text-[10px] not-italic text-faint">→ console mirroring</span>
-                </Marginalia>
-              )}
-              {p.name === "SwingFrame" && (
-                <Marginalia side={i === 1 ? "left" : "right"}>
-                  graffiti human golfer
-                  <br />launcher icon
-                  <br />
-                  <span className="font-mono text-[10px] not-italic text-faint">Phase 1 & 2 Jul31</span>
-                </Marginalia>
-              )}
-              {p.name === "LOCK-IN" && (
-                <Marginalia side="right">
-                  <Redline oldText="personal OS" newText="CLIENT PROJECT" />
-                  <br />
-                  <span className="mt-1 block font-mono text-[10px] not-italic text-faint">
-                    TheStandard is predecessor
-                  </span>
-                </Marginalia>
-              )}
-
               <a
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="notebook-page human-card group relative flex h-full flex-col p-7 sm:p-8 pt-10 overflow-hidden"
+                className="notebook-page human-card group relative flex h-full flex-col p-7 sm:p-8 pt-10"
               >
                 <Staple />
                 <PaperClip className="-right-1 top-6 rotate-12 hidden sm:block" />
@@ -91,11 +84,11 @@ export default function Work() {
                 </div>
 
                 <h3 className="mt-6 font-display text-[1.9rem] font-light leading-[1.05] tracking-tightest">{p.name}</h3>
-                <p className="mt-2 text-[13px] font-medium text-clay leading-snug typewriter">{p.blurb}</p>
+                <p className="mt-2 text-[13px] font-medium text-clay-deep leading-snug typewriter">{p.blurb}</p>
 
                 <p className="mt-4 text-[14px] leading-relaxed text-ink-soft text-pretty">{p.description}</p>
 
-                <div className="mt-5 rounded-xl border border-dashed border-line-soft bg-canvas px-4 py-3">
+                <div className="mt-5 rounded-xl border border-dashed border-line-strong bg-surface-2 px-4 py-3">
                   <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">Outcome — honest</div>
                   <div className="mt-1 text-[13px] leading-relaxed text-ink-soft typewriter">{p.outcome}</div>
                 </div>
@@ -119,7 +112,7 @@ export default function Work() {
               Only 3 working builds for now (Recto Aug1, SwingFrame Aug1, LOCK-IN client Jul30). Older —{" "}
               <span className="text-ink">forms, TheStandard (predecessor of LOCK-IN), retailflow demo (catalog demo), Omni, TheDesiEdit</span> — live in GitHub via{" "}
               <ScribbleLink href="https://github.com/muhummadzarrar09-sudo?tab=repositories">View all projects</ScribbleLink>. No pills, just name + honest
-              description per your note. <span className="text-clay">[brutalist notebook — staple + tape + coffee stain + redline + marginalia — surreal]</span>
+              description per your note.
             </p>
           </div>
         </div>

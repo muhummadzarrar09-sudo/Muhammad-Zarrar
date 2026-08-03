@@ -27,7 +27,7 @@ export default function Expertise() {
         {expertise.map((g, gi) => (
           <Reveal key={g.group} delay={gi * 0.08} className="h-full">
             <div className="human-card flex h-full flex-col rounded-[1.4rem] border border-line bg-surface p-7">
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay">0{gi + 1} — {g.group}</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">0{gi + 1} — {g.group}</div>
               <h3 className="mt-3 font-display text-[1.4rem] font-medium leading-tight tracking-tight">
                 {g.group}
               </h3>

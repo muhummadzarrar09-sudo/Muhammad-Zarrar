@@ -38,8 +38,8 @@ export function Fold({ label }: { label?: string }) {
 export function Staple() {
   return (
     <div className="pointer-events-none absolute left-1/2 top-0 flex -translate-x-1/2 gap-7 pt-[9px]">
-      <span className="h-[7px] w-[7px] rounded-full bg-ink/10 border border-ink/10" />
-      <span className="h-[7px] w-[7px] rounded-full bg-ink/10 border border-ink/10" />
+      <span className="h-[7px] w-[7px] rounded-full bg-ink/50 border border-ink/50" />
+      <span className="h-[7px] w-[7px] rounded-full bg-ink/50 border border-ink/50" />
     </div>
   );
 }
@@ -49,7 +49,7 @@ export function Redline({ oldText, newText }: { oldText: string; newText: string
   return (
     <span className="inline-flex items-baseline gap-2 font-mono text-[11px]">
       <span className="relative text-faint line-through decoration-clay/60">{oldText}</span>
-      <span className="text-clay font-medium tracking-tight">→ {newText}</span>
+      <span className="text-clay-deep font-medium tracking-tight">→ {newText}</span>
     </span>
   );
 }
@@ -58,9 +58,13 @@ export function Redline({ oldText, newText }: { oldText: string; newText: string
 export function Marginalia({
   children,
   side = "right",
+  top = "top-8",
+  showFrom = "min-[1440px]:block",
 }: {
   children: ReactNode;
   side?: "left" | "right";
+  top?: string;
+  showFrom?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-15% 0px" });
@@ -70,7 +74,7 @@ export function Marginalia({
       initial={{ opacity: 0, x: side === "right" ? 12 : -12, rotate: side === "right" ? 1.2 : -1.2 }}
       animate={inView ? { opacity: 1, x: 0, rotate: side === "right" ? 1 : -0.8 } : {}}
       transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-      className={`hidden lg:block absolute top-8 font-display italic text-[13px] leading-[1.4] text-clay/80 max-w-[150px] ${
+      className={`hidden ${showFrom} absolute ${top} z-10 font-display italic text-[13px] leading-[1.4] text-clay-deep max-w-[150px] ${
         side === "right" ? "right-[-172px] text-left" : "left-[-172px] text-right"
       }`}
     >
@@ -83,7 +87,7 @@ export function Marginalia({
 // Rubber stamp
 export function Stamp({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex rotate-[-8deg] items-center justify-center rounded-[3px] border-[1.5px] border-clay/70 px-2 py-0.5 font-caption text-[9px] font-bold uppercase tracking-[0.15em] text-clay/80">
+    <span className="inline-flex rotate-[-8deg] items-center justify-center rounded-[3px] border-[1.5px] border-clay-deep/80 px-2 py-0.5 font-caption text-[10px] font-bold uppercase tracking-[0.12em] text-clay-deep">
       {children}
     </span>
   );
@@ -166,7 +170,7 @@ export function PageNumbers() {
   const current = map[active] ?? 0;
 
   return (
-    <div className="pointer-events-none fixed left-0 top-1/2 z-30 hidden -translate-y-1/2 lg:flex flex-col items-center gap-3 pl-4">
+    <div className="pointer-events-none fixed left-0 top-1/2 z-30 hidden -translate-y-1/2 min-[1340px]:flex flex-col items-center gap-3 pl-4">
       <div className="font-caption text-[10px] font-bold tracking-[0.2em] text-faint rotate-[-90deg] origin-center whitespace-nowrap">
         p.{String(current).padStart(2, "0")} / 05
       </div>
@@ -204,7 +208,7 @@ export function MarginArrow({ label = "red margin — composition book" }: { lab
       transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
       className="pointer-events-none absolute left-[52px] lg:left-[68px] top-0 hidden sm:flex items-center gap-2 z-20"
     >
-      <svg width="40" height="20" viewBox="0 0 40 20" className="text-clay/60">
+      <svg width="40" height="20" viewBox="0 0 40 20" className="text-clay-deep/80">
         <motion.path
           d="M 0 10 Q 12 2, 22 10 T 38 10 M 32 6 L 38 10 L 32 14"
           fill="none"
@@ -216,7 +220,7 @@ export function MarginArrow({ label = "red margin — composition book" }: { lab
           transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
         />
       </svg>
-      <span className="font-caption text-[9px] uppercase tracking-[0.15em] text-clay/70 whitespace-nowrap">{label}</span>
+      <span className="font-caption text-[9px] uppercase tracking-[0.15em] text-clay-deep whitespace-nowrap">{label}</span>
     </motion.div>
   );
 }
@@ -237,8 +241,8 @@ export function Envelope({ isSealed, children }: { isSealed: boolean; children: 
       />
       {/* Seal dot */}
       <motion.div
-        className="absolute -top-2 left-1/2 z-10 h-6 w-6 -translate-x-1/2 rounded-full bg-clay grid place-items-center text-canvas font-bold text-[10px]"
-        animate={{ scale: isSealed ? 1 : 0.85, opacity: isSealed ? 1 : 0.6 }}
+        className="absolute -top-2 left-1/2 z-10 h-6 w-6 -translate-x-1/2 rounded-full bg-clay-deep grid place-items-center text-canvas font-bold text-[10px]"
+        animate={{ scale: isSealed ? 1 : 0.85, opacity: 1 }}
         transition={{ duration: 0.4 }}
       >
         M
@@ -254,7 +258,7 @@ export function Envelope({ isSealed, children }: { isSealed: boolean; children: 
 export function PaperClip({ className = "" }: { className?: string }) {
   return (
     <div className={`pointer-events-none absolute select-none ${className}`}>
-      <svg width="18" height="42" viewBox="0 0 18 42" fill="none" className="text-ink/20">
+      <svg width="18" height="42" viewBox="0 0 18 42" fill="none" className="text-ink/50">
         <path d="M 6 2 C 12 2, 16 6, 16 14 L 16 32 C 16 38, 12 40, 8 40 C 4 40, 2 38, 2 32 L 2 10 C 2 6, 4 4, 8 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" fill="none" />
       </svg>
     </div>
@@ -313,7 +317,7 @@ export function TypewriterCursor() {
     <motion.span
       animate={{ opacity: [1, 0] }}
       transition={{ duration: 0.7, repeat: Infinity, ease: "linear" } as any}
-      className="inline-block h-[1em] w-[2px] bg-clay ml-1 translate-y-[2px]"
+      className="inline-block h-[1em] w-[2px] bg-clay-deep ml-1 translate-y-[2px]"
     />
   );
 }

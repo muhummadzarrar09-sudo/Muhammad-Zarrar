@@ -201,7 +201,7 @@ export function SectionHeading({
     <div className={cn("flex flex-col gap-6", className)}>
       <Reveal>
         <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted">
-          <span className="text-spark">{index}</span>
+          <span className="text-clay-deep">{index}</span>
           <span className="h-px w-8 bg-line" />
           <span>{label}</span>
         </div>

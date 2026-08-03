@@ -63,7 +63,7 @@ export default function Footer() {
             className="group flex items-center gap-2 font-mono text-xs text-muted transition-colors hover:text-ink"
           >
             Back to top
-            <span className="grid h-7 w-7 place-items-center rounded-full border border-line transition-all group-hover:-translate-y-0.5 group-hover:border-clay">
+            <span className="grid h-7 w-7 place-items-center rounded-full border border-line-strong transition-all group-hover:-translate-y-0.5 group-hover:border-clay">
               ↑
             </span>
           </button>

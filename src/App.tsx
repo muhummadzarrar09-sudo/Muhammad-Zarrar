@@ -20,9 +20,9 @@ function LazySection({ label, children }: { label: string; children: React.React
 
 export default function App() {
   return (
-    <div className="notebook relative min-h-screen overflow-x-clip bg-canvas text-ink antialiased grain">
+    <div className="notebook isolate relative min-h-screen overflow-x-clip bg-canvas text-ink antialiased grain">
       {/* Dot-grid + paper — brutalist notebook base */}
-      <div className="pointer-events-none fixed inset-0 opacity-[0.35] dot-grid" />
+      <div className="pointer-events-none fixed inset-0 -z-10 opacity-[0.35] dot-grid" />
       {/* Red margin line is via .notebook::before in CSS */}
 
       <SeoRouteMeta />
