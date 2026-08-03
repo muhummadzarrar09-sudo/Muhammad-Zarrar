@@ -60,7 +60,7 @@ export default function Nav() {
           className={cn(
             "flex w-full max-w-6xl items-center justify-between rounded-full px-3.5 py-2.5 transition-all duration-300",
             scrolled
-              ? "border border-line bg-surface/85 backdrop-blur-xl lift"
+              ? "border border-line-strong bg-surface/85 backdrop-blur-2xl lift"
               : "border border-transparent bg-surface/40 backdrop-blur-md"
           )}
         >
@@ -84,8 +84,8 @@ export default function Nav() {
                 type="button"
                 onClick={() => go(l.id)}
                 className={cn(
-                  "rounded-full px-4 py-2 font-mono text-[12px] tracking-[0.02em] transition-colors",
-                  active === l.id ? "bg-canvas-deep text-ink" : "text-muted hover:text-ink"
+                  "rounded-full px-4 py-2 font-mono text-[13px] tracking-[0.02em] transition-colors",
+                  active === l.id ? "bg-canvas-deep text-ink" : "text-ink-soft hover:text-ink"
                 )}
               >
                 {l.label}
@@ -118,7 +118,7 @@ export default function Nav() {
 
       {/* Mobile menu — personal, paper, not heavy blur */}
       {open && (
-        <div className="fixed inset-0 z-40 flex flex-col bg-canvas/95 backdrop-blur-xl md:hidden">
+        <div className="fixed inset-0 z-40 flex flex-col bg-canvas backdrop-blur-xl md:hidden">
           <div className="flex flex-1 flex-col justify-center px-8">
             {LINKS.map((l) => (
               <button

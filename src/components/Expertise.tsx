@@ -26,7 +26,7 @@ export default function Expertise() {
       <div className="mt-14 grid gap-4 md:grid-cols-3">
         {expertise.map((g, gi) => (
           <Reveal key={g.group} delay={gi * 0.08} className="h-full">
-            <div className="human-card flex h-full flex-col rounded-[1.4rem] border border-line bg-surface p-7">
+            <div className="human-card flex h-full flex-col rounded-[1.4rem] border border-line-strong/40 bg-surface p-7">
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">0{gi + 1} — {g.group}</div>
               <h3 className="mt-3 font-display text-[1.4rem] font-medium leading-tight tracking-tight">
                 {g.group}
@@ -40,7 +40,7 @@ export default function Expertise() {
                       <span className="h-px w-3 bg-line" />
                       {s.name}
                     </span>
-                    <span className="font-mono text-[10px] text-faint">{s.level}%</span>
+                    <span className="font-mono text-[12px] text-muted">{s.level}%</span>
                   </li>
                 ))}
               </ul>

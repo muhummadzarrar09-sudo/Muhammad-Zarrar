@@ -43,7 +43,7 @@ export default function About() {
             </p>
           </Reveal>
           <Reveal delay={0.08}>
-            <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-ink-soft text-pretty typewriter">
+            <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-ink-soft text-pretty typewriter sm:text-[18px]">
               <p>
                 I started breaking things at 2am, copying snippets I didn&apos;t fully get. Over time I stopped chasing
                 frameworks and chased <span className="text-ink">useful</span> — does it solve a real problem? Will it
@@ -62,14 +62,14 @@ export default function About() {
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="mt-10 rounded-[1.2rem] border border-line bg-surface p-5 notebook-page">
+            <div className="mt-10 rounded-[1.2rem] border border-line-strong bg-surface p-5 notebook-page">
               <Staple />
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep flex items-center gap-2">
                 How I work now — Aug 2026 <Stamp>BRUTALIST</Stamp>
               </div>
               <ul className="mt-3 space-y-3">
                 {principles.map((p) => (
-                  <li key={p.k} className="flex gap-3 text-[13.5px] leading-[1.6] text-ink-soft typewriter">
+                  <li key={p.k} className="flex gap-3 text-[15px] leading-[1.6] text-ink-soft typewriter">
                     <span className="mt-[8px] h-px w-5 shrink-0 bg-clay/40" />
                     <span>{p.v}</span>
                   </li>
@@ -89,10 +89,10 @@ export default function About() {
           </Marginalia>
 
           <Reveal delay={0.12}>
-            <div className="rounded-[1.6rem] border border-line bg-surface/90 p-6 lift notebook-page">
+            <div className="rounded-[1.6rem] border border-line-strong bg-surface/90 p-6 lift notebook-page">
               <Staple />
               <div className="flex items-center gap-3">
-                <img src={profile.avatar} alt="" className="h-10 w-10 rounded-full border border-line" />
+                <img src={profile.avatar} alt="" className="h-10 w-10 rounded-full border border-line-strong" />
                 <div>
                   <div className="font-display text-[15px] font-medium leading-none">{profile.name}</div>
                   <div className="mt-1 font-mono text-[11px] text-muted">
@@ -113,7 +113,7 @@ export default function About() {
                   <span>Now</span>
                   <span className="text-clay-deep">Recto / SwingFrame / CLIENT</span>
                 </div>
-                <div className="h-px bg-line-soft" />
+                <div className="h-px bg-line-strong" />
                 <div className="text-[12px] leading-relaxed text-ink-soft">
                   {profile.availability}. Latest by commit: Recto Aug1, SwingFrame Aug1, forms Jul30, LOCK-IN CLIENT
                   Jul30, TheStandard Jul23, retailflow Jul22, Omni Jul19, TheDesiEdit Jul16.

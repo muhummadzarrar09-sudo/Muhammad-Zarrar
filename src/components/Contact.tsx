@@ -191,7 +191,7 @@ export default function Contact() {
                       onChange={(e) => set("name", e.target.value)}
                       maxLength={80}
                       placeholder="Zarrar"
-                      className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
+                      className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-ink-soft/60 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                     />
                     {errors.name && <p className="mt-1 text-xs text-[#B3261E]">{errors.name}</p>}
                   </div>
@@ -206,7 +206,7 @@ export default function Contact() {
                       onChange={(e) => set("email", e.target.value)}
                       maxLength={120}
                       placeholder="you@company.com"
-                      className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
+                      className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-ink-soft/60 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                     />
                     {errors.email && <p className="mt-1 text-xs text-[#B3261E]">{errors.email}</p>}
                   </div>
@@ -243,7 +243,7 @@ export default function Contact() {
                     maxLength={1000}
                     rows={5}
                     placeholder="I'm building a..."
-                    className="w-full resize-none rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm leading-relaxed text-ink placeholder:text-muted focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
+                    className="w-full resize-none rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm leading-relaxed text-ink placeholder:text-ink-soft/60 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                   />
                   <div className="mt-1.5 flex justify-between">
                     <div>{errors.message && <span className="text-xs text-[#B3261E]">{errors.message}</span>}</div>

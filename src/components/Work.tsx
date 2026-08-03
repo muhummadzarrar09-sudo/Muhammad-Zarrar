@@ -44,7 +44,7 @@ export default function Work() {
             href="https://github.com/muhummadzarrar09-sudo?tab=repositories"
             target="_blank"
             rel="noopener noreferrer"
-            className="link-underline font-mono text-sm text-ink-soft"
+            className="link-underline font-mono text-[12px] text-ink-soft"
           >
             View all projects ↗
           </a>
@@ -88,12 +88,12 @@ export default function Work() {
 
                 <p className="mt-4 text-[14px] leading-relaxed text-ink-soft text-pretty">{p.description}</p>
 
-                <div className="mt-5 rounded-xl border border-dashed border-line-strong bg-surface-2 px-4 py-3">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">Outcome — honest</div>
+                <div className="mt-5 rounded-xl border border-dashed border-line-strong bg-canvas-deep px-4 py-3">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">Outcome — honest</div>
                   <div className="mt-1 text-[13px] leading-relaxed text-ink-soft typewriter">{p.outcome}</div>
                 </div>
 
-                <div className="mt-auto pt-6 flex items-center gap-2 font-mono text-[10px] text-faint">
+                <div className="mt-auto pt-6 flex items-center gap-2 font-mono text-[12px] text-ink-soft">
                   <span className="h-px w-4 bg-line" />
                   <span>live — {p.url.replace("https://github.com/", "")}</span>
                 </div>
