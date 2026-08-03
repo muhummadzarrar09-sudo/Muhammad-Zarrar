@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { SectionLoading } from "@/components/LazyFallback";
 import ScrollProgress from "@/components/ScrollProgress";
-import { Fold, PageNumbers } from "@/components/Brutalist";
+import { Fold, PageNumbers, InkTrail } from "@/components/Brutalist";
 
 const About = lazy(() => import("@/components/About"));
 const Expertise = lazy(() => import("@/components/Expertise"));
@@ -28,6 +28,7 @@ export default function App() {
       <SeoRouteMeta />
       <ScrollProgress />
       <PageNumbers />
+      <InkTrail />
       <Nav />
 
       <main className="relative">

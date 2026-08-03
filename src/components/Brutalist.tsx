@@ -506,3 +506,55 @@ export function GolfSwingPath() {
     </svg>
   );
 }
+
+// Ink blot trail — leaves ink bloat as you move cursor, surreal final touch
+export function InkTrail() {
+  const [trail, setTrail] = useState<{ id: number; x: number; y: number; size: number }[]>([]);
+  const counter = useRef(0);
+  const last = useRef({ x: 0, y: 0, t: 0 });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(pointer: coarse)").matches) return; // no trail on touch
+
+    const onMove = (e: MouseEvent) => {
+      const now = Date.now();
+      const dx = e.clientX - last.current.x;
+      const dy = e.clientY - last.current.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 18) return; // throttle distance
+      if (now - last.current.t < 32) return; // throttle time ~30fps
+      last.current = { x: e.clientX, y: e.clientY, t: now };
+
+      const id = counter.current++;
+      const size = 6 + Math.random() * 10;
+      setTrail((prev) => {
+        const next = [...prev, { id, x: e.clientX, y: e.clientY, size }];
+        return next.slice(-18); // keep max 18 dots for perf
+      });
+
+      // auto-remove after 1.2s
+      window.setTimeout(() => {
+        setTrail((prev) => prev.filter((p) => p.id !== id));
+      }, 1200);
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
+  return (
+    <div className="pointer-events-none fixed inset-0 z-40 hidden lg:block">
+      {trail.map((p) => (
+        <motion.span
+          key={p.id}
+          initial={{ opacity: 0.55, scale: 0.3 }}
+          animate={{ opacity: 0, scale: 1.8 }}
+          transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
+          className="absolute rounded-full bg-ink/10 blur-[1px]"
+          style={{ left: p.x - p.size / 2, top: p.y - p.size / 2, width: p.size, height: p.size }}
+        />
+      ))}
+    </div>
+  );
+}
