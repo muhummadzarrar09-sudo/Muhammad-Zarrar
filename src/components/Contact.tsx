@@ -132,6 +132,14 @@ export default function Contact() {
               >
                 Email me
               </a>
+              <a
+                href={profile.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-clay px-6 py-3 text-sm text-canvas hover:bg-clay-deep"
+              >
+                WhatsApp — {profile.whatsappDisplay}
+              </a>
               <button
                 type="button"
                 onClick={copy}
@@ -141,9 +149,13 @@ export default function Contact() {
               </button>
             </div>
 
-            <div className="font-mono text-xs text-muted">
-              <div>{profile.email}</div>
-              <div className="mt-1">{profile.location} • Usually replies in ~24h</div>
+            <div className="font-mono text-xs text-muted space-y-1">
+              <div>{profile.email} — actual email per your note</div>
+              <div className="flex gap-2 items-center">
+                <span>{profile.whatsappDisplay} — WhatsApp / Agency WhatsApp</span>
+                <a href={profile.whatsappLink} target="_blank" rel="noopener noreferrer" className="underline decoration-dotted">Chat ↗</a>
+              </div>
+              <div className="mt-1">{profile.location} • Usually replies in ~24h on both</div>
             </div>
           </Reveal>
 

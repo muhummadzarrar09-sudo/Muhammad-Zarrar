@@ -39,7 +39,13 @@ export default function Footer() {
             <div className="flex flex-col gap-2.5">
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-faint">Contact</div>
               <a href={`mailto:${profile.email}`} className="link-underline w-fit text-sm text-ink-soft">
-                {profile.email}
+                {profile.email} — actual
+              </a>
+              <a href={profile.whatsappLink} target="_blank" rel="noopener noreferrer" className="link-underline w-fit text-sm text-ink-soft">
+                WhatsApp {profile.whatsappDisplay} ↗
+              </a>
+              <a href={profile.whatsappLink} target="_blank" rel="noopener noreferrer" className="link-underline w-fit text-sm text-ink-soft">
+                Agency WhatsApp {profile.whatsappDisplay} ↗
               </a>
               <a
                 href={profile.github}

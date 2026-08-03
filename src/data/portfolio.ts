@@ -15,6 +15,9 @@ export const profile = {
   avatar: "https://avatars.githubusercontent.com/u/266341933?v=4&s=512",
   github: "https://github.com/muhummadzarrar09-sudo",
   email: "muhummadzarrar09@gmail.com",
+  whatsapp: "+92 3335666050",
+  whatsappLink: "https://wa.me/923335666050",
+  whatsappDisplay: "+92 333 5666050",
   emailSubject: "Hey Zarrar — saw Recto / SwingFrame / client work",
   emailBody: [
     "Hey Zarrar,",
@@ -233,4 +236,6 @@ export const process = [
 export const socials = [
   { label: "GitHub", handle: "@muhummadzarrar09-sudo", url: profile.github },
   { label: "Email", handle: "muhummadzarrar09@gmail.com", url: "mailto:muhummadzarrar09@gmail.com" },
+  { label: "WhatsApp", handle: "+92 333 5666050", url: "https://wa.me/923335666050" },
+  { label: "Agency WhatsApp", handle: "+92 333 5666050", url: "https://wa.me/923335666050" },
 ];

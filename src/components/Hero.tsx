@@ -103,6 +103,14 @@ export default function Hero() {
             <span aria-hidden>→</span>
           </a>
           <a
+            href={profile.whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-clay px-6 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
+          >
+            WhatsApp {profile.whatsappDisplay}
+          </a>
+          <a
             href="#work"
             className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-6 py-3 text-sm font-medium text-ink-soft transition-colors hover:border-clay-soft hover:text-ink"
           >
