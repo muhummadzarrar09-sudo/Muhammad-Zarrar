@@ -423,37 +423,59 @@ export function LockInCodeVisual() {
   );
 }
 
-// Highlighter mark — yellow swipe behind text, draws on scroll
+// Highlighter mark — yellow swipe behind text, draws on scroll, draggable
 export function Highlighter({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-20% 0px" });
+  const [isDragging, setIsDragging] = useState(false);
   return (
     <span ref={ref} className="relative inline-block">
       <motion.span
+        drag="x"
+        dragConstraints={{ left: -12, right: 12 }}
+        dragElastic={0.15}
+        dragMomentum={false}
+        onDragStart={() => setIsDragging(true)}
+        onDragEnd={() => setIsDragging(false)}
         initial={{ scaleX: 0 }}
         animate={inView ? { scaleX: 1 } : {}}
+        whileHover={{ scaleX: 1.08 }}
+        whileDrag={{ scale: 1.05, rotate: -1 }}
         transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
-        className="absolute inset-0 -z-10 origin-left bg-[#FFE89A]/80 -rotate-[1deg] rounded-[2px]"
+        className={`absolute inset-0 -z-10 origin-left rounded-[2px] cursor-grab active:cursor-grabbing ${
+          isDragging ? "bg-[#FFE89A]" : "bg-[#FFE89A]/80"
+        } -rotate-[1deg]`}
         style={{ top: "0.6em", height: "0.55em" }}
+        title="Drag me — highlighter"
       />
       <span className="relative z-10">{children}</span>
     </span>
   );
 }
 
-// Ink smudge — subtle ink blot that appears, for Recto console
+// Ink smudge — subtle ink blot that appears, spreads on hover
 export function InkSmudge({ className = "" }: { className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10% 0px" });
+  const [hovered, setHovered] = useState(false);
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={inView ? { opacity: 1, scale: 1 } : {}}
+      whileHover={{ scale: 1.9, filter: "blur(4px)" }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
       transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
-      className={`pointer-events-none absolute bg-ink/10 blur-[2px] rounded-full ${className}`}
+      className={`pointer-events-auto absolute bg-ink/10 blur-[2px] rounded-full cursor-pointer ${className}`}
       style={{ width: 18, height: 18 }}
-    />
+      title={hovered ? "Ink spreads — hover" : "Ink smudge — hover to spread"}
+    >
+      <motion.span
+        animate={hovered ? { scale: 1.4, opacity: 0.2 } : { scale: 1, opacity: 0 }}
+        className="absolute inset-0 rounded-full bg-ink/20 blur-[3px]"
+      />
+    </motion.div>
   );
 }
 
