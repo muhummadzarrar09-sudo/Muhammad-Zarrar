@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { SectionLoading } from "@/components/LazyFallback";
 import ScrollProgress from "@/components/ScrollProgress";
+import { Fold } from "@/components/Brutalist";
 
 const About = lazy(() => import("@/components/About"));
 const Expertise = lazy(() => import("@/components/Expertise"));
@@ -18,33 +19,45 @@ function LazySection({ label, children }: { label: string; children: React.React
 }
 
 export default function App() {
-
-  // Personal portfolio — single route, human, no business split, no cinematic projector
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-canvas text-ink antialiased">
+    <div className="notebook relative min-h-screen overflow-x-clip bg-canvas text-ink antialiased grain">
+      {/* Dot-grid + paper — brutalist notebook base */}
+      <div className="pointer-events-none fixed inset-0 opacity-[0.35] dot-grid" />
+      {/* Red margin line is via .notebook::before in CSS */}
+
       <SeoRouteMeta />
       <ScrollProgress />
       <Nav />
-      <main>
+
+      <main className="relative">
         <Hero />
+        <Fold label="unfold — about" />
         <LazySection label="Loading about">
           <About />
         </LazySection>
+
+        <Fold label="unfold — expertise" />
         <LazySection label="Loading expertise">
           <Expertise />
         </LazySection>
+
+        <Fold label="unfold — work — 3 only" />
         <LazySection label="Loading work">
           <Work />
         </LazySection>
+
+        <Fold label="unfold — process" />
         <LazySection label="Loading process">
           <Process />
         </LazySection>
+
+        <Fold label="unfold — contact — seal the letter" />
         <LazySection label="Loading contact">
           <Contact />
         </LazySection>
       </main>
+
       <Footer />
-      {/* Keep ErrorBoundary around whole app shell */}
       <ErrorBoundary>{null}</ErrorBoundary>
     </div>
   );
