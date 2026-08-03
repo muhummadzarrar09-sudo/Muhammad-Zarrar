@@ -324,3 +324,93 @@ export function CoffeeStain({ className = "" }: { className?: string }) {
     <div className={`pointer-events-none absolute rounded-full bg-[#9C6B4A]/[0.06] blur-[1px] ${className}`} style={{ width: 64, height: 64 }} />
   );
 }
+
+// === CODED SURREAL VISUALS inspired by generated PNGs — no images, pure code ===
+
+// Recto: two console windows side-by-side, one normal, one mirrored error — inspired by surreal-recto.png
+export function RectoCodeVisual() {
+  return (
+    <div className="mt-5 grid grid-cols-2 gap-2">
+      <div className="rounded-lg border border-line bg-ink text-canvas p-2.5 font-mono text-[10px] leading-[1.4]">
+        <div className="flex gap-1 mb-1.5">
+          <span className="h-2 w-2 rounded-full bg-clay/60" />
+          <span className="h-2 w-2 rounded-full bg-sand/60" />
+          <span className="h-2 w-2 rounded-full bg-line" />
+        </div>
+        <div className="text-canvas/70">$ recto run</div>
+        <div className="text-volt">✓ compiled</div>
+        <div className="text-canvas/50">35 commits</div>
+      </div>
+      <div className="rounded-lg border border-clay/30 bg-clay-wash p-2.5 font-mono text-[10px] leading-[1.4] rotate-[-0.6deg]">
+        <div className="flex gap-1 mb-1.5">
+          <span className="h-2 w-2 rounded-full bg-clay" />
+          <span className="h-2 w-2 rounded-full bg-clay/50" />
+        </div>
+        <div className="text-clay">✗ crash visible</div>
+        <div className="text-ink/60">mirrored console</div>
+        <div className="text-clay/70 text-[9px]">← so if it crashes we now know why</div>
+      </div>
+    </div>
+  );
+}
+
+// SwingFrame: stacked paper cutout frames like golf swing sequence, with graffiti golfer dot — inspired by surreal-swingframe.png
+export function SwingFrameCodeVisual() {
+  return (
+    <div className="mt-5 relative h-[88px]">
+      <div className="absolute left-0 top-2 h-[68px] w-[56px] rotate-[-6deg] rounded-md border border-line bg-surface p-1.5">
+        <div className="h-full w-full rounded-[4px] bg-canvas-deep border border-dashed border-line-soft grid place-items-center">
+          <div className="h-2 w-2 rounded-full bg-ink/20" />
+        </div>
+        <div className="absolute -bottom-1 -right-1 font-mono text-[8px] text-faint">F1</div>
+      </div>
+      <div className="absolute left-10 top-0 h-[72px] w-[60px] rotate-[3deg] rounded-md border border-line bg-surface p-1.5 shadow-sm">
+        <div className="h-full w-full rounded-[4px] bg-canvas border border-line-soft grid place-items-center relative">
+          <div className="h-8 w-px bg-clay/30 -rotate-12 absolute" />
+          <div className="h-2.5 w-2.5 rounded-full bg-clay border border-clay-deep" />
+        </div>
+        <div className="absolute -bottom-1 -right-1 font-mono text-[8px] text-clay">F2 • AI</div>
+      </div>
+      <div className="absolute left-[68px] top-3 h-[64px] w-[52px] rotate-[8deg] rounded-md border border-clay/30 bg-clay-wash p-1">
+        <div className="h-full w-full rounded-[4px] bg-surface border border-dashed border-clay/30 grid place-items-center">
+          <div className="h-2 w-2 rounded-full bg-forest" />
+        </div>
+        <div className="absolute -bottom-1 -right-1 font-mono text-[8px] text-forest">F3</div>
+      </div>
+      <div className="absolute right-2 top-0 font-caption text-[8px] rotate-6 text-clay/60">graffiti golfer →</div>
+    </div>
+  );
+}
+
+// LOCK-IN: tasks + deep work notes stack, with checkmarks and CLIENT stamp — inspired by surreal-lockin.png
+export function LockInCodeVisual() {
+  return (
+    <div className="mt-5 rounded-lg border border-line bg-canvas p-3 font-mono text-[10px] leading-[1.6]">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[9px] uppercase tracking-[0.15em] text-faint">deep work — client</span>
+        <span className="text-[8px] bg-clay text-canvas px-1.5 py-0.5 rounded-full">121c</span>
+      </div>
+      <div className="space-y-1.5">
+        <div className="flex gap-2 items-center">
+          <span className="grid h-3.5 w-3.5 place-items-center rounded-[2px] bg-ink text-canvas text-[9px]">✓</span>
+          <span className="text-ink line-through decoration-clay/40">personal OS</span>
+          <span className="text-clay">→ CLIENT</span>
+        </div>
+        <div className="flex gap-2 items-center">
+          <span className="grid h-3.5 w-3.5 place-items-center rounded-[2px] border border-clay bg-clay-wash text-clay text-[9px]">✓</span>
+          <span>Supabase RLS hardening</span>
+        </div>
+        <div className="flex gap-2 items-center">
+          <span className="grid h-3.5 w-3.5 place-items-center rounded-[2px] border border-line bg-surface text-faint text-[9px]">○</span>
+          <span className="text-muted">Cloudflare + envelope seal</span>
+        </div>
+      </div>
+      <div className="mt-2 h-px bg-line-soft" />
+      <div className="mt-2 flex gap-1">
+        <span className="h-1 flex-1 rounded-full bg-ink" />
+        <span className="h-1 flex-1 rounded-full bg-clay" />
+        <span className="h-1 flex-1 rounded-full bg-line" />
+      </div>
+    </div>
+  );
+}

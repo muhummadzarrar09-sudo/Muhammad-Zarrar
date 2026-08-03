@@ -1,6 +1,20 @@
 import { projects } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import { Fold, Staple, Marginalia, Stamp, Redline, ClientCircled, PaperClip, Tape, CoffeeStain, ScribbleLink } from "@/components/Brutalist";
+import {
+  Fold,
+  Staple,
+  Marginalia,
+  Stamp,
+  Redline,
+  ClientCircled,
+  PaperClip,
+  Tape,
+  CoffeeStain,
+  ScribbleLink,
+  RectoCodeVisual,
+  SwingFrameCodeVisual,
+  LockInCodeVisual,
+} from "@/components/Brutalist";
 
 export default function Work() {
   const featured = projects.filter((p) => p.featured); // 3 working: Recto, SwingFrame, LOCK-IN client
@@ -94,6 +108,11 @@ export default function Work() {
                 <p className="mt-2 text-[13px] font-medium text-clay leading-snug typewriter">{p.blurb}</p>
 
                 <p className="mt-4 text-[14px] leading-relaxed text-ink-soft text-pretty">{p.description}</p>
+
+                {/* Coded surreal visuals — inspired by PNGs but built with code, per user: dont add them but make by coding */}
+                {p.name === "Recto" && <RectoCodeVisual />}
+                {p.name === "SwingFrame" && <SwingFrameCodeVisual />}
+                {p.name === "LOCK-IN" && <LockInCodeVisual />}
 
                 <div className="mt-5 rounded-xl border border-dashed border-line-soft bg-canvas px-4 py-3">
                   <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">Outcome — honest</div>
