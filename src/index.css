@@ -39,10 +39,14 @@
   --color-circuit: #2D3A32;
   --color-volt: #D7C9AF;
 
-  /* Fonts — keep editorial, but quieter */
+  /* Fonts — 3-font editorial system per user: 2 mains + 1 bold caption */
+  /* Main 1: Fraunces — serif display editorial (light, italic human) */
   --font-display: "Fraunces", ui-serif, Georgia, serif;
-  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  /* Main 2: JetBrains Mono — typewriter, honest engineer log, main body */
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* Designed Caption: Syne — bold, extra-bold editorial, for stamps/tags/marginalia */
+  --font-sans: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-caption: "Syne", ui-sans-serif, system-ui, sans-serif;
 
   /* Easing — human, not bouncy */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
