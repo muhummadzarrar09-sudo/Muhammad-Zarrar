@@ -330,7 +330,8 @@ export function CoffeeStain({ className = "" }: { className?: string }) {
 // Recto: two console windows side-by-side, one normal, one mirrored error — inspired by surreal-recto.png
 export function RectoCodeVisual() {
   return (
-    <div className="mt-5 grid grid-cols-2 gap-2">
+    <div className="mt-5 grid grid-cols-2 gap-2 relative">
+      <InkSmudge className="-top-2 -right-1" />
       <div className="rounded-lg border border-line bg-ink text-canvas p-2.5 font-mono text-[10px] leading-[1.4]">
         <div className="flex gap-1 mb-1.5">
           <span className="h-2 w-2 rounded-full bg-clay/60" />
@@ -341,7 +342,8 @@ export function RectoCodeVisual() {
         <div className="text-volt">✓ compiled</div>
         <div className="text-canvas/50">35 commits</div>
       </div>
-      <div className="rounded-lg border border-clay/30 bg-clay-wash p-2.5 font-mono text-[10px] leading-[1.4] rotate-[-0.6deg]">
+      <div className="rounded-lg border border-clay/30 bg-clay-wash p-2.5 font-mono text-[10px] leading-[1.4] rotate-[-0.6deg] relative">
+        <InkSmudge className="bottom-0 right-0" />
         <div className="flex gap-1 mb-1.5">
           <span className="h-2 w-2 rounded-full bg-clay" />
           <span className="h-2 w-2 rounded-full bg-clay/50" />
@@ -358,6 +360,7 @@ export function RectoCodeVisual() {
 export function SwingFrameCodeVisual() {
   return (
     <div className="mt-5 relative h-[88px]">
+      <GolfSwingPath />
       <div className="absolute left-0 top-2 h-[68px] w-[56px] rotate-[-6deg] rounded-md border border-line bg-surface p-1.5">
         <div className="h-full w-full rounded-[4px] bg-canvas-deep border border-dashed border-line-soft grid place-items-center">
           <div className="h-2 w-2 rounded-full bg-ink/20" />
@@ -367,7 +370,7 @@ export function SwingFrameCodeVisual() {
       <div className="absolute left-10 top-0 h-[72px] w-[60px] rotate-[3deg] rounded-md border border-line bg-surface p-1.5 shadow-sm">
         <div className="h-full w-full rounded-[4px] bg-canvas border border-line-soft grid place-items-center relative">
           <div className="h-8 w-px bg-clay/30 -rotate-12 absolute" />
-          <div className="h-2.5 w-2.5 rounded-full bg-clay border border-clay-deep" />
+          <div className="h-2.5 w-2.5 rounded-full bg-clay border border-clay-deep z-10" />
         </div>
         <div className="absolute -bottom-1 -right-1 font-mono text-[8px] text-clay">F2 • AI</div>
       </div>
@@ -385,7 +388,8 @@ export function SwingFrameCodeVisual() {
 // LOCK-IN: tasks + deep work notes stack, with checkmarks and CLIENT stamp — inspired by surreal-lockin.png
 export function LockInCodeVisual() {
   return (
-    <div className="mt-5 rounded-lg border border-line bg-canvas p-3 font-mono text-[10px] leading-[1.6]">
+    <div className="mt-5 rounded-lg border border-line bg-canvas p-3 font-mono text-[10px] leading-[1.6] relative">
+      <Tape className="right-2 -top-2 hidden sm:block" rotate={12} />
       <div className="flex items-center justify-between mb-2">
         <span className="text-[9px] uppercase tracking-[0.15em] text-faint">deep work — client</span>
         <span className="text-[8px] bg-clay text-canvas px-1.5 py-0.5 rounded-full">121c</span>
@@ -394,11 +398,15 @@ export function LockInCodeVisual() {
         <div className="flex gap-2 items-center">
           <span className="grid h-3.5 w-3.5 place-items-center rounded-[2px] bg-ink text-canvas text-[9px]">✓</span>
           <span className="text-ink line-through decoration-clay/40">personal OS</span>
-          <span className="text-clay">→ CLIENT</span>
+          <span className="text-clay">
+            → <Highlighter>CLIENT</Highlighter>
+          </span>
         </div>
         <div className="flex gap-2 items-center">
           <span className="grid h-3.5 w-3.5 place-items-center rounded-[2px] border border-clay bg-clay-wash text-clay text-[9px]">✓</span>
-          <span>Supabase RLS hardening</span>
+          <span>
+            <Highlighter>Supabase RLS hardening</Highlighter>
+          </span>
         </div>
         <div className="flex gap-2 items-center">
           <span className="grid h-3.5 w-3.5 place-items-center rounded-[2px] border border-line bg-surface text-faint text-[9px]">○</span>
@@ -412,5 +420,67 @@ export function LockInCodeVisual() {
         <span className="h-1 flex-1 rounded-full bg-line" />
       </div>
     </div>
+  );
+}
+
+// Highlighter mark — yellow swipe behind text, draws on scroll
+export function Highlighter({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-20% 0px" });
+  return (
+    <span ref={ref} className="relative inline-block">
+      <motion.span
+        initial={{ scaleX: 0 }}
+        animate={inView ? { scaleX: 1 } : {}}
+        transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
+        className="absolute inset-0 -z-10 origin-left bg-[#FFE89A]/80 -rotate-[1deg] rounded-[2px]"
+        style={{ top: "0.6em", height: "0.55em" }}
+      />
+      <span className="relative z-10">{children}</span>
+    </span>
+  );
+}
+
+// Ink smudge — subtle ink blot that appears, for Recto console
+export function InkSmudge({ className = "" }: { className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-10% 0px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+      className={`pointer-events-none absolute bg-ink/10 blur-[2px] rounded-full ${className}`}
+      style={{ width: 18, height: 18 }}
+    />
+  );
+}
+
+// Golf swing path that draws on scroll — for SwingFrame
+export function GolfSwingPath() {
+  const ref = useRef<SVGSVGElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-15% 0px" });
+  return (
+    <svg ref={ref} width="60" height="40" viewBox="0 0 60 40" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none text-clay/50">
+      <motion.path
+        d="M 8 32 Q 18 8, 30 20 T 52 12"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeDasharray="2 3"
+        initial={{ pathLength: 0 }}
+        animate={inView ? { pathLength: 1 } : {}}
+        transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1], delay: 0.3 }}
+      />
+      <motion.circle
+        r="3"
+        fill="currentColor"
+        initial={{ offsetDistance: "0%" }}
+        animate={inView ? { offsetDistance: "100%" } : {}}
+        transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1], delay: 0.4 }}
+        style={{ offsetPath: "path('M 8 32 Q 18 8, 30 20 T 52 12')" } as any}
+      />
+    </svg>
   );
 }
