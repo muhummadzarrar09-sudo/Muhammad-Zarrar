@@ -181,7 +181,7 @@ export function Envelope({ isSealed, children }: { isSealed: boolean; children: 
       >
         M
       </motion.div>
-      <div className="relative rounded-t-none rounded-b-[1.8rem] border border-line bg-surface p-6 sm:p-8 pt-8">
+      <div className="relative rounded-t-none rounded-b-3xl border border-line bg-surface p-6 sm:p-8 pt-8">
         {children}
       </div>
     </div>

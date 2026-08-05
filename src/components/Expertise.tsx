@@ -11,7 +11,7 @@ export default function Expertise() {
           title={
             <>
               What I&apos;m good at —<br />
-              <span className="italic text-clay">and what I enjoy.</span>
+              <span className="italic text-clay-deep">and what I enjoy.</span>
             </>
           }
         />
@@ -26,17 +26,17 @@ export default function Expertise() {
       <div className="mt-14 grid gap-4 md:grid-cols-3">
         {expertise.map((g, gi) => (
           <Reveal key={g.group} delay={gi * 0.08} className="h-full">
-            <div className="human-card flex h-full flex-col rounded-[1.4rem] border border-line-strong/40 bg-surface p-7">
+            <div className="human-card flex h-full flex-col rounded-2xl border border-line-strong/40 bg-surface p-7">
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">0{gi + 1} — {g.group}</div>
-              <p className="mt-3 text-[13.5px] leading-relaxed text-muted">{g.blurb}</p>
+              <p className="mt-3 text-sm leading-relaxed text-muted">{g.blurb}</p>
 
               <ul className="mt-6 space-y-2.5">
                 {g.skills.map((s) => (
-                  <li key={s.name} className="flex items-center gap-2 text-[13px] text-ink-soft">
+                  <li key={s.name} className="flex items-center gap-2 text-sm text-ink-soft">
                     <span className="h-px w-3 shrink-0 bg-line" />
                     <span>{s.name}</span>
                     {s.highlight && (
-                      <span className="ml-auto font-mono text-[10px] text-clay-deep">{s.highlight}</span>
+                      <span className="ml-auto font-mono text-xs text-clay-deep">{s.highlight}</span>
                     )}
                   </li>
                 ))}
@@ -51,7 +51,7 @@ export default function Expertise() {
       </div>
 
       <Reveal delay={0.2} className="mt-8">
-        <div className="rounded-[1.2rem] border border-line-soft bg-canvas-deep/60 px-6 py-4 font-mono text-xs text-muted sm:flex sm:items-center sm:justify-between">
+        <div className="rounded-2xl border border-line-soft bg-canvas-deep/60 px-6 py-5 font-mono text-xs text-muted sm:flex sm:items-center sm:justify-between">
           <span>Current favorite stack: TypeScript + Kotlin + Python + Supabase</span>
           <span className="mt-2 hidden text-ink-soft sm:mt-0 sm:block">— the stack follows the problem</span>
         </div>

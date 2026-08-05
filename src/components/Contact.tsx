@@ -113,7 +113,7 @@ export default function Contact() {
               <>
                 Have an idea worth
                 <br />
-                <span className="italic text-clay">building?</span>
+                <span className="italic text-clay-deep">building?</span>
               </>
             }
           />
@@ -139,7 +139,7 @@ export default function Contact() {
                 onClick={copy}
                 className={`inline-flex items-center gap-2 rounded-full border px-6 py-3 text-sm ${copied ? "border-clay-deep bg-clay-wash text-ink" : "border-line bg-surface text-ink-soft hover:border-clay-soft"}`}
               >
-                {copied ? <Check size={14} strokeWidth={2} /> : <Copy size={14} strokeWidth={1.8} />}
+                {copied ? <Check size={14} strokeWidth={1.8} /> : <Copy size={14} strokeWidth={1.8} />}
                 {copied ? "Copied" : "Copy email"}
               </button>
             </div>
@@ -167,7 +167,7 @@ export default function Contact() {
                     {s.label}
                   </div>
                   <div className="mt-1 link-underline text-sm text-ink-soft group-hover:text-ink inline-flex items-center gap-1">
-                    {s.handle} <ExternalLink size={10} strokeWidth={2} />
+                    {s.handle} <ExternalLink size={10} strokeWidth={1.8} />
                   </div>
                 </a>
               ))}
@@ -179,7 +179,7 @@ export default function Contact() {
           <Envelope isSealed={status === "sent"}>
             {status === "idle" ? (
               <form onSubmit={submit} className="space-y-5" noValidate>
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
                   Write me a note — it opens in your email
                 </div>
 
@@ -196,7 +196,7 @@ export default function Contact() {
                       placeholder="Zarrar"
                       aria-describedby={errors.name ? "c-name-error" : undefined}
                       aria-invalid={!!errors.name}
-                      className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-ink-soft/60 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
+                      className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-ink-soft/80 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                     />
                     {errors.name && <p id="c-name-error" className="mt-1 text-xs text-error" role="alert">{errors.name}</p>}
                   </div>
@@ -213,7 +213,7 @@ export default function Contact() {
                       placeholder="you@company.com"
                       aria-describedby={errors.email ? "c-email-error" : undefined}
                       aria-invalid={!!errors.email}
-                      className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-ink-soft/60 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
+                      className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-ink-soft/80 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                     />
                     {errors.email && <p id="c-email-error" className="mt-1 text-xs text-error" role="alert">{errors.email}</p>}
                   </div>
@@ -227,7 +227,7 @@ export default function Contact() {
                         key={t}
                         type="button"
                         onClick={() => set("type", t)}
-                        className={`rounded-full border px-4 py-1.5 font-mono text-xs transition ${
+                        className={`min-h-[44px] rounded-full border px-4 py-2.5 font-mono text-xs transition-colors ${
                           form.type === t
                             ? "border-clay-deep bg-clay-deep text-canvas"
                             : "border-line-strong bg-surface-2 text-muted hover:border-clay-deep hover:text-ink"
@@ -252,7 +252,7 @@ export default function Contact() {
                     placeholder="I'm building a..."
                     aria-describedby={errors.message ? "c-msg-error" : undefined}
                     aria-invalid={!!errors.message}
-                    className="w-full resize-none rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm leading-relaxed text-ink placeholder:text-ink-soft/60 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
+                    className="w-full resize-none rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm leading-relaxed text-ink placeholder:text-ink-soft/80 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                   />
                   <div className="mt-1.5 flex justify-between">
                     <div>{errors.message && <span id="c-msg-error" className="text-xs text-error" role="alert">{errors.message}</span>}</div>

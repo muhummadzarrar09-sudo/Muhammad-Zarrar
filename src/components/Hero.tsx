@@ -41,10 +41,10 @@ export default function Hero() {
           className="font-display text-[clamp(2.6rem,8vw,5rem)] font-light leading-[0.95] tracking-tightest text-balance"
         >
           <span className="block">I&apos;m Zarrar —</span>
-          <span className="block font-light italic text-clay tracking-human">
+          <span className="block font-light italic text-clay-deep tracking-human">
             I build things people
           </span>
-          <span className="block font-light italic text-clay tracking-human">
+          <span className="block font-light italic text-clay-deep tracking-human">
             actually use.
             <TypewriterCursor />
           </span>
@@ -69,7 +69,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
           >
             See my work
-            <ArrowRight size={14} strokeWidth={2} />
+            <ArrowRight size={14} strokeWidth={1.8} />
           </a>
           <a
             href="#contact"
@@ -110,7 +110,7 @@ export default function Hero() {
             <span className="hidden h-3 w-px bg-line-soft sm:block" />
             <a href={profile.github} target="_blank" rel="noopener noreferrer" className="link-underline inline-flex items-center gap-1">
               @{profile.handle}
-              <ExternalLink size={10} strokeWidth={2} />
+              <ExternalLink size={10} strokeWidth={1.8} />
             </a>
             <span className="hidden h-3 w-px bg-line-soft sm:block" />
             <span>{github.totalRepos} repos · {github.recentCommits30d} pushes this month</span>
@@ -122,7 +122,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.65, duration: 0.8 }}
-          className="mt-10 rounded-[1.4rem] border border-line-strong bg-surface/80 p-5 notebook-page"
+          className="mt-10 rounded-2xl border border-line-strong bg-surface/80 p-5 notebook-page"
         >
           <div className="font-caption text-[10px] uppercase tracking-[0.2em] text-clay-deep mb-3">
             Latest activity — live from GitHub
@@ -134,7 +134,7 @@ export default function Hero() {
                 href={r.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-2 rounded-full border border-line bg-canvas-deep/40 px-3 py-1.5 transition-colors hover:border-clay-soft hover:bg-canvas-deep"
+                className="group flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-canvas-deep/40 px-3 py-2.5 transition-colors hover:border-clay-soft hover:bg-canvas-deep"
               >
                 <span className="font-medium text-[13px] text-ink group-hover:text-clay-deep transition-colors">
                   {r.name}

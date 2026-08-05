@@ -12,7 +12,7 @@ export default function Process() {
             <>
               How I like to
               <br />
-              <span className="italic text-clay">actually work.</span>
+              <span className="italic text-clay-deep">actually work.</span>
             </>
           }
         />
@@ -27,7 +27,7 @@ export default function Process() {
       <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {processData.map((s, i) => (
           <Reveal key={s.no} delay={i * 0.06}>
-            <div className="human-card flex h-full flex-col rounded-[1.4rem] border border-line bg-surface p-7">
+            <div className="human-card flex h-full flex-col rounded-2xl border border-line bg-surface p-7">
               <div className="flex items-baseline justify-between">
                 <span className="font-display text-5xl font-light tracking-tightest text-clay/30">
                   {s.no}
@@ -50,7 +50,7 @@ export default function Process() {
       </div>
 
       <Reveal delay={0.16} className="mt-10">
-        <div className="rounded-[1.2rem] border border-line bg-canvas-deep/50 px-6 py-5 font-mono text-xs leading-relaxed text-muted">
+        <div className="rounded-2xl border border-line bg-canvas-deep/50 px-6 py-5 font-mono text-xs leading-relaxed text-muted">
           My belief: great software is 30% code, 70% understanding the problem. So I spend more time
           listening than typing at the start.
         </div>

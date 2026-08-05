@@ -15,7 +15,7 @@ export default function Work() {
             <>
               Working now —
               <br />
-              <span className="italic text-clay">featured builds.</span>
+              <span className="italic text-clay-deep">featured builds.</span>
             </>
           }
         />
@@ -95,7 +95,7 @@ export default function Work() {
 
       {/* More projects note */}
       <Reveal delay={0.12} className="mt-10">
-        <div className="rounded-[1.2rem] border border-dashed border-line bg-canvas-deep/50 px-6 py-5">
+        <div className="rounded-2xl border border-dashed border-line bg-canvas-deep/50 px-6 py-5">
           <div className="flex gap-3 text-[13px] leading-relaxed text-ink-soft">
             <span className="mt-2 h-px w-6 shrink-0 bg-clay/50" />
             <p className="max-w-3xl">

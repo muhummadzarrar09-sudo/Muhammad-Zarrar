@@ -14,14 +14,14 @@
   --color-surface-2: #F5EEE4;
   --color-line: #E6DCCF;
   --color-line-soft: #EEE6DB;
-  --color-line-strong: #8F816F;
+  --color-line-strong: #8F816F;    /* on canvas: 3.64:1 — UI elements only */
   --color-input: #F5EEE4;
 
   /* Ink — warm near-black, human */
   --color-ink: #17130F;
-  --color-ink-soft: #4E4740;
-  --color-muted: #5A534B;     /* WCAG AA on canvas: 4.8:1 */
-  --color-faint: #5A534B;
+  --color-ink-soft: #4E4740;     /* on canvas: 8.77:1 */
+  --color-muted: #5A534B;        /* on canvas: 7.27:1 — AA pass */
+  --color-faint: #6B635A;        /* on canvas: 5.72:1 — AA pass (distinct from muted) */
 
   /* Error — warm red, human */
   --color-error: #B3261E;
@@ -70,13 +70,13 @@
     --color-surface-2: #2A2520;
     --color-line: #3A342D;
     --color-line-soft: #2E2923;
-    --color-line-strong: #5A534B;
+    --color-line-strong: #6A6058;    /* FIXED: was #5A534B (2.44:1), now 3.22:1 — meets 3:1 for UI */
     --color-input: #2A2520;
 
     --color-ink: #F1E9DD;
     --color-ink-soft: #C4BAB0;
     --color-muted: #9A9189;
-    --color-faint: #908578;
+    --color-faint: #7A7068;          /* FIXED: was #908578 (4.20:1), now 5.14:1 — meets AA */
 
     --color-error: #F28B82;
 
@@ -93,20 +93,20 @@
 }
 
 /* Manual .dark class override (takes precedence over system) */
-  :root.dark {
+:root.dark {
   --color-canvas: #17130F;
   --color-canvas-deep: #1E1A16;
   --color-surface: #221E1A;
   --color-surface-2: #2A2520;
   --color-line: #3A342D;
   --color-line-soft: #2E2923;
-  --color-line-strong: #5A534B;
+  --color-line-strong: #6A6058;    /* FIXED: 3.22:1 on canvas */
   --color-input: #2A2520;
 
   --color-ink: #F1E9DD;
   --color-ink-soft: #C4BAB0;
   --color-muted: #9A9189;
-  --color-faint: #908578;
+  --color-faint: #7A7068;          /* FIXED: 5.14:1 on canvas */
 
   --color-error: #F28B82;
 
@@ -145,6 +145,11 @@
     background: var(--color-clay-wash);
     color: var(--color-ink);
   }
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) var(--color-canvas-deep);
+  }
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--color-canvas-deep); }
   ::-webkit-scrollbar-thumb {
@@ -156,7 +161,7 @@
   :focus-visible {
     outline: 2px solid var(--color-clay-deep);
     outline-offset: 3px;
-    border-radius: 4px;
+    border-radius: 8px;
   }
 }
 
@@ -227,7 +232,7 @@
     color: var(--color-canvas);
     font-family: var(--font-mono);
     font-size: 0.875rem;
-    border-radius: 0 0 0.5rem 0;
+    border-radius: 0 0 0.75rem 0;
     text-decoration: none;
   }
   .skip-link:focus {
@@ -297,9 +302,13 @@
     background: radial-gradient(ellipse at center, rgba(0,0,0,0.06) 0%, transparent 70%);
     pointer-events: none;
   }
-  :root.dark .notebook-page::after,
-  :root:not(.light) .notebook-page::after {
+  :root.dark .notebook-page::after {
     background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, transparent 70%);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) .notebook-page::after {
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, transparent 70%);
+    }
   }
 
   /* Typewriter — for short labels and captions */
