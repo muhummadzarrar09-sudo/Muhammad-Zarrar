@@ -123,7 +123,7 @@ export default function About() {
               </div>
               <a
                 href={`mailto:${profile.email}`}
-                className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-ink px-4 py-2.5 text-sm text-canvas transition-colors hover:bg-clay-deep"
+                className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-ink px-6 py-3 text-sm text-canvas transition-colors hover:bg-clay-deep"
               >
                 Email me — {profile.email}
               </a>

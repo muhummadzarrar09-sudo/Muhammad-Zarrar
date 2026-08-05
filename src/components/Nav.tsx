@@ -126,7 +126,7 @@ export default function Nav() {
               href={`mailto:${profile.email}`}
               className="hidden items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep sm:inline-flex"
             >
-              <Mail size={15} strokeWidth={1.8} />
+              <Mail size={14} strokeWidth={1.8} />
               Email
             </a>
             <button
@@ -134,7 +134,7 @@ export default function Nav() {
               onClick={() => setOpen((o) => !o)}
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
-              className="grid h-9 w-9 place-items-center rounded-full border border-line bg-surface md:hidden"
+              className="grid h-11 w-11 place-items-center rounded-full border border-line bg-surface md:hidden"
             >
               {open ? <X size={16} strokeWidth={1.8} /> : <Menu size={16} strokeWidth={1.8} />}
             </button>
@@ -167,11 +167,11 @@ export default function Nav() {
             ))}
             <div className="mt-10 flex gap-3">
               <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm text-canvas">
-                <Mail size={15} strokeWidth={1.8} />
+                <Mail size={14} strokeWidth={1.8} />
                 {profile.email}
               </a>
               <a href={profile.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm">
-                <GithubIcon size={15} strokeWidth={1.8} />
+                <GithubIcon size={14} strokeWidth={1.8} />
                 GitHub
               </a>
             </div>

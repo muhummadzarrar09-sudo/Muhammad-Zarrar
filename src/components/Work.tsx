@@ -43,12 +43,14 @@ export default function Work() {
             >
               {/* Project image */}
               {p.image && (
-                <div className="relative h-44 overflow-hidden bg-canvas-deep">
+                <div className="relative aspect-video overflow-hidden bg-canvas-deep">
                   <img
                     src={p.image}
                     alt={`${p.name} preview`}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
+                    width={640}
+                    height={360}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-surface/80 to-transparent" />
                 </div>

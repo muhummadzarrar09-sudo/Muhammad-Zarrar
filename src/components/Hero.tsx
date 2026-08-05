@@ -69,7 +69,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
           >
             See my work
-            <ArrowRight size={15} strokeWidth={2} />
+            <ArrowRight size={14} strokeWidth={2} />
           </a>
           <a
             href="#contact"
@@ -122,7 +122,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.65, duration: 0.8 }}
-          className="mt-10 rounded-2xl border border-line-strong bg-surface/80 p-5 notebook-page"
+          className="mt-10 rounded-[1.4rem] border border-line-strong bg-surface/80 p-5 notebook-page"
         >
           <div className="font-caption text-[10px] uppercase tracking-[0.2em] text-clay-deep mb-3">
             Latest activity — live from GitHub
