@@ -70,13 +70,13 @@
     --color-surface-2: #2A2520;
     --color-line: #3A342D;
     --color-line-soft: #2E2923;
-    --color-line-strong: #6A6058;    /* FIXED: was #5A534B (2.44:1), now 3.22:1 — meets 3:1 for UI */
+    --color-line-strong: #7A7068;    /* FIXED: was #5A534B (2.44:1), now 3.82:1 — meets 3:1 for UI */
     --color-input: #2A2520;
 
     --color-ink: #F1E9DD;
     --color-ink-soft: #C4BAB0;
     --color-muted: #9A9189;
-    --color-faint: #7A7068;          /* FIXED: was #908578 (4.20:1), now 5.14:1 — meets AA */
+    --color-faint: #9A8F85;          /* FIXED: was #908578 (4.20:1), now 4.80:1 — meets AA */
 
     --color-error: #F28B82;
 
@@ -100,13 +100,13 @@
   --color-surface-2: #2A2520;
   --color-line: #3A342D;
   --color-line-soft: #2E2923;
-  --color-line-strong: #6A6058;    /* FIXED: 3.22:1 on canvas */
+  --color-line-strong: #7A7068;    /* FIXED: 3.82:1 on canvas, 3.42:1 on surface */
   --color-input: #2A2520;
 
   --color-ink: #F1E9DD;
   --color-ink-soft: #C4BAB0;
   --color-muted: #9A9189;
-  --color-faint: #7A7068;          /* FIXED: 5.14:1 on canvas */
+  --color-faint: #9A8F85;          /* FIXED: 4.80:1 on surface-2 */
 
   --color-error: #F28B82;
 
