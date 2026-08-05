@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { profile, github } from "@/data/portfolio";
 import { TypewriterCursor } from "@/components/Brutalist";
+import { ArrowRight, Mail, ExternalLink } from "lucide-react";
+import { GithubIcon } from "@/components/icons";
 
 const EASE = [0.25, 1, 0.5, 1] as const;
 
@@ -57,7 +59,7 @@ export default function Hero() {
           the problem needs. Shipped real things for real people.
         </motion.p>
 
-        {/* CTAs */}
+        {/* CTAs with Lucide icons */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,19 +71,23 @@ export default function Hero() {
             className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
           >
             See my work
-            <span aria-hidden>→</span>
+            <ArrowRight size={15} strokeWidth={2} />
           </a>
           <a
             href="#contact"
             className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-6 py-3 text-sm font-medium text-ink-soft transition-colors hover:border-clay-soft hover:text-ink"
           >
+            <Mail size={14} strokeWidth={1.8} />
             Get in touch
           </a>
           <a
-            href={`mailto:${profile.email}?subject=${encodeURIComponent(profile.emailSubject)}`}
+            href={profile.github}
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden items-center gap-2 rounded-full border border-line-soft bg-transparent px-5 py-3 font-mono text-xs text-muted transition-colors hover:text-ink hover:border-line sm:inline-flex"
           >
-            {profile.email}
+            <GithubIcon size={14} strokeWidth={1.8} />
+            @{profile.handle}
           </a>
         </motion.div>
 
@@ -104,8 +110,9 @@ export default function Hero() {
               {profile.availability}
             </span>
             <span className="hidden h-3 w-px bg-line-soft sm:block" />
-            <a href={profile.github} target="_blank" rel="noopener noreferrer" className="link-underline">
+            <a href={profile.github} target="_blank" rel="noopener noreferrer" className="link-underline inline-flex items-center gap-1">
               @{profile.handle}
+              <ExternalLink size={10} strokeWidth={2} />
             </a>
             <span className="hidden h-3 w-px bg-line-soft sm:block" />
             <span>{github.totalRepos} repos · {github.recentCommits30d} pushes this month</span>

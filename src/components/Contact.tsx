@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { profile, socials } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { Envelope } from "@/components/Brutalist";
+import { Mail, Copy, Check, ExternalLink, Send } from "lucide-react";
 
 type FormState = {
   name: string;
@@ -130,6 +131,7 @@ export default function Contact() {
                 href={`mailto:${profile.email}?subject=${encodeURIComponent(profile.emailSubject)}`}
                 className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm text-canvas hover:bg-clay-deep"
               >
+                <Mail size={14} strokeWidth={1.8} />
                 Email me
               </a>
               <button
@@ -137,7 +139,8 @@ export default function Contact() {
                 onClick={copy}
                 className={`inline-flex items-center gap-2 rounded-full border px-6 py-3 text-sm ${copied ? "border-clay-deep bg-clay-wash text-ink" : "border-line bg-surface text-ink-soft hover:border-clay-soft"}`}
               >
-                {copied ? "Copied ✓" : "Copy email"}
+                {copied ? <Check size={14} strokeWidth={2} /> : <Copy size={14} strokeWidth={1.8} />}
+                {copied ? "Copied" : "Copy email"}
               </button>
             </div>
 
@@ -163,8 +166,8 @@ export default function Contact() {
                   <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint group-hover:text-muted">
                     {s.label}
                   </div>
-                  <div className="mt-1 link-underline text-sm text-ink-soft group-hover:text-ink">
-                    {s.handle} ↗
+                  <div className="mt-1 link-underline text-sm text-ink-soft group-hover:text-ink inline-flex items-center gap-1">
+                    {s.handle} <ExternalLink size={11} strokeWidth={2} />
                   </div>
                 </a>
               ))}
@@ -253,8 +256,9 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
                 >
+                  <Send size={14} strokeWidth={1.8} />
                   Open email draft
                 </button>
 

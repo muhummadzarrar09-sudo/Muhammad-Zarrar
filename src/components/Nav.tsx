@@ -2,6 +2,8 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { profile } from "@/data/portfolio";
 import { cn } from "@/utils/cn";
 import ThemeToggle from "@/components/ThemeToggle";
+import { Mail, Menu, X } from "lucide-react";
+import { GithubIcon } from "@/components/icons";
 
 const LINKS = [
   { id: "about", label: "About" },
@@ -22,11 +24,7 @@ export default function Nav() {
     window.addEventListener("scroll", onScroll, { passive: true });
 
     const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-        });
-      },
+      (entries) => { entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }); },
       { rootMargin: "-40% 0px -55% 0px" }
     );
 
@@ -36,7 +34,6 @@ export default function Nav() {
         if (el) obs.observe(el);
       });
     };
-
     observe();
     const t = window.setTimeout(observe, 1000);
 
@@ -58,22 +55,13 @@ export default function Nav() {
     );
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
-
     first?.focus();
 
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpen(false);
-        return;
-      }
+      if (e.key === "Escape") { setOpen(false); return; }
       if (e.key !== "Tab") return;
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last?.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first?.focus();
-      }
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
     };
 
     document.addEventListener("keydown", handleKey);
@@ -82,11 +70,7 @@ export default function Nav() {
 
   // Lock body scroll when menu open
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
@@ -140,8 +124,9 @@ export default function Nav() {
             <ThemeToggle />
             <a
               href={`mailto:${profile.email}`}
-              className="hidden rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep sm:inline-flex"
+              className="hidden items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep sm:inline-flex"
             >
+              <Mail size={15} strokeWidth={1.8} />
               Email
             </a>
             <button
@@ -151,17 +136,13 @@ export default function Nav() {
               aria-expanded={open}
               className="grid h-9 w-9 place-items-center rounded-full border border-line bg-surface md:hidden"
             >
-              <span className="flex flex-col gap-[4px]">
-                <span className={cn("block h-px w-4 bg-ink transition-all", open && "translate-y-[2.5px] rotate-45")} />
-                <span className={cn("block h-px w-4 bg-ink transition-opacity", open && "opacity-0")} />
-                <span className={cn("block h-px w-4 bg-ink transition-all", open && "-translate-y-[2.5px] -rotate-45")} />
-              </span>
+              {open ? <X size={16} strokeWidth={1.8} /> : <Menu size={16} strokeWidth={1.8} />}
             </button>
           </div>
         </nav>
       </header>
 
-      {/* Mobile menu — with focus trap */}
+      {/* Mobile menu */}
       {open && (
         <div
           ref={menuRef}
@@ -185,18 +166,12 @@ export default function Nav() {
               </button>
             ))}
             <div className="mt-10 flex gap-3">
-              <a
-                href={`mailto:${profile.email}`}
-                className="rounded-full bg-ink px-6 py-3 text-sm text-canvas"
-              >
+              <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm text-canvas">
+                <Mail size={15} strokeWidth={1.8} />
                 {profile.email}
               </a>
-              <a
-                href={profile.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-line px-6 py-3 text-sm"
-              >
+              <a href={profile.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm">
+                <GithubIcon size={15} strokeWidth={1.8} />
                 GitHub
               </a>
             </div>
