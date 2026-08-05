@@ -21,38 +21,40 @@ function LazySection({ label, children }: { label: string; children: React.React
 export default function App() {
   return (
     <div className="notebook isolate relative min-h-screen overflow-x-clip bg-canvas text-ink antialiased grain">
+      {/* Skip to content — accessibility */}
+      <a href="#work" className="skip-link">Skip to main content</a>
+
       {/* Dot-grid + paper — brutalist notebook base */}
       <div className="pointer-events-none fixed inset-0 -z-10 opacity-[0.15] dot-grid" />
-      {/* Red margin line is via .notebook::before in CSS */}
 
       <SeoRouteMeta />
       <ScrollProgress />
       <PageNumbers />
       <Nav />
 
-      <main className="relative">
+      <main id="main-content" className="relative">
         <Hero />
-        <Fold label="unfold — about" />
+        <Fold label="about" />
         <LazySection label="Loading about">
           <About />
         </LazySection>
 
-        <Fold label="unfold — expertise" />
+        <Fold label="expertise" />
         <LazySection label="Loading expertise">
           <Expertise />
         </LazySection>
 
-        <Fold label="unfold — work — 3 only" />
+        <Fold label="work" />
         <LazySection label="Loading work">
           <Work />
         </LazySection>
 
-        <Fold label="unfold — process" />
+        <Fold label="process" />
         <LazySection label="Loading process">
           <Process />
         </LazySection>
 
-        <Fold label="unfold — contact — seal the letter" />
+        <Fold label="contact" />
         <LazySection label="Loading contact">
           <Contact />
         </LazySection>

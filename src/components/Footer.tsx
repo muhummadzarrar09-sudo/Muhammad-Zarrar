@@ -1,4 +1,6 @@
 import { profile } from "@/data/portfolio";
+import { ArrowUp, Mail, ExternalLink } from "lucide-react";
+import { GithubIcon } from "@/components/icons";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -38,16 +40,19 @@ export default function Footer() {
             </div>
             <div className="flex flex-col gap-2.5">
               <div className="font-mono text-[12px] uppercase tracking-[0.2em] text-muted">Contact</div>
-              <a href={`mailto:${profile.email}`} className="link-underline w-fit text-sm text-ink-soft">
+              <a href={`mailto:${profile.email}`} className="link-underline w-fit text-sm text-ink-soft inline-flex items-center gap-1.5">
+                <Mail size={12} strokeWidth={1.8} />
                 {profile.email}
               </a>
               <a
                 href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link-underline w-fit text-sm text-ink-soft"
+                className="link-underline w-fit text-sm text-ink-soft inline-flex items-center gap-1.5"
               >
-                GitHub ↗
+                <GithubIcon size={12} strokeWidth={1.8} />
+                GitHub
+                <ExternalLink size={10} strokeWidth={2} />
               </a>
             </div>
           </div>
@@ -63,8 +68,8 @@ export default function Footer() {
             className="group flex items-center gap-2 font-mono text-xs text-muted transition-colors hover:text-ink"
           >
             Back to top
-            <span className="grid h-7 w-7 place-items-center rounded-full border border-line-strong transition-all group-hover:-translate-y-0.5 group-hover:border-clay">
-              ↑
+            <span className="grid h-10 w-10 place-items-center rounded-full border border-line-strong transition-all group-hover:-translate-y-0.5 group-hover:border-clay">
+              <ArrowUp size={14} strokeWidth={2} />
             </span>
           </button>
         </div>

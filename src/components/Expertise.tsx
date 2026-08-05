@@ -17,7 +17,7 @@ export default function Expertise() {
         />
         <Reveal delay={0.08} className="max-w-xs">
           <p className="text-[14px] leading-relaxed text-muted">
-            I move between product, AI, and systems, but I like being responsible
+            I move between product, AI, and systems — I like being responsible
             from database to pixel.
           </p>
         </Reveal>
@@ -28,19 +28,16 @@ export default function Expertise() {
           <Reveal key={g.group} delay={gi * 0.08} className="h-full">
             <div className="human-card flex h-full flex-col rounded-[1.4rem] border border-line-strong/40 bg-surface p-7">
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">0{gi + 1} — {g.group}</div>
-              <h3 className="mt-3 font-display text-[1.4rem] font-medium leading-tight tracking-tight">
-                {g.group}
-              </h3>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-muted">{g.blurb}</p>
+              <p className="mt-3 text-[13.5px] leading-relaxed text-muted">{g.blurb}</p>
 
               <ul className="mt-6 space-y-2.5">
                 {g.skills.map((s) => (
-                  <li key={s.name} className="flex items-center justify-between gap-3 text-[13px] text-ink-soft">
-                    <span className="flex items-center gap-2">
-                      <span className="h-px w-3 bg-line" />
-                      {s.name}
-                    </span>
-                    <span className="font-mono text-[12px] text-muted">{s.level}%</span>
+                  <li key={s.name} className="flex items-center gap-2 text-[13px] text-ink-soft">
+                    <span className="h-px w-3 shrink-0 bg-line" />
+                    <span>{s.name}</span>
+                    {s.highlight && (
+                      <span className="ml-auto font-mono text-[10px] text-clay-deep">{s.highlight}</span>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -53,11 +50,10 @@ export default function Expertise() {
         ))}
       </div>
 
-      {/* Personal tools note */}
       <Reveal delay={0.2} className="mt-8">
         <div className="rounded-[1.2rem] border border-line-soft bg-canvas-deep/60 px-6 py-4 font-mono text-xs text-muted sm:flex sm:items-center sm:justify-between">
-          <span>Current favorite stack: TypeScript + React + Python + Postgres + Lenis? nope, native scroll now.</span>
-          <span className="mt-2 hidden text-ink-soft sm:mt-0 sm:block">— less is more</span>
+          <span>Current favorite stack: TypeScript + Kotlin + Python + Supabase</span>
+          <span className="mt-2 hidden text-ink-soft sm:mt-0 sm:block">— the stack follows the problem</span>
         </div>
       </Reveal>
     </section>

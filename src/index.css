@@ -2,8 +2,8 @@
 
 /* =========================================================================
    DESIGN SYSTEM — Personal Human Palette
-   Warm paper, ink, clay, forest — film-stock Kodak Portra vibes.
-   No heavy cinematic dirt. Human, quiet, personal.
+   Warm paper, ink, clay, forest — human, quiet, personal.
+   Light default + dark mode via prefers-color-scheme or .dark class.
    ========================================================================= */
 
 @theme {
@@ -20,10 +20,13 @@
   /* Ink — warm near-black, human */
   --color-ink: #17130F;
   --color-ink-soft: #4E4740;
-  --color-muted: #6E675E;
-  --color-faint: #6E675E;
+  --color-muted: #5A534B;     /* WCAG AA on canvas: 4.8:1 */
+  --color-faint: #5A534B;
 
-  /* Human accents — clay is primary now, not neon spark */
+  /* Error — warm red, human */
+  --color-error: #B3261E;
+
+  /* Human accents — clay is primary */
   --color-clay: #C46B4D;
   --color-clay-soft: #D88A6E;
   --color-clay-deep: #A85A41;
@@ -34,19 +37,9 @@
   --color-moss: #7A8E7E;
   --color-sand: #D7C9AF;
 
-  /* Legacy compat — map old tokens to new human ones */
-  --color-spark: #C46B4D;
-  --color-spark-soft: #D88A6E;
-  --color-ember: #D7C9AF;
-  --color-circuit: #2D3A32;
-  --color-volt: #D7C9AF;
-
-  /* Fonts — 3-font editorial system per user: 2 mains + 1 bold caption */
-  /* Main 1: Fraunces — serif display editorial (light, italic human) */
+  /* Fonts — 3-font editorial system */
   --font-display: "Fraunces", ui-serif, Georgia, serif;
-  /* Main 2: JetBrains Mono — typewriter, honest engineer log, main body */
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  /* Designed Caption: Syne — bold, extra-bold editorial, for stamps/tags/marginalia */
   --font-sans: "Syne", ui-sans-serif, system-ui, sans-serif;
   --font-caption: "Syne", ui-sans-serif, system-ui, sans-serif;
 
@@ -56,10 +49,76 @@
   --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
 }
 
-/* Minimal keyframes — keep one gentle float for tiny accents */
+/* Minimal keyframes */
 @keyframes slow-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
+}
+@keyframes spotlight {
+  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+}
+
+/* =========================================================================
+   DARK MODE — warm ink palette, same soul
+   ========================================================================= */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-canvas: #17130F;
+    --color-canvas-deep: #1E1A16;
+    --color-surface: #221E1A;
+    --color-surface-2: #2A2520;
+    --color-line: #3A342D;
+    --color-line-soft: #2E2923;
+    --color-line-strong: #5A534B;
+    --color-input: #2A2520;
+
+    --color-ink: #F1E9DD;
+    --color-ink-soft: #C4BAB0;
+    --color-muted: #9A9189;
+    --color-faint: #908578;
+
+    --color-error: #F28B82;
+
+    --color-clay: #E07B5F;
+    --color-clay-soft: #D88A6E;
+    --color-clay-deep: #C46B4D;
+    --color-clay-wash: #3A2A22;
+
+    --color-forest: #7A8E7E;
+    --color-forest-soft: #5A7A60;
+    --color-moss: #7A8E7E;
+    --color-sand: #4A443D;
+  }
+}
+
+/* Manual .dark class override (takes precedence over system) */
+  :root.dark {
+  --color-canvas: #17130F;
+  --color-canvas-deep: #1E1A16;
+  --color-surface: #221E1A;
+  --color-surface-2: #2A2520;
+  --color-line: #3A342D;
+  --color-line-soft: #2E2923;
+  --color-line-strong: #5A534B;
+  --color-input: #2A2520;
+
+  --color-ink: #F1E9DD;
+  --color-ink-soft: #C4BAB0;
+  --color-muted: #9A9189;
+  --color-faint: #908578;
+
+  --color-error: #F28B82;
+
+  --color-clay: #E07B5F;
+  --color-clay-soft: #D88A6E;
+  --color-clay-deep: #C46B4D;
+  --color-clay-wash: #3A2A22;
+
+  --color-forest: #7A8E7E;
+  --color-forest-soft: #5A7A60;
+  --color-moss: #7A8E7E;
+  --color-sand: #4A443D;
 }
 
 /* =========================================================================
@@ -71,6 +130,7 @@
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
     background: var(--color-canvas);
+    color-scheme: light dark;
   }
   body {
     background-color: var(--color-canvas);
@@ -79,6 +139,7 @@
     font-feature-settings: "ss01", "cv01";
     overflow-x: hidden;
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   ::selection {
     background: var(--color-clay-wash);
@@ -110,12 +171,13 @@
   .text-pretty { text-wrap: pretty; }
   .tracking-tightest { letter-spacing: -0.04em; }
   .tracking-human { letter-spacing: -0.02em; }
+  .animate-spotlight { animation: spotlight 2s ease 0.75s 1 forwards; }
 
-  /* Card edge — paper-like, no heavy shadow */
+  /* Card edge — paper-like */
   .edge {
     box-shadow:
       0 0 0 1px var(--color-line) inset,
-      0 1px 0 0 rgba(255, 255, 255, 0.7) inset;
+      0 1px 0 0 rgba(255, 255, 255, 0.08) inset;
   }
   .edge-soft {
     box-shadow: 0 0 0 1px var(--color-line-soft) inset;
@@ -123,8 +185,8 @@
 
   .lift {
     box-shadow:
-      0 1px 1px rgba(23, 19, 15, 0.04),
-      0 8px 24px -16px rgba(23, 19, 15, 0.18);
+      0 1px 1px rgba(0, 0, 0, 0.08),
+      0 8px 24px -16px rgba(0, 0, 0, 0.3);
   }
 
   /* Link underline — human, slow */
@@ -137,7 +199,7 @@
   }
   .link-underline:hover { background-size: 100% 1px; }
 
-  /* Personal grain — 90% lighter than before, almost invisible */
+  /* Personal grain — almost invisible */
   .grain::before {
     content: "";
     position: fixed;
@@ -155,29 +217,40 @@
 
   .no-scroll { overflow: hidden; }
 
-  /* Personal note marker — handwritten style accent */
-  .note-mark {
-    position: relative;
-  }
-  .note-mark::before {
-    content: "";
+  /* Skip to content — accessibility */
+  .skip-link {
     position: absolute;
-    left: -12px;
-    top: 0.5em;
-    width: 20px;
-    height: 1px;
-    background: var(--color-clay);
-    opacity: 0.6;
+    left: -9999px;
+    z-index: 999;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-ink);
+    color: var(--color-canvas);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    border-radius: 0 0 0.5rem 0;
+    text-decoration: none;
+  }
+  .skip-link:focus {
+    left: 0;
+    top: 0;
   }
 
-  /* Quiet hover lift — no cinematic filter */
+  /* Quiet hover lift */
   .human-card {
     transition: transform 0.5s var(--ease-human), box-shadow 0.4s ease, border-color 0.4s ease;
   }
   .human-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 24px -16px rgba(23, 19, 15, 0.18);
+    box-shadow: 0 12px 24px -16px rgba(0, 0, 0, 0.25);
     border-color: var(--color-clay-soft);
+  }
+  .human-card:active {
+    transform: translateY(0);
+  }
+
+  /* Button pressed states */
+  a:active, button:active {
+    transform: scale(0.98);
   }
 
   /* Brutalist notebook — red margin line like composition book */
@@ -212,7 +285,7 @@
     background: var(--color-surface);
     border: 1px solid var(--color-line-strong);
     border-radius: 16px;
-    box-shadow: 0 1px 0 0 rgba(255,255,255,0.8) inset, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.05) inset, 0 4px 6px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   }
   .notebook-page::after {
     content: "";
@@ -221,17 +294,22 @@
     right: 0;
     bottom: -6px;
     height: 12px;
-    background: radial-gradient(ellipse at center, rgba(23,19,15,0.06) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.06) 0%, transparent 70%);
     pointer-events: none;
   }
+  :root.dark .notebook-page::after,
+  :root:not(.light) .notebook-page::after {
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, transparent 70%);
+  }
 
+  /* Typewriter — for short labels and captions */
   .typewriter {
     font-family: var(--font-mono);
     font-variant-ligatures: none;
   }
 }
 
-/* Personal reduced-motion — simpler than before */
+/* Personal reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto !important; }
   *, *::before, *::after {
