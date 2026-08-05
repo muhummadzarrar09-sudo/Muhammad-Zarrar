@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { profile, github } from "@/data/portfolio";
 import { TypewriterCursor } from "@/components/Brutalist";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { Spotlight } from "@/components/ui/spotlight";
 import { ArrowRight, Mail, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 
@@ -13,8 +15,11 @@ const activeRepos = github.latestRepos
 
 export default function Hero() {
   return (
-    <section id="top" className="relative mx-auto max-w-6xl px-5 pt-32 pb-16 sm:px-8 sm:pt-40 sm:pb-24">
-      <div className="mx-auto max-w-[780px]">
+    <section id="top" className="relative mx-auto max-w-6xl px-5 pt-32 pb-16 sm:px-8 sm:pt-40 sm:pb-24 overflow-hidden">
+      {/* Aceternity Spotlight — subtle warm glow */}
+      <Spotlight className="left-0 top-0" fill="var(--color-clay)" />
+
+      <div className="mx-auto max-w-[780px] relative z-10">
         {/* Meta line — dynamic */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -45,19 +50,12 @@ export default function Hero() {
           </span>
         </motion.h1>
 
-        {/* Sub — one clean paragraph */}
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.32, duration: 0.8, ease: EASE }}
-          className="mt-8 max-w-[58ch] text-[17px] leading-[1.75] text-ink-soft text-pretty sm:text-[18px]"
-        >
-          Full-stack, AI & mobile engineer from Rawalpindi. I build{" "}
-          <span className="text-ink font-medium">voice agents</span>,{" "}
-          <span className="text-ink font-medium">mobile video AI</span>,{" "}
-          <span className="text-ink font-medium">client products</span> — whatever
-          the problem needs. Shipped real things for real people.
-        </motion.p>
+        {/* Sub — Aceternity TextGenerateEffect */}
+        <TextGenerateEffect
+          words="Full-stack, AI and mobile engineer from Rawalpindi. I build voice agents, mobile video AI, client products — whatever the problem needs. Shipped real things for real people."
+          className="mt-8 max-w-[58ch] text-[17px] leading-[1.75] text-ink-soft sm:text-[18px] font-normal"
+          duration={0.4}
+        />
 
         {/* CTAs with Lucide icons */}
         <motion.div

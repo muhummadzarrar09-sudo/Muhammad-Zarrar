@@ -1,6 +1,7 @@
 import { profile, github } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { Marginalia, Staple, MarginArrow } from "@/components/Brutalist";
+import { LampEffect } from "@/components/ui/lamp-effect";
 
 const principles = [
   { k: "ship", v: "Ship fast, then refine — real feedback beats perfect plans" },
@@ -15,18 +16,20 @@ export default function About() {
       <div className="relative h-0">
         <MarginArrow label="red margin — composition book" />
       </div>
-      <SectionHeading
-        index="01"
-        label="About"
-        title={
-          <>
-            Part engineer,
-            <br />
-            <span className="italic text-clay">part human trying</span>
-            <br /> to make things work.
-          </>
-        }
-      />
+      <LampEffect>
+        <SectionHeading
+          index="01"
+          label="About"
+          title={
+            <>
+              Part engineer,
+              <br />
+              <span className="italic text-clay">part human trying</span>
+              <br /> to make things work.
+            </>
+          }
+        />
+      </LampEffect>
 
       <div className="mt-14 grid gap-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="max-w-[60ch] relative">
