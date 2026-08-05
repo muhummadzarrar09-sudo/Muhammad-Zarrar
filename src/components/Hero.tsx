@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { profile, github } from "@/data/portfolio";
 import { TypewriterCursor } from "@/components/Brutalist";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
-import { Spotlight } from "@/components/ui/spotlight";
 import { ArrowRight, Mail, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 
@@ -16,9 +15,6 @@ const activeRepos = github.latestRepos
 export default function Hero() {
   return (
     <section id="top" className="relative mx-auto max-w-6xl px-5 pt-32 pb-16 sm:px-8 sm:pt-40 sm:pb-24 overflow-hidden">
-      {/* Aceternity Spotlight — subtle warm glow */}
-      <Spotlight className="left-0 top-0" fill="var(--color-clay)" />
-
       <div className="mx-auto max-w-[780px] relative z-10">
         {/* Meta line — dynamic */}
         <motion.div

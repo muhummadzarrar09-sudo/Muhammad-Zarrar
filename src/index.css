@@ -204,21 +204,8 @@
   }
   .link-underline:hover { background-size: 100% 1px; }
 
-  /* Personal grain — almost invisible */
-  .grain::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 60;
-    opacity: 0.012;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  .dot-grid {
-    background-image: radial-gradient(var(--color-line-strong) 0.75px, transparent 0.75px);
-    background-size: 28px 28px;
-  }
+  /* Clean fullscreen canvas — the dot-grid mesh and grain overlays were
+     removed (owner's call: they gave the page busy "mesh" vibes). */
 
   .no-scroll { overflow: hidden; }
 
@@ -258,31 +245,10 @@
     transform: scale(0.98);
   }
 
-  /* Brutalist notebook — red margin line like composition book */
-  .notebook {
-    position: relative;
-  }
-  .notebook::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: rgba(196, 107, 77, 0.60);
-    transform: translateX(6px);
-    pointer-events: none;
-  }
-  @media (min-width: 640px) {
-    .notebook::before {
-      transform: translateX(12px);
-    }
-  }
-  @media (min-width: 1280px) {
-    .notebook::before {
-      transform: translateX(calc((100vw - 1152px) / 2 + 8px));
-    }
-  }
+  /* Brutalist notebook shell.
+     NOTE: the vertical "red margin line" was removed — it read as a harsh
+     dark/bright streak down the left edge in both themes and crossed body
+     text at common widths. Left edge stays clean now. */
 
   /* Notebook page with staple + fold shadow */
   .notebook-page {

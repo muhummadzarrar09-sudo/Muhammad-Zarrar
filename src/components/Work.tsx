@@ -1,6 +1,6 @@
 import { projects } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import { Fold, Staple, Stamp } from "@/components/Brutalist";
+import { Staple, Stamp } from "@/components/Brutalist";
 
 export default function Work() {
   const featured = projects.filter((p) => p.featured);
@@ -119,8 +119,6 @@ export default function Work() {
           — working builds only — p.03 —
         </div>
       </Reveal>
-
-      <Fold label="end of work" />
     </section>
   );
 }

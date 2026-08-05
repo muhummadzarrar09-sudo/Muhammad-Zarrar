@@ -1,7 +1,6 @@
 import { profile, github } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import { Marginalia, Staple, MarginArrow } from "@/components/Brutalist";
-import { LampEffect } from "@/components/ui/lamp-effect";
+import { Staple } from "@/components/Brutalist";
 
 const principles = [
   { k: "ship", v: "Ship fast, then refine — real feedback beats perfect plans" },
@@ -13,32 +12,21 @@ const principles = [
 export default function About() {
   return (
     <section id="about" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
-      <div className="relative h-0">
-        <MarginArrow label="red margin — composition book" />
-      </div>
-      <LampEffect>
-        <SectionHeading
-          index="01"
-          label="About"
-          title={
-            <>
-              Part engineer,
-              <br />
-              <span className="italic text-clay-deep">part human trying</span>
-              <br /> to make things work.
-            </>
-          }
-        />
-      </LampEffect>
+      <SectionHeading
+        index="01"
+        label="About"
+        title={
+          <>
+            Part engineer,
+            <br />
+            <span className="italic text-clay-deep">part human trying</span>
+            <br /> to make things work.
+          </>
+        }
+      />
 
       <div className="mt-14 grid gap-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="max-w-[60ch] relative">
-          <Marginalia side="left">
-            compiling....
-            <br />
-            <span className="font-mono text-[10px] not-italic text-faint">still accurate</span>
-          </Marginalia>
-
           <Reveal>
             <p className="font-display text-[1.7rem] font-light leading-[1.3] tracking-tight text-ink text-balance sm:text-[1.9rem]">
               I&apos;m {profile.name} — a full-stack, AI & mobile engineer from Rawalpindi
@@ -85,12 +73,6 @@ export default function About() {
         </div>
 
         <div className="space-y-5 relative">
-          <Marginalia side="right">
-            p.01 — about
-            <br />
-            <span className="font-mono text-[10px] not-italic text-faint">Rawalpindi, PK</span>
-          </Marginalia>
-
           <Reveal delay={0.12}>
             <div className="rounded-3xl border border-line-strong bg-surface/90 p-6 lift notebook-page">
               <Staple />

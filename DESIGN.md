@@ -13,12 +13,14 @@
 - **Forest #2D3A32 / Forest Soft #3E5248 / Moss #7A8E7E / Sand #D7C9AF** — depth when clay alone too warm. Forest for CLIENT stamp border, moss for accent.
 - **Line #E6DCCF / Line Soft #EEE6DB** — 1px hairline, not hard. Used for all borders, fold lines dashed.
 
-All borders, grain, dot-grid use these tokens — no hard-coded hex.
+All borders use these tokens — no hard-coded hex.
 
-**Grain:** `0.012` opacity (was 0.035) — almost invisible, just enough to feel paper, not dirty.
-**Dot-grid:** `28px` radial gradient of `--color-line` 1px, `0.35` opacity fixed overlay in App.
+**Grain:** REMOVED (owner's call) — full-page overlays gave the page busy vibes.
+**Dot-grid:** REMOVED (owner's call) — the "mesh" read as noise over the paper, not texture on it.
 
-**Red margin line:** `rgba(196,107,77,0.22)` vertical line at 48px mobile / 64px desktop via `.notebook::before` — composition notebook.
+**Red margin line:** REMOVED (owner's call). It read as a harsh dark streak on the light theme and a bright streak on dark, and crossed body text at common widths — it was ruining the look instead of selling the composition-book idea.
+
+**Clean canvas:** the page is now a full-screen, flat paper background — no dot-grid, no grain, no margin line, no gutter marginalia, no dashed fold separators. The notebook identity is carried by staples, stamps, notebook-page cards and the envelope instead.
 
 ## 2. Fonts — 2 Mains + 1 Bold Caption (per your note)
 
@@ -48,10 +50,10 @@ All borders, grain, dot-grid use these tokens — no hard-coded hex.
 
 **Concept:** Whole page is one long engineering letter that unfolds as you scroll. Keep fast (<100kB JS over motion) — win on ideas & typography, not heavy WebGL.
 
-- **NotebookShell:** `App.tsx` has fixed dot-grid + grain + red margin line + `ScrollProgress`.
-- **Fold:** `Brutalist.tsx Fold` — dashed line `scaleX 0 → 1` on `useInView`, double line (line + clay/20 offset 2px) for paper fold shadow. Labels `unfold — about/work — 3 only/process/contact — seal the letter`. Pure CSS transform, no canvas.
+- **NotebookShell:** `App.tsx` is a clean full-screen canvas + `ScrollProgress`. (Red margin line, fixed left `p.XX / 05` rail, dot-grid, grain and gutter marginalia were all removed — owner's call, cleaner look.)
+- **Fold:** REMOVED — the dashed `— label —` separators between sections went with the rest of the overlay chrome; sections now breathe with whitespace only.
 - **Staple:** Two 7px dots top center of each card.
-- **Marginalia:** Absolute left/right -172px desktop only, rotates 1deg, handwritten italic display `13px` clay/80, appears on scroll with `x 12` + rotate. Example: Recto `Aug 1 — 35 commits / "so if it crashes we now know why"`.
+- **Marginalia:** REMOVED — gutter notes were part of the cluttered-overlay look; component deleted from `Brutalist.tsx`.
 - **Redline:** For LOCK-IN: `<old>personal OS</old> → CLIENT PROJECT` red mono.
 - **Stamp:** Rubber stamp border 1.5px clay/70, rotate -8deg, mono 9px bold uppercase tracking 0.15em.
 
@@ -59,13 +61,12 @@ All borders, grain, dot-grid use these tokens — no hard-coded hex.
 
 ## 4. Why This Is Not AI Slop
 
-- AI slop: random 4 fonts, pure white #FFF, black #000, neon accent no wash, heavy grain 0.08, Lenis 2.8s slow, 3D blobs, pills everywhere.
-- This: 3 fonts with roles documented here, paper #FCFAF7 not white, ink warm not black, clay with 4 tints + wash, grain 0.012, dot-grid 28px, red margin line composition book, no Lenis/gsap/canvas heavy, no pills, only 3 main works (confident), live GitHub data Aug 1 latest not pinned, redline correction shows thinking.
+- AI slop: random 4 fonts, pure white #FFF, black #000, neon accent no wash, heavy grain 0.08, Lenis 2.8s slow, 3D blobs, pills everywhere, glow/mesh overlays everywhere.
+- This: 3 fonts with roles documented here, paper #FCFAF7 not white, ink warm not black, clay with 4 tints + wash, CLEAN flat canvas (grain/dot-grid/mesh glows all removed), no Lenis/gsap/canvas heavy, no pills, only 3 main works (confident), live GitHub data Aug 1 latest not pinned, redline correction shows thinking.
 
 ## 5. Next Awwwards Push (if we continue)
 
 - Add hand-drawn SVG arrows circling CLIENT badge (already planned)
-- Sticky left page numbers `p.01 / 05` updating on scroll
-- Contact as envelope that seals on hover
+- Contact envelope: DONE — closed envelope with wax seal → hover makes the flap lift + letter peek (whimsical) → click opens the flap and the letter rises out, unfolding into the form → after send the envelope closes and the seal stamps back on ("Draft sealed")
 
 All keep fast, no new deps, only CSS + framer-motion.

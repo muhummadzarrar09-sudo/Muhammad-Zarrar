@@ -6,7 +6,6 @@ import Footer from "@/components/Footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { SectionLoading } from "@/components/LazyFallback";
 import ScrollProgress from "@/components/ScrollProgress";
-import { Fold, PageNumbers } from "@/components/Brutalist";
 
 const About = lazy(() => import("@/components/About"));
 const Expertise = lazy(() => import("@/components/Expertise"));
@@ -20,41 +19,33 @@ function LazySection({ label, children }: { label: string; children: React.React
 
 export default function App() {
   return (
-    <div className="notebook isolate relative min-h-screen overflow-x-clip bg-canvas text-ink antialiased grain">
+    // Clean full-screen canvas — no dot-grid, no grain, no margin line.
+    <div className="relative isolate min-h-screen overflow-x-clip bg-canvas text-ink antialiased">
       {/* Skip to content — accessibility */}
       <a href="#work" className="skip-link">Skip to main content</a>
 
-      {/* Dot-grid + paper — brutalist notebook base */}
-      <div className="pointer-events-none fixed inset-0 -z-10 opacity-[0.15] dot-grid" />
-
       <SeoRouteMeta />
       <ScrollProgress />
-      <PageNumbers />
       <Nav />
 
       <main id="main-content" className="relative">
         <Hero />
-        <Fold label="about" />
         <LazySection label="Loading about">
           <About />
         </LazySection>
 
-        <Fold label="expertise" />
         <LazySection label="Loading expertise">
           <Expertise />
         </LazySection>
 
-        <Fold label="work" />
         <LazySection label="Loading work">
           <Work />
         </LazySection>
 
-        <Fold label="process" />
         <LazySection label="Loading process">
           <Process />
         </LazySection>
 
-        <Fold label="contact" />
         <LazySection label="Loading contact">
           <Contact />
         </LazySection>

@@ -96,7 +96,7 @@ export default function Nav() {
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="group flex items-center gap-2.5 pl-1"
           >
-            <span className="grid h-8 w-8 place-items-center rounded-full bg-ink font-mono text-[11px] font-semibold text-canvas transition-transform duration-300 group-hover:rotate-6">
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-clay-deep font-mono text-[11px] font-semibold text-canvas transition-transform duration-300 group-hover:rotate-6">
               {profile.initials}
             </span>
             <span className="hidden font-display text-[15px] font-medium tracking-tight sm:block">

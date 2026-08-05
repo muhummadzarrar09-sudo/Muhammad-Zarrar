@@ -28,9 +28,12 @@ test.describe("portfolio — personal single route", () => {
     await expect(page.getByText(/Selected work|featured builds/i).first()).toBeVisible();
   });
 
-  test("contact form exposes personal fields", async ({ page }) => {
+  test("contact form opens from the envelope", async ({ page }) => {
     await page.goto("/");
     await page.locator("#contact").scrollIntoViewIfNeeded();
+
+    // The form lives inside a closed envelope now — click to open it first
+    await page.getByRole("button", { name: /open the envelope/i }).click();
 
     await expect(page.getByLabel(/YOUR NAME/i)).toBeVisible();
     await expect(page.getByLabel(/EMAIL/i)).toBeVisible();
