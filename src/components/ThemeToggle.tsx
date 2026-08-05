@@ -24,24 +24,17 @@ function apply(theme: Theme) {
 }
 
 export default function ThemeToggle({ className }: { className?: string }) {
-  const [theme, setTheme] = useState<Theme>("system");
-  const [mounted, setMounted] = useState(false);
+  // Lazy init — read the stored theme once on first render (client-only SPA,
+  // theme-init.js already applied the class before React mounts).
+  const [theme, setTheme] = useState<Theme>(getStored);
 
   useEffect(() => {
-    setTheme(getStored());
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (mounted) apply(theme);
-  }, [theme, mounted]);
+    apply(theme);
+  }, [theme]);
 
   const cycle = () => {
     setTheme((t) => (t === "light" ? "dark" : t === "dark" ? "system" : "light"));
   };
-
-  // Don't render until mounted to avoid hydration mismatch
-  if (!mounted) return <div className={cn("h-11 w-11", className)} />;
 
   const icon = theme === "light" ? "☀" : theme === "dark" ? "☾" : "◎";
   const label = theme === "light" ? "Light mode" : theme === "dark" ? "Dark mode" : "System theme";
