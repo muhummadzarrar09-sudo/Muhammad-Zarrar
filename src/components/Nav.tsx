@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { profile } from "@/data/portfolio";
 import { cn } from "@/utils/cn";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const LINKS = [
   { id: "about", label: "About" },
@@ -136,6 +137,7 @@ export default function Nav() {
           </div>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <a
               href={`mailto:${profile.email}`}
               className="hidden rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep sm:inline-flex"

@@ -3,6 +3,7 @@
 /* =========================================================================
    DESIGN SYSTEM — Personal Human Palette
    Warm paper, ink, clay, forest — human, quiet, personal.
+   Light default + dark mode via prefers-color-scheme or .dark class.
    ========================================================================= */
 
 @theme {
@@ -48,10 +49,72 @@
   --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
 }
 
-/* Minimal keyframes — keep one gentle float for tiny accents */
+/* Minimal keyframes */
 @keyframes slow-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
+}
+
+/* =========================================================================
+   DARK MODE — warm ink palette, same soul
+   ========================================================================= */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-canvas: #17130F;
+    --color-canvas-deep: #1E1A16;
+    --color-surface: #221E1A;
+    --color-surface-2: #2A2520;
+    --color-line: #3A342D;
+    --color-line-soft: #2E2923;
+    --color-line-strong: #5A534B;
+    --color-input: #2A2520;
+
+    --color-ink: #F1E9DD;
+    --color-ink-soft: #C4BAB0;
+    --color-muted: #9A9189;
+    --color-faint: #7A7168;
+
+    --color-error: #F28B82;
+
+    --color-clay: #E07B5F;
+    --color-clay-soft: #D88A6E;
+    --color-clay-deep: #C46B4D;
+    --color-clay-wash: #3A2A22;
+
+    --color-forest: #7A8E7E;
+    --color-forest-soft: #5A7A60;
+    --color-moss: #7A8E7E;
+    --color-sand: #4A443D;
+  }
+}
+
+/* Manual .dark class override (takes precedence over system) */
+:root.dark {
+  --color-canvas: #17130F;
+  --color-canvas-deep: #1E1A16;
+  --color-surface: #221E1A;
+  --color-surface-2: #2A2520;
+  --color-line: #3A342D;
+  --color-line-soft: #2E2923;
+  --color-line-strong: #5A534B;
+  --color-input: #2A2520;
+
+  --color-ink: #F1E9DD;
+  --color-ink-soft: #C4BAB0;
+  --color-muted: #9A9189;
+  --color-faint: #7A7168;
+
+  --color-error: #F28B82;
+
+  --color-clay: #E07B5F;
+  --color-clay-soft: #D88A6E;
+  --color-clay-deep: #C46B4D;
+  --color-clay-wash: #3A2A22;
+
+  --color-forest: #7A8E7E;
+  --color-forest-soft: #5A7A60;
+  --color-moss: #7A8E7E;
+  --color-sand: #4A443D;
 }
 
 /* =========================================================================
@@ -63,6 +126,7 @@
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
     background: var(--color-canvas);
+    color-scheme: light dark;
   }
   body {
     background-color: var(--color-canvas);
@@ -71,6 +135,7 @@
     font-feature-settings: "ss01", "cv01";
     overflow-x: hidden;
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   ::selection {
     background: var(--color-clay-wash);
@@ -103,11 +168,11 @@
   .tracking-tightest { letter-spacing: -0.04em; }
   .tracking-human { letter-spacing: -0.02em; }
 
-  /* Card edge — paper-like, no heavy shadow */
+  /* Card edge — paper-like */
   .edge {
     box-shadow:
       0 0 0 1px var(--color-line) inset,
-      0 1px 0 0 rgba(255, 255, 255, 0.7) inset;
+      0 1px 0 0 rgba(255, 255, 255, 0.08) inset;
   }
   .edge-soft {
     box-shadow: 0 0 0 1px var(--color-line-soft) inset;
@@ -115,8 +180,8 @@
 
   .lift {
     box-shadow:
-      0 1px 1px rgba(23, 19, 15, 0.04),
-      0 8px 24px -16px rgba(23, 19, 15, 0.18);
+      0 1px 1px rgba(0, 0, 0, 0.08),
+      0 8px 24px -16px rgba(0, 0, 0, 0.3);
   }
 
   /* Link underline — human, slow */
@@ -171,7 +236,7 @@
   }
   .human-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 24px -16px rgba(23, 19, 15, 0.18);
+    box-shadow: 0 12px 24px -16px rgba(0, 0, 0, 0.25);
     border-color: var(--color-clay-soft);
   }
 
@@ -207,7 +272,7 @@
     background: var(--color-surface);
     border: 1px solid var(--color-line-strong);
     border-radius: 16px;
-    box-shadow: 0 1px 0 0 rgba(255,255,255,0.8) inset, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.05) inset, 0 4px 6px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   }
   .notebook-page::after {
     content: "";
@@ -216,11 +281,11 @@
     right: 0;
     bottom: -6px;
     height: 12px;
-    background: radial-gradient(ellipse at center, rgba(23,19,15,0.06) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.08) 0%, transparent 70%);
     pointer-events: none;
   }
 
-  /* Typewriter — for short labels and captions, not body paragraphs */
+  /* Typewriter — for short labels and captions */
   .typewriter {
     font-family: var(--font-mono);
     font-variant-ligatures: none;
