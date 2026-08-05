@@ -24,7 +24,7 @@ export default function About() {
             <>
               Part engineer,
               <br />
-              <span className="italic text-clay">part human trying</span>
+              <span className="italic text-clay-deep">part human trying</span>
               <br /> to make things work.
             </>
           }
@@ -67,7 +67,7 @@ export default function About() {
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="mt-10 rounded-[1.2rem] border border-line-strong bg-surface p-5 notebook-page">
+            <div className="mt-10 rounded-2xl border border-line-strong bg-surface p-5 notebook-page">
               <Staple />
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep flex items-center gap-2">
                 How I work
@@ -92,7 +92,7 @@ export default function About() {
           </Marginalia>
 
           <Reveal delay={0.12}>
-            <div className="rounded-[1.6rem] border border-line-strong bg-surface/90 p-6 lift notebook-page">
+            <div className="rounded-3xl border border-line-strong bg-surface/90 p-6 lift notebook-page">
               <Staple />
               <div className="flex items-center gap-3">
                 <img src={profile.avatar} alt={profile.name} className="h-10 w-10 rounded-full border border-line-strong" />
@@ -131,7 +131,7 @@ export default function About() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <div className="rounded-[1.6rem] border border-dashed border-line bg-canvas-deep/40 p-6">
+            <div className="rounded-3xl border border-dashed border-line bg-canvas-deep/40 p-6">
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">Live from GitHub</div>
               <div className="mt-3 grid grid-cols-2 gap-4">
                 <div>

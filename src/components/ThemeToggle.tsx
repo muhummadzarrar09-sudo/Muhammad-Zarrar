@@ -41,7 +41,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
   };
 
   // Don't render until mounted to avoid hydration mismatch
-  if (!mounted) return <div className={cn("h-10 w-10", className)} />;
+  if (!mounted) return <div className={cn("h-11 w-11", className)} />;
 
   const icon = theme === "light" ? "☀" : theme === "dark" ? "☾" : "◎";
   const label = theme === "light" ? "Light mode" : theme === "dark" ? "Dark mode" : "System theme";
@@ -53,7 +53,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
       aria-label={label}
       title={label}
       className={cn(
-        "grid h-10 w-10 place-items-center rounded-full border border-line bg-surface text-[15px] transition-colors hover:border-clay-soft hover:text-clay-deep",
+        "grid h-11 w-11 place-items-center rounded-full border border-line bg-surface text-[15px] transition-colors hover:border-clay-soft hover:text-clay-deep",
         className
       )}
     >

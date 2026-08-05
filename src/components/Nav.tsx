@@ -134,7 +134,7 @@ export default function Nav() {
               onClick={() => setOpen((o) => !o)}
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
-              className="grid h-11 w-11 place-items-center rounded-full border border-line bg-surface md:hidden"
+              className="grid h-11 w-11 place-items-center rounded-full border border-line bg-surface transition-colors hover:border-clay-soft md:hidden"
             >
               {open ? <X size={16} strokeWidth={1.8} /> : <Menu size={16} strokeWidth={1.8} />}
             </button>

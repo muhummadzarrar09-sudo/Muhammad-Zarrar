@@ -16,7 +16,7 @@ export default function Footer() {
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className="font-display text-2xl font-light tracking-tightest"
             >
-              Muhammad<span className="text-clay">.</span>
+              Muhammad<span className="text-clay-deep">.</span>
             </button>
             <p className="mt-3 text-[13.5px] leading-relaxed text-muted">
               Full-stack & AI systems, built by hand in Rawalpindi. I like things that are useful
@@ -52,7 +52,7 @@ export default function Footer() {
               >
                 <GithubIcon size={12} strokeWidth={1.8} />
                 GitHub
-                <ExternalLink size={10} strokeWidth={2} />
+                <ExternalLink size={10} strokeWidth={1.8} />
               </a>
             </div>
           </div>
@@ -69,7 +69,7 @@ export default function Footer() {
           >
             Back to top
             <span className="grid h-10 w-10 place-items-center rounded-full border border-line-strong transition-all group-hover:-translate-y-0.5 group-hover:border-clay">
-              <ArrowUp size={14} strokeWidth={2} />
+              <ArrowUp size={14} strokeWidth={1.8} />
             </span>
           </button>
         </div>

@@ -137,7 +137,7 @@ export function MagneticButton({
       ? "bg-ink text-canvas hover:bg-clay"
       : variant === "outline"
         ? "border border-ink/20 text-ink hover:border-ink/50"
-        : "text-ink hover:text-clay";
+        : "text-ink hover:text-clay-deep";
 
   const inner = (
     <motion.span

@@ -181,7 +181,7 @@ export function Envelope({ isSealed, children }: { isSealed: boolean; children: 
       >
         M
       </motion.div>
-      <div className="relative rounded-t-none rounded-b-[1.8rem] border border-line bg-surface p-6 sm:p-8 pt-8">
+      <div className="relative rounded-t-none rounded-b-3xl border border-line bg-surface p-6 sm:p-8 pt-8">
         {children}
       </div>
     </div>
@@ -294,7 +294,7 @@ export function ScribbleLink({ children, href }: { children: ReactNode; href: st
       <span className="relative z-10">{children}</span>
       <motion.svg
         width="100%" height="8" viewBox="0 0 100 8" preserveAspectRatio="none"
-        className="pointer-events-none absolute bottom-0 left-0 w-full text-clay/50"
+        className="pointer-events-none absolute bottom-0 left-0 w-full text-clay-deep/50"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={hover ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
         transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
