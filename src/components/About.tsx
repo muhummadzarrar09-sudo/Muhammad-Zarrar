@@ -131,7 +131,7 @@ export default function About() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <div className="rounded-[1.6rem] border border-dashed border-line bg-canvas-deep/40 p-6">
+            <div className="rounded-3xl border border-dashed border-line bg-canvas-deep/40 p-6">
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">Live from GitHub</div>
               <div className="mt-3 grid grid-cols-2 gap-4">
                 <div>
