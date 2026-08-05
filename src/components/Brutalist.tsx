@@ -294,7 +294,7 @@ export function ScribbleLink({ children, href }: { children: ReactNode; href: st
       <span className="relative z-10">{children}</span>
       <motion.svg
         width="100%" height="8" viewBox="0 0 100 8" preserveAspectRatio="none"
-        className="pointer-events-none absolute bottom-0 left-0 w-full text-clay/50"
+        className="pointer-events-none absolute bottom-0 left-0 w-full text-clay-deep/50"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={hover ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
         transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
