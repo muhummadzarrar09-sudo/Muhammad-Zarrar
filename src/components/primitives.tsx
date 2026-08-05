@@ -134,10 +134,10 @@ export function MagneticButton({
 
   const styles =
     variant === "solid"
-      ? "bg-ink text-canvas hover:bg-spark"
+      ? "bg-ink text-canvas hover:bg-clay"
       : variant === "outline"
         ? "border border-ink/20 text-ink hover:border-ink/50"
-        : "text-ink hover:text-spark";
+        : "text-ink hover:text-clay";
 
   const inner = (
     <motion.span

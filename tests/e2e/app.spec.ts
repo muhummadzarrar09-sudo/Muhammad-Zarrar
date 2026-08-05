@@ -6,7 +6,6 @@ test.describe("portfolio — personal single route", () => {
 
     await expect(page).toHaveTitle(/Muhammad Zarrar/i);
     await expect(page.getByRole("navigation").first()).toBeVisible();
-    // new personal hero heading
     await expect(page.getByRole("heading", { name: /I'm Zarrar/i }).first()).toBeVisible();
     await expect(page.locator("#about")).toBeAttached();
     await expect(page.locator("#work")).toBeAttached();
@@ -19,14 +18,14 @@ test.describe("portfolio — personal single route", () => {
 
     const mailto = page.locator('a[href^="mailto:muhummadzarrar09@gmail.com"]').first();
     await expect(mailto).toBeVisible();
-    await expect(page.getByText(/Hand-building useful things|Available for select/i).first()).toBeVisible();
+    await expect(page.getByText(/Open to 1–2 projects|Available for select/i).first()).toBeVisible();
   });
 
-  test("work section shows journal entries", async ({ page }) => {
+  test("work section shows featured projects", async ({ page }) => {
     await page.goto("/");
     await page.locator("#work").scrollIntoViewIfNeeded();
-    await expect(page.getByText("Omni").first()).toBeVisible();
-    await expect(page.getByText(/Things I've built/).first()).toBeVisible();
+    await expect(page.getByText("LOCK-IN").first()).toBeVisible();
+    await expect(page.getByText(/Selected work|featured builds/i).first()).toBeVisible();
   });
 
   test("contact form exposes personal fields", async ({ page }) => {

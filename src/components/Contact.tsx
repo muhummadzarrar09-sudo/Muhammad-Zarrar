@@ -193,7 +193,7 @@ export default function Contact() {
                       placeholder="Zarrar"
                       className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-ink-soft/60 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                     />
-                    {errors.name && <p className="mt-1 text-xs text-[#B3261E]">{errors.name}</p>}
+                    {errors.name && <p className="mt-1 text-xs text-error">{errors.name}</p>}
                   </div>
                   <div>
                     <label htmlFor="c-email" className="mb-1.5 block font-mono text-[11px] text-muted">
@@ -208,7 +208,7 @@ export default function Contact() {
                       placeholder="you@company.com"
                       className="w-full rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm text-ink placeholder:text-ink-soft/60 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                     />
-                    {errors.email && <p className="mt-1 text-xs text-[#B3261E]">{errors.email}</p>}
+                    {errors.email && <p className="mt-1 text-xs text-error">{errors.email}</p>}
                   </div>
                 </div>
 
@@ -246,7 +246,7 @@ export default function Contact() {
                     className="w-full resize-none rounded-xl border border-line-strong bg-surface-2 px-4 py-3 text-sm leading-relaxed text-ink placeholder:text-ink-soft/60 focus:border-clay-deep focus:ring-2 ring-clay-deep/30 focus:outline-none"
                   />
                   <div className="mt-1.5 flex justify-between">
-                    <div>{errors.message && <span className="text-xs text-[#B3261E]">{errors.message}</span>}</div>
+                    <div>{errors.message && <span className="text-xs text-error">{errors.message}</span>}</div>
                     <div className="font-mono text-[10px] text-faint">{form.message.length}/1000</div>
                   </div>
                 </div>

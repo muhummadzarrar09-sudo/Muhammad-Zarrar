@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-// Fold line that unfolds as you scroll into it — no 3D, just scaleX
+// Fold line that unfolds as you scroll into it
 export function Fold({ label }: { label?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-20% 0px" });
@@ -44,16 +44,6 @@ export function Staple() {
   );
 }
 
-// Redline correction — cross out old + red new
-export function Redline({ oldText, newText }: { oldText: string; newText: string }) {
-  return (
-    <span className="inline-flex items-baseline gap-2 font-mono text-[11px]">
-      <span className="relative text-faint line-through decoration-clay/60">{oldText}</span>
-      <span className="text-clay-deep font-medium tracking-tight">→ {newText}</span>
-    </span>
-  );
-}
-
 // Marginalia — handwritten note that appears on scroll, left or right
 export function Marginalia({
   children,
@@ -93,43 +83,7 @@ export function Stamp({ children }: { children: ReactNode }) {
   );
 }
 
-// Hand-drawn circle arrow around CLIENT — Awwwards detail
-export function ClientCircled({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-10% 0px" });
-  return (
-    <div ref={ref} className="relative inline-flex">
-      {/* Hand-drawn SVG circle — imperfect ellipse + arrow head */}
-      <motion.svg
-        width="78"
-        height="36"
-        viewBox="0 0 78 36"
-        className="pointer-events-none absolute -left-2 -top-2 text-clay"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={inView ? { pathLength: 1, opacity: 0.9 } : { pathLength: 0, opacity: 0 }}
-        transition={{ duration: 0.9, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
-      >
-        <motion.path
-          d="M 6 18 C 6 6, 22 2, 39 3 C 56 4, 72 7, 72 18 C 72 29, 55 33, 39 33 C 23 33, 6 30, 6 18 Z
-             M 68 12 L 73 18 L 67 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeDasharray="2 3"
-          initial={{ pathLength: 0 }}
-          animate={inView ? { pathLength: 1 } : { pathLength: 0 }}
-          transition={{ duration: 1.1, ease: [0.25, 1, 0.5, 1], delay: 0.3 }}
-          style={{ filter: "url(#rough)" }}
-        />
-      </motion.svg>
-      <div className="relative z-10">{children}</div>
-    </div>
-  );
-}
-
-// Sticky page numbers p.01 / 05 — updates on scroll, brutalist left margin
+// Sticky page numbers p.01 / 05 — updates on scroll
 export function PageNumbers() {
   const [active, setActive] = useState("top");
   useEffect(() => {
@@ -149,12 +103,9 @@ export function PageNumbers() {
       });
     };
     observe();
-    const mo = new MutationObserver(observe);
-    mo.observe(document.body, { childList: true, subtree: true });
     const t = window.setTimeout(observe, 1000);
     return () => {
       obs.disconnect();
-      mo.disconnect();
       clearTimeout(t);
     };
   }, []);
@@ -191,12 +142,7 @@ export function PageNumbers() {
   );
 }
 
-// Torn edge bottom using mask
-export function TornEdge() {
-  return <div className="pointer-events-none h-[18px] w-full bg-canvas" style={{ clipPath: "polygon(0 0, 3% 100%, 7% 20%, 11% 90%, 15% 10%, 20% 85%, 26% 15%, 32% 95%, 38% 5%, 44% 80%, 50% 10%, 56% 90%, 62% 20%, 68% 100%, 74% 15%, 80% 85%, 86% 10%, 92% 90%, 96% 20%, 100% 100%, 100% 0)" }} />;
-}
-
-// Hand-drawn arrow pointing to red margin line — brutalist annotation
+// Hand-drawn arrow pointing to red margin line
 export function MarginArrow({ label = "red margin — composition book" }: { label?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-20% 0px" });
@@ -229,7 +175,6 @@ export function MarginArrow({ label = "red margin — composition book" }: { lab
 export function Envelope({ isSealed, children }: { isSealed: boolean; children: ReactNode }) {
   return (
     <div className="relative">
-      {/* Flap */}
       <motion.div
         className="absolute -top-[28px] left-0 right-0 h-[30px] origin-bottom bg-surface border border-line border-b-0"
         style={{
@@ -239,7 +184,6 @@ export function Envelope({ isSealed, children }: { isSealed: boolean; children: 
         animate={{ rotateX: isSealed ? 0 : -35, y: isSealed ? 0 : -8 }}
         transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
       />
-      {/* Seal dot */}
       <motion.div
         className="absolute -top-2 left-1/2 z-10 h-6 w-6 -translate-x-1/2 rounded-full bg-clay-deep grid place-items-center text-canvas font-bold text-[10px]"
         animate={{ scale: isSealed ? 1 : 0.85, opacity: 1 }}
@@ -254,7 +198,7 @@ export function Envelope({ isSealed, children }: { isSealed: boolean; children: 
   );
 }
 
-// Paper clip — brutalist desk artifact
+// Paper clip — desk artifact
 export function PaperClip({ className = "" }: { className?: string }) {
   return (
     <div className={`pointer-events-none absolute select-none ${className}`}>
@@ -275,54 +219,18 @@ export function Tape({ rotate = -6, className = "" }: { rotate?: number; classNa
   );
 }
 
-// Scribble underline — hand-drawn underline on hover, surreal
-export function ScribbleLink({ children, href }: { children: ReactNode; href: string }) {
-  const [hover, setHover] = useState(false);
-  return (
-    <a
-      href={href}
-      target={href.startsWith("http") ? "_blank" : undefined}
-      rel="noopener noreferrer"
-      className="relative inline-flex"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
-      <span className="relative z-10">{children}</span>
-      <motion.svg
-        width="100%"
-        height="8"
-        viewBox="0 0 100 8"
-        preserveAspectRatio="none"
-        className="pointer-events-none absolute bottom-0 left-0 w-full text-clay/50"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={hover ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-        transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
-      >
-        <motion.path
-          d="M 0 5 Q 10 1, 20 4 T 40 5 T 60 4 T 80 5 T 100 4"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-          strokeDasharray="0.5 2"
-        />
-      </motion.svg>
-    </a>
-  );
-}
-
-// Typewriter cursor blink — surreal
+// Typewriter cursor blink
 export function TypewriterCursor() {
   return (
     <motion.span
       animate={{ opacity: [1, 0] }}
-      transition={{ duration: 0.7, repeat: Infinity, ease: "linear" } as any}
+      transition={{ duration: 0.7, repeat: Infinity, ease: "linear" }}
       className="inline-block h-[1em] w-[2px] bg-clay-deep ml-1 translate-y-[2px]"
     />
   );
 }
 
-// Coffee stain — surreal desk detail, ultra-subtle
+// Coffee stain — desk detail, ultra-subtle
 export function CoffeeStain({ className = "" }: { className?: string }) {
   return (
     <div className={`pointer-events-none absolute rounded-full bg-[#9C6B4A]/[0.06] blur-[1px] ${className}`} style={{ width: 64, height: 64 }} />

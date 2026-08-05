@@ -1,0 +1,90 @@
+{
+  "totalRepos": 21,
+  "latestPush": "2026-08-05T02:55:22Z",
+  "latestPushRelative": "today",
+  "recentCommits7d": 2,
+  "recentCommits30d": 68,
+  "latestRepos": [
+    {
+      "name": "LOCK-IN",
+      "pushedAt": "2026-08-05T02:55:22Z",
+      "language": "TypeScript",
+      "description": null,
+      "url": "https://github.com/muhummadzarrar09-sudo/LOCK-IN",
+      "daysAgo": 0
+    },
+    {
+      "name": "Muhammad-Zarrar",
+      "pushedAt": "2026-08-03T13:56:12Z",
+      "language": "TypeScript",
+      "description": null,
+      "url": "https://github.com/muhummadzarrar09-sudo/Muhammad-Zarrar",
+      "daysAgo": 1
+    },
+    {
+      "name": "Recto",
+      "pushedAt": "2026-08-01T11:57:51Z",
+      "language": "Kotlin",
+      "description": null,
+      "url": "https://github.com/muhummadzarrar09-sudo/Recto",
+      "daysAgo": 3
+    },
+    {
+      "name": "SwingFrame",
+      "pushedAt": "2026-08-01T04:30:10Z",
+      "language": "Kotlin",
+      "description": null,
+      "url": "https://github.com/muhummadzarrar09-sudo/SwingFrame",
+      "daysAgo": 3
+    },
+    {
+      "name": "forms",
+      "pushedAt": "2026-07-30T12:16:26Z",
+      "language": "TypeScript",
+      "description": null,
+      "url": "https://github.com/muhummadzarrar09-sudo/forms",
+      "daysAgo": 5
+    },
+    {
+      "name": "TheStandard",
+      "pushedAt": "2026-07-23T03:15:46Z",
+      "language": "TypeScript",
+      "description": "Outdated",
+      "url": "https://github.com/muhummadzarrar09-sudo/TheStandard",
+      "daysAgo": 12
+    },
+    {
+      "name": "retailflow",
+      "pushedAt": "2026-07-22T17:10:06Z",
+      "language": "HTML",
+      "description": null,
+      "url": "https://github.com/muhummadzarrar09-sudo/retailflow",
+      "daysAgo": 13
+    },
+    {
+      "name": "Omni",
+      "pushedAt": "2026-07-19T07:11:12Z",
+      "language": "Python",
+      "description": "OMNI — Voice-controlled autonomous agent with Push-to-Talk activation, browser automation, and local AI processing. Built for accessibility, loved by everyone.",
+      "url": "https://github.com/muhummadzarrar09-sudo/Omni",
+      "daysAgo": 16
+    },
+    {
+      "name": "TheDesiEdit",
+      "pushedAt": "2026-07-17T03:31:29Z",
+      "language": "HTML",
+      "description": null,
+      "url": "https://github.com/muhummadzarrar09-sudo/TheDesiEdit",
+      "daysAgo": 18
+    },
+    {
+      "name": "JARVIS",
+      "pushedAt": "2026-07-09T09:59:19Z",
+      "language": "Python",
+      "description": "Just A Rather Very Intelligent system ",
+      "url": "https://github.com/muhummadzarrar09-sudo/JARVIS",
+      "daysAgo": 26
+    }
+  ],
+  "fetchedAt": "2026-08-05T03:05:13.337Z"
+}

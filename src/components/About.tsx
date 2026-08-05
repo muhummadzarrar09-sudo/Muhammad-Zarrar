@@ -1,19 +1,19 @@
-import { profile, stats } from "@/data/portfolio";
+import { profile, github } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import { Marginalia, Staple, Stamp, MarginArrow } from "@/components/Brutalist";
+import { Marginalia, Staple, MarginArrow } from "@/components/Brutalist";
 
 const principles = [
-  { k: "ship", v: "Ship fast, then refine — real feedback > perfect plan" },
-  { k: "systems", v: "Systems over shortcuts — typed, auditable, boring in the right places" },
+  { k: "ship", v: "Ship fast, then refine — real feedback beats perfect plans" },
+  { k: "systems", v: "Systems over shortcuts — typed, auditable, boring where it matters" },
   { k: "human", v: "Human first — if it confuses someone, it's not done" },
-  { k: "use", v: "If it doesn't get used, it doesn't matter — dogfood it" },
+  { k: "use", v: "If it doesn't get used, it doesn't matter" },
 ];
 
 export default function About() {
   return (
     <section id="about" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       <div className="relative h-0">
-        <MarginArrow label="red margin — composition book • brutalist" />
+        <MarginArrow label="red margin — composition book" />
       </div>
       <SectionHeading
         index="01"
@@ -33,30 +33,32 @@ export default function About() {
           <Marginalia side="left">
             compiling....
             <br />
-            <span className="font-mono text-[10px] not-italic text-faint">GitHub bio — still accurate</span>
+            <span className="font-mono text-[10px] not-italic text-faint">still accurate</span>
           </Marginalia>
 
           <Reveal>
-            <p className="font-display text-[1.7rem] font-light leading-[1.3] tracking-tight text-ink text-balance sm:text-[1.9rem] typewriter">
-              I&apos;m {profile.name} — a full-stack, AI & mobile engineer from Rawalpindi who got hooked on making computers
-              do the boring stuff so people don&apos;t have to.
+            <p className="font-display text-[1.7rem] font-light leading-[1.3] tracking-tight text-ink text-balance sm:text-[1.9rem]">
+              I&apos;m {profile.name} — a full-stack, AI & mobile engineer from Rawalpindi
+              who got hooked on making computers do the boring stuff so people don&apos;t have to.
             </p>
           </Reveal>
           <Reveal delay={0.08}>
-            <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-ink-soft text-pretty typewriter sm:text-[18px]">
+            <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-ink-soft text-pretty sm:text-[18px]">
               <p>
-                I started breaking things at 2am, copying snippets I didn&apos;t fully get. Over time I stopped chasing
-                frameworks and chased <span className="text-ink">useful</span> — does it solve a real problem? Will it
-                still work in 6 months without me babysitting it? That&apos;s why you see Kotlin Android next to Python voice
-                agents on my GitHub.
+                I started breaking things at 2am, copying snippets I didn&apos;t fully get. Over time
+                I stopped chasing frameworks and chased{" "}
+                <span className="text-ink font-medium">useful</span> — does it solve a real problem?
+                Will it still work in 6 months without me babysitting it?
               </p>
               <p className="text-muted">
-                Day-to-day now is TypeScript + Next.js + Supabase (LOCK-IN: CLIENT PROJECT — 121 commits Jul 30, auth
-                audits, RLS hardening, Cloudflare — not personal OS), Kotlin Android (SwingFrame golf video engine + AI
-                diagnostics — shipped phase 1 & 2 Jul 31), and Python voice (Omni: push-to-talk, local AI, 14 test
-                suites). Plus latest Aug 1: Recto — 35 commits, console errors side-by-side so crashes are visible — and
-                Jul 22-23 TheStandard enrollment v2 + retailflow Marigold & Clay storefront + TheDesiEdit GSAP/Lenis
-                landing.
+                That&apos;s why you see Kotlin Android next to Python voice agents on my GitHub.
+                The stack follows the problem — not the other way around.
+              </p>
+              <p>
+                I do this because I genuinely believe good software should feel invisible — it should
+                just work, get out of the way, and let people focus on the thing they actually care about.
+                When someone uses something I built and it just <span className="text-ink font-medium">clicks</span> —
+                that&apos;s the best feeling.
               </p>
             </div>
           </Reveal>
@@ -65,11 +67,11 @@ export default function About() {
             <div className="mt-10 rounded-[1.2rem] border border-line-strong bg-surface p-5 notebook-page">
               <Staple />
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep flex items-center gap-2">
-                How I work now — Aug 2026 <Stamp>BRUTALIST</Stamp>
+                How I work
               </div>
               <ul className="mt-3 space-y-3">
                 {principles.map((p) => (
-                  <li key={p.k} className="flex gap-3 text-[15px] leading-[1.6] text-ink-soft typewriter">
+                  <li key={p.k} className="flex gap-3 text-[15px] leading-[1.6] text-ink-soft">
                     <span className="mt-[8px] h-px w-5 shrink-0 bg-clay/40" />
                     <span>{p.v}</span>
                   </li>
@@ -83,8 +85,6 @@ export default function About() {
           <Marginalia side="right">
             p.01 — about
             <br />
-            latest commits Aug1
-            <br />
             <span className="font-mono text-[10px] not-italic text-faint">Rawalpindi, PK</span>
           </Marginalia>
 
@@ -92,11 +92,11 @@ export default function About() {
             <div className="rounded-[1.6rem] border border-line-strong bg-surface/90 p-6 lift notebook-page">
               <Staple />
               <div className="flex items-center gap-3">
-                <img src={profile.avatar} alt="" className="h-10 w-10 rounded-full border border-line-strong" />
+                <img src={profile.avatar} alt={profile.name} className="h-10 w-10 rounded-full border border-line-strong" />
                 <div>
                   <div className="font-display text-[15px] font-medium leading-none">{profile.name}</div>
                   <div className="mt-1 font-mono text-[11px] text-muted">
-                    {profile.location} • {profile.bio}
+                    {profile.location} · {profile.bio}
                   </div>
                 </div>
               </div>
@@ -106,17 +106,16 @@ export default function About() {
                   <span className="text-ink">Full-stack + AI + Mobile</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Stack live</span>
+                  <span>Stack</span>
                   <span className="text-ink">TS, Kotlin, Python, Supabase</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Now</span>
-                  <span className="text-clay-deep">Recto / SwingFrame / CLIENT</span>
+                  <span className="text-clay-deep">LOCK-IN · SwingFrame · Recto</span>
                 </div>
                 <div className="h-px bg-line-strong" />
                 <div className="text-[12px] leading-relaxed text-ink-soft">
-                  {profile.availability}. Latest by commit: Recto Aug1, SwingFrame Aug1, forms Jul30, LOCK-IN CLIENT
-                  Jul30, TheStandard Jul23, retailflow Jul22, Omni Jul19, TheDesiEdit Jul16.
+                  {profile.availability}. {github.totalRepos} public repos, {github.recentCommits30d} pushes in the last 30 days.
                 </div>
               </div>
               <a
@@ -129,23 +128,28 @@ export default function About() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <div className="rounded-[1.6rem] border border-dashed border-line bg-canvas-deep/40 p-6 typewriter">
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">Live stats — GitHub Aug 2 2026</div>
+            <div className="rounded-[1.6rem] border border-dashed border-line bg-canvas-deep/40 p-6">
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">Live from GitHub</div>
               <div className="mt-3 grid grid-cols-2 gap-4">
-                {stats.map((s) => (
-                  <div key={s.label}>
-                    <div className="font-display text-2xl font-light">
-                      {s.value}
-                      {s.suffix}
-                    </div>
-                    <div className="font-mono text-[10px] uppercase tracking-wide text-muted">{s.label}</div>
-                  </div>
-                ))}
+                <div>
+                  <div className="font-display text-2xl font-light">{github.totalRepos}+</div>
+                  <div className="font-mono text-[10px] uppercase tracking-wide text-muted">Public repos</div>
+                </div>
+                <div>
+                  <div className="font-display text-2xl font-light">{github.recentCommits30d}</div>
+                  <div className="font-mono text-[10px] uppercase tracking-wide text-muted">Pushes (30d)</div>
+                </div>
+                <div>
+                  <div className="font-display text-2xl font-light">{github.recentCommits7d}</div>
+                  <div className="font-mono text-[10px] uppercase tracking-wide text-muted">Pushes (7d)</div>
+                </div>
+                <div>
+                  <div className="font-display text-2xl font-light">6</div>
+                  <div className="font-mono text-[10px] uppercase tracking-wide text-muted">Shipped projects</div>
+                </div>
               </div>
               <p className="mt-4 text-[12px] leading-relaxed text-muted">
-                Ordered by latest commit (not pinned): Recto Aug1, SwingFrame Aug1, forms Jul30, LOCK-IN CLIENT Jul30,
-                TheStandard Jul23 (predecessor of LOCK-IN), retailflow Jul22 demo (how I build catalogs), Omni Jul19,
-                TheDesiEdit Jul16.
+                Auto-fetched at build time. Last active: {github.latestPushRelative}.
               </p>
             </div>
           </Reveal>
