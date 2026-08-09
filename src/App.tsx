@@ -22,13 +22,13 @@ export default function App() {
     // Clean full-screen canvas — no dot-grid, no grain, no margin line.
     <div className="relative isolate min-h-screen overflow-x-clip bg-canvas text-ink antialiased">
       {/* Skip to content — accessibility */}
-      <a href="#work" className="skip-link">Skip to main content</a>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
 
       <SeoRouteMeta />
       <ScrollProgress />
       <Nav />
 
-      <main id="main-content" className="relative">
+      <main id="main-content" tabIndex={-1} className="relative">
         <Hero />
         <LazySection label="Loading about">
           <About />

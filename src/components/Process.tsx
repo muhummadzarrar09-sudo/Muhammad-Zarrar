@@ -1,5 +1,12 @@
-import { process as processData } from "@/data/portfolio";
+import { CheckCircle2, Mail } from "lucide-react";
+import { process as processData, profile } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
+
+const goodFit = [
+  "You have a real workflow, customer problem, or product decision to improve.",
+  "You want a thoughtful builder involved in the technical and product details.",
+  "You value a useful first release over a long list of impressive features.",
+];
 
 export default function Process() {
   return (
@@ -7,19 +14,18 @@ export default function Process() {
       <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <SectionHeading
           index="04"
-          label="Process"
+          label="Working together"
           title={
             <>
-              How I like to
+              Clear thinking.
               <br />
-              <span className="italic text-clay-deep">actually work.</span>
+              <span className="italic text-clay-deep">Useful momentum.</span>
             </>
           }
         />
         <Reveal delay={0.08} className="max-w-sm">
           <p className="text-[14px] leading-relaxed text-muted">
-            No big agency deck. Just 4 simple steps I keep coming back to. Research first, then
-            build small and ship.
+            I keep engagements deliberately small, direct, and close to the actual product. You get working proof early—not a black box or a bloated agency process.
           </p>
         </Reveal>
       </div>
@@ -28,21 +34,20 @@ export default function Process() {
         {processData.map((s, i) => (
           <Reveal key={s.no} delay={i * 0.06}>
             <div className="human-card flex h-full flex-col rounded-2xl border border-line bg-surface p-7">
-              <div className="flex items-baseline justify-between">
+              <div className="flex items-baseline justify-between gap-3">
                 <span className="font-display text-5xl font-light tracking-tightest text-clay-deep/30">
                   {s.no}
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">{s.role}</span>
+                <span className="text-right font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">{s.role}</span>
               </div>
               <h3 className="mt-6 font-display text-xl font-medium tracking-tight">{s.title}</h3>
               <p className="mt-3 text-[13.5px] leading-relaxed text-ink-soft">{s.body}</p>
 
-              {/* Human note */}
-              <div className="mt-auto pt-6 font-mono text-[10px] leading-relaxed text-faint">
-                {i === 0 && "I ask a lot of dumb questions here."}
-                {i === 1 && "If I can't sketch it on paper, I don't start coding."}
-                {i === 2 && "Motion only if it helps understanding."}
-                {i === 3 && "Ship, then listen, then fix."}
+              <div className="mt-auto border-t border-line pt-6 font-mono text-[10px] leading-relaxed text-faint">
+                {i === 0 && "The goal is a better decision, not more meetings."}
+                {i === 1 && "You should be able to react to something real."}
+                {i === 2 && "The unglamorous parts are part of the job."}
+                {i === 3 && "A launch should leave you with clarity, not dependency."}
               </div>
             </div>
           </Reveal>
@@ -50,9 +55,33 @@ export default function Process() {
       </div>
 
       <Reveal delay={0.16} className="mt-10">
-        <div className="rounded-2xl border border-line bg-canvas-deep/50 px-6 py-5 font-mono text-xs leading-relaxed text-muted">
-          My belief: great software is 30% code, 70% understanding the problem. So I spend more time
-          listening than typing at the start.
+        <div className="grid gap-8 rounded-2xl border border-line-strong bg-surface p-6 sm:p-8 lg:grid-cols-[1fr_0.88fr] notebook-page">
+          <div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">A good fit</div>
+            <h3 className="mt-3 font-display text-3xl font-light leading-tight tracking-tight sm:text-4xl">
+              The best work starts with a problem that matters.
+            </h3>
+            <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-ink-soft">
+              I&apos;m not the right fit for a vague feature factory. I&apos;m at my best when we can make a focused, meaningful piece of software genuinely easier to use.
+            </p>
+          </div>
+          <div className="flex flex-col justify-between gap-7 rounded-xl border border-line bg-canvas-deep/50 p-5">
+            <ul className="space-y-4">
+              {goodFit.map((item) => (
+                <li key={item} className="flex gap-3 text-[13px] leading-relaxed text-ink-soft">
+                  <CheckCircle2 className="mt-0.5 shrink-0 text-clay-deep" size={16} strokeWidth={1.8} aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <a
+              href={`mailto:${profile.email}?subject=${encodeURIComponent("Project context")}`}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
+            >
+              <Mail size={14} strokeWidth={1.8} />
+              Send project context
+            </a>
+          </div>
         </div>
       </Reveal>
     </section>

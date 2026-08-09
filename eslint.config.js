@@ -6,6 +6,16 @@ import tseslint from "typescript-eslint";
 export default tseslint.config(
   { ignores: ["dist", "node_modules", "scripts"] },
   js.configs.recommended,
+  {
+    files: ["public/**/*.js"],
+    languageOptions: {
+      globals: {
+        document: "readonly",
+        localStorage: "readonly",
+      },
+    },
+  },
+
   ...tseslint.configs.recommended,
   {
     files: ["**/*.{ts,tsx}"],

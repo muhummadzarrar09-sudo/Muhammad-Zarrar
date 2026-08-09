@@ -6,7 +6,7 @@ test.describe("portfolio — personal single route", () => {
 
     await expect(page).toHaveTitle(/Muhammad Zarrar/i);
     await expect(page.getByRole("navigation").first()).toBeVisible();
-    await expect(page.getByRole("heading", { name: /I'm Zarrar/i }).first()).toBeVisible();
+    await expect(page.getByRole("heading", { name: /I turn complex work/i }).first()).toBeVisible();
     await expect(page.locator("#about")).toBeAttached();
     await expect(page.locator("#work")).toBeAttached();
     await expect(page.locator("#contact")).toBeAttached();
@@ -57,7 +57,7 @@ test.describe("reduced motion", () => {
   test("renders essential content with reduced motion enabled", async ({ page }) => {
     await page.goto("/");
 
-    await expect(page.getByRole("heading", { name: /I'm Zarrar/i }).first()).toBeVisible();
+    await expect(page.getByRole("heading", { name: /I turn complex work/i }).first()).toBeVisible();
     await expect(page.locator("#work")).toBeAttached();
     await expect(page.locator("#contact")).toBeAttached();
   });
