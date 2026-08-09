@@ -24,7 +24,7 @@ export default function Hero() {
           className="mb-8 flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted"
         >
           <span className="h-px w-8 bg-line-strong" />
-          <span>Active {github.latestPushRelative}</span>
+          <span>Independent product engineer</span>
           <span className="hidden h-1 w-1 rounded-full bg-muted sm:block" />
           <span className="hidden sm:block">{profile.location}</span>
         </motion.div>
@@ -36,19 +36,18 @@ export default function Hero() {
           transition={{ delay: 0.18, duration: 0.8, ease: EASE }}
           className="font-display text-[clamp(2.6rem,8vw,5rem)] font-light leading-[0.95] tracking-tightest text-balance"
         >
-          <span className="block">I&apos;m Zarrar —</span>
+          <span className="block">I turn complex work</span>
           <span className="block font-light italic text-clay-deep tracking-human">
-            I build things people
+            into products people
           </span>
           <span className="block font-light italic text-clay-deep tracking-human">
-            actually use.
-            <TypewriterCursor />
+            want to use.<TypewriterCursor />
           </span>
         </motion.h1>
 
         {/* Sub — Aceternity TextGenerateEffect */}
         <TextGenerateEffect
-          words="Full-stack, AI and mobile engineer from Rawalpindi. I build voice agents, mobile video AI, client products — whatever the problem needs. Shipped real things for real people."
+          words="I partner with founders and teams who have a real workflow to improve. From AI-assisted tools and product MVPs to native mobile experiences, I take the hard technical parts through to a clean, usable handoff."
           className="mt-8 max-w-[58ch] text-[17px] leading-[1.75] text-ink-soft sm:text-[18px] font-normal"
           duration={0.4}
         />
@@ -64,7 +63,7 @@ export default function Hero() {
             href="#work"
             className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
           >
-            See my work
+            See selected work
             <ArrowRight size={14} strokeWidth={1.8} />
           </a>
           <a
@@ -72,7 +71,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-6 py-3 text-sm font-medium text-ink-soft transition-colors hover:border-clay-soft hover:text-ink"
           >
             <Mail size={14} strokeWidth={1.8} />
-            Get in touch
+            Start a project
           </a>
           <a
             href={profile.github}

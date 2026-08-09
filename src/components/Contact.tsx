@@ -290,17 +290,15 @@ export default function Contact() {
             label="Contact"
             title={
               <>
-                Have an idea worth
+Have a product problem
                 <br />
-                <span className="italic text-clay-deep">building?</span>
+                <span className="italic text-clay-deep">worth solving?</span>
               </>
             }
           />
           <Reveal delay={0.08}>
             <p className="mt-8 max-w-[48ch] text-[16px] leading-[1.7] text-ink-soft text-pretty">
-              I&apos;m taking 1-2 projects at a time. If you have something real you want to ship —
-              an AI agent, a voice flow, a dashboard, a product — just email me. I read everything
-              myself and reply within a day or two.
+              I take on a small number of focused engagements at a time. If you&apos;re turning a real workflow into a product, validating an MVP, or untangling a difficult technical problem, send the context. I read every email myself and reply within a day or two.
             </p>
           </Reveal>
 

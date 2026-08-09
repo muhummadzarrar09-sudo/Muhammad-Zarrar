@@ -11,7 +11,7 @@ if (process.env.ALLOW_INSECURE_TLS === "1") {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 }
 
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, mkdirSync, existsSync } from "fs";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 
@@ -103,19 +103,15 @@ async function main() {
 }
 
 main().catch((e) => {
-  console.error("❌ Failed to fetch GitHub stats:", e.message);
-  console.error("   Writing fallback data...");
-  const fallback = {
-    totalRepos: 21,
-    latestPush: new Date().toISOString(),
-    latestPushRelative: "recently",
-    recentCommits7d: 0,
-    recentCommits30d: 0,
-    latestRepos: [],
-    fetchedAt: new Date().toISOString(),
-    error: e.message,
-  };
-  mkdirSync(dirname(OUT), { recursive: true });
-  writeFileSync(OUT, JSON.stringify(fallback, null, 2) + "\n");
-  console.log(`✅ Wrote fallback to ${OUT}`);
+  // GitHub activity is optional decoration, never a reason to make a deploy fail.
+  // Keep the checked-in snapshot intact so TypeScript retains its stable data shape.
+  console.warn("⚠️  Failed to refresh GitHub stats:", e.message);
+  if (existsSync(OUT)) {
+    console.warn("   Using the existing checked-in GitHub activity snapshot.");
+    return;
+  }
+
+  // A fresh checkout should include the snapshot. Fail clearly if it does not,
+  // rather than generating data with an unstable schema.
+  throw new Error(`GitHub activity snapshot is missing: ${OUT}`);
 });

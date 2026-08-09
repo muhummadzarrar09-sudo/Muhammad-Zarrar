@@ -1,58 +1,65 @@
-# Muhammad Zarrar — Portfolio + Business Studio Site
+# Muhammad Zarrar — Personal Portfolio
 
-A premium single-page portfolio **plus** a separate, dark-themed studio site for local businesses & clinics — all in one build.
+A premium, single-page portfolio for Muhammad Zarrar: a Full-Stack, AI & Mobile Engineer based in Rawalpindi, Pakistan. It showcases selected product work, technical expertise, process, and a direct contact path.
 
-## What's inside
+## What’s inside
 
-1. **Main Portfolio** (`/`) — warm "Vivid+Co" editorial theme. Full-Stack / AI developer showcase with terminal hero, custom cursor, synthesized sound, and scroll choreography.
-2. **Business Studio Site** (`/business`) — dark, futuristic, Linear/Vercel-style landing page aimed at converting local-business clients (clinics, coaches, service companies). Reached via the "For clinics & local businesses" link in the main hero.
-
-Both share the same premium chrome: the custom physics cursor, click/"pew" hover sound, scroll-progress bar, and focus-pull reveals.
+- Editorial, warm-paper visual system with light and dark themes
+- Responsive React + TypeScript single-page portfolio
+- Selected work with GitHub links and project outcomes
+- Motion that respects `prefers-reduced-motion`
+- Accessible focus states, skip link, semantic sections, and client-side form validation
+- Contact envelope that opens an email draft — intentionally no backend or tracking
+- Build-time GitHub activity data, SEO metadata, JSON-LD, sitemap, robots file, and security headers
 
 ## Tech stack
 
-- **React + Vite + TypeScript**
-- **Tailwind CSS v4** (theme tokens in `src/index.css`)
-- **Framer Motion** for all animation (scroll pinning, parallax, reveals — replaces GSAP/ScrollTrigger with equivalent results)
+- React 19 + Vite + TypeScript
+- Tailwind CSS v4
+- Framer Motion
+- Lucide React
+- Playwright for end-to-end tests
 
-## Run
+## Run locally
 
 ```bash
 npm install
-npm run dev      # local dev
-npm run build    # production build -> dist/ assets and chunks
+npm run dev
 ```
 
-Deploy `dist/` to Vercel, Netlify, Cloudflare Pages, or any static host. For deep links to `/business` to work on refresh, enable **SPA fallback** (rewrite all routes to `index.html`).
+Useful checks:
 
-SEO/security defaults currently use `https://muhummadzarrar.vercel.app` as the canonical production URL. If you deploy to a different domain, update it in:
+```bash
+npm run typecheck
+npm run lint
+npm run build
+npm run test:e2e
+```
 
-- `index.html`
-- `public/robots.txt`
-- `public/sitemap.xml`
-- `src/components/SeoRouteMeta.tsx`
+## Deployment
 
+Deploy the `dist/` output to Vercel, Netlify, Cloudflare Pages, or another static host.
+
+The canonical production URL is currently `https://muhummadzarrar.vercel.app`. If it changes, update the source of truth used by the SEO/security generation script and rerun the build.
 
 ## Where to edit content
 
 | What | File |
-|------|------|
-| Main portfolio — name, role, projects, email | `src/data/portfolio.ts` |
-| Business site — phone, WhatsApp, email, prices, projects, services | `src/business/data.ts` |
-| Site colors / theme tokens | `src/index.css` |
+|---|---|
+| Name, role, profile, projects, expertise, process, and contact links | `src/data/portfolio.ts` |
+| GitHub activity snapshot | `src/data/github.json` |
+| Portfolio sections and UI | `src/components/` |
+| Theme tokens and global styles | `src/index.css` |
+| SEO/security generation | `scripts/generate-security-headers.mjs` |
 
-### Important placeholders to replace in `src/business/data.ts`
-- `biz.phone` and `biz.whatsapp` — real number (digits only for `wa.me`).
-- `biz.email` — already your real email.
-- `clinic.plans` prices — starting estimates (Rs.), adjust as needed.
+## Contact behaviour
 
-## Sound
+The contact form deliberately creates a pre-filled `mailto:` draft instead of submitting data to a backend. This means there is no lead database, tracking, or third-party email service; visitors can also copy the email address directly.
 
-- UI feedback ("pew" on hover, click) is always live.
-- The ambient **breeze + birds** bed is opt-in via the navbar toggle.
-- All audio is synthesized at runtime (Web Audio API) — no asset files.
+## GitHub activity data
 
-## Notes
+`npm run build` runs `scripts/fetch-github-stats.mjs` before Vite builds. The script pulls public GitHub data for `muhummadzarrar09-sudo` and refreshes `src/data/github.json`. It supports an optional `GITHUB_TOKEN` environment variable for higher API rate limits.
 
-- The cursor is hidden on touch devices; sound unlocks on first interaction (browser policy).
-- Replace placeholder phone numbers/prices before sharing with clients.
+## Sound and interaction
+
+The portfolio uses CSS and Framer Motion for interaction. Motion is reduced for visitors who enable `prefers-reduced-motion`.

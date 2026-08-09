@@ -12,7 +12,7 @@ export const profile = {
   name: "Muhammad Zarrar",
   initials: "MZ",
   handle: "muhummadzarrar09-sudo",
-  role: "Full-Stack, AI & Mobile Engineer",
+  role: "Independent Product Engineer",
   location: "Rawalpindi, PK · Remote-first",
   availability: "Open to 1–2 projects",
   avatar: "https://avatars.githubusercontent.com/u/266341933?v=4&s=512",
@@ -66,8 +66,9 @@ export type Project = {
   blurb: string;
   description: string;
   outcome: string;
-  testimonial?: string;
+  focus: string;
   url: string;
+  liveUrl?: string;
   accent: string;
   image?: string;
   featured?: boolean;
@@ -82,9 +83,10 @@ export const projects: Project[] = [
     blurb: "Client project — deep work system with auth, RLS, and Cloudflare hardening.",
     description:
       "Built for a real client on Next.js + Supabase + Cloudflare. Auth deep-dive, data-leak hardening, RLS policies, and premium UX. TheStandard was the predecessor that evolved into this.",
-    outcome: "Delivered to client — hardened auth, Supabase RLS, Cloudflare deployment.",
-    testimonial: "Full handoff with auth audit docs, RLS policies, and deployment runbook. Client deployed independently.",
+    outcome: "Delivered with hardened auth, Supabase RLS policies, and Cloudflare deployment.",
+    focus: "Product engineering, access control, and a handoff a client can operate independently.",
     url: "https://github.com/muhummadzarrar09-sudo/LOCK-IN",
+    liveUrl: "https://lock-in-red.vercel.app",
     accent: "#2D3A32",
     image: "/images/surreal-lockin.webp",
     featured: true,
@@ -97,7 +99,8 @@ export const projects: Project[] = [
     blurb: "Golf swing analysis — frame-accurate video engine with AI diagnostics.",
     description:
       "Mobile video AI for sports. Custom video engine with frame-accurate playback, AI-powered swing diagnostics, and a hand-drawn graffiti golfer as the launcher icon.",
-    outcome: "Video engine + AI diagnostics shipped — mobile-first, production-ready.",
+    outcome: "Frame-accurate playback and AI swing-diagnostic flows built for a mobile-first experience.",
+    focus: "Native Android video handling, interaction design, and turning raw footage into useful feedback.",
     url: "https://github.com/muhummadzarrar09-sudo/SwingFrame",
     accent: "#7E9A7E",
     image: "/images/surreal-swingframe.webp",
@@ -111,7 +114,8 @@ export const projects: Project[] = [
     blurb: "Experimental Android lab — crash visibility and offline-first experiments.",
     description:
       "Playground for making crashes actually visible. Console mirroring so errors surface on-device instead of hiding in logcat. Offline-first architecture experiments.",
-    outcome: "Shipped crash-visibility experiments that feed into production work.",
+    outcome: "Crash-visibility and offline-first experiments that make on-device failures easier to act on.",
+    focus: "Developer experience: surfacing errors where they are useful instead of burying them in logcat.",
     url: "https://github.com/muhummadzarrar09-sudo/Recto",
     accent: "#C46B4D",
     image: "/images/surreal-recto.webp",
@@ -125,7 +129,8 @@ export const projects: Project[] = [
     blurb: "Free Typeform alternative — embeddable, with audit trail and isolated test DB.",
     description:
       "Embeddable forms engine with full audit trail, isolated test database, and deployment runbook. Built as a cheap, self-hosted alternative to Typeform.",
-    outcome: "Working forms engine with deploy docs and audit trail.",
+    outcome: "Working forms engine with deploy docs and an audit trail.",
+    focus: "Embeddable forms, data history, and an ownership-friendly alternative to subscription tooling.",
     url: "https://github.com/muhummadzarrar09-sudo/forms",
     accent: "#D88A6E",
   },
@@ -137,7 +142,8 @@ export const projects: Project[] = [
     blurb: "Push-to-talk voice agent — drives the browser, runs local AI.",
     description:
       "Accessible voice agent with push-to-talk activation. Drives the browser as API, runs inference locally. Built with FastAPI backend and Next.js frontend. MIT licensed.",
-    outcome: "Accessible PTT voice agent — 14 test suites, 65+ API endpoints.",
+    outcome: "Accessible push-to-talk voice agent with 14 test suites and 65+ API endpoints.",
+    focus: "Voice-first accessibility, local inference, and browser actions that can be controlled conversationally.",
     url: "https://github.com/muhummadzarrar09-sudo/Omni",
     accent: "#A85A41",
   },
@@ -149,7 +155,8 @@ export const projects: Project[] = [
     blurb: "Scroll-driven brand landing — GSAP pinned sections + smooth scroll.",
     description:
       "Premium motion landing for The Desi Edit brand. GSAP ScrollTrigger pinned sections, Lenis smooth scroll, multi-font system including Noto Nastaliq Urdu.",
-    outcome: "Brand landing with GSAP motion — built from brand kit.",
+    outcome: "Brand landing with scroll-led motion built from an existing brand kit.",
+    focus: "Translating a brand system into a fast, deliberate, expressive web experience.",
     url: "https://github.com/muhummadzarrar09-sudo/TheDesiEdit",
     accent: "#B88D6A",
   },
@@ -158,27 +165,27 @@ export const projects: Project[] = [
 export const process = [
   {
     no: "01",
-    title: "Listen",
-    role: "Client first",
-    body: "Start by understanding the real problem — not the feature list. Ask dumb questions until the picture is clear.",
+    title: "Find the real problem",
+    role: "Shared context",
+    body: "We start with the workflow, the people using it, and the decision that makes the project worth doing — before choosing features or a stack.",
   },
   {
     no: "02",
-    title: "Demo fast",
-    role: "Show, don't pitch",
-    body: "Build a working demo before the proposal. If I can't sketch it on paper, I don't start coding.",
+    title: "Make it tangible early",
+    role: "Working proof",
+    body: "I turn the risky part into something you can react to early: a small flow, a technical spike, or a usable first slice — not a promise hidden in a deck.",
   },
   {
     no: "03",
-    title: "Build clean",
-    role: "Type + test",
-    body: "TypeScript strict, real tests, boring where it should be. Motion and polish only after it works.",
+    title: "Build for the handoff",
+    role: "Calm execution",
+    body: "The details that make a product dependable get attention: typed code, sensible boundaries, tests where they matter, and decisions someone else can follow.",
   },
   {
     no: "04",
-    title: "Ship + listen",
-    role: "Iterate",
-    body: "Ship, then listen to real usage. Fix what matters, cut what doesn't.",
+    title: "Ship with a next move",
+    role: "Useful momentum",
+    body: "A release is a point to learn from. We leave with a working product, clear ownership, and a practical view of what deserves the next round of effort.",
   },
 ];
 

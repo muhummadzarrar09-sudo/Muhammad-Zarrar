@@ -94,6 +94,7 @@ export default function Nav() {
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            aria-label="Back to top"
             className="group flex items-center gap-2.5 pl-1"
           >
             <span className="grid h-8 w-8 place-items-center rounded-full bg-clay-deep font-mono text-[11px] font-semibold text-canvas transition-transform duration-300 group-hover:rotate-6">
@@ -165,12 +166,12 @@ export default function Nav() {
                 </span>
               </button>
             ))}
-            <div className="mt-10 flex gap-3">
-              <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm text-canvas">
-                <Mail size={14} strokeWidth={1.8} />
-                {profile.email}
+            <div className="mt-10 flex flex-wrap gap-3">
+              <a href={`mailto:${profile.email}`} className="inline-flex min-h-11 max-w-full items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm text-canvas">
+                <Mail className="shrink-0" size={14} strokeWidth={1.8} />
+                <span className="truncate">{profile.email}</span>
               </a>
-              <a href={profile.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm">
+              <a href={profile.github} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line px-5 py-3 text-sm">
                 <GithubIcon size={14} strokeWidth={1.8} />
                 GitHub
               </a>

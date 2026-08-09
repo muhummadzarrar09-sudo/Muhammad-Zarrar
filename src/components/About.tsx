@@ -17,10 +17,10 @@ export default function About() {
         label="About"
         title={
           <>
-            Part engineer,
+            Built for the messy,
             <br />
-            <span className="italic text-clay-deep">part human trying</span>
-            <br /> to make things work.
+            <span className="italic text-clay-deep">important parts</span>
+            <br /> of a product.
           </>
         }
       />
@@ -29,27 +29,19 @@ export default function About() {
         <div className="max-w-[60ch] relative">
           <Reveal>
             <p className="font-display text-[1.7rem] font-light leading-[1.3] tracking-tight text-ink text-balance sm:text-[1.9rem]">
-              I&apos;m {profile.name} — a full-stack, AI & mobile engineer from Rawalpindi
-              who got hooked on making computers do the boring stuff so people don&apos;t have to.
+              I&apos;m {profile.name} — an independent product engineer from Rawalpindi who helps turn complicated workflows into software people can actually work with.
             </p>
           </Reveal>
           <Reveal delay={0.08}>
             <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-ink-soft text-pretty sm:text-[18px]">
               <p>
-                I started breaking things at 2am, copying snippets I didn&apos;t fully get. Over time
-                I stopped chasing frameworks and chased{" "}
-                <span className="text-ink font-medium">useful</span> — does it solve a real problem?
-                Will it still work in 6 months without me babysitting it?
+                I care about the point where an ambitious idea meets the annoying reality: unclear requirements, tricky edge cases, fragile data, and people who need the thing to feel obvious. That&apos;s where product work gets real.
               </p>
               <p className="text-muted">
-                That&apos;s why you see Kotlin Android next to Python voice agents on my GitHub.
-                The stack follows the problem — not the other way around.
+                That&apos;s why you&apos;ll see Kotlin Android beside Python voice agents and TypeScript product systems in my work. The stack follows the problem — not the other way around.
               </p>
               <p>
-                I do this because I genuinely believe good software should feel invisible — it should
-                just work, get out of the way, and let people focus on the thing they actually care about.
-                When someone uses something I built and it just <span className="text-ink font-medium">clicks</span> —
-                that&apos;s the best feeling.
+                My job is not to add technology for its own sake. It&apos;s to make the useful path feel <span className="text-ink font-medium">clear, dependable, and worth coming back to.</span>
               </p>
             </div>
           </Reveal>
