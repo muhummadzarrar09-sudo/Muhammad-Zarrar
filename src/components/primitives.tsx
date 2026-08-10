@@ -185,6 +185,8 @@ export function MagneticButton({
 
 /* ------------------------------------------------------------------ */
 /* SectionHeading — consistent editorial label + title                 */
+/* Title uses a line-mask reveal (climbs out of an overflow mask) —    */
+/* a different rhythm from the fade-up Reveal used elsewhere.          */
 /* ------------------------------------------------------------------ */
 export function SectionHeading({
   index,
@@ -206,11 +208,17 @@ export function SectionHeading({
           <span>{label}</span>
         </div>
       </Reveal>
-      <Reveal delay={0.08}>
-        <h2 className="font-display text-4xl font-light leading-[1.05] tracking-tightest text-balance sm:text-5xl md:text-6xl">
+      <div className="overflow-hidden">
+        <motion.h2
+          initial={{ y: "0.9em" }}
+          whileInView={{ y: 0 }}
+          viewport={{ once: true, margin: "-10% 0px" }}
+          transition={{ duration: 0.9, ease: EASE_OUT }}
+          className="font-display text-4xl font-light leading-[1.05] tracking-tightest text-balance sm:text-5xl md:text-6xl"
+        >
           {title}
-        </h2>
-      </Reveal>
+        </motion.h2>
+      </div>
     </div>
   );
 }

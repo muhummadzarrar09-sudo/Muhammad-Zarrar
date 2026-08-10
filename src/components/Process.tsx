@@ -1,4 +1,6 @@
 import { CheckCircle2, Mail } from "lucide-react";
+import { useRef } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { process as processData, profile } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 
@@ -9,6 +11,14 @@ const goodFit = [
 ];
 
 export default function Process() {
+  const gridRef = useRef<HTMLDivElement>(null);
+  // Draws the connecting line across the four steps as the section scrolls.
+  const { scrollYProgress } = useScroll({
+    target: gridRef,
+    offset: ["start 75%", "end 55%"],
+  });
+  const scaleX = useSpring(scrollYProgress, { stiffness: 60, damping: 20 });
+
   return (
     <section id="process" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
@@ -30,10 +40,17 @@ export default function Process() {
         </Reveal>
       </div>
 
-      <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {processData.map((s, i) => (
-          <Reveal key={s.no} delay={i * 0.06}>
-            <div className="human-card flex h-full flex-col rounded-2xl border border-line bg-surface p-7">
+      <div ref={gridRef} className="relative mt-14">
+        {/* Connector line — draws through the gaps between the step cards */}
+        <motion.div
+          aria-hidden="true"
+          style={{ scaleX }}
+          className="absolute left-4 right-4 top-[2.6rem] hidden h-px origin-left bg-clay-deep/50 lg:block"
+        />
+        <div className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {processData.map((s, i) => (
+            <Reveal key={s.no} delay={i * 0.06} className="relative z-10">
+              <div className="human-card flex h-full flex-col rounded-2xl border border-line bg-surface p-7">
               <div className="flex items-baseline justify-between gap-3">
                 <span className="font-display text-5xl font-light tracking-tightest text-clay-deep/30">
                   {s.no}
@@ -52,6 +69,7 @@ export default function Process() {
             </div>
           </Reveal>
         ))}
+        </div>
       </div>
 
       <Reveal delay={0.16} className="mt-10">

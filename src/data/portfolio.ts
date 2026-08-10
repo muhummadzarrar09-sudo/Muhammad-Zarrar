@@ -30,7 +30,7 @@ export const expertise: { group: string; blurb: string; skills: Skill[] }[] = [
     group: "Client Product",
     blurb: "Full-stack apps with real auth, RLS, and deployment — not just UI demos.",
     skills: [
-      { name: "Next.js / TypeScript", highlight: "LOCK-IN client project" },
+      { name: "Next.js / TypeScript", highlight: "Sasa+ client project" },
       { name: "Supabase / RLS" },
       { name: "Cloudflare" },
       { name: "Auth & security hardening" },
@@ -67,43 +67,54 @@ export type Project = {
   description: string;
   outcome: string;
   focus: string;
-  url: string;
+  url?: string;
   liveUrl?: string;
   accent: string;
   image?: string;
   featured?: boolean;
+  /** Verified, checkable numbers — shown as stat chips. */
+  stats?: { value: string; label: string }[];
 };
 
 export const projects: Project[] = [
   {
-    name: "LOCK-IN",
+    name: "Sasa+",
     tag: "Client Project",
     year: "2026",
     stack: ["Next.js", "Supabase", "Cloudflare"],
-    blurb: "Client project — deep work system with auth, RLS, and Cloudflare hardening.",
+    blurb: "Client project — 30-day discipline challenge with streaks, circles, and proof.",
     description:
-      "Built for a real client on Next.js + Supabase + Cloudflare. Auth deep-dive, data-leak hardening, RLS policies, and premium UX. TheStandard was the predecessor that evolved into this.",
-    outcome: "Delivered with hardened auth, Supabase RLS policies, and Cloudflare deployment.",
+      "Built for a real client: Sasa+ gives Sasa Exclusive members a daily challenge app with a schedule of discipline blocks, visible streaks, accountability circles of 3–4, and proof that the work happened — no chat feed, no noise. Invite-only entry verified by purchase email, waitlist, auth, and timezone-aware day tracking. TheStandard was the predecessor that evolved into this.",
+    outcome: "Delivered with daily schedules, visible streaks, accountability circles, and purchase-email verification — live at sasaplus.vercel.app.",
     focus: "Product engineering, access control, and a handoff a client can operate independently.",
-    url: "https://github.com/muhummadzarrar09-sudo/LOCK-IN",
-    liveUrl: "https://lock-in-red.vercel.app",
+    liveUrl: "https://www.sasaplus.vercel.app",
     accent: "#2D3A32",
-    image: "/images/surreal-lockin.webp",
+    image: "/images/surreal-sasa.webp",
+    stats: [
+      { value: "30", label: "day challenge" },
+      { value: "4–6", label: "blocks / day" },
+      { value: "3–4", label: "circle size" },
+    ],
     featured: true,
   },
   {
     name: "SwingFrame",
     tag: "Video AI",
     year: "2026",
-    stack: ["Kotlin", "Video Engine", "AI"],
-    blurb: "Golf swing analysis — frame-accurate video engine with AI diagnostics.",
+    stack: ["Kotlin", "Jetpack Compose", "ML Kit"],
+    blurb: "Golf swing analysis — 100% on-device video engine with AI diagnostics.",
     description:
-      "Mobile video AI for sports. Custom video engine with frame-accurate playback, AI-powered swing diagnostics, and a hand-drawn graffiti golfer as the launcher icon.",
-    outcome: "Frame-accurate playback and AI swing-diagnostic flows built for a mobile-first experience.",
-    focus: "Native Android video handling, interaction design, and turning raw footage into useful feedback.",
+      "A free, on-device golf coach: frame-accurate scrubbable playback (Media3), joint tracking with ML Kit Pose Detection, ghost-mode swing comparison, and auto-capture that clips the swing automatically. No cloud, no subscriptions, no API costs.",
+    outcome: "Shipped with on-device pose tracking, frame-scrub playback, and ghost-mode comparison — everything runs locally on the phone.",
+    focus: "Native Android video handling, offline ML, and turning raw footage into useful feedback.",
     url: "https://github.com/muhummadzarrar09-sudo/SwingFrame",
     accent: "#7E9A7E",
     image: "/images/surreal-swingframe.webp",
+    stats: [
+      { value: "6", label: "frames — drag to scrub" },
+      { value: "100%", label: "on-device" },
+      { value: "0", label: "subscriptions" },
+    ],
     featured: true,
   },
   {
@@ -113,12 +124,16 @@ export const projects: Project[] = [
     stack: ["Kotlin", "Android"],
     blurb: "Experimental Android lab — crash visibility and offline-first experiments.",
     description:
-      "Playground for making crashes actually visible. Console mirroring so errors surface on-device instead of hiding in logcat. Offline-first architecture experiments.",
+      "Playground for making crashes actually visible: a CrashLogger that mirrors errors on-device (CrashViewActivity) so they surface where you can act on them instead of hiding in logcat. Offline-first architecture experiments.",
     outcome: "Crash-visibility and offline-first experiments that make on-device failures easier to act on.",
     focus: "Developer experience: surfacing errors where they are useful instead of burying them in logcat.",
     url: "https://github.com/muhummadzarrar09-sudo/Recto",
     accent: "#C46B4D",
     image: "/images/surreal-recto.webp",
+    stats: [
+      { value: "2", label: "crash tools in the repo" },
+      { value: "offline-first", label: "architecture" },
+    ],
     featured: true,
   },
   {
@@ -133,19 +148,28 @@ export const projects: Project[] = [
     focus: "Embeddable forms, data history, and an ownership-friendly alternative to subscription tooling.",
     url: "https://github.com/muhummadzarrar09-sudo/forms",
     accent: "#D88A6E",
+    stats: [
+      { value: "audit trail", label: "every response" },
+      { value: "isolated", label: "test database" },
+    ],
   },
   {
     name: "Omni",
     tag: "Voice Agent",
     year: "2026",
-    stack: ["Python", "FastAPI", "Voice AI"],
-    blurb: "Push-to-talk voice agent — drives the browser, runs local AI.",
+    stack: ["Python", "FastAPI", "Local LLM"],
+    blurb: "Local voice agent — push-to-talk, browser automation, 100+ tools, fully offline.",
     description:
-      "Accessible voice agent with push-to-talk activation. Drives the browser as API, runs inference locally. Built with FastAPI backend and Next.js frontend. MIT licensed.",
-    outcome: "Accessible push-to-talk voice agent with 14 test suites and 65+ API endpoints.",
+      "A local AGI butler that thinks with a real 1.5B-parameter model (Qwen2.5 via llama.cpp), hears with Whisper, sees screenshots and PDFs, and acts with 100+ tools — browser, files, code, calendar. FastAPI backend (65+ endpoints) + Next.js UI. No cloud, no API keys, MIT licensed.",
+    outcome: "14 test suites, 140+ tests passing, 65+ API endpoints, 100+ tools — everything runs offline on your machine.",
     focus: "Voice-first accessibility, local inference, and browser actions that can be controlled conversationally.",
     url: "https://github.com/muhummadzarrar09-sudo/Omni",
     accent: "#A85A41",
+    stats: [
+      { value: "140+", label: "tests passing" },
+      { value: "65+", label: "API endpoints" },
+      { value: "100+", label: "tools" },
+    ],
   },
   {
     name: "TheDesiEdit",

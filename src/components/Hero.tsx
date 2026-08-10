@@ -1,52 +1,113 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { profile, github } from "@/data/portfolio";
 import { TypewriterCursor } from "@/components/Brutalist";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { MagneticButton } from "@/components/primitives";
 import { ArrowRight, Mail, ExternalLink } from "lucide-react";
-import { GithubIcon } from "@/components/icons";
+import { useAppEnter } from "@/lib/enter";
 
 const EASE = [0.25, 1, 0.5, 1] as const;
 
-// Top repos by recent activity — dynamic from GitHub fetch
-const activeRepos = github.latestRepos
-  .filter((r) => r.name !== "Muhammad-Zarrar")
-  .slice(0, 6);
+const ROLES = [
+  "Independent product engineer",
+  "Voice AI builder",
+  "Mobile video engineer",
+  "Motion designer",
+];
+
+/** Cycles through the roles in the hero meta line, typewriter-style. */
+function RotatingRole() {
+  const [index, setIndex] = useState(0);
+  const [reduced] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+
+  useEffect(() => {
+    if (reduced) return;
+    const t = window.setInterval(
+      () => setIndex((i) => (i + 1) % ROLES.length),
+      2800
+    );
+    return () => window.clearInterval(t);
+  }, [reduced]);
+
+  if (reduced) return <span>{ROLES[0]}</span>;
+
+  return (
+    <span className="relative inline-flex overflow-hidden">
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={index}
+          initial={{ y: "0.65em", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: "-0.65em", opacity: 0 }}
+          transition={{ duration: 0.45, ease: EASE }}
+        >
+          {ROLES[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
 
 export default function Hero() {
+  // Hero choreography waits for the preloader to signal the reveal,
+  // so the headline is mid-animation as the overlay lifts.
+  const entered = useAppEnter();
+
   return (
     <section id="top" className="relative mx-auto max-w-6xl px-5 pt-32 pb-16 sm:px-8 sm:pt-40 sm:pb-24 overflow-hidden">
+      {/* Ambient clay glow behind the headline — warm, subtle */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-40 left-1/2 -z-10 h-[560px] w-[760px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(196,107,77,0.10),transparent_70%)] blur-2xl"
+      />
       <div className="mx-auto max-w-[780px] relative z-10">
         {/* Meta line — dynamic */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={entered ? { opacity: 1, y: 0 } : { opacity: 0 }}
           transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
           className="mb-8 flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted"
         >
           <span className="h-px w-8 bg-line-strong" />
-          <span>Independent product engineer</span>
+          <RotatingRole />
           <span className="hidden h-1 w-1 rounded-full bg-muted sm:block" />
           <span className="hidden sm:block">{profile.location}</span>
         </motion.div>
 
-        {/* Headline — clean, big, Serif */}
+        {/* Headline — line-mask reveal: each line rises out of its mask,
+            staggered — a different rhythm from the fade-up elsewhere */}
         <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.18, duration: 0.8, ease: EASE }}
+          initial={{ opacity: 0 }}
+          animate={entered ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ delay: 0.15, duration: 0.5, ease: EASE }}
           className="font-display text-[clamp(2.6rem,8vw,5rem)] font-light leading-[0.95] tracking-tightest text-balance"
         >
-          <span className="block">I turn complex work</span>
-          <span className="block font-light italic text-clay-deep tracking-human">
-            into products people
-          </span>
-          <span className="block font-light italic text-clay-deep tracking-human">
-            want to use.<TypewriterCursor />
-          </span>
+          {[
+            "I turn complex work",
+            "into products people",
+            <>want to use.<TypewriterCursor /></>,
+          ].map((line, i) => (
+            <span key={i} className="block overflow-hidden pb-[0.08em]">
+              <motion.span
+                className={`block ${
+                  i > 0 ? "font-light italic text-clay-deep tracking-human" : ""
+                }`}
+                initial={{ y: "110%" }}
+                animate={entered ? { y: 0 } : { y: "110%" }}
+                transition={{ delay: 0.2 + i * 0.09, duration: 0.9, ease: EASE }}
+              >
+                {line}
+              </motion.span>
+            </span>
+          ))}
         </motion.h1>
 
-        {/* Sub — Aceternity TextGenerateEffect */}
+        {/* Sub — Aceternity TextGenerateEffect (remounts on reveal) */}
         <TextGenerateEffect
+          key={entered ? "on" : "off"}
           words="I partner with founders and teams who have a real workflow to improve. From AI-assisted tools and product MVPs to native mobile experiences, I take the hard technical parts through to a clean, usable handoff."
           className="mt-8 max-w-[58ch] text-[17px] leading-[1.75] text-ink-soft sm:text-[18px] font-normal"
           duration={0.4}
@@ -55,39 +116,32 @@ export default function Hero() {
         {/* CTAs with Lucide icons */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={entered ? { opacity: 1, y: 0 } : { opacity: 0 }}
           transition={{ delay: 0.42, duration: 0.7, ease: EASE }}
           className="mt-8 flex flex-wrap items-center gap-3"
         >
-          <a
+          <MagneticButton
             href="#work"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
+            variant="solid"
+            className="bg-ink px-6 py-3 text-sm font-medium text-canvas hover:bg-clay-deep"
           >
             See selected work
             <ArrowRight size={14} strokeWidth={1.8} />
-          </a>
-          <a
+          </MagneticButton>
+          <MagneticButton
             href="#contact"
-            className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-6 py-3 text-sm font-medium text-ink-soft transition-colors hover:border-clay-soft hover:text-ink"
+            variant="outline"
+            className="border-line-strong bg-surface px-6 py-3 text-sm font-medium text-ink-soft hover:border-clay-soft hover:text-ink"
           >
             <Mail size={14} strokeWidth={1.8} />
             Start a project
-          </a>
-          <a
-            href={profile.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden items-center gap-2 rounded-full border border-line-soft bg-transparent px-5 py-3 font-mono text-xs text-muted transition-colors hover:text-ink hover:border-line sm:inline-flex"
-          >
-            <GithubIcon size={14} strokeWidth={1.8} />
-            @{profile.handle}
-          </a>
+          </MagneticButton>
         </motion.div>
 
         {/* Avatar + live status */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={entered ? { opacity: 1, y: 0 } : { opacity: 0 }}
           transition={{ delay: 0.52, duration: 0.7, ease: EASE }}
           className="mt-10 flex items-center gap-4"
         >
@@ -110,50 +164,6 @@ export default function Hero() {
             <span className="hidden h-3 w-px bg-line-soft sm:block" />
             <span>{github.totalRepos} repos · {github.recentCommits30d} pushes this month</span>
           </div>
-        </motion.div>
-
-        {/* Activity strip — dynamic, compact */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.65, duration: 0.8 }}
-          className="mt-10 rounded-2xl border border-line-strong bg-surface/80 p-5 notebook-page"
-        >
-          <div className="font-caption text-[10px] uppercase tracking-[0.2em] text-clay-deep mb-3">
-            Latest activity — live from GitHub
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {activeRepos.map((r) => (
-              <a
-                key={r.name}
-                href={r.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-canvas-deep/40 px-3 py-2.5 transition-colors hover:border-clay-soft hover:bg-canvas-deep"
-              >
-                <span className="font-medium text-[13px] text-ink group-hover:text-clay-deep transition-colors">
-                  {r.name}
-                </span>
-                {r.language && (
-                  <span className="font-mono text-[10px] text-faint">{r.language}</span>
-                )}
-                <span className="font-mono text-[10px] text-faint">
-                  {r.daysAgo === 0 ? "today" : r.daysAgo === 1 ? "yesterday" : `${r.daysAgo}d ago`}
-                </span>
-              </a>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Scroll hint */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.8 }}
-          className="mt-12 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.25em] text-faint"
-        >
-          <span>Scroll</span>
-          <span className="h-px w-12 bg-line-soft" />
         </motion.div>
       </div>
     </section>

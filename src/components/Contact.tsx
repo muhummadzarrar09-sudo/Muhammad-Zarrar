@@ -3,6 +3,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { profile, socials } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { Staple } from "@/components/Brutalist";
+import Signature from "@/components/ui/Signature";
+import CopyEmail from "@/components/ui/CopyEmail";
 import { Mail, Copy, Check, ExternalLink, Send } from "lucide-react";
 
 type FormState = {
@@ -428,6 +430,7 @@ Have a product problem
                       <input
                         id="c-name"
                         ref={nameRef}
+                        autoComplete="name"
                         value={form.name}
                         onChange={(e) => set("name", e.target.value)}
                         maxLength={80}
@@ -445,6 +448,9 @@ Have a product problem
                       <input
                         id="c-email"
                         type="email"
+                        inputMode="email"
+                        autoComplete="email"
+                        enterKeyHint="next"
                         value={form.email}
                         onChange={(e) => set("email", e.target.value)}
                         maxLength={120}
@@ -541,10 +547,41 @@ Have a product problem
           </AnimatePresence>
           </div>
 
-          <div className="mt-5 rounded-xl border border-dashed border-line-soft bg-canvas-deep/40 px-4 py-3 font-mono text-[11px] leading-relaxed text-muted">
-            Prefer async? Email directly at <span className="text-ink">{profile.email}</span> — I read every one.
+          <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-dashed border-line-soft bg-canvas-deep/40 px-4 py-3 font-mono text-[11px] leading-relaxed text-muted">
+            <span>
+              Prefer async? Email directly at{" "}
+              <span className="text-ink">{profile.email}</span> — I read every one.
+            </span>
+            <CopyEmail email={profile.email} />
+          </div>
+
+          {/* What happens next — the close */}
+          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            {[
+              { no: "01", title: "You write", body: "Two sentences is enough — what you're building and what's stuck." },
+              { no: "02", title: "I reply within a day", body: "Usually faster. A straight answer, not a sales sequence." },
+              { no: "03", title: "A short call, then a plan", body: "Fifteen minutes to decide if it's a fit — no pressure either way." },
+            ].map((s) => (
+              <div
+                key={s.no}
+                className="rounded-2xl border border-line bg-surface p-5"
+              >
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">
+                  {s.no}
+                </div>
+                <div className="mt-2 font-display text-[15px] font-medium tracking-tight text-ink">
+                  {s.title}
+                </div>
+                <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-soft">
+                  {s.body}
+                </p>
+              </div>
+            ))}
           </div>
         </Reveal>
+
+        {/* Sign the notebook */}
+        <Signature />
       </div>
     </section>
   );

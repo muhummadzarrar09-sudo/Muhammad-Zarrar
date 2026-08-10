@@ -1,12 +1,15 @@
 import { useEffect, useState, useRef, useCallback } from "react";
+import { motion } from "framer-motion";
 import { profile } from "@/data/portfolio";
 import { cn } from "@/utils/cn";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Mail, Menu, X } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
+import { smoothScrollToId, smoothScrollToTop } from "@/lib/scroll";
 
 const LINKS = [
   { id: "about", label: "About" },
+  { id: "expertise", label: "Expertise" },
   { id: "work", label: "Work" },
   { id: "process", label: "Process" },
   { id: "contact", label: "Contact" },
@@ -76,7 +79,7 @@ export default function Nav() {
 
   const go = useCallback((id: string) => {
     setOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    smoothScrollToId(id);
   }, []);
 
   return (
@@ -93,7 +96,7 @@ export default function Nav() {
         >
           <button
             type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => smoothScrollToTop()}
             aria-label="Back to top"
             className="group flex items-center gap-2.5 pl-1"
           >
@@ -111,12 +114,20 @@ export default function Nav() {
                 key={l.id}
                 type="button"
                 onClick={() => go(l.id)}
+                aria-current={active === l.id ? "true" : undefined}
                 className={cn(
-                  "rounded-full px-4 py-2 font-mono text-[13px] tracking-[0.02em] transition-colors",
-                  active === l.id ? "bg-canvas-deep text-ink" : "text-ink-soft hover:text-ink"
+                  "relative rounded-full px-4 py-2 font-mono text-[13px] tracking-[0.02em] transition-colors",
+                  active === l.id ? "text-ink" : "text-ink-soft hover:text-ink"
                 )}
               >
-                {l.label}
+                {active === l.id && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute inset-0 rounded-full bg-canvas-deep"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  />
+                )}
+                <span className="relative z-10">{l.label}</span>
               </button>
             ))}
           </div>
