@@ -7,6 +7,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { SectionLoading } from "@/components/LazyFallback";
 import ScrollProgress from "@/components/ScrollProgress";
 import SectionIndex from "@/components/SectionIndex";
+import Statement from "@/components/Statement";
 import Preloader from "@/components/ui/Preloader";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Grain from "@/components/ui/Grain";
@@ -63,6 +64,8 @@ export default function App() {
         <LazySection label="Loading work">
           <Work />
         </LazySection>
+
+        <Statement />
 
         <LazySection label="Loading process">
           <Process />

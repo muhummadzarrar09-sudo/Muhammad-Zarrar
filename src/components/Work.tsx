@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { projects } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { Staple, Stamp, Tape } from "@/components/Brutalist";
+import SwingFrameScrubber from "@/components/ui/SwingFrameScrubber";
 import { getLenis } from "@/lib/scroll";
 import { cn } from "@/utils/cn";
 
@@ -125,15 +126,19 @@ function FilmPanel({
                 <Staple />
                 <Tape rotate={-8} className="left-6 top-4 z-10" />
                 <div className="relative aspect-[4/3] max-h-[34svh] w-full overflow-hidden sm:max-h-[44svh] lg:max-h-none">
-                  <img
-                    src={p.image}
-                    alt={`${p.name} project preview`}
-                    width={720}
-                    height={540}
-                    loading="eager"
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-surface/60 via-transparent to-transparent" />
+                  {p.name === "SwingFrame" ? (
+                    /* The video engine, demonstrated — scrub the swing */
+                    <SwingFrameScrubber />
+                  ) : (
+                    <img
+                      src={p.image}
+                      alt={`${p.name} project preview`}
+                      width={720}
+                      height={540}
+                      loading="eager"
+                      className="h-full w-full object-cover"
+                    />
+                  )}
                 </div>
                 <div className="hidden items-center justify-between border-t border-line bg-surface px-5 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-muted sm:flex">
                   <span>

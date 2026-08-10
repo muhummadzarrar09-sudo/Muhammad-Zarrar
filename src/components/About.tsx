@@ -94,6 +94,9 @@ export default function About() {
                 <div className="text-[12px] leading-relaxed text-ink-soft">
                   {profile.availability}. {github.totalRepos} public repos, {github.recentCommits30d} pushes in the last 30 days.
                 </div>
+                <div className="font-mono text-[9.5px] uppercase tracking-[0.14em] text-faint">
+                  Stats auto-fetched at build time — no invented numbers.
+                </div>
               </div>
               <a
                 href={`mailto:${profile.email}`}
