@@ -30,7 +30,7 @@ export const expertise: { group: string; blurb: string; skills: Skill[] }[] = [
     group: "Client Product",
     blurb: "Full-stack apps with real auth, RLS, and deployment — not just UI demos.",
     skills: [
-      { name: "Next.js / TypeScript", highlight: "LOCK-IN client project" },
+      { name: "Next.js / TypeScript", highlight: "Sasa+ client project" },
       { name: "Supabase / RLS" },
       { name: "Cloudflare" },
       { name: "Auth & security hardening" },
@@ -76,18 +76,18 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    name: "LOCK-IN",
+    name: "Sasa+",
     tag: "Client Project",
     year: "2026",
     stack: ["Next.js", "Supabase", "Cloudflare"],
-    blurb: "Client project — deep work system with auth, RLS, and Cloudflare hardening.",
+    blurb: "Client project — 30-day discipline challenge with streaks, circles, and proof.",
     description:
-      "Built for a real client on Next.js + Supabase + Cloudflare. Auth deep-dive, data-leak hardening, RLS policies, and premium UX. TheStandard was the predecessor that evolved into this. Source lives in the client's private repo.",
-    outcome: "Delivered with hardened auth, Supabase RLS policies, and Cloudflare deployment.",
+      "Built for a real client: Sasa+ gives Sasa Exclusive members a daily challenge app with a schedule of discipline blocks, visible streaks, accountability circles of 3–4, and proof that the work happened — no chat feed, no noise. Invite-only entry verified by purchase email, waitlist, auth, and timezone-aware day tracking. TheStandard was the predecessor that evolved into this.",
+    outcome: "Delivered with daily schedules, visible streaks, accountability circles, and purchase-email verification — live at sasaplus.vercel.app.",
     focus: "Product engineering, access control, and a handoff a client can operate independently.",
-    liveUrl: "https://lock-in-red.vercel.app",
+    liveUrl: "https://www.sasaplus.vercel.app",
     accent: "#2D3A32",
-    image: "/images/surreal-lockin.webp",
+    image: "/images/surreal-sasa.webp",
     featured: true,
   },
   {

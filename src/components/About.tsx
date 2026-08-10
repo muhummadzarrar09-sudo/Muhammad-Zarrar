@@ -88,7 +88,7 @@ export default function About() {
                 </div>
                 <div className="flex justify-between">
                   <span>Now</span>
-                  <span className="text-clay-deep">LOCK-IN · SwingFrame · Recto</span>
+                  <span className="text-clay-deep">Sasa+ · SwingFrame · Recto</span>
                 </div>
                 <div className="h-px bg-line-strong" />
                 <div className="text-[12px] leading-relaxed text-ink-soft">

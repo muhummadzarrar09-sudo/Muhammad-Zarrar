@@ -24,7 +24,7 @@ test.describe("portfolio — personal single route", () => {
   test("work section shows featured projects", async ({ page }) => {
     await page.goto("/");
     await page.locator("#work").scrollIntoViewIfNeeded();
-    await expect(page.getByText("LOCK-IN").first()).toBeVisible();
+    await expect(page.getByText("Sasa+").first()).toBeVisible();
     await expect(page.getByText(/Selected work|featured builds/i).first()).toBeVisible();
   });
 

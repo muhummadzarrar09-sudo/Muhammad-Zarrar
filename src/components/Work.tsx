@@ -399,7 +399,7 @@ export default function Work() {
                 Evidence over adjectives
               </div>
               <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-ink-soft">
-                Source is public where it can be shared — the LOCK-IN client build lives under a
+                Source is public where it can be shared — the Sasa+ client build lives under a
                 private repo. Live products are linked when they can be shared. I&apos;d rather show
                 the work than pad the page with invented metrics or anonymous praise.
               </p>
