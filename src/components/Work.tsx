@@ -198,6 +198,13 @@ export default function Work() {
             start: "top top",
             end: () => `+=${count * window.innerHeight}px`,
             pin: true,
+            // No spacer padding: with pinSpacing:true the spacer adds a
+            // pin-distance tail AFTER the film, which leaves a huge blank
+            // stretch before the next section. With pinSpacing:false the
+            // film overlays the following content while pinned (hidden by
+            // the opaque bg-canvas viewport) and hands off exactly when
+            // the next content reaches the top — zero dead space.
+            pinSpacing: false,
             scrub: 1,
             anticipatePin: 1,
             invalidateOnRefresh: true,
@@ -248,16 +255,21 @@ export default function Work() {
           );
           if (i < count - 1) {
             tl.to(p, { autoAlpha: 0, y: -80, duration: 0.2, ease: "power2.in" }, i + 0.8);
+          } else {
+            // Last panel — dissolve out just before the pin ends, so the
+            // next section arrives over canvas, not as a hard cut.
+            tl.to(p, { autoAlpha: 0, y: -40, duration: 0.2, ease: "power2.in" }, count - 0.2);
           }
         });
 
-        // Progress line — fills across the whole film
+        // Progress line — fills across the whole film (duration = count,
+        // so each panel gets exactly one viewport of scrubbed scroll)
         if (progressBarRef.current) {
           gsap.set(progressBarRef.current, { transformOrigin: "top" });
           tl.fromTo(
             progressBarRef.current,
             { scaleY: 0 },
-            { scaleY: 1, duration: count - 0.8, ease: "none" },
+            { scaleY: 1, duration: count, ease: "none" },
             0
           );
         }
@@ -318,11 +330,13 @@ export default function Work() {
       <div
         ref={filmRef}
         className="relative"
-        style={!reduced ? { height: `${featured.length * 100}svh` } : undefined}
+        // Height must equal the pin distance (count × innerHeight) so the
+        // film hands off to the next section exactly when the pin ends.
+        style={!reduced ? { height: `${featured.length * 100}dvh` } : undefined}
       >
         <div
           className={cn(
-            "relative w-full overflow-hidden",
+            "relative w-full overflow-hidden bg-canvas",
             reduced ? "" : "absolute left-0 top-0 h-svh"
           )}
         >
