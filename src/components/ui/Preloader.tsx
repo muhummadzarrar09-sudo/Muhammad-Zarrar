@@ -12,16 +12,27 @@ const EASE_IN_OUT_QUINT = [0.83, 0, 0.17, 1] as const;
  * immediately so nothing waits on it).
  */
 export default function Preloader() {
-  // Reduced-motion visitors never see the overlay at all.
-  const [done, setDone] = useState(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
+  // Skip entirely for reduced-motion visitors AND repeat visitors in the
+  // same session (the wax stamp is a first-visit moment, not an ad).
+  const [done, setDone] = useState(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
+    try {
+      return sessionStorage.getItem("mz-preloader-seen") === "1";
+    } catch {
+      return false;
+    }
+  });
 
   useEffect(() => {
     if (done) {
       // No overlay — make sure the page choreography still fires.
       signalAppEnter();
       return;
+    }
+    try {
+      sessionStorage.setItem("mz-preloader-seen", "1");
+    } catch {
+      /* private mode — just show it every time */
     }
     const t1 = window.setTimeout(() => signalAppEnter(), 900);
     const t2 = window.setTimeout(() => setDone(true), 1250);

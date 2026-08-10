@@ -430,6 +430,7 @@ Have a product problem
                       <input
                         id="c-name"
                         ref={nameRef}
+                        autoComplete="name"
                         value={form.name}
                         onChange={(e) => set("name", e.target.value)}
                         maxLength={80}
@@ -447,6 +448,9 @@ Have a product problem
                       <input
                         id="c-email"
                         type="email"
+                        inputMode="email"
+                        autoComplete="email"
+                        enterKeyHint="next"
                         value={form.email}
                         onChange={(e) => set("email", e.target.value)}
                         maxLength={120}

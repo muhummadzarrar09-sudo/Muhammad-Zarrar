@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { github, profile } from "@/data/portfolio";
 import { ArrowUp, Mail, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
@@ -26,6 +27,45 @@ function RawalpindiClock() {
     <span className="font-mono text-xs text-faint">
       PKT {time} · Rawalpindi
     </span>
+  );
+}
+
+/** Back-to-top — the circle ring fills with page scroll progress. */
+function BackToTop() {
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 90, damping: 22 });
+
+  return (
+    <button
+      type="button"
+      onClick={() => smoothScrollToTop()}
+      className="group flex items-center gap-2 font-mono text-xs text-muted transition-colors hover:text-ink"
+    >
+      Back to top
+      <span className="relative grid h-10 w-10 place-items-center rounded-full border border-line-strong transition-colors group-hover:border-clay">
+        <svg viewBox="0 0 40 40" className="absolute inset-0 h-full w-full -rotate-90">
+          <circle
+            cx="20"
+            cy="20"
+            r="17"
+            fill="none"
+            stroke="var(--color-line)"
+            strokeWidth="1.5"
+          />
+          <motion.circle
+            cx="20"
+            cy="20"
+            r="17"
+            fill="none"
+            stroke="var(--color-clay-deep)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            style={{ pathLength: progress }}
+          />
+        </svg>
+        <ArrowUp size={14} strokeWidth={1.8} className="transition-transform group-hover:-translate-y-0.5" />
+      </span>
+    </button>
   );
 }
 
@@ -125,16 +165,7 @@ export default function Footer() {
               Hand-built · View source
             </a>
           </div>
-          <button
-            type="button"
-            onClick={() => smoothScrollToTop()}
-            className="group flex items-center gap-2 font-mono text-xs text-muted transition-colors hover:text-ink"
-          >
-            Back to top
-            <span className="grid h-10 w-10 place-items-center rounded-full border border-line-strong transition-all group-hover:-translate-y-0.5 group-hover:border-clay">
-              <ArrowUp size={14} strokeWidth={1.8} />
-            </span>
-          </button>
+          <BackToTop />
         </div>
       </div>
     </footer>

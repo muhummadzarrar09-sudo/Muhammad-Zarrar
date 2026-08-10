@@ -161,7 +161,8 @@ function FilmPanel({
                       alt={`${p.name} project preview`}
                       width={720}
                       height={540}
-                      loading="eager"
+                      loading={index === 0 ? "eager" : "lazy"}
+                      decoding="async"
                       className="h-full w-full object-cover"
                     />
                   )}

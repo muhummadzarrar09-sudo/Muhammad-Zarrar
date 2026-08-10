@@ -58,6 +58,11 @@ export default function Hero() {
 
   return (
     <section id="top" className="relative mx-auto max-w-6xl px-5 pt-32 pb-16 sm:px-8 sm:pt-40 sm:pb-24 overflow-hidden">
+      {/* Ambient clay glow behind the headline — warm, subtle */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-40 left-1/2 -z-10 h-[560px] w-[760px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(196,107,77,0.10),transparent_70%)] blur-2xl"
+      />
       <div className="mx-auto max-w-[780px] relative z-10">
         {/* Meta line — dynamic */}
         <motion.div
@@ -72,20 +77,32 @@ export default function Hero() {
           <span className="hidden sm:block">{profile.location}</span>
         </motion.div>
 
-        {/* Headline — clean, big, Serif */}
+        {/* Headline — line-mask reveal: each line rises out of its mask,
+            staggered — a different rhythm from the fade-up elsewhere */}
         <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={entered ? { opacity: 1, y: 0 } : { opacity: 0 }}
-          transition={{ delay: 0.18, duration: 0.8, ease: EASE }}
+          initial={{ opacity: 0 }}
+          animate={entered ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ delay: 0.15, duration: 0.5, ease: EASE }}
           className="font-display text-[clamp(2.6rem,8vw,5rem)] font-light leading-[0.95] tracking-tightest text-balance"
         >
-          <span className="block">I turn complex work</span>
-          <span className="block font-light italic text-clay-deep tracking-human">
-            into products people
-          </span>
-          <span className="block font-light italic text-clay-deep tracking-human">
-            want to use.<TypewriterCursor />
-          </span>
+          {[
+            "I turn complex work",
+            "into products people",
+            <>want to use.<TypewriterCursor /></>,
+          ].map((line, i) => (
+            <span key={i} className="block overflow-hidden pb-[0.08em]">
+              <motion.span
+                className={`block ${
+                  i > 0 ? "font-light italic text-clay-deep tracking-human" : ""
+                }`}
+                initial={{ y: "110%" }}
+                animate={entered ? { y: 0 } : { y: "110%" }}
+                transition={{ delay: 0.2 + i * 0.09, duration: 0.9, ease: EASE }}
+              >
+                {line}
+              </motion.span>
+            </span>
+          ))}
         </motion.h1>
 
         {/* Sub — Aceternity TextGenerateEffect (remounts on reveal) */}

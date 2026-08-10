@@ -23,6 +23,23 @@ function apply(theme: Theme) {
   }
 }
 
+const THEME_COLORS: Record<Theme, string> = {
+  light: "#FCFAF7",
+  dark: "#17130F",
+  system: "#FCFAF7",
+};
+
+function syncThemeColor() {
+  const root = document.documentElement;
+  const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  if (!meta) return;
+  const isDark =
+    root.classList.contains("dark") ||
+    (!root.classList.contains("light") &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
+  meta.content = isDark ? THEME_COLORS.dark : THEME_COLORS.light;
+}
+
 export default function ThemeToggle({ className }: { className?: string }) {
   // Lazy init — read the stored theme once on first render (client-only SPA,
   // theme-init.js already applied the class before React mounts).
@@ -30,6 +47,14 @@ export default function ThemeToggle({ className }: { className?: string }) {
 
   useEffect(() => {
     apply(theme);
+  }, [theme]);
+
+  // Keep the browser chrome (address bar) in sync with the paper/ink theme.
+  useEffect(() => {
+    syncThemeColor();
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", syncThemeColor);
+    return () => mq.removeEventListener("change", syncThemeColor);
   }, [theme]);
 
   const cycle = () => {
