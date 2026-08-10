@@ -83,6 +83,21 @@ function FilmPanel({
             ))}
           </div>
 
+          {p.stats && (
+            <div className="mt-6 grid grid-cols-3 gap-3 border-y border-line py-4">
+              {p.stats.map((s) => (
+                <div key={s.label}>
+                  <div className="font-display text-xl font-light tracking-tight text-ink sm:text-2xl">
+                    {s.value}
+                  </div>
+                  <div className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-muted">
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="mt-5 hidden items-start gap-2 font-mono text-[11px] leading-relaxed text-ink-soft md:flex">
             <ArrowUpRight size={12} strokeWidth={1.8} className="mt-0.5 shrink-0 text-clay-deep" />
             <span>{p.outcome}</span>
@@ -451,6 +466,16 @@ export default function Work() {
                   <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">
                     {p.blurb}
                   </p>
+                  {p.stats && (
+                    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+                      {p.stats.map((s) => (
+                        <span key={s.label} className="font-mono text-[10px] text-ink-soft">
+                          <span className="text-clay-deep">{s.value}</span>
+                          <span className="text-faint"> · {s.label}</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
                   <div className="mt-4 flex flex-wrap gap-1.5">
                     {p.stack.map((item) => (
                       <span

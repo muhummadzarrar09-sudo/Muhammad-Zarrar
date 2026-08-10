@@ -72,6 +72,8 @@ export type Project = {
   accent: string;
   image?: string;
   featured?: boolean;
+  /** Verified, checkable numbers — shown as stat chips. */
+  stats?: { value: string; label: string }[];
 };
 
 export const projects: Project[] = [
@@ -88,6 +90,11 @@ export const projects: Project[] = [
     liveUrl: "https://www.sasaplus.vercel.app",
     accent: "#2D3A32",
     image: "/images/surreal-sasa.webp",
+    stats: [
+      { value: "30", label: "day challenge" },
+      { value: "4–6", label: "blocks / day" },
+      { value: "3–4", label: "circle size" },
+    ],
     featured: true,
   },
   {
@@ -103,6 +110,11 @@ export const projects: Project[] = [
     url: "https://github.com/muhummadzarrar09-sudo/SwingFrame",
     accent: "#7E9A7E",
     image: "/images/surreal-swingframe.webp",
+    stats: [
+      { value: "6", label: "frames — drag to scrub" },
+      { value: "100%", label: "on-device" },
+      { value: "0", label: "subscriptions" },
+    ],
     featured: true,
   },
   {
@@ -118,6 +130,10 @@ export const projects: Project[] = [
     url: "https://github.com/muhummadzarrar09-sudo/Recto",
     accent: "#C46B4D",
     image: "/images/surreal-recto.webp",
+    stats: [
+      { value: "2", label: "crash tools in the repo" },
+      { value: "offline-first", label: "architecture" },
+    ],
     featured: true,
   },
   {
@@ -132,6 +148,10 @@ export const projects: Project[] = [
     focus: "Embeddable forms, data history, and an ownership-friendly alternative to subscription tooling.",
     url: "https://github.com/muhummadzarrar09-sudo/forms",
     accent: "#D88A6E",
+    stats: [
+      { value: "audit trail", label: "every response" },
+      { value: "isolated", label: "test database" },
+    ],
   },
   {
     name: "Omni",
@@ -145,6 +165,11 @@ export const projects: Project[] = [
     focus: "Voice-first accessibility, local inference, and browser actions that can be controlled conversationally.",
     url: "https://github.com/muhummadzarrar09-sudo/Omni",
     accent: "#A85A41",
+    stats: [
+      { value: "140+", label: "tests passing" },
+      { value: "65+", label: "API endpoints" },
+      { value: "100+", label: "tools" },
+    ],
   },
   {
     name: "TheDesiEdit",

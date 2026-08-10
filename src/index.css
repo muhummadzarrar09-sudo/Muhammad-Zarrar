@@ -365,3 +365,13 @@ html.lenis body { height: auto; }
   border-radius: 99px;
   animation: voice-bar 1.1s ease-in-out infinite;
 }
+
+/* Press-to-talk — bars breathe fast and tall while "listening" */
+@keyframes voice-bar-live {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1.2); }
+}
+.voice-bar-live {
+  animation-name: voice-bar-live !important;
+  animation-duration: 0.45s !important;
+}

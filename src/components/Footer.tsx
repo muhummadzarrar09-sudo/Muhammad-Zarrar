@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { profile } from "@/data/portfolio";
+import { github, profile } from "@/data/portfolio";
 import { ArrowUp, Mail, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { smoothScrollToId, smoothScrollToTop } from "@/lib/scroll";
@@ -105,6 +105,10 @@ export default function Footer() {
               © {year} Muhammad Zarrar — Built without templates, one commit at a time.
             </p>
             <RawalpindiClock />
+            <span className="font-mono text-xs text-faint">
+              Last push on GitHub: {github.latestPushRelative} ·{" "}
+              {github.latestRepos[0]?.name}
+            </span>
             <a
               href={profile.github}
               target="_blank"
