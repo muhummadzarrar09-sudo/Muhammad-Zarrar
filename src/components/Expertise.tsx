@@ -1,5 +1,6 @@
 import { expertise } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
+import VoiceDemo from "@/components/ui/VoiceDemo";
 
 export default function Expertise() {
   return (
@@ -55,6 +56,11 @@ export default function Expertise() {
           <span>Current favorite stack: TypeScript + Kotlin + Python + Supabase</span>
           <span className="mt-2 hidden text-ink-soft sm:mt-0 sm:block">— the stack follows the problem</span>
         </div>
+      </Reveal>
+
+      {/* Omni — live voice-agent demo */}
+      <Reveal delay={0.24} className="mt-6">
+        <VoiceDemo />
       </Reveal>
     </section>
   );

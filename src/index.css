@@ -351,3 +351,17 @@ html.lenis body { height: auto; }
     cursor: none !important;
   }
 }
+
+/* Omni voice demo — waveform bars. Bars breathe like an active voice
+   channel; the global reduced-motion rule freezes them (VoiceDemo also
+   skips the class entirely when reduced). */
+@keyframes voice-bar {
+  0%, 100% { transform: scaleY(0.25); }
+  50% { transform: scaleY(1); }
+}
+.voice-bar {
+  transform-origin: center;
+  background: var(--color-clay-deep);
+  border-radius: 99px;
+  animation: voice-bar 1.1s ease-in-out infinite;
+}

@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { profile, socials } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { Staple } from "@/components/Brutalist";
+import Signature from "@/components/ui/Signature";
 import { Mail, Copy, Check, ExternalLink, Send } from "lucide-react";
 
 type FormState = {
@@ -545,6 +546,9 @@ Have a product problem
             Prefer async? Email directly at <span className="text-ink">{profile.email}</span> — I read every one.
           </div>
         </Reveal>
+
+        {/* Sign the notebook */}
+        <Signature />
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { profile, github } from "@/data/portfolio";
 import { TypewriterCursor } from "@/components/Brutalist";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
@@ -13,6 +14,48 @@ const EASE = [0.25, 1, 0.5, 1] as const;
 const activeRepos = github.latestRepos
   .filter((r) => r.name !== "Muhammad-Zarrar")
   .slice(0, 6);
+
+const ROLES = [
+  "Independent product engineer",
+  "Voice AI builder",
+  "Mobile video engineer",
+  "Motion designer",
+];
+
+/** Cycles through the roles in the hero meta line, typewriter-style. */
+function RotatingRole() {
+  const [index, setIndex] = useState(0);
+  const [reduced] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+
+  useEffect(() => {
+    if (reduced) return;
+    const t = window.setInterval(
+      () => setIndex((i) => (i + 1) % ROLES.length),
+      2800
+    );
+    return () => window.clearInterval(t);
+  }, [reduced]);
+
+  if (reduced) return <span>{ROLES[0]}</span>;
+
+  return (
+    <span className="relative inline-flex overflow-hidden">
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={index}
+          initial={{ y: "0.65em", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: "-0.65em", opacity: 0 }}
+          transition={{ duration: 0.45, ease: EASE }}
+        >
+          {ROLES[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
 
 export default function Hero() {
   // Hero choreography waits for the preloader to signal the reveal,
@@ -30,7 +73,7 @@ export default function Hero() {
           className="mb-8 flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted"
         >
           <span className="h-px w-8 bg-line-strong" />
-          <span>Independent product engineer</span>
+          <RotatingRole />
           <span className="hidden h-1 w-1 rounded-full bg-muted sm:block" />
           <span className="hidden sm:block">{profile.location}</span>
         </motion.div>

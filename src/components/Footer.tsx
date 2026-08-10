@@ -1,10 +1,11 @@
 import { profile } from "@/data/portfolio";
 import { ArrowUp, Mail, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
+import { smoothScrollToId, smoothScrollToTop } from "@/lib/scroll";
 
 export default function Footer() {
   const year = new Date().getFullYear();
-  const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const go = (id: string) => smoothScrollToId(id);
 
   return (
     <footer className="border-t border-line-strong bg-canvas-deep/40">
@@ -13,7 +14,7 @@ export default function Footer() {
           <div className="max-w-sm">
             <button
               type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={() => smoothScrollToTop()}
               className="font-display text-2xl font-light tracking-tightest"
             >
               Muhammad<span className="text-clay-deep">.</span>
@@ -58,13 +59,38 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Giant email — the letterhead */}
+        <a
+          href={`mailto:${profile.email}`}
+          aria-label={`Email ${profile.email}`}
+          className="group mt-16 block"
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+            Say hello —
+          </span>
+          <span className="mt-3 block break-all font-display text-[clamp(1.4rem,5.5vw,4.5rem)] font-light italic leading-none tracking-tightest text-ink-soft transition-colors duration-500 group-hover:text-clay-deep">
+            {profile.email}
+          </span>
+          <span className="mt-4 block h-[2px] max-w-xl bg-gradient-to-r from-clay-deep to-clay/60 bg-[length:0%_2px] bg-left-bottom bg-no-repeat transition-[background-size] duration-700 ease-out group-hover:bg-[length:100%_2px]" />
+        </a>
+
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-line-strong pt-6 sm:flex-row sm:items-center">
-          <p className="font-mono text-xs text-faint">
-            © {year} Muhammad Zarrar — Built without templates, one commit at a time.
-          </p>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+            <p className="font-mono text-xs text-faint">
+              © {year} Muhammad Zarrar — Built without templates, one commit at a time.
+            </p>
+            <a
+              href={profile.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex rotate-[-4deg] items-center rounded-[3px] border-[1.5px] border-clay-deep/80 px-3 py-1 font-caption text-[10px] font-bold uppercase tracking-[0.12em] text-clay-deep shadow-sm transition-colors hover:bg-clay-wash"
+            >
+              Hand-built · View source
+            </a>
+          </div>
           <button
             type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => smoothScrollToTop()}
             className="group flex items-center gap-2 font-mono text-xs text-muted transition-colors hover:text-ink"
           >
             Back to top
