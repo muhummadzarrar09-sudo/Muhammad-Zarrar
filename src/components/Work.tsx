@@ -100,16 +100,18 @@ function FilmPanel({
                 <ArrowUpRight size={14} strokeWidth={1.8} />
               </a>
             )}
-            <a
-              href={p.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-line-strong bg-surface px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-clay-deep hover:bg-clay-wash"
-              aria-label={`Inspect ${p.name} source on GitHub`}
-            >
-              Inspect source
-              <ArrowUpRight size={14} strokeWidth={1.8} />
-            </a>
+            {p.url && (
+              <a
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-line-strong bg-surface px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-clay-deep hover:bg-clay-wash"
+                aria-label={`Inspect ${p.name} source on GitHub`}
+              >
+                Inspect source
+                <ArrowUpRight size={14} strokeWidth={1.8} />
+              </a>
+            )}
           </div>
         </div>
 
@@ -397,10 +399,9 @@ export default function Work() {
                 Evidence over adjectives
               </div>
               <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-ink-soft">
-                Every featured build links to a public repository, and live
-                products are linked where they can be shared. I&apos;d rather
-                show the work than pad the page with invented metrics or
-                anonymous praise.
+                Source is public where it can be shared — the LOCK-IN client build lives under a
+                private repo. Live products are linked when they can be shared. I&apos;d rather show
+                the work than pad the page with invented metrics or anonymous praise.
               </p>
             </div>
             <a

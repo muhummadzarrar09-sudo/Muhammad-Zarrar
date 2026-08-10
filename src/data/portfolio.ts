@@ -67,7 +67,7 @@ export type Project = {
   description: string;
   outcome: string;
   focus: string;
-  url: string;
+  url?: string;
   liveUrl?: string;
   accent: string;
   image?: string;
@@ -82,10 +82,9 @@ export const projects: Project[] = [
     stack: ["Next.js", "Supabase", "Cloudflare"],
     blurb: "Client project — deep work system with auth, RLS, and Cloudflare hardening.",
     description:
-      "Built for a real client on Next.js + Supabase + Cloudflare. Auth deep-dive, data-leak hardening, RLS policies, and premium UX. TheStandard was the predecessor that evolved into this.",
+      "Built for a real client on Next.js + Supabase + Cloudflare. Auth deep-dive, data-leak hardening, RLS policies, and premium UX. TheStandard was the predecessor that evolved into this. Source lives in the client's private repo.",
     outcome: "Delivered with hardened auth, Supabase RLS policies, and Cloudflare deployment.",
     focus: "Product engineering, access control, and a handoff a client can operate independently.",
-    url: "https://github.com/muhummadzarrar09-sudo/LOCK-IN",
     liveUrl: "https://lock-in-red.vercel.app",
     accent: "#2D3A32",
     image: "/images/surreal-lockin.webp",
@@ -95,12 +94,12 @@ export const projects: Project[] = [
     name: "SwingFrame",
     tag: "Video AI",
     year: "2026",
-    stack: ["Kotlin", "Video Engine", "AI"],
-    blurb: "Golf swing analysis — frame-accurate video engine with AI diagnostics.",
+    stack: ["Kotlin", "Jetpack Compose", "ML Kit"],
+    blurb: "Golf swing analysis — 100% on-device video engine with AI diagnostics.",
     description:
-      "Mobile video AI for sports. Custom video engine with frame-accurate playback, AI-powered swing diagnostics, and a hand-drawn graffiti golfer as the launcher icon.",
-    outcome: "Frame-accurate playback and AI swing-diagnostic flows built for a mobile-first experience.",
-    focus: "Native Android video handling, interaction design, and turning raw footage into useful feedback.",
+      "A free, on-device golf coach: frame-accurate scrubbable playback (Media3), joint tracking with ML Kit Pose Detection, ghost-mode swing comparison, and auto-capture that clips the swing automatically. No cloud, no subscriptions, no API costs.",
+    outcome: "Shipped with on-device pose tracking, frame-scrub playback, and ghost-mode comparison — everything runs locally on the phone.",
+    focus: "Native Android video handling, offline ML, and turning raw footage into useful feedback.",
     url: "https://github.com/muhummadzarrar09-sudo/SwingFrame",
     accent: "#7E9A7E",
     image: "/images/surreal-swingframe.webp",
@@ -113,7 +112,7 @@ export const projects: Project[] = [
     stack: ["Kotlin", "Android"],
     blurb: "Experimental Android lab — crash visibility and offline-first experiments.",
     description:
-      "Playground for making crashes actually visible. Console mirroring so errors surface on-device instead of hiding in logcat. Offline-first architecture experiments.",
+      "Playground for making crashes actually visible: a CrashLogger that mirrors errors on-device (CrashViewActivity) so they surface where you can act on them instead of hiding in logcat. Offline-first architecture experiments.",
     outcome: "Crash-visibility and offline-first experiments that make on-device failures easier to act on.",
     focus: "Developer experience: surfacing errors where they are useful instead of burying them in logcat.",
     url: "https://github.com/muhummadzarrar09-sudo/Recto",
@@ -138,11 +137,11 @@ export const projects: Project[] = [
     name: "Omni",
     tag: "Voice Agent",
     year: "2026",
-    stack: ["Python", "FastAPI", "Voice AI"],
-    blurb: "Push-to-talk voice agent — drives the browser, runs local AI.",
+    stack: ["Python", "FastAPI", "Local LLM"],
+    blurb: "Local voice agent — push-to-talk, browser automation, 100+ tools, fully offline.",
     description:
-      "Accessible voice agent with push-to-talk activation. Drives the browser as API, runs inference locally. Built with FastAPI backend and Next.js frontend. MIT licensed.",
-    outcome: "Accessible push-to-talk voice agent with 14 test suites and 65+ API endpoints.",
+      "A local AGI butler that thinks with a real 1.5B-parameter model (Qwen2.5 via llama.cpp), hears with Whisper, sees screenshots and PDFs, and acts with 100+ tools — browser, files, code, calendar. FastAPI backend (65+ endpoints) + Next.js UI. No cloud, no API keys, MIT licensed.",
+    outcome: "14 test suites, 140+ tests passing, 65+ API endpoints, 100+ tools — everything runs offline on your machine.",
     focus: "Voice-first accessibility, local inference, and browser actions that can be controlled conversationally.",
     url: "https://github.com/muhummadzarrar09-sudo/Omni",
     accent: "#A85A41",
