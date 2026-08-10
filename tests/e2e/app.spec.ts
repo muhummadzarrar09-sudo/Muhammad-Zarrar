@@ -62,3 +62,41 @@ test.describe("reduced motion", () => {
     await expect(page.locator("#contact")).toBeAttached();
   });
 });
+
+test.describe("interaction demos", () => {
+  test("Omni demo has a hold-to-talk control", async ({ page }) => {
+    await page.goto("/");
+    await page.locator("#expertise").scrollIntoViewIfNeeded();
+    await expect(
+      page.getByRole("button", { name: /hold to talk/i })
+    ).toBeAttached();
+  });
+
+  test("Work film includes the SwingFrame scrubber", async ({ page }) => {
+    await page.goto("/");
+    await page.locator("#work").scrollIntoViewIfNeeded();
+    await expect(
+      page.getByRole("slider", { name: /swing frame position/i })
+    ).toBeAttached();
+  });
+
+  test("project story modal opens and closes", async ({ page }) => {
+    await page.goto("/");
+    await page.locator("#work").scrollIntoViewIfNeeded();
+    await page
+      .getByRole("button", { name: /read the story/i })
+      .first()
+      .click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).not.toBeVisible();
+  });
+
+  test("copy-email chip is present in contact", async ({ page }) => {
+    await page.goto("/");
+    await page.locator("#contact").scrollIntoViewIfNeeded();
+    await expect(
+      page.getByRole("button", { name: /copy email address/i })
+    ).toBeVisible();
+  });
+});

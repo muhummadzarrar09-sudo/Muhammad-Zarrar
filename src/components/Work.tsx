@@ -1,9 +1,10 @@
-import { ArrowUpRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, BookOpen } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { projects } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { Staple, Stamp, Tape } from "@/components/Brutalist";
 import SwingFrameScrubber from "@/components/ui/SwingFrameScrubber";
+import ProjectStory from "@/components/ui/ProjectStory";
 import { getLenis } from "@/lib/scroll";
 import { cn } from "@/utils/cn";
 
@@ -26,11 +27,13 @@ function FilmPanel({
   index,
   staticMode,
   registerPanel,
+  onStory,
 }: {
   project: Project;
   index: number;
   staticMode?: boolean;
   registerPanel: (el: HTMLElement | null, index: number) => void;
+  onStory: (p: Project) => void;
 }) {
   const number = String(index + 1).padStart(2, "0");
 
@@ -128,6 +131,14 @@ function FilmPanel({
                 <ArrowUpRight size={14} strokeWidth={1.8} />
               </a>
             )}
+            <button
+              type="button"
+              onClick={() => onStory(p)}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-dashed border-line-strong bg-transparent px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-clay-deep hover:text-clay-deep"
+            >
+              <BookOpen size={14} strokeWidth={1.8} />
+              Read the story
+            </button>
           </div>
         </div>
 
@@ -190,6 +201,9 @@ export default function Work() {
   const panelRefs = useRef<(HTMLElement | null)[]>([]);
   const counterRef = useRef<HTMLSpanElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
+
+  const [story, setStory] = useState<Project | null>(null);
+  const closeStory = useCallback(() => setStory(null), []);
 
   const registerPanel = (el: HTMLElement | null, index: number) => {
     panelRefs.current[index] = el;
@@ -384,6 +398,7 @@ export default function Work() {
               index={i}
               staticMode={reduced}
               registerPanel={registerPanel}
+              onStory={setStory}
             />
           ))}
 
@@ -493,6 +508,9 @@ export default function Work() {
         )}
 
       </div>
+
+      {/* Case-study overlay */}
+      <ProjectStory project={story} onClose={closeStory} />
     </section>
   );
 }

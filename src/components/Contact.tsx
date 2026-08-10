@@ -4,6 +4,7 @@ import { profile, socials } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { Staple } from "@/components/Brutalist";
 import Signature from "@/components/ui/Signature";
+import CopyEmail from "@/components/ui/CopyEmail";
 import { Mail, Copy, Check, ExternalLink, Send } from "lucide-react";
 
 type FormState = {
@@ -542,8 +543,12 @@ Have a product problem
           </AnimatePresence>
           </div>
 
-          <div className="mt-5 rounded-xl border border-dashed border-line-soft bg-canvas-deep/40 px-4 py-3 font-mono text-[11px] leading-relaxed text-muted">
-            Prefer async? Email directly at <span className="text-ink">{profile.email}</span> — I read every one.
+          <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-dashed border-line-soft bg-canvas-deep/40 px-4 py-3 font-mono text-[11px] leading-relaxed text-muted">
+            <span>
+              Prefer async? Email directly at{" "}
+              <span className="text-ink">{profile.email}</span> — I read every one.
+            </span>
+            <CopyEmail email={profile.email} />
           </div>
 
           {/* What happens next — the close */}

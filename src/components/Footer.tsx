@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { github, profile } from "@/data/portfolio";
 import { ArrowUp, Mail, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
+import CopyEmail from "@/components/ui/CopyEmail";
 import { smoothScrollToId, smoothScrollToTop } from "@/lib/scroll";
 
 /** Live clock in the footer — Asia/Karachi (no DST, so it never jumps). */
@@ -98,6 +99,12 @@ export default function Footer() {
           </span>
           <span className="mt-4 block h-[2px] max-w-xl bg-gradient-to-r from-clay-deep to-clay/60 bg-[length:0%_2px] bg-left-bottom bg-no-repeat transition-[background-size] duration-700 ease-out group-hover:bg-[length:100%_2px]" />
         </a>
+        <div className="mt-4 flex items-center gap-3">
+          <CopyEmail email={profile.email} />
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-faint">
+            straight to my inbox — no tracking
+          </span>
+        </div>
 
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-line-strong pt-6 sm:flex-row sm:items-center">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
