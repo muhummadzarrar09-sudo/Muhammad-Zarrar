@@ -8,13 +8,14 @@ import { cn } from "@/utils/cn";
 
 /**
  * Work — the scroll-film.
- * GSAP ScrollTrigger pins the showcase for one viewport per project and
- * scrubs a timeline: each panel enters (image settles, text rises),
- * holds, then hands off to the next. Lazy-loaded with the section,
- * so the hero bundle never carries GSAP.
+ * The showcase lives in a CSS position:sticky viewport inside a tall
+ * container; GSAP ScrollTrigger scrubs a timeline across exactly one
+ * viewport per project (image settles, text rises, ghost number
+ * parallaxes), then the sticky viewport releases and the next section
+ * scrolls in — overlap is impossible by construction.
  *
  * `prefers-reduced-motion` gets the same content as a calm stacked layout,
- * no pinning, no scrub.
+ * no sticky, no scrub.
  */
 
 type Project = (typeof projects)[number];
@@ -196,17 +197,13 @@ export default function Work() {
           scrollTrigger: {
             trigger: filmRef.current,
             start: "top top",
+            // Scrub distance: exactly one viewport per panel. The film
+            // viewport itself is held in place by CSS position:sticky
+            // (not GSAP pinning), so there is no pin-spacer, no fixed-
+            // positioning edge cases, and it is physically impossible
+            // for the next section to overlap the last panel.
             end: () => `+=${count * window.innerHeight}px`,
-            pin: true,
-            // No spacer padding: with pinSpacing:true the spacer adds a
-            // pin-distance tail AFTER the film, which leaves a huge blank
-            // stretch before the next section. With pinSpacing:false the
-            // film overlays the following content while pinned (hidden by
-            // the opaque bg-canvas viewport) and hands off exactly when
-            // the next content reaches the top — zero dead space.
-            pinSpacing: false,
             scrub: 1,
-            anticipatePin: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
               if (counterRef.current) {
@@ -256,8 +253,8 @@ export default function Work() {
           if (i < count - 1) {
             tl.to(p, { autoAlpha: 0, y: -80, duration: 0.2, ease: "power2.in" }, i + 0.8);
           } else {
-            // Last panel — dissolve out just before the pin ends, so the
-            // next section arrives over canvas, not as a hard cut.
+            // Last panel — dissolve out just before the sticky release, so
+            // the next section arrives over canvas, not as a hard cut.
             tl.to(p, { autoAlpha: 0, y: -40, duration: 0.2, ease: "power2.in" }, count - 0.2);
           }
         });
@@ -271,6 +268,16 @@ export default function Work() {
             { scaleY: 0 },
             { scaleY: 1, duration: count, ease: "none" },
             0
+          );
+        }
+
+        // Counter + progress rail — dissolve with the last panel so the
+        // release stretch is pure canvas.
+        if (counterRef.current && progressBarRef.current) {
+          tl.to(
+            [counterRef.current, progressBarRef.current],
+            { autoAlpha: 0, duration: 0.2, ease: "power2.in" },
+            count - 0.2
           );
         }
       }, filmRef);
@@ -326,18 +333,21 @@ export default function Work() {
         </div>
       </div>
 
-      {/* ——— The scroll-film ——— */}
+      {/* ——— The scroll-film ———
+          Sticky architecture: the outer container provides the scroll
+          distance (count+1 viewports = count of scrub + 1 of natural
+          release), the inner viewport is position:sticky top-0 so it
+          rides the scroll, and the following section enters only as the
+          sticky viewport scrolls away — overlap is impossible. */}
       <div
         ref={filmRef}
         className="relative"
-        // Height must equal the pin distance (count × innerHeight) so the
-        // film hands off to the next section exactly when the pin ends.
-        style={!reduced ? { height: `${featured.length * 100}dvh` } : undefined}
+        style={!reduced ? { height: `${(featured.length + 1) * 100}dvh` } : undefined}
       >
         <div
           className={cn(
-            "relative w-full overflow-hidden bg-canvas",
-            reduced ? "" : "absolute left-0 top-0 h-svh"
+            "relative w-full overflow-hidden",
+            reduced ? "" : "sticky top-0 h-svh bg-canvas"
           )}
         >
           {featured.map((p, i) => (
