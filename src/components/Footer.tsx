@@ -1,7 +1,32 @@
+import { useEffect, useState } from "react";
 import { profile } from "@/data/portfolio";
 import { ArrowUp, Mail, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { smoothScrollToId, smoothScrollToTop } from "@/lib/scroll";
+
+/** Live clock in the footer — Asia/Karachi (no DST, so it never jumps). */
+function RawalpindiClock() {
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const t = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(t);
+  }, []);
+
+  const time = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Karachi",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  }).format(now);
+
+  return (
+    <span className="font-mono text-xs text-faint">
+      PKT {time} · Rawalpindi
+    </span>
+  );
+}
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -79,6 +104,7 @@ export default function Footer() {
             <p className="font-mono text-xs text-faint">
               © {year} Muhammad Zarrar — Built without templates, one commit at a time.
             </p>
+            <RawalpindiClock />
             <a
               href={profile.github}
               target="_blank"

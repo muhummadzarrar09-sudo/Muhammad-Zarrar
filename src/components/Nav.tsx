@@ -8,6 +8,7 @@ import { smoothScrollToId, smoothScrollToTop } from "@/lib/scroll";
 
 const LINKS = [
   { id: "about", label: "About" },
+  { id: "expertise", label: "Expertise" },
   { id: "work", label: "Work" },
   { id: "process", label: "Process" },
   { id: "contact", label: "Contact" },

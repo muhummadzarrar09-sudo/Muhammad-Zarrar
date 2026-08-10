@@ -1,6 +1,6 @@
-import { ArrowUpRight, CheckCircle2, Mail } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { projects, profile } from "@/data/portfolio";
+import { projects } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { Staple, Stamp, Tape } from "@/components/Brutalist";
 import { getLenis } from "@/lib/scroll";
@@ -80,6 +80,11 @@ function FilmPanel({
                 {item}
               </span>
             ))}
+          </div>
+
+          <div className="mt-5 hidden items-start gap-2 font-mono text-[11px] leading-relaxed text-ink-soft md:flex">
+            <ArrowUpRight size={12} strokeWidth={1.8} className="mt-0.5 shrink-0 text-clay-deep" />
+            <span>{p.outcome}</span>
           </div>
 
           <div className="mt-7 flex flex-wrap gap-3">
@@ -456,34 +461,6 @@ export default function Work() {
           </Reveal>
         )}
 
-        <Reveal delay={0.18} className="mt-5">
-          <div className="grid gap-6 rounded-2xl border border-line-strong bg-surface p-6 sm:grid-cols-[1fr_auto] sm:items-center sm:p-8 notebook-page">
-            <div>
-              <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">
-                <CheckCircle2 size={13} strokeWidth={1.8} />
-                Working style
-              </div>
-              <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
-                I&apos;m most useful when there&apos;s a real product problem
-                to solve: an MVP to validate, a workflow to make less painful,
-                or a technical edge case that needs careful engineering.
-              </p>
-            </div>
-            <a
-              href={`mailto:${profile.email}?subject=${encodeURIComponent("Project idea")}`}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
-            >
-              <Mail size={14} strokeWidth={1.8} />
-              Talk about a project
-            </a>
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.2} className="mt-12">
-          <div className="mx-auto max-w-2xl text-center font-mono text-[10px] uppercase tracking-[0.2em] text-faint">
-            — selected builds · source available where appropriate —
-          </div>
-        </Reveal>
       </div>
     </section>
   );

@@ -5,15 +5,9 @@ import { TypewriterCursor } from "@/components/Brutalist";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { MagneticButton } from "@/components/primitives";
 import { ArrowRight, Mail, ExternalLink } from "lucide-react";
-import { GithubIcon } from "@/components/icons";
 import { useAppEnter } from "@/lib/enter";
 
 const EASE = [0.25, 1, 0.5, 1] as const;
-
-// Top repos by recent activity — dynamic from GitHub fetch
-const activeRepos = github.latestRepos
-  .filter((r) => r.name !== "Muhammad-Zarrar")
-  .slice(0, 6);
 
 const ROLES = [
   "Independent product engineer",
@@ -125,15 +119,6 @@ export default function Hero() {
             <Mail size={14} strokeWidth={1.8} />
             Start a project
           </MagneticButton>
-          <a
-            href={profile.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden items-center gap-2 rounded-full border border-line-soft bg-transparent px-5 py-3 font-mono text-xs text-muted transition-colors hover:text-ink hover:border-line sm:inline-flex"
-          >
-            <GithubIcon size={14} strokeWidth={1.8} />
-            @{profile.handle}
-          </a>
         </motion.div>
 
         {/* Avatar + live status */}
@@ -162,50 +147,6 @@ export default function Hero() {
             <span className="hidden h-3 w-px bg-line-soft sm:block" />
             <span>{github.totalRepos} repos · {github.recentCommits30d} pushes this month</span>
           </div>
-        </motion.div>
-
-        {/* Activity strip — dynamic, compact */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={entered ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 0.65, duration: 0.8 }}
-          className="mt-10 rounded-2xl border border-line-strong bg-surface/80 p-5 notebook-page"
-        >
-          <div className="font-caption text-[10px] uppercase tracking-[0.2em] text-clay-deep mb-3">
-            Latest activity — live from GitHub
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {activeRepos.map((r) => (
-              <a
-                key={r.name}
-                href={r.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-canvas-deep/40 px-3 py-2.5 transition-colors hover:border-clay-soft hover:bg-canvas-deep"
-              >
-                <span className="font-medium text-[13px] text-ink group-hover:text-clay-deep transition-colors">
-                  {r.name}
-                </span>
-                {r.language && (
-                  <span className="font-mono text-[10px] text-faint">{r.language}</span>
-                )}
-                <span className="font-mono text-[10px] text-faint">
-                  {r.daysAgo === 0 ? "today" : r.daysAgo === 1 ? "yesterday" : `${r.daysAgo}d ago`}
-                </span>
-              </a>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Scroll hint */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={entered ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 0.9, duration: 0.8 }}
-          className="mt-12 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.25em] text-faint"
-        >
-          <span>Scroll</span>
-          <span className="h-px w-12 bg-line-soft" />
         </motion.div>
       </div>
     </section>

@@ -103,33 +103,6 @@ export default function About() {
               </a>
             </div>
           </Reveal>
-
-          <Reveal delay={0.2}>
-            <div className="rounded-3xl border border-dashed border-line bg-canvas-deep/40 p-6">
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">Live from GitHub</div>
-              <div className="mt-3 grid grid-cols-2 gap-4">
-                <div>
-                  <div className="font-display text-2xl font-light">{github.totalRepos}+</div>
-                  <div className="font-mono text-[10px] uppercase tracking-wide text-muted">Public repos</div>
-                </div>
-                <div>
-                  <div className="font-display text-2xl font-light">{github.recentCommits30d}</div>
-                  <div className="font-mono text-[10px] uppercase tracking-wide text-muted">Pushes (30d)</div>
-                </div>
-                <div>
-                  <div className="font-display text-2xl font-light">{github.recentCommits7d}</div>
-                  <div className="font-mono text-[10px] uppercase tracking-wide text-muted">Pushes (7d)</div>
-                </div>
-                <div>
-                  <div className="font-display text-2xl font-light">6</div>
-                  <div className="font-mono text-[10px] uppercase tracking-wide text-muted">Shipped projects</div>
-                </div>
-              </div>
-              <p className="mt-4 text-[12px] leading-relaxed text-muted">
-                Auto-fetched at build time. Last active: {github.latestPushRelative}.
-              </p>
-            </div>
-          </Reveal>
         </div>
       </div>
     </section>

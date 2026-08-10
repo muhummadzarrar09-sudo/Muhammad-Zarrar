@@ -51,13 +51,6 @@ export default function Expertise() {
         ))}
       </div>
 
-      <Reveal delay={0.2} className="mt-8">
-        <div className="rounded-2xl border border-line-soft bg-canvas-deep/60 px-6 py-5 font-mono text-xs text-muted sm:flex sm:items-center sm:justify-between">
-          <span>Current favorite stack: TypeScript + Kotlin + Python + Supabase</span>
-          <span className="mt-2 hidden text-ink-soft sm:mt-0 sm:block">— the stack follows the problem</span>
-        </div>
-      </Reveal>
-
       {/* Omni — live voice-agent demo */}
       <Reveal delay={0.24} className="mt-6">
         <VoiceDemo />

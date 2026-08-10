@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { SectionLoading } from "@/components/LazyFallback";
 import ScrollProgress from "@/components/ScrollProgress";
+import SectionIndex from "@/components/SectionIndex";
 import Preloader from "@/components/ui/Preloader";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Grain from "@/components/ui/Grain";
@@ -45,6 +46,7 @@ export default function App() {
       <CustomCursor />
       <Grain />
       <ScrollProgress />
+      <SectionIndex />
       <Nav />
 
       <main id="main-content" tabIndex={-1} className="relative">
