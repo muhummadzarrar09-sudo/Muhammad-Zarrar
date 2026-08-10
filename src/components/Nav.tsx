@@ -4,6 +4,7 @@ import { cn } from "@/utils/cn";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Mail, Menu, X } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
+import { smoothScrollToId, smoothScrollToTop } from "@/lib/scroll";
 
 const LINKS = [
   { id: "about", label: "About" },
@@ -76,7 +77,7 @@ export default function Nav() {
 
   const go = useCallback((id: string) => {
     setOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    smoothScrollToId(id);
   }, []);
 
   return (
@@ -93,7 +94,7 @@ export default function Nav() {
         >
           <button
             type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => smoothScrollToTop()}
             aria-label="Back to top"
             className="group flex items-center gap-2.5 pl-1"
           >

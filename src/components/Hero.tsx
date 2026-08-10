@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { profile, github } from "@/data/portfolio";
 import { TypewriterCursor } from "@/components/Brutalist";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { MagneticButton } from "@/components/primitives";
 import { ArrowRight, Mail, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
+import { useAppEnter } from "@/lib/enter";
 
 const EASE = [0.25, 1, 0.5, 1] as const;
 
@@ -13,13 +15,17 @@ const activeRepos = github.latestRepos
   .slice(0, 6);
 
 export default function Hero() {
+  // Hero choreography waits for the preloader to signal the reveal,
+  // so the headline is mid-animation as the overlay lifts.
+  const entered = useAppEnter();
+
   return (
     <section id="top" className="relative mx-auto max-w-6xl px-5 pt-32 pb-16 sm:px-8 sm:pt-40 sm:pb-24 overflow-hidden">
       <div className="mx-auto max-w-[780px] relative z-10">
         {/* Meta line — dynamic */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={entered ? { opacity: 1, y: 0 } : { opacity: 0 }}
           transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
           className="mb-8 flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted"
         >
@@ -32,7 +38,7 @@ export default function Hero() {
         {/* Headline — clean, big, Serif */}
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={entered ? { opacity: 1, y: 0 } : { opacity: 0 }}
           transition={{ delay: 0.18, duration: 0.8, ease: EASE }}
           className="font-display text-[clamp(2.6rem,8vw,5rem)] font-light leading-[0.95] tracking-tightest text-balance"
         >
@@ -45,8 +51,9 @@ export default function Hero() {
           </span>
         </motion.h1>
 
-        {/* Sub — Aceternity TextGenerateEffect */}
+        {/* Sub — Aceternity TextGenerateEffect (remounts on reveal) */}
         <TextGenerateEffect
+          key={entered ? "on" : "off"}
           words="I partner with founders and teams who have a real workflow to improve. From AI-assisted tools and product MVPs to native mobile experiences, I take the hard technical parts through to a clean, usable handoff."
           className="mt-8 max-w-[58ch] text-[17px] leading-[1.75] text-ink-soft sm:text-[18px] font-normal"
           duration={0.4}
@@ -55,24 +62,26 @@ export default function Hero() {
         {/* CTAs with Lucide icons */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={entered ? { opacity: 1, y: 0 } : { opacity: 0 }}
           transition={{ delay: 0.42, duration: 0.7, ease: EASE }}
           className="mt-8 flex flex-wrap items-center gap-3"
         >
-          <a
+          <MagneticButton
             href="#work"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
+            variant="solid"
+            className="bg-ink px-6 py-3 text-sm font-medium text-canvas hover:bg-clay-deep"
           >
             See selected work
             <ArrowRight size={14} strokeWidth={1.8} />
-          </a>
-          <a
+          </MagneticButton>
+          <MagneticButton
             href="#contact"
-            className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-6 py-3 text-sm font-medium text-ink-soft transition-colors hover:border-clay-soft hover:text-ink"
+            variant="outline"
+            className="border-line-strong bg-surface px-6 py-3 text-sm font-medium text-ink-soft hover:border-clay-soft hover:text-ink"
           >
             <Mail size={14} strokeWidth={1.8} />
             Start a project
-          </a>
+          </MagneticButton>
           <a
             href={profile.github}
             target="_blank"
@@ -87,7 +96,7 @@ export default function Hero() {
         {/* Avatar + live status */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={entered ? { opacity: 1, y: 0 } : { opacity: 0 }}
           transition={{ delay: 0.52, duration: 0.7, ease: EASE }}
           className="mt-10 flex items-center gap-4"
         >
@@ -115,7 +124,7 @@ export default function Hero() {
         {/* Activity strip — dynamic, compact */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={entered ? { opacity: 1 } : { opacity: 0 }}
           transition={{ delay: 0.65, duration: 0.8 }}
           className="mt-10 rounded-2xl border border-line-strong bg-surface/80 p-5 notebook-page"
         >
@@ -148,7 +157,7 @@ export default function Hero() {
         {/* Scroll hint */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={entered ? { opacity: 1 } : { opacity: 0 }}
           transition={{ delay: 0.9, duration: 0.8 }}
           className="mt-12 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.25em] text-faint"
         >

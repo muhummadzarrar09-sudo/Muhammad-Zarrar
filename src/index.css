@@ -206,8 +206,10 @@
   }
   .link-underline:hover { background-size: 100% 1px; }
 
-  /* Clean fullscreen canvas — the dot-grid mesh and grain overlays were
-     removed (owner's call: they gave the page busy "mesh" vibes). */
+  /* Clean fullscreen canvas — the dot-grid mesh stays removed (owner's call:
+     it gave the page busy "mesh" vibes). A whisper of film grain returned
+     with the cinematic pass — see .grain-overlay below (blend overlay,
+     ~7% opacity, imperceptible drift). */
 
   .no-scroll { overflow: hidden; }
 
@@ -305,5 +307,47 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================================
+   CINEMATIC MOTION SYSTEM — Lenis, film grain, marquee, custom cursor
+   ========================================================================= */
+
+/* Lenis smooth scroll — recommended base styles. Lenis only attaches the
+   `.lenis` classes when active, so these never apply under reduced motion. */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Film grain — tileable SVG noise (data URI, allowed by the CSP img-src
+   `data:` directive). Gray noise + `mix-blend-overlay` reads on paper AND
+   ink themes. Position is drifted slowly by Grain.tsx (transform-only). */
+.grain-overlay {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+}
+
+/* Marquee — seamless -50% loop over two identical copies. Pauses on hover;
+   the global reduced-motion rule freezes it (static, content intact). */
+.marquee-track {
+  animation: marquee-scroll 32s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  to { transform: translateX(-50%); }
+}
+
+/* Custom cursor — native cursor is hidden ONLY while CustomCursor is active
+   (fine pointers, motion allowed). Touch and reduced-motion users keep the
+   native cursor untouched. */
+@media (pointer: fine) {
+  html.cursor-active,
+  html.cursor-active * {
+    cursor: none !important;
   }
 }
