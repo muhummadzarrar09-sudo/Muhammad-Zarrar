@@ -311,16 +311,8 @@
 }
 
 /* =========================================================================
-   CINEMATIC MOTION SYSTEM — Lenis, film grain, marquee, custom cursor
-   ========================================================================= */
-
-/* Lenis smooth scroll — recommended base styles. Lenis only attaches the
-   `.lenis` classes when active, so these never apply under reduced motion. */
-html.lenis,
-html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-.lenis.lenis-stopped { overflow: hidden; }
+   CINEMATIC MOTION SYSTEM — film grain, marquee, custom cursor
+   (Lenis smooth scroll was removed — owner's call. Native scrolling only.) */
 
 /* Film grain — tileable SVG noise (data URI, allowed by the CSP img-src
    `data:` directive). Gray noise + `mix-blend-overlay` reads on paper AND

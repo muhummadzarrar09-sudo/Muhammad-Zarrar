@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { github, profile } from "@/data/portfolio";
-import { ArrowUp, Mail, ExternalLink } from "lucide-react";
+import { ArrowUp, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
-import CopyEmail from "@/components/ui/CopyEmail";
 import { smoothScrollToId, smoothScrollToTop } from "@/lib/scroll";
 
 /** Live clock in the footer — Asia/Karachi (no DST, so it never jumps). */
@@ -78,10 +77,9 @@ export default function Footer() {
       {/* The name wall — pxpush's giant footer marquee */}
       <a
         href={`mailto:${profile.email}`}
-        aria-label={`Email ${profile.email}`}
+        aria-label="Email Muhammad Zarrar"
         className="group block select-none border-b border-line-strong py-10 sm:py-14"
       >
-        <span className="sr-only">Email {profile.email}</span>
         <div aria-hidden="true" className="overflow-hidden">
           <div
             className="marquee-track flex w-max items-center"
@@ -137,10 +135,13 @@ export default function Footer() {
             </div>
             <div className="flex flex-col gap-2.5">
               <div className="font-mono text-[12px] uppercase tracking-[0.2em] text-muted">Contact</div>
-              <a href={`mailto:${profile.email}`} className="link-underline w-fit text-sm text-ink-soft inline-flex items-center gap-1.5">
-                <Mail size={12} strokeWidth={1.8} />
-                {profile.email}
-              </a>
+              <button
+                type="button"
+                onClick={() => go("contact")}
+                className="link-underline w-fit text-sm text-ink-soft"
+              >
+                Start a project
+              </button>
               <a
                 href={profile.github}
                 target="_blank"
@@ -155,25 +156,27 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Giant email — the letterhead */}
-        <a
-          href={`mailto:${profile.email}`}
-          aria-label={`Email ${profile.email}`}
-          className="group mt-16 block"
-        >
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
-            Say hello —
-          </span>
-          <span className="mt-3 block break-all font-display text-[clamp(1.4rem,5.5vw,4.5rem)] font-light italic leading-none tracking-tightest text-ink-soft transition-colors duration-500 group-hover:text-clay-deep">
-            {profile.email}
-          </span>
-          <span className="mt-4 block h-[2px] max-w-xl bg-gradient-to-r from-clay-deep to-clay/60 bg-[length:0%_2px] bg-left-bottom bg-no-repeat transition-[background-size] duration-700 ease-out group-hover:bg-[length:100%_2px]" />
-        </a>
-        <div className="mt-4 flex items-center gap-3">
-          <CopyEmail email={profile.email} />
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-faint">
-            straight to my inbox — no tracking
-          </span>
+        {/* One CTA — the envelope in Nº005 handles the rest */}
+        <div className="mt-14 flex flex-wrap items-end justify-between gap-6 border-t border-line pt-10">
+          <div>
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+              The next move —
+            </span>
+            <div className="mt-3">
+              <button
+                type="button"
+                onClick={() => go("contact")}
+                className="btn-brutal btn-brutal-solid"
+              >
+                Start a project
+                <span aria-hidden="true" className="text-[0.95em]">↗</span>
+              </button>
+            </div>
+          </div>
+          <p className="max-w-xs font-mono text-[10px] leading-relaxed text-faint">
+            The envelope in the contact section opens a pre-filled draft — no
+            backend, no tracking, no newsletter.
+          </p>
         </div>
 
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-line-strong pt-6 sm:flex-row sm:items-center">

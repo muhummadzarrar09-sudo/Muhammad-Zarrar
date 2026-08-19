@@ -86,3 +86,14 @@ Inspiration: pxpush.com — brutalist Swiss subscription-studio site. Direction 
 - **Hero scroll hint** — their "Scroll Down to Access Department" → bottom-left mono "SCROLL ——— THE EVIDENCE IS BELOW ↓".
 
 Kept on purpose (identity, not laziness): Fraunces serif headlines + italic clay lines, paper/clay palette, notebook staples/tape/envelope, GSAP work scroll-film, section rail, clocks. The pxpush structure delivers the loudness; the warm details keep it a person, not an agency.
+
+## 7. The Honesty Pass (Aug 19, 2026)
+
+Owner feedback: kill Lenis + parallax (felt bad), refresh projects from real GitHub data, dedupe emails, and make the envelope an actual zoom-in scene.
+
+- **Lenis: REMOVED** — `src/lib/scroll.ts` is now two native helpers (`scrollIntoView` + `scroll-behavior: smooth`). The `lenis` and `gsap` packages were uninstalled; the `.lenis` CSS block is gone.
+- **Work scroll-film: REMOVED** — the sticky GSAP scrub (parallax ghost numbers, pinned panels) is replaced by a calm evidence list: alternating rows, fade-up reveals only, SwingFrame scrubber kept as the single interactive demo, ProjectStory modal intact.
+- **Projects: REFRESHED FROM GITHUB** (Aug 2026 pull, 22 repos): featured = Sasa+ (client, live), SwingFrame, Website-Auditor (LoRA/QLoRA audit CLI), Broskie (Flutter/Flame platformer campaign), Omni (local voice agent). Experiments grid = Recto, GrindOS, Pixelfy, STREAK IT, forms, TheDesiEdit. Stats are checkable: 144 commits/30d, 33/7d, stacks match repo languages. Three new covers generated in the surreal-paper style (`surreal-{auditor,broskie,omni}.webp`).
+- **Envelope: THE SCENE** — click the small envelope → fullscreen overlay, camera zooms INTO the envelope (spring scale-up + backdrop) → flap swings open, seal breaks → letter slides up out of the pocket → the letter is pulled toward you and becomes the FULL form → send → letter folds back, flap closes, wax seal stamps ("Draft sealed") → zoom out. Escape / ✕ / backdrop closes; reduced motion gets the form directly.
+- **Emails: DEDUPED** — the address text is gone from the footer letterhead (removed), the contact info block, and the mobile menu. It survives exactly twice as *actions*: the nav/mobile "Get started ↗" mailto and Contact's "Email me / Copy email" buttons. Footer's giant email block → one "START A PROJECT ↗" CTA that scrolls to Nº005.
+- **Signature: optional file** — `profile.signature` (empty by default). Drop a transparent PNG/SVG at e.g. `/images/signature.png` and set the path to show the real thing; otherwise the drawn "— Zarrar" stays.

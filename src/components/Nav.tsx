@@ -194,11 +194,12 @@ export default function Nav() {
             ))}
             <div className="mt-10 flex flex-wrap gap-3">
               <a
-                href={`mailto:${profile.email}`}
+                href={`mailto:${profile.email}?subject=${encodeURIComponent("Hey Zarrar — let's get started")}`}
                 className="btn-brutal btn-brutal-solid"
               >
                 <Mail className="shrink-0" size={14} strokeWidth={1.8} />
-                <span className="truncate">{profile.email}</span>
+                Get started
+                <span aria-hidden="true" className="text-[0.95em]">↗</span>
               </a>
               <a
                 href={profile.github}

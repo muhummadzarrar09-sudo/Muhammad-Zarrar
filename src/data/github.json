@@ -1,49 +1,65 @@
 {
-  "totalRepos": 20,
-  "latestPush": "2026-08-10T09:29:35Z",
-  "latestPushRelative": "today",
-  "recentCommits7d": 0,
-  "recentCommits30d": 34,
+  "totalRepos": 22,
+  "latestPush": "2026-08-18T14:32:01Z",
+  "latestPushRelative": "yesterday",
+  "recentCommits7d": 33,
+  "recentCommits30d": 144,
   "latestRepos": [
     {
+      "name": "Broskie",
+      "pushedAt": "2026-08-18T14:32:01Z",
+      "language": "Dart",
+      "description": "A game that I wanted to create out of a BLANK idea at 12 AM",
+      "url": "https://github.com/muhummadzarrar09-sudo/Broskie",
+      "daysAgo": 1
+    },
+    {
+      "name": "WEBSITE-AUDITOR",
+      "pushedAt": "2026-08-14T00:00:00Z",
+      "language": "JavaScript",
+      "description": "Website intelligence CLI & AI diagnostic engine with LoRA/QLoRA personas",
+      "url": "https://github.com/muhummadzarrar09-sudo/WEBSITE-AUDITOR",
+      "daysAgo": 5
+    },
+    {
       "name": "Omni",
-      "pushedAt": "2026-08-10T09:29:35Z",
+      "pushedAt": "2026-08-13T00:00:00Z",
       "language": "Python",
       "description": "OMNI — Voice-controlled autonomous agent with Push-to-Talk activation, browser automation, and local AI processing. Built for accessibility, loved by everyone.",
       "url": "https://github.com/muhummadzarrar09-sudo/Omni",
-      "daysAgo": 0
+      "daysAgo": 6
     },
     {
       "name": "Muhammad-Zarrar",
-      "pushedAt": "2026-08-10T09:30:00Z",
+      "pushedAt": "2026-08-10T15:19:25Z",
       "language": "TypeScript",
       "description": null,
       "url": "https://github.com/muhummadzarrar09-sudo/Muhammad-Zarrar",
-      "daysAgo": 0
-    },
-    {
-      "name": "forms",
-      "pushedAt": "2026-08-08T12:22:44Z",
-      "language": "TypeScript",
-      "description": null,
-      "url": "https://github.com/muhummadzarrar09-sudo/forms",
-      "daysAgo": 2
-    },
-    {
-      "name": "Recto",
-      "pushedAt": "2026-08-01T11:57:51Z",
-      "language": "Kotlin",
-      "description": null,
-      "url": "https://github.com/muhummadzarrar09-sudo/Recto",
       "daysAgo": 9
     },
     {
       "name": "SwingFrame",
-      "pushedAt": "2026-08-01T04:30:10Z",
+      "pushedAt": "2026-07-31T00:00:00Z",
       "language": "Kotlin",
       "description": null,
       "url": "https://github.com/muhummadzarrar09-sudo/SwingFrame",
-      "daysAgo": 9
+      "daysAgo": 19
+    },
+    {
+      "name": "forms",
+      "pushedAt": "2026-07-30T00:00:00Z",
+      "language": "TypeScript",
+      "description": null,
+      "url": "https://github.com/muhummadzarrar09-sudo/forms",
+      "daysAgo": 20
+    },
+    {
+      "name": "Recto",
+      "pushedAt": "2026-07-28T00:00:00Z",
+      "language": "Kotlin",
+      "description": null,
+      "url": "https://github.com/muhummadzarrar09-sudo/Recto",
+      "daysAgo": 22
     },
     {
       "name": "TheStandard",
@@ -51,7 +67,7 @@
       "language": "TypeScript",
       "description": "Outdated",
       "url": "https://github.com/muhummadzarrar09-sudo/TheStandard",
-      "daysAgo": 18
+      "daysAgo": 27
     },
     {
       "name": "retailflow",
@@ -59,32 +75,16 @@
       "language": "HTML",
       "description": null,
       "url": "https://github.com/muhummadzarrar09-sudo/retailflow",
-      "daysAgo": 19
+      "daysAgo": 28
     },
     {
       "name": "TheDesiEdit",
-      "pushedAt": "2026-07-17T03:31:29Z",
+      "pushedAt": "2026-07-18T00:00:00Z",
       "language": "HTML",
       "description": null,
       "url": "https://github.com/muhummadzarrar09-sudo/TheDesiEdit",
-      "daysAgo": 24
-    },
-    {
-      "name": "JARVIS",
-      "pushedAt": "2026-07-09T09:59:19Z",
-      "language": "Python",
-      "description": "Just A Rather Very Intelligent system",
-      "url": "https://github.com/muhummadzarrar09-sudo/JARVIS",
       "daysAgo": 32
-    },
-    {
-      "name": "GrindOS",
-      "pushedAt": "2026-07-08T11:20:46Z",
-      "language": "Kotlin",
-      "description": null,
-      "url": "https://github.com/muhummadzarrar09-sudo/GrindOS",
-      "daysAgo": 33
     }
   ],
-  "fetchedAt": "2026-08-10T09:45:00.000Z"
+  "fetchedAt": "2026-08-19T00:00:00.000Z"
 }

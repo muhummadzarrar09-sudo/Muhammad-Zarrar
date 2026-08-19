@@ -101,9 +101,10 @@ export default function About() {
               </div>
               <a
                 href={`mailto:${profile.email}`}
-                className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-ink px-6 py-3 text-sm text-canvas transition-colors hover:bg-clay-deep"
+                className="btn-brutal btn-brutal-solid mt-5 w-full"
               >
-                Email me — {profile.email}
+                Email me
+                <span aria-hidden="true" className="text-[0.95em]">↗</span>
               </a>
             </div>
           </Reveal>

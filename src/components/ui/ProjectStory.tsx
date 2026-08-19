@@ -2,15 +2,14 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { ArrowUpRight, X } from "lucide-react";
 import { Staple, Stamp } from "@/components/Brutalist";
-import { getLenis } from "@/lib/scroll";
 import type { Project } from "@/data/portfolio";
 
 /**
  * ProjectStory — the deep-dive overlay.
  * Every featured panel can open a full case-study sheet (problem → focus →
- * shipped → stats → links) without leaving the page. Lenis and body scroll
- * are paused while open; Escape / backdrop / ✕ close it. Focus is moved
- * into the sheet and restored on close.
+ * shipped → stats → links) without leaving the page. Body scroll is locked
+ * while open; Escape / backdrop / ✕ close it. Focus is moved into the sheet
+ * and restored on close.
  */
 export default function ProjectStory({
   project,
@@ -28,8 +27,6 @@ export default function ProjectStory({
   useEffect(() => {
     if (!open) return;
     lastFocused.current = document.activeElement as HTMLElement | null;
-    const lenis = getLenis();
-    lenis?.stop();
     document.body.style.overflow = "hidden";
     const t = window.setTimeout(() => closeRef.current?.focus(), 40);
     const onKey = (e: KeyboardEvent) => {
@@ -39,7 +36,6 @@ export default function ProjectStory({
     return () => {
       window.clearTimeout(t);
       window.removeEventListener("keydown", onKey);
-      lenis?.start();
       document.body.style.overflow = "";
       lastFocused.current?.focus?.();
     };
