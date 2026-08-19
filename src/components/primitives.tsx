@@ -192,20 +192,27 @@ export function SectionHeading({
   index,
   label,
   title,
+  meta,
   className,
 }: {
+  /** Editorial ordinal, pxpush-style — pass "Nº001", "Nº002", … */
   index: string;
   label: string;
   title: ReactNode;
+  /** Optional right-aligned caption on the rule, e.g. "The builder". */
+  meta?: string;
   className?: string;
 }) {
   return (
     <div className={cn("flex flex-col gap-6", className)}>
       <Reveal>
-        <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted">
-          <span className="text-clay-deep">{index}</span>
-          <span className="h-px w-8 bg-line" />
-          <span>{label}</span>
+        <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em]">
+          <span className="font-semibold text-clay-deep">{index}</span>
+          <span className="-ml-1.5 text-muted">/{label}</span>
+          <span aria-hidden="true" className="h-px flex-1 bg-line-strong/50" />
+          {meta && (
+            <span className="hidden text-faint sm:block">{meta}</span>
+          )}
         </div>
       </Reveal>
       <div className="overflow-hidden">

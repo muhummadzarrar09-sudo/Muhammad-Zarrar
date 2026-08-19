@@ -75,6 +75,36 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-line-strong bg-canvas-deep/40">
+      {/* The name wall — pxpush's giant footer marquee */}
+      <a
+        href={`mailto:${profile.email}`}
+        aria-label={`Email ${profile.email}`}
+        className="group block select-none border-b border-line-strong py-10 sm:py-14"
+      >
+        <span className="sr-only">Email {profile.email}</span>
+        <div aria-hidden="true" className="overflow-hidden">
+          <div
+            className="marquee-track flex w-max items-center"
+            style={{ animationDuration: "46s" }}
+          >
+            {[0, 1].map((copy) => (
+              <span
+                key={copy}
+                aria-hidden={copy === 1}
+                className="flex shrink-0 items-center whitespace-nowrap font-sans text-[clamp(3rem,9vw,8rem)] font-extrabold uppercase leading-none tracking-[-0.02em] transition-colors duration-500 group-hover:text-clay-deep"
+              >
+                {Array.from({ length: 4 }).map((_, j) => (
+                  <span key={j} className="flex shrink-0 items-center text-ink transition-colors duration-500 group-hover:text-clay-deep">
+                    Muhammad Zarrar
+                    <span className="mx-[0.4em] inline-block h-[0.16em] w-[0.16em] rounded-full bg-clay-deep" />
+                  </span>
+                ))}
+              </span>
+            ))}
+          </div>
+        </div>
+      </a>
+
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
         <div className="flex flex-col justify-between gap-10 md:flex-row">
           <div className="max-w-sm">

@@ -1,6 +1,4 @@
-import { CheckCircle2, Mail } from "lucide-react";
-import { useRef } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { CheckCircle2 } from "lucide-react";
 import { process as processData, profile } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 
@@ -10,21 +8,19 @@ const goodFit = [
   "You value a useful first release over a long list of impressive features.",
 ];
 
+/**
+ * Process — pxpush "Benefits" pattern: every step is a full-width row
+ * divided by hairlines — Nº number left, title middle, body right.
+ * Rows fill softly on hover. Same content, quieter chrome.
+ */
 export default function Process() {
-  const gridRef = useRef<HTMLDivElement>(null);
-  // Draws the connecting line across the four steps as the section scrolls.
-  const { scrollYProgress } = useScroll({
-    target: gridRef,
-    offset: ["start 75%", "end 55%"],
-  });
-  const scaleX = useSpring(scrollYProgress, { stiffness: 60, damping: 20 });
-
   return (
     <section id="process" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <SectionHeading
-          index="04"
+          index="Nº004"
           label="Working together"
+          meta="How engagements run"
           title={
             <>
               Clear thinking.
@@ -40,36 +36,34 @@ export default function Process() {
         </Reveal>
       </div>
 
-      <div ref={gridRef} className="relative mt-14">
-        {/* Connector line — draws through the gaps between the step cards */}
-        <motion.div
-          aria-hidden="true"
-          style={{ scaleX }}
-          className="absolute left-4 right-4 top-[2.6rem] hidden h-px origin-left bg-clay-deep/50 lg:block"
-        />
-        <div className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {processData.map((s, i) => (
-            <Reveal key={s.no} delay={i * 0.06} className="relative z-10">
-              <div className="human-card flex h-full flex-col rounded-2xl border border-line bg-surface p-7">
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="font-display text-5xl font-light tracking-tightest text-clay-deep/30">
-                  {s.no}
+      {/* The numbered rows */}
+      <div className="mt-14 border-t border-line-strong">
+        {processData.map((s, i) => (
+          <Reveal key={s.no} delay={i * 0.05}>
+            <div className="group grid grid-cols-1 gap-3 border-b border-line-strong px-1 py-8 transition-colors duration-300 hover:bg-canvas-deep/50 md:grid-cols-[7rem_1.1fr_1.4fr] md:items-baseline md:gap-10 md:px-4">
+              <span className="font-mono text-[12px] font-semibold uppercase tracking-[0.18em] text-clay-deep">
+                Nº00{i + 1}
+              </span>
+              <div>
+                <h3 className="font-sans text-[1.35rem] font-bold uppercase leading-tight tracking-[-0.01em] text-ink">
+                  {s.title}
+                </h3>
+                <span className="mt-2 inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-faint">
+                  {s.role}
                 </span>
-                <span className="text-right font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">{s.role}</span>
               </div>
-              <h3 className="mt-6 font-display text-xl font-medium tracking-tight">{s.title}</h3>
-              <p className="mt-3 text-[13.5px] leading-relaxed text-ink-soft">{s.body}</p>
-
-              <div className="mt-auto border-t border-line pt-6 font-mono text-[10px] leading-relaxed text-faint">
-                {i === 0 && "The goal is a better decision, not more meetings."}
-                {i === 1 && "You should be able to react to something real."}
-                {i === 2 && "The unglamorous parts are part of the job."}
-                {i === 3 && "A launch should leave you with clarity, not dependency."}
+              <div>
+                <p className="text-[15px] leading-relaxed text-ink-soft">{s.body}</p>
+                <p className="mt-3 font-mono text-[11px] leading-relaxed text-faint">
+                  {i === 0 && "// The goal is a better decision, not more meetings."}
+                  {i === 1 && "// You should be able to react to something real."}
+                  {i === 2 && "// The unglamorous parts are part of the job."}
+                  {i === 3 && "// A launch should leave you with clarity, not dependency."}
+                </p>
               </div>
             </div>
           </Reveal>
         ))}
-        </div>
       </div>
 
       <Reveal delay={0.16} className="mt-10">
@@ -94,10 +88,10 @@ export default function Process() {
             </ul>
             <a
               href={`mailto:${profile.email}?subject=${encodeURIComponent("Project context")}`}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
+              className="btn-brutal btn-brutal-solid self-start"
             >
-              <Mail size={14} strokeWidth={1.8} />
               Send project context
+              <span aria-hidden="true" className="text-[0.95em]">↗</span>
             </a>
           </div>
         </div>

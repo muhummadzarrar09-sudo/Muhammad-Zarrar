@@ -7,8 +7,9 @@ export default function Expertise() {
     <section id="expertise" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <SectionHeading
-          index="02"
+          index="Nº002"
           label="Expertise"
+          meta="Capability index"
           title={
             <>
               What I&apos;m good at —<br />
@@ -24,32 +25,47 @@ export default function Expertise() {
         </Reveal>
       </div>
 
-      <div className="mt-14 grid gap-4 md:grid-cols-3">
-        {expertise.map((g, gi) => (
-          <Reveal key={g.group} delay={gi * 0.08} className="h-full">
-            <div className="human-card flex h-full flex-col rounded-2xl border border-line-strong/40 bg-surface p-7">
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-clay-deep">0{gi + 1} — {g.group}</div>
-              <p className="mt-3 text-sm leading-relaxed text-muted">{g.blurb}</p>
+      {/* Swiss hairline table — one frame, columns divided by rules */}
+      <Reveal delay={0.05} className="mt-14">
+        <div className="border border-line-strong bg-surface">
+          <div className="grid md:grid-cols-3 md:divide-x md:divide-line">
+            {expertise.map((g, gi) => (
+              <div
+                key={g.group}
+                className="flex flex-col gap-5 border-b border-line p-7 last:border-b-0 md:border-b-0"
+              >
+                <div className="font-mono text-[11px] uppercase tracking-[0.2em]">
+                  <span className="font-semibold text-clay-deep">Nº00{gi + 1}</span>
+                  <span className="text-faint"> /</span>
+                  <span className="text-muted"> {g.group}</span>
+                </div>
+                <p className="text-sm leading-relaxed text-muted">{g.blurb}</p>
 
-              <ul className="mt-6 space-y-2.5">
-                {g.skills.map((s) => (
-                  <li key={s.name} className="flex items-center gap-2 text-sm text-ink-soft">
-                    <span className="h-px w-3 shrink-0 bg-line" />
-                    <span>{s.name}</span>
-                    {s.highlight && (
-                      <span className="ml-auto font-mono text-xs text-clay-deep">{s.highlight}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
+                <ul className="mt-auto divide-y divide-line-soft border-t border-line-soft">
+                  {g.skills.map((s) => (
+                    <li
+                      key={s.name}
+                      className="group flex items-center justify-between gap-3 py-2.5 text-sm text-ink-soft transition-colors hover:text-ink"
+                    >
+                      <span className="flex items-center gap-2.5">
+                        <span className="h-1 w-1 shrink-0 rounded-full bg-line-strong transition-colors group-hover:bg-clay-deep" />
+                        {s.name}
+                      </span>
+                      {s.highlight && (
+                        <span className="text-right font-mono text-[11px] text-clay-deep">{s.highlight}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
 
-              <div className="mt-auto pt-6 font-mono text-[10px] uppercase tracking-wide text-faint">
-                Worked in production, not just tutorials.
+                <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
+                  Worked in production, not just tutorials.
+                </div>
               </div>
-            </div>
-          </Reveal>
-        ))}
-      </div>
+            ))}
+          </div>
+        </div>
+      </Reveal>
 
       {/* Omni — live voice-agent demo */}
       <Reveal delay={0.24} className="mt-6">

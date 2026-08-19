@@ -1,4 +1,4 @@
-import { ArrowUpRight, BookOpen } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { projects } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
@@ -112,11 +112,11 @@ function FilmPanel({
                 href={p.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
+                className="btn-brutal btn-brutal-solid"
                 aria-label={`Open the live ${p.name} project`}
               >
                 Open live project
-                <ArrowUpRight size={14} strokeWidth={1.8} />
+                <span aria-hidden="true" className="text-[0.95em]">↗</span>
               </a>
             )}
             {p.url && (
@@ -124,20 +124,20 @@ function FilmPanel({
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-line-strong bg-surface px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-clay-deep hover:bg-clay-wash"
+                className="btn-brutal"
                 aria-label={`Inspect ${p.name} source on GitHub`}
               >
                 Inspect source
-                <ArrowUpRight size={14} strokeWidth={1.8} />
+                <span aria-hidden="true" className="text-[0.95em]">↗</span>
               </a>
             )}
             <button
               type="button"
               onClick={() => onStory(p)}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-dashed border-line-strong bg-transparent px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-clay-deep hover:text-clay-deep"
+              className="btn-brutal"
             >
-              <BookOpen size={14} strokeWidth={1.8} />
               Read the story
+              <span aria-hidden="true" className="text-[0.95em]">↗</span>
             </button>
           </div>
         </div>
@@ -348,8 +348,9 @@ export default function Work() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <SectionHeading
-            index="03"
+            index="Nº003"
             label="Selected work"
+            meta="Evidence, not adjectives"
             title={
               <>
                 Built to be used —

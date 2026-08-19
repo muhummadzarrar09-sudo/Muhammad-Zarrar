@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { profile, github } from "@/data/portfolio";
 import { TypewriterCursor } from "@/components/Brutalist";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
-import { MagneticButton } from "@/components/primitives";
-import { ArrowRight, Mail, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { useAppEnter } from "@/lib/enter";
 
 const EASE = [0.25, 1, 0.5, 1] as const;
@@ -113,29 +112,21 @@ export default function Hero() {
           duration={0.4}
         />
 
-        {/* CTAs with Lucide icons */}
+        {/* CTAs — pxpush-style brutal buttons */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={entered ? { opacity: 1, y: 0 } : { opacity: 0 }}
           transition={{ delay: 0.42, duration: 0.7, ease: EASE }}
-          className="mt-8 flex flex-wrap items-center gap-3"
+          className="mt-9 flex flex-wrap items-center gap-3"
         >
-          <MagneticButton
-            href="#work"
-            variant="solid"
-            className="bg-ink px-6 py-3 text-sm font-medium text-canvas hover:bg-clay-deep"
-          >
+          <a href="#work" data-hover className="btn-brutal btn-brutal-solid">
             See selected work
-            <ArrowRight size={14} strokeWidth={1.8} />
-          </MagneticButton>
-          <MagneticButton
-            href="#contact"
-            variant="outline"
-            className="border-line-strong bg-surface px-6 py-3 text-sm font-medium text-ink-soft hover:border-clay-soft hover:text-ink"
-          >
-            <Mail size={14} strokeWidth={1.8} />
+            <span aria-hidden="true" className="text-[0.95em]">↓</span>
+          </a>
+          <a href="#contact" data-hover className="btn-brutal">
             Start a project
-          </MagneticButton>
+            <span aria-hidden="true" className="text-[0.95em]">↗</span>
+          </a>
         </motion.div>
 
         {/* Avatar + live status */}
@@ -166,6 +157,19 @@ export default function Hero() {
           </div>
         </motion.div>
       </div>
+
+      {/* Scroll hint — pxpush's "Scroll Down to Access Department" */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={entered ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ delay: 0.75, duration: 0.8, ease: EASE }}
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-5 left-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-faint sm:left-8"
+      >
+        Scroll
+        <span className="h-px w-10 bg-line-strong" />
+        the evidence is below ↓
+      </motion.div>
     </section>
   );
 }

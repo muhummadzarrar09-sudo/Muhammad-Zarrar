@@ -288,8 +288,9 @@ export default function Contact() {
       <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
           <SectionHeading
-            index="05"
+            index="Nº005"
             label="Contact"
+            meta="Say hello"
             title={
               <>
 Have a product problem
@@ -308,17 +309,18 @@ Have a product problem
             <div className="flex flex-wrap gap-3">
               <a
                 href={`mailto:${profile.email}?subject=${encodeURIComponent(profile.emailSubject)}`}
-                className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm text-canvas hover:bg-clay-deep"
+                className="btn-brutal btn-brutal-solid"
               >
-                <Mail size={14} strokeWidth={1.8} />
+                <Mail size={13} strokeWidth={1.8} />
                 Email me
+                <span aria-hidden="true" className="text-[0.95em]">↗</span>
               </a>
               <button
                 type="button"
                 onClick={copy}
-                className={`inline-flex items-center gap-2 rounded-full border px-6 py-3 text-sm ${copied ? "border-clay-deep bg-clay-wash text-ink" : "border-line bg-surface text-ink-soft hover:border-clay-soft"}`}
+                className={`btn-brutal ${copied ? "!border-clay-deep !bg-clay-wash !text-ink" : ""}`}
               >
-                {copied ? <Check size={14} strokeWidth={1.8} /> : <Copy size={14} strokeWidth={1.8} />}
+                {copied ? <Check size={13} strokeWidth={1.8} /> : <Copy size={13} strokeWidth={1.8} />}
                 {copied ? "Copied" : "Copy email"}
               </button>
             </div>
@@ -385,18 +387,12 @@ Have a product problem
                   </p>
                   <div className="mt-6 flex flex-wrap justify-center gap-3">
                     {lastMailto && (
-                      <a
-                        href={lastMailto}
-                        className="rounded-full bg-ink px-5 py-2.5 text-sm text-canvas hover:bg-clay-deep"
-                      >
+                      <a href={lastMailto} className="btn-brutal btn-brutal-solid btn-brutal-sm">
                         Open again
+                        <span aria-hidden="true" className="text-[0.95em]">↗</span>
                       </a>
                     )}
-                    <button
-                      type="button"
-                      onClick={unseal}
-                      className="rounded-full border border-line px-5 py-2.5 text-sm text-ink-soft hover:border-clay-soft"
-                    >
+                    <button type="button" onClick={unseal} className="btn-brutal btn-brutal-sm">
                       Unseal + send another
                     </button>
                   </div>
@@ -506,10 +502,11 @@ Have a product problem
 
                   <button
                     type="submit"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-colors hover:bg-clay-deep"
+                    className="btn-brutal btn-brutal-solid w-full"
                   >
-                    <Send size={14} strokeWidth={1.8} />
+                    <Send size={13} strokeWidth={1.8} />
                     Open email draft
+                    <span aria-hidden="true" className="text-[0.95em]">↗</span>
                   </button>
 
                   <p className="font-mono text-[10px] leading-relaxed text-faint text-center">

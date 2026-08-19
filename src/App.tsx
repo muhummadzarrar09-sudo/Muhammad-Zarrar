@@ -12,6 +12,7 @@ import Preloader from "@/components/ui/Preloader";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Grain from "@/components/ui/Grain";
 import Marquee from "@/components/ui/Marquee";
+import TypeWall from "@/components/ui/TypeWall";
 import { destroySmoothScroll, initSmoothScroll } from "@/lib/scroll";
 
 const About = lazy(() => import("@/components/About"));
@@ -52,6 +53,18 @@ export default function App() {
 
       <main id="main-content" tabIndex={-1} className="relative">
         <Hero />
+
+        {/* The type wall — full-bleed PX/PUSH-style display rows */}
+        <TypeWall
+          label="Product engineer — full-stack, voice AI, and mobile."
+          rows={[
+            { text: "Product engineer", speed: 44 },
+            { text: "Product engineer", outline: true, reverse: true, speed: 52 },
+            { text: "Product engineer", reverse: true, speed: 48 },
+            { text: "Product engineer", outline: true, speed: 56 },
+          ]}
+        />
+
         <Marquee />
         <LazySection label="Loading about">
           <About />

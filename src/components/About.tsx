@@ -13,8 +13,9 @@ export default function About() {
   return (
     <section id="about" className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
       <SectionHeading
-        index="01"
+        index="Nº001"
         label="About"
+        meta="The builder"
         title={
           <>
             Built for the messy,

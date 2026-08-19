@@ -18,7 +18,7 @@ export default function Statement() {
         />
         <RevealWords
           as="p"
-          text="Everything on this page is something I built, shipped, and can show."
+          text="// Everything on this page is something I built, shipped, and can show."
           delay={0.5}
           className="mt-6 font-mono text-[11px] uppercase tracking-[0.25em] text-muted"
         />

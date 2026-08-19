@@ -70,3 +70,19 @@ All borders use these tokens — no hard-coded hex.
 - Contact envelope: DONE — closed envelope with wax seal → hover makes the flap lift + letter peek (whimsical) → click opens the flap and the letter rises out, unfolding into the form → after send the envelope closes and the seal stamps back on ("Draft sealed")
 
 All keep fast, no new deps, only CSS + framer-motion.
+
+## 6. The PX/PUSH Pass (Aug 2026)
+
+Inspiration: pxpush.com — brutalist Swiss subscription-studio site. Direction per owner: "make mine look closer to this, but keep it mine." What was borrowed, mapped onto the warm-paper system (palette and Fraunces headlines stay — that's the "mine" part):
+
+- **Type wall (`ui/TypeWall.tsx`)** — the pxpush hero signature ("●On–Demand Design Department" ×8): full-bleed rows of one phrase repeated in Syne 800 uppercase, alternating scroll directions, alternating solid / `.text-outline` (stroke-only) rows, clay ● between repeats. Hero wall phrase: "Product engineer". Pauses on hover, freezes under reduced motion, screen readers get one sr-only sentence.
+- **Ticker (`ui/Marquee.tsx`)** — restyled to their system strip: mono uppercase, `v.26` leads in clay, `//` marks live status ("// Open for 1–2 projects"), items separated by long `------------------` dash runs. Edge fades removed — text runs rim to rim.
+- **Nº numbering** — `SectionHeading` now renders `Nº001 /About ———` with a hairline rule filling the row and an optional right meta caption ("The builder", "Capability index", …). All five sections pass Nº00X.
+- **Brutal buttons (`.btn-brutal`, `.btn-brutal-solid`, `.btn-brutal-sm` in index.css)** — rectangular, 1px ink border, uppercase mono 0.72rem / 0.14em tracking, hover inverts (solid → clay). Replaces the rounded pills on primary CTAs: hero, work film panel, contact, process CTA, nav. `↗` / `↓` glyphs like pxpush.
+- **Nav** — floating pill → full-width hairline top bar (h-16): `ZARRAR ●` wordmark (Syne 800), uppercase mono links with clay dot + underline on active, `GET STARTED ↗` mailto CTA. Same focus trap / scroll lock / active observer as before.
+- **Process** — card grid → pxpush "Benefits" rows: full-width hairline rows, `Nº00X` clay mono left, Syne bold uppercase title middle, body right, soft fill on hover, `//` footnote per row.
+- **Expertise** — three floating cards → one Swiss table: single border frame, `divide-x` columns, hairline skill rows inside each column with clay dots on hover.
+- **Footer name wall** — pxpush's giant footer marquee: "MUHAMMAD ZARRAR ●" in Syne 800 clamp(3rem,9vw,8rem), scrolls, whole band is a mailto link, text warms to clay on hover.
+- **Hero scroll hint** — their "Scroll Down to Access Department" → bottom-left mono "SCROLL ——— THE EVIDENCE IS BELOW ↓".
+
+Kept on purpose (identity, not laziness): Fraunces serif headlines + italic clay lines, paper/clay palette, notebook staples/tape/envelope, GSAP work scroll-film, section rail, clocks. The pxpush structure delivers the loudness; the warm details keep it a person, not an agency.
