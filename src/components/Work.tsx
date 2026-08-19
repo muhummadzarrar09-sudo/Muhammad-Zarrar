@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { useCallback, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { projects } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
 import { Staple, Stamp, Tape } from "@/components/Brutalist";
@@ -169,6 +170,7 @@ export default function Work() {
   const featured = projects.filter((p) => p.featured);
   const rest = projects.filter((p) => !p.featured);
   const [story, setStory] = useState<Project | null>(null);
+  const [showAll, setShowAll] = useState(false);
   const closeStory = useCallback(() => setStory(null), []);
 
   return (
@@ -179,7 +181,7 @@ export default function Work() {
           <SectionHeading
             index="Nº003"
             label="Selected work"
-            meta="Evidence, not adjectives"
+            meta="Three heavy ones first"
             title={
               <>
                 Built to be used —
@@ -190,8 +192,9 @@ export default function Work() {
           />
           <Reveal delay={0.08} className="max-w-sm md:text-right">
             <p className="text-[14px] leading-relaxed text-ink-soft">
-              Product systems, Android engines, AI tooling, and one full game —
-              each taken from a blank repo to a working build.
+              Three main builds up front — a delivered client product, an
+              on-device video engine, and a local voice agent. Everything
+              else waits below.
             </p>
             <a
               href="https://github.com/muhummadzarrar09-sudo?tab=repositories"
@@ -239,59 +242,88 @@ export default function Work() {
           </div>
         </Reveal>
 
-        {/* More experiments — the non-featured builds, kept honest */}
+        {/* The rest — tucked behind one toggle, kept honest */}
         {rest.length > 0 && (
-          <Reveal delay={0.16} className="mt-12">
-            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
-              More experiments
+          <div className="mt-12">
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={() => setShowAll((s) => !s)}
+                aria-expanded={showAll}
+                className="btn-brutal"
+              >
+                {showAll
+                  ? "Show less"
+                  : `View the rest — ${rest.length} more builds`}
+                <span aria-hidden="true" className="text-[0.95em]">
+                  {showAll ? "↑" : "↓"}
+                </span>
+              </button>
             </div>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {rest.map((p) => (
-                <a
-                  key={p.name}
-                  href={p.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex flex-col rounded-2xl border border-line-strong bg-surface p-6 transition-colors hover:border-clay-deep hover:bg-clay-wash/40"
+
+            <AnimatePresence initial={false}>
+              {showAll && (
+                <motion.div
+                  key="rest"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+                  className="overflow-hidden"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="font-caption text-[10px] uppercase tracking-[0.18em] text-muted">
-                      {p.tag}
-                    </span>
-                    <ArrowUpRight
-                      size={14}
-                      strokeWidth={1.8}
-                      className="text-faint transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                    />
+                  <div className="mt-8 font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+                    The rest — audit engines, games, labs, and trackers
                   </div>
-                  <h4 className="mt-3 font-display text-2xl font-light tracking-tightest">
-                    {p.name}
-                  </h4>
-                  <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">{p.blurb}</p>
-                  {p.stats && (
-                    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
-                      {p.stats.map((s) => (
-                        <span key={s.label} className="font-mono text-[10px] text-ink-soft">
-                          <span className="text-clay-deep">{s.value}</span>
-                          <span className="text-faint"> · {s.label}</span>
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  <div className="mb-0 mt-4 flex flex-wrap gap-1.5">
-                    {p.stack.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-line px-2.5 py-0.5 font-mono text-[9px] text-muted"
+                  <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {rest.map((p) => (
+                      <a
+                        key={p.name}
+                        href={p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex flex-col rounded-2xl border border-line-strong bg-surface p-6 transition-colors hover:border-clay-deep hover:bg-clay-wash/40"
                       >
-                        {item}
-                      </span>
+                        <div className="flex items-center justify-between">
+                          <span className="font-caption text-[10px] uppercase tracking-[0.18em] text-muted">
+                            {p.tag}
+                          </span>
+                          <ArrowUpRight
+                            size={14}
+                            strokeWidth={1.8}
+                            className="text-faint transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                          />
+                        </div>
+                        <h4 className="mt-3 font-display text-2xl font-light tracking-tightest">
+                          {p.name}
+                        </h4>
+                        <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">{p.blurb}</p>
+                        {p.stats && (
+                          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+                            {p.stats.map((s) => (
+                              <span key={s.label} className="font-mono text-[10px] text-ink-soft">
+                                <span className="text-clay-deep">{s.value}</span>
+                                <span className="text-faint"> · {s.label}</span>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <div className="mt-auto mt-4 flex flex-wrap gap-1.5 pt-4">
+                          {p.stack.map((item) => (
+                            <span
+                              key={item}
+                              className="rounded-full border border-line px-2.5 py-0.5 font-mono text-[9px] text-muted"
+                            >
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+                      </a>
                     ))}
                   </div>
-                </a>
-              ))}
-            </div>
-          </Reveal>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         )}
       </div>
 

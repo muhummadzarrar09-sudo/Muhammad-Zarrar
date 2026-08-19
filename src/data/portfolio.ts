@@ -139,7 +139,6 @@ export const projects: Project[] = [
       { value: "LoRA", label: "tuned personas" },
       { value: "1", label: "command, no agency" },
     ],
-    featured: true,
   },
   {
     name: "Broskie",
@@ -159,7 +158,6 @@ export const projects: Project[] = [
       { value: "2", label: "boss fights" },
       { value: "1", label: "real ending" },
     ],
-    featured: true,
   },
   {
     name: "Omni",

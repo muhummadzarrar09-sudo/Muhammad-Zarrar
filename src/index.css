@@ -406,6 +406,41 @@
   font-size: 0.66rem;
 }
 
+/* ---------------------------------------------------------------------
+   Papery finish — paper-fiber noise + a warm directional sheen over
+   envelope surfaces. Sits above the ink (fiber over print) but never
+   catches the pointer. Softer + darker in dark mode.
+   --------------------------------------------------------------------- */
+.paper-finish {
+  position: relative;
+}
+.paper-finish::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      155deg,
+      rgba(255, 253, 249, 0.55) 0%,
+      rgba(255, 253, 249, 0) 42%,
+      rgba(214, 197, 171, 0.25) 100%
+    ),
+    url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23p)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: auto, 140px 140px;
+  opacity: 0.32;
+}
+:root.dark .paper-finish::after {
+  opacity: 0.16;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .paper-finish::after {
+    opacity: 0.16;
+  }
+}
+
 /* Custom cursor — native cursor is hidden ONLY while CustomCursor is active
    (fine pointers, motion allowed). Touch and reduced-motion users keep the
    native cursor untouched. */
