@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { SeoRouteMeta } from "@/components/SeoRouteMeta";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
@@ -13,6 +13,8 @@ import CustomCursor from "@/components/ui/CustomCursor";
 import Grain from "@/components/ui/Grain";
 import Marquee from "@/components/ui/Marquee";
 import TypeWall from "@/components/ui/TypeWall";
+import { destroySmoothScroll, initSmoothScroll } from "@/lib/scroll";
+import { initVelocityMarquees } from "@/lib/marquee";
 
 const About = lazy(() => import("@/components/About"));
 const Expertise = lazy(() => import("@/components/Expertise"));
@@ -24,6 +26,32 @@ function LazySection({ label, children }: { label: string; children: React.React
   return <Suspense fallback={<SectionLoading label={label} />}>{children}</Suspense>;
 }
 
+/** Lenis smooth scroll — module-scoped singleton, no window leak. */
+function SmoothScroll() {
+  useEffect(() => {
+    initSmoothScroll();
+    return () => destroySmoothScroll();
+  }, []);
+  return null;
+}
+
+/** Velocity marquees — GSAP takeover of every [data-vmarquee] track. */
+function VelocityMarquees() {
+  useEffect(() => {
+    let dispose: (() => void) | undefined;
+    let cancelled = false;
+    initVelocityMarquees().then((d) => {
+      if (cancelled) d();
+      else dispose = d;
+    });
+    return () => {
+      cancelled = true;
+      dispose?.();
+    };
+  }, []);
+  return null;
+}
+
 export default function App() {
   return (
     // Clean full-screen canvas — no dot-grid. A whisper of film grain returns
@@ -33,6 +61,8 @@ export default function App() {
       <a href="#main-content" className="skip-link">Skip to main content</a>
 
       <SeoRouteMeta />
+      <SmoothScroll />
+      <VelocityMarquees />
       <Preloader />
       <CustomCursor />
       <Grain />

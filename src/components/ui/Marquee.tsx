@@ -20,7 +20,11 @@ const ITEMS = [
 export default function Marquee() {
   return (
     <div className="relative overflow-hidden border-b border-ink py-3">
-      <div className="marquee-track flex w-max items-center">
+      <div
+        data-vmarquee=""
+        data-speed="30"
+        className="marquee-track flex w-max items-center"
+      >
         {[0, 1].map((copy) => (
           <div
             key={copy}

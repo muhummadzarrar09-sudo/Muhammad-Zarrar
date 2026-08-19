@@ -66,13 +66,13 @@ The portfolio uses CSS and Framer Motion for interaction. Motion is reduced for 
 
 ## Motion system (cinematic pass)
 
-- **Native smooth scroll** — Lenis and the GSAP scroll-film were removed (owner's call: the smoothed wheel and scroll-scrubbed parallax felt bad). Anchors ride the browser's own `scroll-behavior: smooth` + per-section `scroll-margin-top`; instant under `prefers-reduced-motion`.
-- **Work = calm evidence list** — one alternating editorial row per featured build with plain fade-up reveals; the SwingFrame scrubber stays as the one interactive demo.
+- **Lenis smooth scroll** — back in (`src/lib/scroll.ts`), feeding GSAP ScrollTrigger. Skipped under `prefers-reduced-motion`.
+- **Work = the horizontal roll** — on desktop the section pins and the three heavy builds roll sideways as you scroll (GSAP ScrollTrigger + `containerAnimation` parallax on media and ghost numbers, progress rail + counter). Mobile / reduced motion get the same content as a calm alternating list.
 - **Envelope scene** — the contact envelope zooms into a fullscreen scene: flap opens, wax seal breaks, the letter slides out and becomes the full form; after sending it folds back, reseals and zooms out. Reduced motion gets the form directly.
 - **Branded preloader** — "MZ" wax-stamp + progress line; signals the hero to begin its reveal as the sheet lifts (`src/lib/enter.ts`). Skipped under reduced motion.
 - **Custom cursor** — clay dot + trailing ring, fine-pointer devices only; native cursor is untouched for touch/reduced-motion users.
 - **Film grain** — one tileable SVG-noise data-URI (CSP-safe), blend-mode overlay, ~7% opacity, 55s drift. Static under reduced motion.
-- **Type walls + ticker** — CSS-driven marquees (hero type wall, system ticker, footer name wall); all freeze under reduced motion.
+- **Velocity marquees** — the hero type wall, system ticker, and footer name wall are GSAP-driven (`src/lib/marquee.ts`): they speed up to ~4.5× with scroll velocity, flip direction when scrolling up, lean with a subtle skew, then ease back. CSS loops remain as the reduced-motion / no-JS baseline.
 
 ## Interaction demos
 

@@ -74,7 +74,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-line-strong bg-canvas-deep/40">
-      {/* The name wall — pxpush's giant footer marquee */}
+      {/* The name wall — pxpush's giant footer marquee, velocity-reactive */}
       <a
         href={`mailto:${profile.email}`}
         aria-label="Email Muhammad Zarrar"
@@ -82,18 +82,28 @@ export default function Footer() {
       >
         <div aria-hidden="true" className="overflow-hidden">
           <div
+            data-vmarquee=""
+            data-speed="50"
             className="marquee-track flex w-max items-center"
-            style={{ animationDuration: "46s" }}
+            style={{ animationDuration: "50s" }}
           >
             {[0, 1].map((copy) => (
               <span
                 key={copy}
                 aria-hidden={copy === 1}
-                className="flex shrink-0 items-center whitespace-nowrap font-sans text-[clamp(3rem,9vw,8rem)] font-extrabold uppercase leading-none tracking-[-0.02em] transition-colors duration-500 group-hover:text-clay-deep"
+                className="flex shrink-0 items-center whitespace-nowrap font-sans text-[clamp(3rem,9vw,8rem)] font-extrabold uppercase leading-none tracking-[-0.02em]"
               >
-                {Array.from({ length: 4 }).map((_, j) => (
-                  <span key={j} className="flex shrink-0 items-center text-ink transition-colors duration-500 group-hover:text-clay-deep">
-                    Muhammad Zarrar
+                {Array.from({ length: 6 }).map((_, j) => (
+                  <span key={j} className="flex shrink-0 items-center">
+                    <span
+                      className={
+                        j % 2 === 1
+                          ? "text-outline transition-all duration-500 group-hover:[-webkit-text-stroke-color:var(--color-clay-deep)]"
+                          : "text-ink transition-colors duration-500 group-hover:text-clay-deep"
+                      }
+                    >
+                      Muhammad Zarrar
+                    </span>
                     <span className="mx-[0.4em] inline-block h-[0.16em] w-[0.16em] rounded-full bg-clay-deep" />
                   </span>
                 ))}
