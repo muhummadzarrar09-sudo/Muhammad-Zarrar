@@ -64,14 +64,6 @@ test.describe("reduced motion", () => {
 });
 
 test.describe("interaction demos", () => {
-  test("Omni demo has a hold-to-talk control", async ({ page }) => {
-    await page.goto("/");
-    await page.locator("#expertise").scrollIntoViewIfNeeded();
-    await expect(
-      page.getByRole("button", { name: /hold to talk/i })
-    ).toBeAttached();
-  });
-
   test("Work film includes the SwingFrame scrubber", async ({ page }) => {
     await page.goto("/");
     await page.locator("#work").scrollIntoViewIfNeeded();

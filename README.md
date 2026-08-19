@@ -77,7 +77,6 @@ The portfolio uses CSS and Framer Motion for interaction. Motion is reduced for 
 ## Interaction demos
 
 - **SwingFrame frame scrubber** — drag (fine pointer), play/pause slow-mo, or use the slider/arrow keys to scrub six surreal swing frames in the Work section. The video engine demonstrated by the site's own mechanic.
-- **Omni press-to-talk demo** — hold the mic, the waveform goes live; release → "thinking…" → the transcript retypes the exchange. Nothing is recorded; keyboard accessible; disabled (static) under reduced motion.
 - **Project story modal** — every featured panel opens a full case-study overlay (description → focus → shipped → verified stats → links) without leaving the page. Escape / backdrop / ✕ closes; body scroll pauses while open.
 - **Copy-email chip** — one-click copy with "copied" confirmation in the contact section; falls back silently where the Clipboard API is unavailable.
 

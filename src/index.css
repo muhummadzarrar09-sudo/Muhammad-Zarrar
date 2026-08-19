@@ -375,9 +375,14 @@ html.lenis body { height: auto; }
 
 /* ---------------------------------------------------------------------
    Brutal button — rectangular, uppercase mono, full-contrast hairline.
-   Hover inverts. The pxpush-style counterpart to the rounded pill.
+   Custom treatment: a fill layer slides up from the bottom edge on hover
+   (ink for outline buttons, clay for solid ones), the label rides above
+   it, and the trailing arrow glyph nudges forward. Pressed = fast snap.
    --------------------------------------------------------------------- */
 .btn-brutal {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -394,20 +399,52 @@ html.lenis body { height: auto; }
   text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+/* Label + icons ride above the sliding fill */
+.btn-brutal > * {
+  position: relative;
+  z-index: 1;
+}
+/* The fill — slides up from the bottom edge */
+.btn-brutal::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+  background: var(--color-ink);
+  transform: translateY(101%);
+  transition: transform 0.4s var(--ease-out-expo);
+}
+.btn-brutal:hover::before,
+.btn-brutal:focus-visible::before {
+  transform: translateY(0);
 }
 .btn-brutal:hover {
-  background: var(--color-ink);
   color: var(--color-canvas);
 }
+/* Arrow glyph — nudges forward as the fill lands */
+.btn-brutal > span {
+  transition: transform 0.3s var(--ease-human);
+}
+.btn-brutal:hover > span:last-child {
+  transform: translateX(0.16em);
+}
+/* Pressed — the fill snaps in fast */
+.btn-brutal:active::before {
+  transition-duration: 0.12s;
+}
+/* Solid — ink base, clay fill slides over it */
 .btn-brutal-solid {
   background: var(--color-ink);
   color: var(--color-canvas);
 }
-.btn-brutal-solid:hover {
+.btn-brutal-solid::before {
   background: var(--color-clay-deep);
+}
+.btn-brutal-solid:hover,
+.btn-brutal-solid:focus-visible {
   border-color: var(--color-clay-deep);
-  color: var(--color-canvas);
 }
 /* Small variant — nav CTA, compact rows */
 .btn-brutal-sm {
@@ -461,26 +498,3 @@ html.lenis body { height: auto; }
   }
 }
 
-/* Omni voice demo — waveform bars. Bars breathe like an active voice
-   channel; the global reduced-motion rule freezes them (VoiceDemo also
-   skips the class entirely when reduced). */
-@keyframes voice-bar {
-  0%, 100% { transform: scaleY(0.25); }
-  50% { transform: scaleY(1); }
-}
-.voice-bar {
-  transform-origin: center;
-  background: var(--color-clay-deep);
-  border-radius: 99px;
-  animation: voice-bar 1.1s ease-in-out infinite;
-}
-
-/* Press-to-talk — bars breathe fast and tall while "listening" */
-@keyframes voice-bar-live {
-  0%, 100% { transform: scaleY(0.4); }
-  50% { transform: scaleY(1.2); }
-}
-.voice-bar-live {
-  animation-name: voice-bar-live !important;
-  animation-duration: 0.45s !important;
-}

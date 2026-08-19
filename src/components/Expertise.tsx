@@ -1,6 +1,5 @@
 import { expertise } from "@/data/portfolio";
 import { Reveal, SectionHeading } from "@/components/primitives";
-import VoiceDemo from "@/components/ui/VoiceDemo";
 
 export default function Expertise() {
   return (
@@ -65,11 +64,6 @@ export default function Expertise() {
             ))}
           </div>
         </div>
-      </Reveal>
-
-      {/* Omni — live voice-agent demo */}
-      <Reveal delay={0.24} className="mt-6">
-        <VoiceDemo />
       </Reveal>
     </section>
   );
