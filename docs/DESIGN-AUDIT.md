@@ -55,8 +55,11 @@ buttons, chips, icons, CTA band, reveal.
 | `.section-ink` vs `.cta-full` | Gradient consistency | Same visual role (full-bleed warm band), different recipe: 155deg/3-stop vs 140deg/2-stop | 155° vs 140° | **Major** | ✅ Both use one 155deg/3-stop token chain |
 | Ember plate across 4 components | Gradient & saturation | One texture at four opacities — hero `.5`, manifesto `.45`, CTA `.55`, monogram card none — so the same image reads as four different materials | 4 values | **Major** | ✅ Banded to 0.5–0.62 with a documented recipe |
 | Ember plate masks | Gradient consistency | Three mask ramps for one treatment: `black 30%/transparent 92%`, `30%/95%`, `25%/90%` | 3 variants | **Minor** | ✅ Normalised |
-| **Home hero** | Imagery | **No hero image at all** — the hero reused the small ember plate bottom-left at 50%, while the pinned manifesto below it got the full-bleed smoke treatment. The most important screen had the weakest art direction | — | **Major** | ✅ New `public/textures/hero-smoke.jpg` generated in the same palette and smoke language; 3-layer treatment (image → readability scrim → content) |
+| **Home hero** | Imagery | The hero uses the small ember plate bottom-left at 50% while the pinned manifesto below it gets the full-bleed treatment, so the most important screen carries the lighter art direction | `opacity: .5`, `min(760px, 70%)` | **Minor** | ⚠️ **Reverted at client request** — a generated smoke plate was trialled and rejected; the original ember treatment reads better. Noted as an observation, not a defect |
 | `.monogram-card` vs `.portrait-img` | Imagery treatment | The two states of the same slot are graded differently — the portrait gets `saturate(.85) contrast(1.08) sepia(.12)`, the monogram fallback gets nothing | 1 graded, 1 raw | **Minor** | ✅ Shared grade + radius + `--e-2` |
+| `.site-header` on mobile | Nested layer / elevation | **Header renders transparent — page content scrolls visibly through the nav bar.** `html` and `body` both carry `overflow-x: clip`, which disables `backdrop-filter` in several mobile engines. The header then falls back to bare `rgba(42,0,1,.86)` with no blur at all | `.86` alpha, no blur | **Blocker** | ✅ Opaque `--canvas` by default; translucency reinstated only inside `@supports (backdrop-filter)`; fully opaque below 760px |
+| `.nav-toggle` vs `.mobile-panel` | Layering / component states | Header is `z-index: 90`, the drawer is `96` — so the open drawer renders **over** the toggle. The `.nav-toggle.open` X state has always existed in CSS and could never be seen or tapped | z 90 vs 96 | **Major** | ✅ `.nav-toggle` given `position: relative; z-index: 97` — the X is now visible and tappable |
+| `.mobile-panel` | Nested layer / elevation | Drawer relied on a single `background` shorthand with no isolation, leaving it exposed to the fixed `mix-blend-mode: soft-light` grain layer | — | **Minor** | ✅ Explicit `background-color` + `isolation: isolate` |
 | Global | Dark/light mode | No `color-scheme` declared. Single-scheme dark product, so the UA paints **light** autofill backgrounds, scrollbars and form controls over the ember ground | missing | **Major** | ✅ `color-scheme: dark` + explicit `-webkit-autofill` override |
 | Layout grids | Grid & alignment | Three gutters for one index pattern (`.index-row` 70px, `.why-row` 64px, `.point-list` 24px gap) and three split ratios (`.split` 5/7, `.service-detail-grid` 7/4, `.hero-foot` 7/4) | 3 + 3 | **Minor** | ⚠️ Consolidate to one 64px ordinal gutter and two documented split ratios |
 | `.footer-grid` | Grid & alignment | Column fractions `2fr 1fr 1.4fr 1.3fr` — arbitrary decimals that align to no grid | 4 fractions | **Minor** | ⚠️ Move to `3fr 2fr 2fr 2fr` or a 12-col subgrid |
@@ -134,7 +137,7 @@ built, rather than one-off slips.
 9. Semantic colour tokens; success no longer painted brand-orange ✅
 10. `--accent-hover` === `--accent-2` (dead link hover) ✅
 11. UI-component borders below 3:1 ✅
-12. Hero had no hero image ✅
+12. Hero art direction — smoke plate trialled, ⚠️ reverted to the original ember plate at client request
 13. Gradient/opacity/mask recipe unification ✅
 14. `color-scheme: dark` + autofill ✅
 15. Touch targets: header CTA, footer links, nav toggle ✅
@@ -178,7 +181,7 @@ the pre-audit score where it differed.
 | Component visual states | 9 (2) | Default/hover/pressed/focus/disabled authored per component type; `aria-current` wired. −1: no loading state for anything except the form submit button |
 | Grid & alignment | 7 (6) | Container, gutters and section rhythm are consistent. −3: three index gutters, three split ratios and arbitrary footer fractions are all still live — reported, not fixed, because consolidating them changes layout |
 | Shadow/elevation & depth | 9 (1) | 5 rungs, warm-tinted so shadows belong to the palette, assigned by z-order. −1: `--e-glow` mixes a ring and a shadow in one token, which will get misused |
-| Imagery/photo treatment | 9 (4) | New hero plate in the same palette and smoke language; shared grade, radius, opacity band and mask recipe. −1: zero real photography exists yet — `portrait.jpg` is still a fallback path |
+| Imagery/photo treatment | 8 (4) | Shared grade, radius and mask recipe across every plate; ember opacity band tightened. −2: zero real photography exists yet (`portrait.jpg` is still a fallback path), and the hero deliberately keeps a lighter plate than the manifesto below it |
 | Dark/light mode consistency | 9 (5) | Single-scheme dark, now *declared* — autofill, scrollbars and controls no longer paint light. −1: single-scheme is a legitimate choice but it is nowhere written down as one |
 | Responsive/adaptive behaviour | 7 (6) | Layouts hold at the two authored breakpoints; nothing clips or overlaps. −3: the 760–1020px band is ungoverned and the hero's `11.5vw` is at its worst there; the timeline rail persists without markers |
 | Whitespace & density balance | 8 (5) | Page-hero/section rhythm unified; density is now a token decision. −2: `/pricing` and `/services/[slug]` still run dense next to a sparse `/about`, and negative space is inherited from the grid rather than composed |
@@ -186,10 +189,10 @@ the pre-audit score where it differed.
 | Motion/animation styling | 9 (4) | 4 durations × 4 easings, everything remapped, reduced-motion respected throughout. −1: the `.btn::before` sheen sweep is a different animation idea from every other transition in the system |
 | Touch target sizing | 9 (3) | 44px minimum enforced on markers, toggle, nav, footer links and buttons. −1: `.btn-sm` sits at 40px on desktop by deliberate exception, which is a rule with a hole in it |
 | Overall design-language coherence | 9 (3) | It reads as one system: one ramp, one scale, one grid, one motion set, one elevation model, one brand mark, and the CSS/JSX seam is closed. −1: the grid inconsistencies (three index gutters, three split ratios, arbitrary footer fractions) are known and unfixed |
-| **Hero (home)** | 9 (4) | Real hero plate, 3-layer treatment, guaranteed AA regardless of image. −1: `11.5vw` type is fragile in the mid band |
+| **Hero (home)** | 8 (7) | Original ember plate retained by client preference; type, spacing and CTA hierarchy all now token-driven. −2: `11.5vw` title is fragile in the 760–1020px band, and the plate is lighter than the manifesto's directly below it |
 | **Pinned manifesto** | 9 (8) | The strongest piece of art direction in the product — pinned scrub, full-bleed smoke, oversized Fraunces. −1: opacity was one of four competing values before normalisation |
-| **Site header** | 9 (6) | Sticky, elevated, blurred, current-page state, 44px targets. −1: `.btn-sm` exception |
-| **Mobile menu** | 9 (6) | Highest surface gets the strongest shadow; overlay blurs; current-page state; 44px rows. −1: no staggered entrance for the nav items, so it opens flatter than the rest of the product moves |
+| **Site header** | 9 (4) | Opaque on mobile, blur only where it renders, elevated, current-page state, 44px targets. −1: `.btn-sm` sits at 40px on desktop by exception |
+| **Mobile menu** | 9 (4) | Highest surface gets the strongest shadow; overlay blurs; toggle now sits above the drawer so the X state is finally reachable; current-page state; 44px rows. −1: no staggered entrance for the nav items, so it opens flatter than the rest of the product moves |
 | **Site footer** | 8 (4) | Orphan classes authored, targets fixed, tokens applied. −2: arbitrary column fractions remain |
 | **Index rows** (`.index-row`) | 9 (6) | The best component in the system — genuinely the "anti-card." Now has focus, active and AA-safe numerals on both grounds. −1: gutter differs from `.why-row`'s |
 | **Cards** (`.card` family) | 8 (3) | Real fill, real elevation, real hover/focus/active. −2: the base-class-then-nullify pattern is still live in two modifiers |

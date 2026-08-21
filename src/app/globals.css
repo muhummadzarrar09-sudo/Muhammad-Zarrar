@@ -812,11 +812,23 @@ button {
   position: sticky;
   top: 0;
   z-index: 90;
-  background: rgba(42, 0, 1, 0.86);
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  /* Opaque by default. html/body carry `overflow-x: clip`, which disables
+     backdrop-filter in several mobile engines — the header then fell back to
+     bare 86% alpha with no blur and page content scrolled through it. */
+  background: var(--canvas);
   border-bottom: 1px solid var(--hairline-soft);
   box-shadow: var(--e-2);
+}
+
+/* Only go translucent where the blur genuinely renders. */
+@supports (
+  (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))
+) {
+  .site-header {
+    background: rgba(42, 0, 1, 0.86);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  }
 }
 
 .header-inner {
@@ -883,6 +895,11 @@ button {
 }
 
 .nav-toggle {
+  /* Header is z-90, the drawer is z-96 — the toggle (and its X state, which
+     the CSS has always defined) was rendered underneath the open panel and
+     could not be seen or tapped. */
+  position: relative;
+  z-index: 97;
   display: none;
   flex-direction: column;
   justify-content: center;
@@ -985,50 +1002,24 @@ button {
 
 /* ---------- Hero ---------- */
 
-/* --- Hero art direction ---------------------------------------------------
-   Layer 0  --canvas
-   Layer 1  ::before  hero-smoke.jpg, anchored right, feathered on two axes
-   Layer 2  ::after   canvas-tinted scrim so headline contrast never depends
-                      on where the smoke happens to sit
-   Layer 3  .container content
-   Same treatment recipe as .manifesto and .cta-full: one image family, one
-   mask direction, one opacity band (0.45–0.62). ------------------------- */
+/* Hero — the original ember plate, bottom-left, as on main. */
 .hero {
   position: relative;
   padding: var(--sp-22) 0 var(--sp-22);
   overflow: hidden;
-  isolation: isolate;
 }
 
 .hero::before {
   content: "";
   position: absolute;
-  inset: 0 -4% -10% 20%;
-  z-index: -2;
-  background: url("/textures/hero-smoke.jpg") right center / cover no-repeat;
-  opacity: 0.62;
-  mask-image: linear-gradient(to left, black 34%, transparent 96%),
-    linear-gradient(to top, black 22%, transparent 92%);
-  -webkit-mask-image: linear-gradient(to left, black 34%, transparent 96%),
-    linear-gradient(to top, black 22%, transparent 92%);
-  mask-composite: intersect;
-  -webkit-mask-composite: source-in;
-  pointer-events: none;
-}
-
-/* Readability scrim — guarantees the AA ratio regardless of the photo. */
-.hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    100deg,
-    var(--canvas) 22%,
-    rgba(42, 0, 1, 0.82) 46%,
-    rgba(42, 0, 1, 0.34) 74%,
-    rgba(42, 0, 1, 0.12) 100%
-  );
+  left: -6%;
+  bottom: -12%;
+  width: min(760px, 70%);
+  aspect-ratio: 16 / 9;
+  background: url("/textures/ember.jpg") center / cover no-repeat;
+  opacity: 0.5;
+  mask-image: linear-gradient(to top, black 30%, transparent 92%);
+  -webkit-mask-image: linear-gradient(to top, black 30%, transparent 92%);
   pointer-events: none;
 }
 
@@ -1314,8 +1305,8 @@ button {
   bottom: -20%;
   width: min(820px, 75%);
   aspect-ratio: 16 / 9;
-  background: url("/textures/hero-smoke.jpg") center / cover no-repeat;
-  opacity: 0.5;
+  background: url("/textures/ember.jpg") center / cover no-repeat;
+  opacity: 0.55;
   transform: scaleX(-1);
   mask-image: linear-gradient(to top, black 25%, transparent 90%);
   -webkit-mask-image: linear-gradient(to top, black 25%, transparent 90%);
@@ -2083,7 +2074,7 @@ button {
   inset: auto 0 -10% 0;
   height: 70%;
   background: url("/textures/ember.jpg") center bottom / cover no-repeat;
-  opacity: 0.55;
+  opacity: 0.45;
   mask-image: linear-gradient(to top, black 30%, transparent 95%);
   -webkit-mask-image: linear-gradient(to top, black 30%, transparent 95%);
   pointer-events: none;
@@ -2779,6 +2770,15 @@ textarea:-webkit-autofill {
 }
 
 @media (max-width: 760px) {
+  /* Mobile keeps the header fully opaque even where blur works — with the
+     drawer, the grain layer and a scrolling page underneath, translucency
+     reads as a bug rather than as glass. */
+  .site-header {
+    background: var(--canvas);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .container {
     padding-inline: var(--sp-5);
   }
@@ -2914,4 +2914,11 @@ textarea:-webkit-autofill {
 .checklist li svg {
   margin-top: 3px;
   color: var(--accent);
+}
+
+/* The drawer must never let the page show through it, whatever the engine
+   does with backdrop-filter or blend modes on the grain layer. */
+.mobile-panel {
+  background-color: var(--ground-850);
+  isolation: isolate;
 }
