@@ -54,7 +54,7 @@ export default function AboutPage() {
         ])}
       />
 
-      <section className="page-hero">
+      <section className="page-hero" id="top" data-tl="Top">
         <div className="container">
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -74,7 +74,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="story-heading">
+      <section className="section" id="story" data-tl="Story" aria-labelledby="story-heading">
         <div className="container service-detail-grid">
           <Reveal className="monogram-card">
             {hasPortrait ? (

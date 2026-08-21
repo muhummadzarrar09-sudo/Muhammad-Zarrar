@@ -25,7 +25,7 @@ export default function ServicesPage() {
         ])}
       />
 
-      <section className="page-hero">
+      <section className="page-hero" id="top" data-tl="Top">
         <div className="container">
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -44,7 +44,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="section" aria-label="Service list">
+      <section className="section" id="services-list" data-tl="Services" aria-label="Service list">
         <div className="container">
           <div className="grid" style={{ gap: 24 }}>
             {SERVICES.map((service) => (

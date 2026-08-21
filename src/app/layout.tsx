@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { RouteProgress } from "@/components/route-progress";
+import { ScrollTimeline } from "@/components/scroll-timeline";
 import { RegisterSw } from "@/components/register-sw";
 import { JsonLd } from "@/components/jsonld";
 import { SITE_URL, SITE_NAME, POSITIONING } from "@/lib/site";
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0E2931",
+  themeColor: "#2A0001",
   width: "device-width",
   initialScale: 1,
 };
@@ -105,6 +106,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <RouteProgress />
+        <ScrollTimeline />
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />

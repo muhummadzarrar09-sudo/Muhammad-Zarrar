@@ -24,7 +24,7 @@ export default function ProcessPage() {
         ])}
       />
 
-      <section className="page-hero">
+      <section className="page-hero" id="top" data-tl="Top">
         <div className="container">
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -42,7 +42,7 @@ export default function ProcessPage() {
         </div>
       </section>
 
-      <section className="section" aria-label="Process phases">
+      <section className="section" id="phases" data-tl="Phases" aria-label="Process phases">
         <div className="container">
           <div className="grid grid-2" style={{ gap: 22 }}>
             {PROCESS_STEPS.map((step, i) => (

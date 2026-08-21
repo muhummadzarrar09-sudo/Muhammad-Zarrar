@@ -52,7 +52,7 @@ export default function PricingPage() {
         }}
       />
 
-      <section className="page-hero">
+      <section className="page-hero" id="top" data-tl="Top">
         <div className="container">
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -71,7 +71,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="services-pricing-heading">
+      <section className="section" id="rates" data-tl="Rates" aria-labelledby="services-pricing-heading">
         <div className="container">
           <Reveal className="section-head">
             <h2 id="services-pricing-heading" style={{ fontSize: "1.7rem" }}>
@@ -136,7 +136,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="terms-heading">
+      <section className="section" id="terms" data-tl="Terms" aria-labelledby="terms-heading">
         <div className="container">
           <div className="service-detail-grid">
             <Reveal className="card">

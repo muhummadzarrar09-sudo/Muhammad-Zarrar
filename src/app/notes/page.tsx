@@ -43,7 +43,7 @@ export default function NotesIndexPage() {
         ])}
       />
 
-      <section className="page-hero">
+      <section className="page-hero" id="top" data-tl="Top">
         <div className="container">
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
