@@ -1,40 +1,101 @@
 # Logo Replacement Guide — where the real logo plugs in
 
-The monogram shipped on the site (`public/images/logo-mark.svg`) is a **vector
-rebuild** of the clay ZS logo, produced because the original PNG never landed
-in the workspace (chat-attachment glitch — the file bytes were never delivered
-to the sandbox). It is parametric: `scripts/logo_geom.py` →
-`scripts/emit_logo_svg.py`.
+## Status
 
-When the **real artwork** is ready, drop the original PNG at:
+The mark shipping today (`public/images/logo-mark.svg`) is an **observational
+rebuild** of the clay ZS logo, drawn against the reference artwork the client
+supplied in chat.
 
-```
-public/images/source-logo.png
-```
+> **The source PNG has still never reached the workspace.** It has been
+> attached three times; each time the chat attachment delivered no file bytes
+> to the sandbox (the last attempt reported a save path of
+> `/home/user/uploads/` — a directory that does not exist). The rebuild was
+> therefore drawn by eye from the rendered reference, **not** traced from
+> pixels. It matches the reference's geometry, layer structure and palette,
+> but it is not a pixel-perfect trace.
 
-(e.g. drag it into the repo on GitHub's web UI, or commit it locally.)
-Then run the swap below — every surface regenerates from that one file.
+To get a pixel-perfect trace, land the original file at
+`public/images/source-logo.png` — the most reliable route is to drag it into
+the repo through GitHub's web UI and commit it, which bypasses the chat
+attachment path entirely. Then run the swap procedure at the bottom of this
+file and every surface regenerates.
 
-## Plug-in points (what reads the logo today)
+## The two-mark problem — resolved
 
-| File | Role |
+There used to be **two different logos** shipping as one brand:
+
+| Where | What it drew |
 | --- | --- |
-| `public/images/logo-mark.svg` | Canonical vector. Used on-page and as `public/favicon.svg` |
-| `src/app/icon.svg` | Next.js file-convention favicon (served as `/icon.svg`) |
-| `src/app/apple-icon.png` | Apple touch icon (180px raster) |
-| `public/favicon.ico` | Legacy favicon (32 + 48 px, multi-size ICO) |
-| `public/icons/icon-192.png` | PWA manifest icon — `src/app/manifest.ts` |
-| `public/icons/icon-512.png` | PWA manifest icon — `src/app/manifest.ts` |
-| `public/icons/icon-maskable-512.png` | PWA maskable icon (safe-zone padded) |
-| `src/app/layout.tsx` (~line 71) | Organization schema `logo:` → `/icons/icon-192.png` |
-| `src/app/about/page.tsx` (~line 91) | On-page placement #1 — monogram card (until `public/images/portrait.jpg` exists) |
-| `src/app/not-found.tsx` (~line 12) | On-page placement #2 — the 404 mark |
+| `src/components/logo.tsx` (header + footer) | A rounded-rect aura tile, `rx=9`, flat Z, accent dot |
+| `public/images/logo-mark.svg` (`/about`, `404`) | The clay ZS monogram |
 
-The logo appears **exactly twice on-page** by design (about + 404). Keep it
-that way when swapping — don't sprinkle it into the header/footer; the
-wordmark owns those.
+They shared no geometry, no corner language and no colour treatment. The
+header mark's `rx=9` also contradicted the 2px radius system, and its accent
+dot sat at 2.80:1 against its own tile — under the 3:1 minimum.
 
-## Swap procedure (pixel-perfect trace)
+`logo.tsx` now draws the **same ZS mark**, so there is one brand across every
+touchpoint.
+
+## Two variants, one mark
+
+The mark ships in two cuts. This is deliberate, not duplication.
+
+| File | Use | Why |
+| --- | --- | --- |
+| `public/images/logo-mark.svg` | **≥64px** — `/about`, `404`, PWA icons, apple-icon, OG | Full detail: cream inline, maroon drop shade, dark keyline, copper gradient |
+| `public/images/logo-mark-small.svg` | **<64px** — favicon, header, footer | Two flat colours, no inline, no shade, no keyline |
+
+The reason is measured, not aesthetic: rendered at 32px, the full mark's
+pinstripes and keyline blur into a single brown mass and the letterforms stop
+reading. The small variant keeps the identical skeleton and proportions and
+drops only what cannot survive the pixel grid.
+
+`src/components/logo.tsx` inlines the small variant rather than fetching the
+`.svg`, so the header costs no extra request.
+
+## Plug-in points
+
+| File | Role | Variant |
+| --- | --- | --- |
+| `public/images/logo-mark.svg` | Canonical vector | full |
+| `public/images/logo-mark-small.svg` | Small-size cut | small |
+| `public/favicon.svg` | Copy of the canonical vector | full |
+| `src/app/icon.svg` | Next.js file-convention favicon (`/icon.svg`) | full |
+| `src/app/apple-icon.png` | Apple touch icon, 180px | full |
+| `public/favicon.ico` | Legacy favicon, 32 + 48 multi-size ICO | **small** |
+| `public/icons/icon-192.png` | PWA manifest icon | full |
+| `public/icons/icon-512.png` | PWA manifest icon | full |
+| `public/icons/icon-maskable-512.png` | PWA maskable, safe-zone padded | full |
+| `src/app/layout.tsx` (~line 71) | Organization schema `logo:` → `/icons/icon-192.png` | — |
+| `src/app/about/page.tsx` (~line 91) | On-page placement #1 (until `public/images/portrait.jpg` exists) | full |
+| `src/app/not-found.tsx` (~line 12) | On-page placement #2 — the 404 mark, 88px | full |
+| `src/components/logo.tsx` | Header + footer lockup, 34/36px | small, inlined |
+
+The **full** mark appears on-page exactly twice by design (about + 404). Keep
+it that way — the wordmark plus the small mark own the header and footer.
+
+## Regenerating the rasters
+
+Every raster derives from the canonical vector. After any change to
+`logo-mark.svg`:
+
+```bash
+node scripts/build-logo-assets.mjs   # svg copies + all PNGs
+python3 -c "
+from PIL import Image
+Image.open('/tmp/fav48.png').save('public/favicon.ico', sizes=[(32,32),(48,48)])"
+npm run build
+```
+
+`scripts/build-logo-assets.mjs` owns the padding values (icons 24, maskable
+62, ICO 8) and the `#2A0001` ground, so they no longer live in a comment.
+
+> **Note:** the ICO should be built from `logo-mark-small.svg`, not the
+> canonical vector — see the variants section above.
+
+## If the source PNG ever lands
+
+Drop it at `public/images/source-logo.png`, then:
 
 ```bash
 # 1. background removal (black ground -> alpha, keeps maroon shadows)
@@ -59,46 +120,28 @@ for y in range(h):
 out.save("/tmp/logo-transparent.png")
 EOF
 
-# 2. vectorize (pip install vtracer pillow)
+# 2. vectorize (pip install vtracer)
 python3 -c "
 import vtracer
 vtracer.convert_image_to_svg_py('/tmp/logo-transparent.png',
     'public/images/logo-mark.svg',
     {'filter_speckle': 8, 'color_precision': 6, 'path_precision': 6})"
 
-# 3. regenerate every raster from the new SVG
-node scripts/render_svg.mjs public/images/logo-mark.svg /tmp/icon-padded.svg-wrap 1 # (see below)
+# 3. regenerate every raster
+node scripts/build-logo-assets.mjs
 ```
 
-For step 3, regenerate the rasters exactly like the current set was built —
-wrap the traced SVG on the eclipse ground with padding, then rasterize:
-
-```bash
-# padded variants (pad values used today: icons 24, maskable 62, ico 8)
-#   <svg viewBox="..."><rect fill="#2A0001"/>…traced paths…</svg>
-node scripts/render_svg.mjs <padded-24.svg>  public/icons/icon-512.png 512
-node scripts/render_svg.mjs <padded-24.svg>  public/icons/icon-192.png 192
-node scripts/render_svg.mjs <padded-62.svg>  public/icons/icon-maskable-512.png 512
-node scripts/render_svg.mjs <padded-24.svg>  src/app/apple-icon.png 180
-node scripts/render_svg.mjs <padded-8.svg>   /tmp/fav32.png 32
-node scripts/render_svg.mjs <padded-8.svg>   /tmp/fav48.png 48
-python3 -c "
-from PIL import Image
-a = Image.open('/tmp/fav32.png'); b = Image.open('/tmp/fav48.png')
-b.save('public/favicon.ico', sizes=[(32,32),(48,48)])"
-cp public/images/logo-mark.svg public/favicon.svg
-cp public/images/logo-mark.svg src/app/icon.svg
-```
-
-Then `npm run build`, eyeball `/about` and any 404, commit, done.
+Then redraw `logo-mark-small.svg` to match the traced geometry — it is a
+hand-simplified cut and does not regenerate automatically. Check it at 32px
+before committing.
 
 ## Notes
 
-- `scripts/generate-assets.mjs` still contains the **old geometric glyph**
-  icon generator (pre-monogram). It now only owns the OG images; do not use it
-  to regenerate icons — the monogram pipeline above supersedes it.
-- Palette of the rebuild (also the brand tokens): rust `#b3573a`, copper
+- Palette (also the brand tokens): rust `#b3573a`, copper
   `#d97b3f → #ef9d5c`, cream `#f2e2c4`, maroon `#611a0c`, eclipse ground
-  `#2A0001`.
-- The rebuild's geometry lives in `scripts/logo_geom.py`; tweak + rerun
-  `scripts/emit_logo_svg.py` to adjust the vector without the source PNG.
+  `#2A0001`. These map to `--ember-*` and `--ground-*` in `globals.css`.
+- `scripts/generate-assets.mjs` still contains the **old geometric glyph**
+  icon generator. It now owns only the OG images — do not use it for icons.
+- `scripts/logo_geom.py` / `scripts/emit_logo_svg.py` generated the *previous*
+  parametric rebuild, which has been replaced. They are superseded by the
+  hand-authored SVG and are kept only for reference.

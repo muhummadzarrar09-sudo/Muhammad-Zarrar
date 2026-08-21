@@ -65,9 +65,11 @@ buttons, chips, icons, CTA band, reveal.
 | `.nav-toggle` | Touch targets | 42×42 px — 2px under the minimum | `42px` | **Minor** | ✅ `--tap-min: 44px` |
 | `.btn-sm` (header CTA) | Touch targets | ≈32px computed height on the primary conversion control | `.6rem` padding, `.72rem` text | **Major** | ✅ `min-height: 40px`, 44px at mobile breakpoint |
 | Footer link columns | Touch targets | ~19px tall targets stacked with a 10px gap — mis-taps guaranteed on mobile | ~19px | **Major** | ✅ 44px min-height on all footer links |
-| **Header/footer logo vs /about & 404 logo** | Branding | **Two entirely different marks ship as "the logo."** `src/components/logo.tsx` draws a rounded-rect aura tile (`rx=9`) with a flat Z and a dot; `public/images/logo-mark.svg` is the clay ZS monogram. They share no geometry, no corner language and no colour treatment | 2 marks | **Blocker** | ⏸ **Blocked on the source PNG.** Unify to one mark via `logo_replacement.md` once the file lands |
-| `LogoMark` dot | Colour & contrast | Accent dot `#DA7134` on the aura tile `#852616` = **2.80:1** — under the 3:1 for a meaningful graphic element | 2.80:1 | **Minor** | ⏸ Held with the logo unification — not changing brand geometry before the real artwork arrives |
-| `LogoMark` tile | Border radius | Logo tile is `rx=9` while `--radius` is 2px — the mark's corner language contradicts the entire UI | 9px vs 2px | **Minor** | ⏸ Held with the logo unification |
+| **Header/footer logo vs /about & 404 logo** | Branding | **Two entirely different marks shipped as "the logo."** `src/components/logo.tsx` drew a rounded-rect aura tile (`rx=9`) with a flat Z and a dot; `public/images/logo-mark.svg` was the clay ZS monogram. No shared geometry, corner language or colour treatment | 2 marks | **Blocker** | ✅ `logo.tsx` now draws the same ZS mark. One brand across all 13 touchpoints |
+| Previous `logo-mark.svg` rebuild | Branding | The shipped "vector rebuild" of the clay logo was **not a recognisable ZS** — the S rendered as overlapping scribble, the Z was an oversized block, and a stray quarter-arc floated top-right. Rendered and compared against the reference to confirm | — | **Blocker** | ✅ Hand-rebuilt against the reference: slab Z with cream inline, elegant layered S, maroon drop, dark keyline |
+| Full mark at favicon sizes | Branding / imagery | At 32px the full mark's cream pinstripes, maroon shade and keyline blur into a single brown mass — the letterforms stop reading entirely. Verified by rendering | 32px | **Major** | ✅ `logo-mark-small.svg` — same skeleton and proportions, detail stripped. Drives favicon + header + footer |
+| `LogoMark` dot | Colour & contrast | Accent dot `#DA7134` on the aura tile `#852616` = **2.80:1** — under 3:1 for a meaningful graphic element | 2.80:1 | **Minor** | ✅ Gone with the aura tile; the mark is now cream Z (13.2:1) + copper S (5.82:1) on the ground |
+| `LogoMark` tile | Border radius | Logo tile was `rx=9` while `--radius` is 2px — the mark's corner language contradicted the entire UI | 9px vs 2px | **Minor** | ✅ Tile removed entirely |
 | `layout.tsx` `themeColor` | Branding | `"#2A0001"` uppercase vs `--canvas: #2a0001` lowercase — the browser-chrome colour is a hand-copied literal, not a token read | case drift | **Minor** | ⚠️ Trivial, but it's a second source of truth for the brand ground |
 | Responsive | Responsive behaviour | Only two breakpoints (1020, 760) for an 1180px container. Nothing governs 760–1020, where `.hero-title`'s `11.5vw` produces ~87–117px type against 20px gutters | 2 breakpoints | **Major** | ⚠️ Add a ~900px step and reduce the hero `vw` coefficient in that band |
 | `.scroll-timeline` under 1020px | Responsive behaviour | Markers are hidden but the rail, track and fill remain — a decorative 3px stripe with no function | `display: none` on markers only | **Minor** | ⚠️ Hide the whole rail, or keep the fill as an intentional progress bar |
@@ -125,7 +127,7 @@ built, rather than one-off slips.
 5. Component state layer + keyboard focus ✅
 6. `.tl-marker` 8×8px touch target ✅
 7. Type scale — 36 sizes, 14 weights ✅
-8. **Two different logos shipping as one brand** ⏸ *blocked on the source PNG*
+8. **Two different logos shipping as one brand** ✅ — plus the shipped rebuild wasn't a legible ZS, and the full mark was unreadable at favicon size. All three fixed
 
 **Major**
 
@@ -150,7 +152,7 @@ built, rather than one-off slips.
 24. Index gutters / split ratios / footer fractions ⚠️
 25. Scroll-timeline rail below 1020px ⚠️
 26. `themeColor` literal vs token ⚠️
-27. Logo dot contrast + `rx=9` corner language ⏸ *with the logo unification*
+27. Logo dot contrast + `rx=9` corner language ✅
 
 ---
 
@@ -170,7 +172,7 @@ the pre-audit score where it differed.
 | Typography hierarchy | 9 (3) | 10-step scale, 5 weights, ranks unified across all 13 routes. −1: Fraunces optical sizing (`opsz`) is available on the variable font and still unused at display sizes |
 | Typographic craft | 8 (4) | Kerning, ligatures, balance and a single measure are in. −2: no explicit letter-spacing compensation on the 7.1rem hero (large optical serif wants tighter tracking than −0.028em), and the italic display face pairs with Inter by contrast rather than by any documented logic |
 | Spacing & padding system | 9 (4) | Strict 4pt scale, 17 rungs, off-grid values eliminated from the token layer. −1: a handful of component-local values were migrated by mapping to the nearest rung rather than being re-designed |
-| Border radius consistency | 9 (6) | 3 rungs, tokenised, hardcodes removed. −1: the logo's `rx=9` still contradicts the 2px language — held pending the real artwork |
+| Border radius consistency | 10 (6) | 3 rungs, tokenised, hardcodes removed, and the logo's contradictory `rx=9` tile is gone |
 | Iconography | 9 (4) | One stroke weight, 2 sizes, baseline-aligned. −1: WhatsApp remains a solid-fill glyph among stroke icons — it's a third-party brand mark, so this is a defensible but real inconsistency |
 | Button hierarchy | 9 (5) | Primary/secondary/tertiary now differ by fill, border, elevation and weight — not colour alone. −1: `.btn-ghost` and `.btn-ghost-on-ink` remain two classes for one concept |
 | Component visual states | 9 (2) | Default/hover/pressed/focus/disabled authored per component type; `aria-current` wired. −1: no loading state for anything except the form submit button |
@@ -180,10 +182,10 @@ the pre-audit score where it differed.
 | Dark/light mode consistency | 9 (5) | Single-scheme dark, now *declared* — autofill, scrollbars and controls no longer paint light. −1: single-scheme is a legitimate choice but it is nowhere written down as one |
 | Responsive/adaptive behaviour | 7 (6) | Layouts hold at the two authored breakpoints; nothing clips or overlaps. −3: the 760–1020px band is ungoverned and the hero's `11.5vw` is at its worst there; the timeline rail persists without markers |
 | Whitespace & density balance | 8 (5) | Page-hero/section rhythm unified; density is now a token decision. −2: `/pricing` and `/services/[slug]` still run dense next to a sparse `/about`, and negative space is inherited from the grid rather than composed |
-| Branding consistency | 4 (4) | **Two different marks ship as the logo.** Wordmark, colour application and brand voice are otherwise consistent across all 13 routes. Cannot be resolved without the source artwork |
+| Branding consistency | 8 (4) | One mark across all 13 touchpoints, in two measured cuts (full ≥64px, simplified <64px). Wordmark, colour application and voice consistent throughout. −2: the vector is an **observational rebuild drawn from the rendered reference, not a pixel trace** — the source PNG has failed to reach the workspace three times, so fine curve detail is interpretation |
 | Motion/animation styling | 9 (4) | 4 durations × 4 easings, everything remapped, reduced-motion respected throughout. −1: the `.btn::before` sheen sweep is a different animation idea from every other transition in the system |
 | Touch target sizing | 9 (3) | 44px minimum enforced on markers, toggle, nav, footer links and buttons. −1: `.btn-sm` sits at 40px on desktop by deliberate exception, which is a rule with a hole in it |
-| Overall design-language coherence | 8 (3) | It now reads as one system: one ramp, one scale, one grid, one motion set, one elevation model, and the CSS/JSX seam is closed. −2: the two-logo problem is a visible seam on the most brand-critical element, and the grid inconsistencies are known-but-unfixed |
+| Overall design-language coherence | 9 (3) | It reads as one system: one ramp, one scale, one grid, one motion set, one elevation model, one brand mark, and the CSS/JSX seam is closed. −1: the grid inconsistencies (three index gutters, three split ratios, arbitrary footer fractions) are known and unfixed |
 | **Hero (home)** | 9 (4) | Real hero plate, 3-layer treatment, guaranteed AA regardless of image. −1: `11.5vw` type is fragile in the mid band |
 | **Pinned manifesto** | 9 (8) | The strongest piece of art direction in the product — pinned scrub, full-bleed smoke, oversized Fraunces. −1: opacity was one of four competing values before normalisation |
 | **Site header** | 9 (6) | Sticky, elevated, blurred, current-page state, 44px targets. −1: `.btn-sm` exception |
@@ -197,8 +199,8 @@ the pre-audit score where it differed.
 | **Buttons** | 9 (4) | Three real levels, five states each, elevation-differentiated, AA in every state including pressed. −1: sheen animation is off-system |
 | **CTA band** | 9 (5) | Unified gradient recipe, smoke plate, AA-safe on all three stops. −1: shares its recipe with `.section-ink` but is a separate component, so they can drift again |
 | **Marquee** | 8 (7) | Clean, slow, tokenised, static under reduced motion. −2: 42s is an untokenised magic number and the `✦` divider is the only decorative glyph in the product |
-| **404 page** | 9 (6) | Status chip now has an AA border and a quiet fill; `.serif-display` is real. −1: uses the monogram that doesn't match the header mark |
-| **Logo / brand mark** | 4 (4) | Two different marks; accent dot at 2.80:1; `rx=9` against a 2px system. Blocked on the source file |
+| **404 page** | 10 (6) | Status chip has an AA border and a quiet fill, `.serif-display` is real, and its 88px monogram is now the same mark as the header |
+| **Logo / brand mark** | 8 (2) | One mark, two measured cuts, legible at 32px, AA-safe, `rx=9` gone, full raster pipeline in `scripts/build-logo-assets.mjs`. −2: observational rebuild rather than a pixel trace of the source artwork |
 
 ---
 
@@ -213,6 +215,11 @@ npm run build                     # 25/25 static pages
 38 computed pairs · 5-rung elevation scale · 10-step type scale · 17-step 4pt spacing scale ·
 4×4 motion matrix · 44px minimum touch target.
 
-**Outstanding and blocked:** the two-logo problem (⏸ needs `public/images/source-logo.png`),
-the 760–1020px breakpoint band, and the grid-fraction consolidation (⚠️ both need a layout
-decision rather than a token change).
+**Outstanding:** the 760–1020px breakpoint band and the grid-fraction consolidation (⚠️ both
+need a layout decision rather than a token change).
+
+**Caveat on the logo:** the mark is an observational rebuild drawn against the rendered
+reference. The source PNG has failed to reach the workspace on three separate attachments, so
+a pixel-perfect trace was not possible. Landing `public/images/source-logo.png` via GitHub's
+web UI would let `logo_replacement.md`'s trace pipeline run and replace the interpretation
+with the real curves.
