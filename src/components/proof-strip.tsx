@@ -5,19 +5,19 @@ export function ProofStrip() {
         <div className="proof-strip-inner">
           <div className="proof-metric">
             <div className="proof-metric-value">0</div>
-            <div className="proof-metric-label">trackers, pixels, analytics — open Network tab</div>
+            <div className="proof-metric-label">trackers, pixels, analytics — verify in Network</div>
           </div>
           <div className="proof-metric">
-            <div className="proof-metric-value">47kb</div>
-            <div className="proof-metric-label">JS total (self-hosted fonts, no CDN) — built to our own standard</div>
+            <div className="proof-metric-value">12 REQ</div>
+            <div className="proof-metric-label">total — HTML + 2 fonts + 1 texture + CSS + content</div>
           </div>
           <div className="proof-metric">
-            <div className="proof-metric-value">100%</div>
-            <div className="proof-metric-label">server-rendered — Google sees everything, not a blank shell</div>
+            <div className="proof-metric-value">100% SSR</div>
+            <div className="proof-metric-label">server-rendered — Google sees full HTML, not blank shell</div>
           </div>
           <div className="proof-metric">
-            <div className="proof-metric-value">38/38</div>
-            <div className="proof-metric-label">contrast pairs passing AA — checked by script, not eyeballed</div>
+            <div className="proof-metric-value">38/38 AA</div>
+            <div className="proof-metric-label">contrast pairs passing — checked by script, not eyeballed</div>
           </div>
         </div>
       </div>
