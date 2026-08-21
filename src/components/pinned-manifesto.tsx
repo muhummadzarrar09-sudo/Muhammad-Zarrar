@@ -35,6 +35,8 @@ export function PinnedManifesto() {
       ]);
       if (cancelled) return;
       gsap.registerPlugin(ScrollTrigger);
+      // iOS/Android URL-bar resizes must not retrigger or jump the pin.
+      ScrollTrigger.config({ ignoreMobileResize: true });
 
       const lines = el.querySelectorAll<HTMLElement>("[data-line]");
       gsap.set(lines, { y: 64, autoAlpha: 0 });
