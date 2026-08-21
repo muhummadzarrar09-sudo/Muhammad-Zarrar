@@ -1,77 +1,45 @@
 /**
- * Generates PWA icons (192/512/maskable), the Apple touch icon, and the
- * branded OG image set (home + per-page variants, 1200x630) using
- * ImageMagick — no runtime dependencies.
+ * Generates the branded OG image set (home + per-page variants, 1200x630)
+ * using ImageMagick + @resvg/resvg-js.
  * Run: node scripts/generate-assets.mjs   (or: npm run assets)
  *
- * Brand: ink tile (#0E2931), canvas Z (#E2E2E0), teal period.
+ * The brand mark is rendered from the canonical vector
+ * (public/images/logo-mark.svg) — the same source every icon uses.
+ * Icons are owned by scripts/build-logo-assets.mjs, NOT this script.
  */
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { mkdir } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import os from "node:os";
+import { Resvg } from "@resvg/resvg-js";
 
 const run = promisify(execFile);
 const ROOT = process.cwd();
 
 const INK = "#2A0001";
-const CANVAS = "#FFD5A9";
-const TEAL = "#DA7134";
 const TEAL_DIM = "#E89154";
 const MID_TEAL = "#DA7134";
 const MUTED_ON_INK = "#F0B98D";
 const HATCH_INK = "#400C04";
 
-/* Z polygon + period dot in a 48x48 design space (matches src/app/icon.svg). */
-const Z_POLY = [
-  [12, 12], [36, 12], [36, 17], [21, 31], [36, 31], [36, 36],
-  [12, 36], [12, 31], [27, 17], [12, 17],
-];
-const DOT = { cx: 40, cy: 33.5, r: 3 };
-
-function scaledPoly(scale, ox = 0, oy = 0) {
-  return Z_POLY.map(([x, y]) => `${x * scale + ox},${y * scale + oy}`).join(" ");
-}
-
-function scaledDot(scale, ox = 0, oy = 0) {
-  const cx = DOT.cx * scale + ox;
-  const cy = DOT.cy * scale + oy;
-  const r = DOT.r * scale;
-  return `${cx},${cy} ${cx + r},${cy}`;
-}
+const LOGO_SVG = path.join(ROOT, "public/images/logo-mark.svg");
+/* Supersampled (2x) size of the mark on the OG canvas, and its placement. */
+const MARK_SIZE = 640;
+const MARK_X = 10;
+const MARK_Y = 300;
 
 async function convert(args) {
   await run("convert", args);
 }
 
-/** Icon: ink tile with Z mark + teal period, supersampled 4x for clean edges. */
-async function icon(outPath, size) {
-  const ss = size * 4;
-  const s = ss / 48;
-  await convert([
-    "-size", `${ss}x${ss}`, `xc:${INK}`,
-    "-fill", CANVAS, "-draw", `polygon ${scaledPoly(s)}`,
-    "-fill", TEAL, "-draw", `circle ${scaledDot(s)}`,
-    "-filter", "Lanczos", "-resize", `${size}x${size}`,
-    outPath,
-  ]);
-  console.log("✓", path.relative(ROOT, outPath));
-}
-
-/** Maskable icon: artwork at 78% so OS cropping never touches the mark. */
-async function maskableIcon(outPath, size) {
-  const ss = size * 4;
-  const inner = ss * 0.78;
-  const s = inner / 48;
-  const offset = (ss - inner) / 2;
-  await convert([
-    "-size", `${ss}x${ss}`, `xc:${INK}`,
-    "-fill", CANVAS, "-draw", `polygon ${scaledPoly(s, offset, offset)}`,
-    "-fill", TEAL, "-draw", `circle ${scaledDot(s, offset, offset)}`,
-    "-filter", "Lanczos", "-resize", `${size}x${size}`,
-    outPath,
-  ]);
-  console.log("✓", path.relative(ROOT, outPath));
+/** Rasterize the canonical ZS monogram (transparent ground) for compositing. */
+async function renderMark() {
+  const svg = await readFile(LOGO_SVG, "utf8");
+  const out = path.join(os.tmpdir(), "og-mark.png");
+  const r = new Resvg(svg, { fitTo: { mode: "width", value: MARK_SIZE } });
+  await writeFile(out, r.render().asPng());
+  return out;
 }
 
 /** OG card set — one branded variant per key page. */
@@ -156,17 +124,13 @@ const OG_PAGES = [
   },
 ];
 
-/** Branded OG image: ink background, Z mark, serif headline, teal details. */
-async function ogImage(outPath, { eyebrow, lines, sub }) {
+/** Branded OG image: ink background, ZS monogram, serif headline, teal details. */
+async function ogImage(outPath, { eyebrow, lines, sub }, markPng) {
   const W = 2400, H = 1260; // 2x supersample
   const args = ["-size", `${W}x${H}`, `xc:${INK}`];
 
-  /* Z mark, left side */
-  const box = 300;
-  const s = box / 48;
-  const ox = 180, oy = 480;
-  args.push("-fill", CANVAS, "-draw", `polygon ${scaledPoly(s, ox, oy)}`);
-  args.push("-fill", TEAL, "-draw", `circle ${scaledDot(s, ox, oy)}`);
+  /* ZS monogram (canonical mark), left side */
+  args.push(markPng, "-geometry", `+${MARK_X}+${MARK_Y}`, "-composite");
 
   /* Diagonal hatch texture, bottom-right corner */
   for (let x = 1460; x <= W; x += 36) {
@@ -219,15 +183,11 @@ async function ogImage(outPath, { eyebrow, lines, sub }) {
   console.log("✓", path.relative(ROOT, outPath));
 }
 
-await mkdir(path.join(ROOT, "public/icons"), { recursive: true });
 await mkdir(path.join(ROOT, "public"), { recursive: true });
 
-await icon(path.join(ROOT, "public/icons/icon-192.png"), 192);
-await icon(path.join(ROOT, "public/icons/icon-512.png"), 512);
-await maskableIcon(path.join(ROOT, "public/icons/icon-maskable-512.png"), 512);
-await icon(path.join(ROOT, "src/app/apple-icon.png"), 180);
+const markPng = await renderMark();
 for (const page of OG_PAGES) {
-  await ogImage(path.join(ROOT, "public", page.out), page);
+  await ogImage(path.join(ROOT, "public", page.out), page, markPng);
 }
 
 console.log("\nAll assets generated.");

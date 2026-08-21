@@ -140,8 +140,9 @@ before committing.
 - Palette (also the brand tokens): rust `#b3573a`, copper
   `#d97b3f → #ef9d5c`, cream `#f2e2c4`, maroon `#611a0c`, eclipse ground
   `#2A0001`. These map to `--ember-*` and `--ground-*` in `globals.css`.
-- `scripts/generate-assets.mjs` still contains the **old geometric glyph**
-  icon generator. It now owns only the OG images — do not use it for icons.
+- `scripts/generate-assets.mjs` owns only the OG images. It now composites
+  the canonical monogram (`public/images/logo-mark.svg`, rendered via
+  resvg) instead of the old geometric glyph — do not use it for icons.
 - `scripts/logo_geom.py` / `scripts/emit_logo_svg.py` generated the *previous*
   parametric rebuild, which has been replaced. They are superseded by the
   hand-authored SVG and are kept only for reference.
