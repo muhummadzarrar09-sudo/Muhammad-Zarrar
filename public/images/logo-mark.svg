@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="140 140 240 240" role="img" aria-label="Zarrar.Solutions monogram">
+  <defs>
+    <linearGradient id="cu" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ef9d5c"/>
+      <stop offset=".55" stop-color="#d97b3f"/>
+      <stop offset="1" stop-color="#a34a24"/>
+    </linearGradient>
+  </defs>
+  
+    <polygon points="150,150 300,150 208,300 250,300 250,346 150,346 150,330 256,196 150,196" fill="#b3573a"/>
+  <path d="M 168 190 L 262 190 L 168 302" fill="none" stroke="#f2e2c4" stroke-width="7" stroke-linejoin="miter" stroke-linecap="butt"/>
+  <path d="M 168 332 L 230 332" fill="none" stroke="#f2e2c4" stroke-width="6" stroke-linejoin="miter" stroke-linecap="butt"/>
+  <path d="M 281 200 L 188 324" fill="none" stroke="#0a0403" stroke-width="19" stroke-linejoin="miter" stroke-linecap="butt"/>
+  <path d="M 281 200 L 188 324" fill="none" stroke="url(#cu)" stroke-width="12" stroke-linejoin="miter" stroke-linecap="butt"/>
+  <path d="M 295 207 L 202 331" fill="none" stroke="#0a0403" stroke-width="13" stroke-linejoin="miter" stroke-linecap="butt"/>
+  <path d="M 295 207 L 202 331" fill="none" stroke="#611a0c" stroke-width="7" stroke-linejoin="miter" stroke-linecap="butt"/>
+  <path d="M 323 212 C 320.2 216.3, 313.7 231.0, 306 238 C 298.3 245.0, 281.8 251.3, 277 254" fill="none" stroke="#0a0403" stroke-width="38" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M 323 212 C 320.2 216.3, 313.7 231.0, 306 238 C 298.3 245.0, 285.7 248.7, 277 254 C 268.3 259.3, 259.7 263.7, 254 270 C 248.3 276.3, 244.0 284.3, 243 292 C 242.0 299.7, 242.8 308.7, 248 316 C 253.2 323.3, 264.0 332.0, 274 336 C 284.0 340.0, 297.7 341.5, 308 340 C 318.3 338.5, 329.3 333.7, 336 327 C 342.7 320.3, 347.2 308.5, 348 300 C 348.8 291.5, 346.0 281.8, 341 276 C 336.0 270.2, 321.8 266.8, 318 265" fill="none" stroke="#b3573a" stroke-width="29" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M 342.0 273.0 A 52 52 0 0 1 277.5 347.2" fill="none" stroke="#0a0403" stroke-width="14"/>
+  <path d="M 342.0 273.0 A 52 52 0 0 1 277.5 347.2" fill="none" stroke="#611a0c" stroke-width="8"/>
+  <path d="M 316 224 C 313.3 227.8, 306.5 240.8, 300 247 C 293.5 253.2, 284.0 256.8, 277 261 C 270.0 265.2, 261.2 270.2, 258 272" fill="none" stroke="#0a0403" stroke-width="13" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M 316 224 C 313.3 227.8, 306.5 240.8, 300 247 C 293.5 253.2, 284.0 256.8, 277 261 C 270.0 265.2, 261.2 270.2, 258 272" fill="none" stroke="url(#cu)" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M 246 300 C 247.0 303.3, 246.7 313.8, 252 320 C 257.3 326.2, 268.7 333.8, 278 337 C 287.3 340.2, 299.2 340.7, 308 339 C 316.8 337.3, 325.7 333.0, 331 327 C 336.3 321.0, 339.5 310.3, 340 303 C 340.5 295.7, 335.0 286.3, 334 283" fill="none" stroke="#0a0403" stroke-width="25" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M 246 300 C 247.0 303.3, 246.7 313.8, 252 320 C 257.3 326.2, 268.7 333.8, 278 337 C 287.3 340.2, 299.2 340.7, 308 339 C 316.8 337.3, 325.7 333.0, 331 327 C 336.3 321.0, 339.5 310.3, 340 303 C 340.5 295.7, 335.0 286.3, 334 283" fill="none" stroke="url(#cu)" stroke-width="17" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M 242 290 L 247 303" fill="none" stroke="#f2e2c4" stroke-width="8" stroke-linejoin="miter" stroke-linecap="butt"/>
+  <path d="M 317.4 321.5 A 27 27 0 0 1 270.6 321.5" fill="none" stroke="#0a0403" stroke-width="14"/>
+  <path d="M 317.4 321.5 A 27 27 0 0 1 270.6 321.5" fill="none" stroke="#f2e2c4" stroke-width="9"/>
+  <path d="M 309 158 L 323 212" fill="none" stroke="#0a0403" stroke-width="16" stroke-linejoin="miter" stroke-linecap="butt"/>
+  <path d="M 309 158 L 323 212" fill="none" stroke="url(#cu)" stroke-width="9" stroke-linejoin="miter" stroke-linecap="butt"/>
+  <path d="M 325.5 157.7 A 49 49 0 0 1 361.4 226.7" fill="none" stroke="#f2e2c4" stroke-width="10"/>
+  <path d="M 323.6 168.6 A 38 38 0 0 1 349.9 225.0" fill="none" stroke="#d97b3f" stroke-width="11"/>
+  <path d="M 322.4 180.6 A 26 26 0 0 1 338.3 220.9" fill="none" stroke="#b3573a" stroke-width="12"/>
+</svg>
