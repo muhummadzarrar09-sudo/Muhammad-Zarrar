@@ -41,7 +41,7 @@ export default function PrivacyPage() {
 
       <section className="section">
         <div className="container">
-          <div className="prose" style={{ maxWidth: 760 }}>
+          <div className="prose">
             <Reveal>
               <h2>What this site collects</h2>
               <p>

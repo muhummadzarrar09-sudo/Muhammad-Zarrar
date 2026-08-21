@@ -6,7 +6,7 @@ import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { Reveal } from "@/components/reveal";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
-import { CheckIcon, CrossIcon } from "@/components/icons";
+import { CrossIcon } from "@/components/icons";
 
 export const metadata = pageMeta({
   title: "About — Muhammad Zarrar, Senior Full-Stack Builder",
@@ -127,7 +127,7 @@ export default function AboutPage() {
         <div className="container">
           <Reveal className="section-head">
             <span className="eyebrow">Values</span>
-            <h2 id="values-heading" style={{ fontSize: "1.9rem" }}>
+            <h2 id="values-heading">
               Three rules, kept in writing
             </h2>
           </Reveal>
@@ -146,26 +146,18 @@ export default function AboutPage() {
         <div className="container">
           <Reveal className="section-head">
             <span className="eyebrow">Equally important</span>
-            <h2 id="not-doing-heading" style={{ fontSize: "1.9rem" }}>
+            <h2 id="not-doing-heading">
               What you won&rsquo;t get here
             </h2>
           </Reveal>
           <div className="grid grid-2">
             {NOT_DOING.map((item) => (
               <Reveal key={item} className="card why-card">
-                <span
-                  className="why-check"
-                  style={{
-                    background: "rgba(134,18,17,0.07)",
-                    borderColor: "rgba(134,18,17,0.25)",
-                    color: "var(--danger)",
-                  }}
-                  aria-hidden="true"
-                >
+                <span className="why-check" aria-hidden="true">
                   <CrossIcon size={16} />
                 </span>
                 <div>
-                  <p style={{ fontWeight: 640 }}>{item}</p>
+                  <p>{item}</p>
                 </div>
               </Reveal>
             ))}

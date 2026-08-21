@@ -36,7 +36,7 @@ export function CheckIcon({ size = 16, className }: IconProps) {
       <path
         d="M20 6.5 9.4 17 4 11.8"
         stroke="currentColor"
-        strokeWidth="2.4"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -58,8 +58,9 @@ export function CrossIcon({ size = 16, className }: IconProps) {
       <path
         d="M18 6 6 18M6 6l12 12"
         stroke="currentColor"
-        strokeWidth="2.6"
+        strokeWidth="2"
         strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -104,12 +105,12 @@ export function SpinnerIcon({ size = 16, className }: IconProps) {
         r="9"
         stroke="currentColor"
         strokeOpacity="0.3"
-        strokeWidth="2.5"
+        strokeWidth="2"
       />
       <path
         d="M21 12a9 9 0 0 0-9-9"
         stroke="currentColor"
-        strokeWidth="2.5"
+        strokeWidth="2"
         strokeLinecap="round"
       />
     </svg>

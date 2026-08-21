@@ -4,28 +4,155 @@
    No pills. No card grids. No glow slop. Print discipline on dark ground.
    ========================================================================== */
 
+/* ==========================================================================
+   DESIGN TOKENS — one source of truth.
+   Nothing below this block may invent a raw hex, a raw px step, or a
+   one-off easing. If a value is needed, it gets a token here first.
+   ========================================================================== */
+
 :root {
-  --canvas: #2a0001;
-  --surface: rgba(255, 213, 169, 0.03);
-  --surface-2: rgba(255, 213, 169, 0.06);
-  --inset: #220001;
+  /* ---- Ember ramp (derived from the brand accent #da7134, 50→900) -------
+     Contrast vs --canvas noted per step; 600 and darker are NON-TEXT only. */
+  --ember-50: #fadfc8;   /* 14.97:1 */
+  --ember-100: #f5cdb0;  /* 12.96:1 */
+  --ember-200: #efb994;  /* 10.92:1 */
+  --ember-300: #e79f72;  /*  8.75:1 */
+  --ember-400: #e18853;  /*  7.13:1 */
+  --ember-500: #da7134;  /*  5.82:1  ← brand accent */
+  --ember-550: #c1642e;  /*  4.67:1  pressed fill — label still AA */
+  --ember-600: #b55d2b;  /*  4.16:1  large text / icons only */
+  --ember-700: #8f4a22;  /*  2.88:1  non-text */
+  --ember-800: #663419;  /*  1.88:1  non-text */
+  --ember-900: #402010;  /*  1.31:1  non-text */
+
+  /* ---- Ground ramp (the dark side of the same hue family) ---- */
+  --ground-900: #1c0001; /* footer — deepest */
+  --ground-850: #1e0001; /* mobile panel / tooltip */
+  --ground-800: #220001; /* inset wells */
+  --ground-750: #240001; /* monogram card */
+  --ground-700: #2a0001; /* canvas — the dominant 60% */
+  --ground-600: #360802;
+  --ground-500: #4a1109;
+  --ground-400: #5e180d; /* ink gradient light stop (AA-safe) */
+  --ground-300: #7c2213; /* NON-TEXT ONLY — decorative gradient tail */
+
+  /* ---- Roles ---- */
+  --canvas: var(--ground-700);
+  --inset: var(--ground-800);
   --aura: #852616;
-  --accent: #da7134;
-  --accent-hover: #e89154;
-  --accent-2: #e89154;
-  --danger: #ff6a52;
+  --accent: var(--ember-500);
+  --accent-hover: var(--ember-300); /* must differ from --accent-2 or links
+                                       have no visible hover at all */
+  --accent-2: var(--ember-400);
+  --accent-on-ink: var(--ember-300); /* accent that still reads on --ink */
   --text: #ffd5a9;
   --text-2: #d99a68;
+  --text-3: #ad744e;                 /* placeholders / de-emphasis — 4.89:1 */
   --text-on-aura: #ffd5a9;
   --text-2-on-aura: #f0b98d;
 
-  --hairline: rgba(255, 213, 169, 0.2);
-  --hairline-soft: rgba(255, 213, 169, 0.1);
+  /* ---- Semantic — deliberately OUTSIDE the ember ramp so a status can
+     never be mistaken for decoration. All ≥4.5:1 on --canvas. ---- */
+  --danger: #ff5c47;      /* 6.26:1 on --canvas */
+  --danger-on-ink: #ff7361; /* 4.89:1 on --ground-400 */
+  --success: #4cc38a;  /* 8.63:1 */
+  --warning: #f5b544;  /* 10.53:1 */
+  --info: #7cb8e0;     /* 8.91:1 */
+  --danger-quiet: rgba(255, 92, 71, 0.14);
+  --success-quiet: rgba(76, 195, 138, 0.14);
+
+  /* ---- Surfaces & lines (elevation by tone, on a dark ground) ---- */
+  --surface: rgba(255, 213, 169, 0.03);
+  --surface-2: rgba(255, 213, 169, 0.06);
+  --surface-3: rgba(255, 213, 169, 0.09);
+  --hairline: rgba(255, 213, 169, 0.28);
+  --hairline-soft: rgba(255, 213, 169, 0.16);
+  --hairline-strong: rgba(255, 213, 169, 0.42); /* 3:1 — focus & controls */
+
+  /* ---- Elevation: one shadow system, four rungs. Warm-tinted, never
+     neutral black, so shadows belong to the palette. ---- */
+  --e-0: none;
+  --e-1: 0 1px 2px rgba(10, 0, 1, 0.4);
+  --e-2: 0 4px 12px -2px rgba(10, 0, 1, 0.5), 0 2px 4px -2px rgba(10, 0, 1, 0.4);
+  --e-3: 0 12px 28px -6px rgba(10, 0, 1, 0.6), 0 4px 10px -4px rgba(10, 0, 1, 0.45);
+  --e-4: 0 28px 60px -12px rgba(10, 0, 1, 0.7), 0 8px 20px -8px rgba(10, 0, 1, 0.5);
+  --e-glow: 0 0 0 1px rgba(218, 113, 52, 0.28), 0 8px 26px -8px rgba(218, 113, 52, 0.34);
+
+  /* ---- Spacing — strict 4pt grid. No raw px below. ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 28px;
+  --sp-8: 32px;
+  --sp-9: 36px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-14: 56px;
+  --sp-16: 64px;
+  --sp-18: 72px;
+  --sp-22: 88px;
+  --sp-24: 96px;
+  --sp-32: 128px;
+
+  /* ---- Type scale — 1.25 minor third, rounded to 0.0625rem (1px) ---- */
+  --fs-2xs: 0.6875rem;  /* 11px */
+  --fs-xs: 0.75rem;     /* 12px */
+  --fs-sm: 0.875rem;    /* 14px */
+  --fs-base: 1rem;      /* 16px */
+  --fs-md: 1.0625rem;   /* 17px — body */
+  --fs-lg: 1.25rem;     /* 20px */
+  --fs-xl: 1.5rem;      /* 24px */
+  --fs-2xl: 1.875rem;   /* 30px */
+  --fs-3xl: 2.375rem;   /* 38px */
+  --fs-4xl: 3rem;       /* 48px */
+
+  /* ---- Weights — five rungs, not twelve ---- */
+  --fw-body: 420;
+  --fw-medium: 520;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-display: 470;   /* Fraunces optical weight for large display */
+
+  /* ---- Line heights & measure ---- */
+  --lh-display: 1.06;
+  --lh-heading: 1.2;
+  --lh-body: 1.65;
+  --measure: 62ch;
+  --measure-tight: 34ch;
+
+  /* ---- Tracking ---- */
+  --ls-display: -0.028em;
+  --ls-heading: -0.018em;
+  --ls-body: 0;
+  --ls-caps: 0.18em;
+  --ls-caps-wide: 0.24em;
+
+  /* ---- Radius — 3 rungs, sharp editorial by design ---- */
+  --r-sm: 2px;
+  --r-md: 4px;
+  --r-lg: 8px;
+  --radius: var(--r-sm);
+
+  /* ---- Motion — 4 durations, 4 easings. Everything maps to these. ---- */
+  --dur-1: 120ms;  /* state tint */
+  --dur-2: 200ms;  /* standard control */
+  --dur-3: 320ms;  /* panel / accordion */
+  --dur-4: 560ms;  /* entrance reveal */
+  --ease-standard: cubic-bezier(0.32, 0.72, 0.28, 1);
+  --ease-entrance: cubic-bezier(0.21, 0.6, 0.35, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-emphatic: cubic-bezier(0.19, 0.7, 0.16, 1);
+
+  /* ---- Controls ---- */
+  --tap-min: 44px;   /* minimum touch target, everywhere */
+  --focus-ring: 2px solid var(--accent);
+  --focus-offset: 3px;
 
   --font-body: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
-
-  --radius: 2px;
 }
 
 /* ---------- Base ---------- */
@@ -59,9 +186,12 @@ body {
   background: var(--canvas);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 16.5px;
-  line-height: 1.65;
-  font-weight: 420;
+  font-size: var(--fs-md);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-body);
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures contextual;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -89,10 +219,11 @@ h3,
 h4 {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 520;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-heading);
   color: var(--text);
+  text-wrap: balance;
 }
 
 p {
@@ -114,13 +245,19 @@ button {
 
 ::selection {
   background: rgba(218, 113, 52, 0.5);
-  color: #ffe9d2;
+  color: var(--ember-50);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--r-sm);
+}
+
+/* Focus on the ink/aura grounds needs a light ring, not an ember one. */
+.section-ink :focus-visible,
+.cta-full :focus-visible {
+  outline-color: var(--ember-100);
 }
 
 .skip-link {
@@ -185,7 +322,7 @@ button {
 }
 
 .section-ink {
-  background: linear-gradient(155deg, #7c2213 0%, #521208 52%, #360802 100%);
+  background: linear-gradient(155deg, var(--ground-400) 0%, var(--ground-500) 48%, var(--ground-600) 100%);
   color: var(--text-on-aura);
 }
 
@@ -219,6 +356,22 @@ button {
 
 .section-ink .sec-label {
   color: var(--text-2-on-aura);
+}
+
+/* Ember 500 only reaches 3.96:1 on the ink ground — step up the ramp. */
+.section-ink .sec-index,
+.section-ink .idx-no,
+.section-ink .idx-arrow,
+.cta-full .sec-index {
+  color: var(--accent-on-ink);
+}
+
+.section-ink .index-row:hover .idx-title {
+  color: var(--ember-200);
+}
+
+.section-ink .idx-mark {
+  color: var(--danger-on-ink);
 }
 
 .sec-rule {
@@ -327,8 +480,12 @@ button {
   text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
-  transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease,
-    color 0.2s ease;
+  min-height: var(--tap-min);
+  transition: transform var(--dur-1) var(--ease-standard),
+    background-color var(--dur-2) var(--ease-standard),
+    border-color var(--dur-2) var(--ease-standard),
+    box-shadow var(--dur-2) var(--ease-standard),
+    color var(--dur-2) var(--ease-standard);
 }
 
 .btn::before {
@@ -337,7 +494,7 @@ button {
   inset: 0;
   transform: translateX(-110%);
   background: linear-gradient(100deg, transparent 25%, rgba(255, 240, 220, 0.28) 50%, transparent 75%);
-  transition: transform 0.55s ease;
+  transition: transform var(--dur-4) var(--ease-standard);
   pointer-events: none;
 }
 
@@ -353,41 +510,86 @@ button {
   transform: scale(0.98);
 }
 
-.btn:disabled {
-  opacity: 0.75;
-  cursor: progress;
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  filter: saturate(0.4);
+  cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
+.btn:disabled::before {
+  display: none;
+}
+
+/* Hierarchy: primary = filled + elevated, secondary = outlined + flat,
+   tertiary (.btn-quiet) = text only. Distinguishable without colour alone. */
 .btn-primary {
   background: var(--accent);
-  color: #2a0001;
+  color: var(--canvas);
+  box-shadow: var(--e-2);
 }
 
 .btn-primary:hover {
   background: var(--accent-hover);
-  color: #2a0001;
+  color: var(--canvas);
+  box-shadow: var(--e-3);
+}
+
+.btn-primary:active {
+  background: var(--ember-550);
+  box-shadow: var(--e-1);
+}
+
+.btn-quiet {
+  background: transparent;
+  border-color: transparent;
+  color: var(--accent-2);
+  padding-inline: var(--sp-2);
+  min-height: var(--tap-min);
+}
+
+.btn-quiet:hover {
+  color: var(--ember-300);
+  background: var(--surface-2);
 }
 
 .btn-ghost {
   background: transparent;
-  border-color: var(--hairline);
+  border-color: var(--hairline-strong);
   color: var(--text);
 }
 
 .btn-ghost:hover {
   border-color: var(--accent);
   color: var(--text);
+  background: var(--surface-2);
+}
+
+.btn-ghost:active {
+  background: var(--surface-3);
+  border-color: var(--ember-600);
 }
 
 .btn-light {
   background: var(--text);
-  color: #2a0001;
+  color: var(--canvas);
+}
+
+.btn-light {
+  box-shadow: var(--e-2);
 }
 
 .btn-light:hover {
-  background: #ffe3c2;
-  color: #2a0001;
+  background: var(--ember-50);
+  color: var(--canvas);
+  box-shadow: var(--e-3);
+}
+
+.btn-light:active {
+  background: var(--ember-100);
+  box-shadow: var(--e-1);
 }
 
 .btn-ghost-on-ink {
@@ -403,13 +605,15 @@ button {
 }
 
 .btn-sm {
-  padding: 0.6rem 1.05rem;
-  font-size: 0.72rem;
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-xs);
+  min-height: 40px;
 }
 
 .btn-lg {
-  padding: 1.15rem 2rem;
-  font-size: 0.86rem;
+  padding: var(--sp-5) var(--sp-8);
+  font-size: var(--fs-sm);
+  min-height: 52px;
 }
 
 .btn-block {
@@ -467,11 +671,15 @@ button {
   background: var(--surface);
   border: 1px solid var(--hairline-soft);
   border-radius: var(--radius);
-  padding: 28px;
+  padding: var(--sp-7);
+  box-shadow: var(--e-1);
 }
 
 .card-hover {
-  transition: transform 0.22s ease, border-color 0.22s ease, background-color 0.22s ease;
+  transition: transform var(--dur-2) var(--ease-standard),
+    border-color var(--dur-2) var(--ease-standard),
+    box-shadow var(--dur-2) var(--ease-standard),
+    background-color var(--dur-2) var(--ease-standard);
 }
 
 .card-hover::after {
@@ -485,10 +693,17 @@ button {
   transition: right 0.35s ease;
 }
 
-.card-hover:hover {
+.card-hover:hover,
+.card-hover:focus-within {
   transform: translateY(-2px);
   border-color: var(--hairline);
   background: var(--surface-2);
+  box-shadow: var(--e-3);
+}
+
+.card-hover:active {
+  transform: translateY(0);
+  box-shadow: var(--e-1);
 }
 
 .card-hover:hover::after {
@@ -539,8 +754,8 @@ button {
 .idx-no {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1.15rem;
-  color: rgba(218, 113, 52, 0.75);
+  font-size: var(--fs-lg);
+  color: var(--ember-400);
 }
 
 .idx-title {
@@ -597,10 +812,23 @@ button {
   position: sticky;
   top: 0;
   z-index: 90;
-  background: rgba(42, 0, 1, 0.86);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* Opaque by default. html/body carry `overflow-x: clip`, which disables
+     backdrop-filter in several mobile engines — the header then fell back to
+     bare 86% alpha with no blur and page content scrolled through it. */
+  background: var(--canvas);
   border-bottom: 1px solid var(--hairline-soft);
+  box-shadow: var(--e-2);
+}
+
+/* Only go translucent where the blur genuinely renders. */
+@supports (
+  (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))
+) {
+  .site-header {
+    background: rgba(42, 0, 1, 0.86);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  }
 }
 
 .header-inner {
@@ -667,14 +895,19 @@ button {
 }
 
 .nav-toggle {
+  /* Header is z-90, the drawer is z-96 — the toggle (and its X state, which
+     the CSS has always defined) was rendered underneath the open panel and
+     could not be seen or tapped. */
+  position: relative;
+  z-index: 97;
   display: none;
   flex-direction: column;
   justify-content: center;
   gap: 6px;
-  width: 42px;
-  height: 42px;
+  width: var(--tap-min);
+  height: var(--tap-min);
   border-radius: var(--radius);
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--hairline-strong);
   background: transparent;
   cursor: pointer;
   align-items: center;
@@ -706,8 +939,10 @@ button {
   background: rgba(0, 0, 0, 0.6);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.22s ease;
+  transition: opacity var(--dur-3) var(--ease-standard);
   z-index: 95;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .menu-overlay.show {
@@ -721,15 +956,16 @@ button {
   right: 0;
   bottom: 0;
   width: min(340px, 88vw);
-  background: #1e0001;
+  background: var(--ground-850);
   z-index: 96;
-  padding: 96px 30px 30px;
+  padding: var(--sp-24) var(--sp-8) var(--sp-8);
+  box-shadow: var(--e-4);
   display: flex;
   flex-direction: column;
   gap: 22px;
   transform: translateX(103%);
   visibility: hidden;
-  transition: transform 0.26s cubic-bezier(0.32, 0.72, 0.28, 1), visibility 0.26s;
+  transition: transform var(--dur-3) var(--ease-standard), visibility var(--dur-3);
   border-left: 1px solid var(--hairline-soft);
 }
 
@@ -754,7 +990,6 @@ button {
 
 .mobile-nav a:hover {
   color: var(--accent-2);
-  font-style: italic;
 }
 
 .mobile-panel-note {
@@ -767,9 +1002,10 @@ button {
 
 /* ---------- Hero ---------- */
 
+/* Hero — the original ember plate, bottom-left, as on main. */
 .hero {
   position: relative;
-  padding: 84px 0 88px;
+  padding: var(--sp-22) 0 var(--sp-22);
   overflow: hidden;
 }
 
@@ -789,29 +1025,6 @@ button {
 
 .hero .container {
   position: relative;
-}
-
-.hero-meta {
-  display: flex;
-  flex-wrap: wrap;
-  border-block: 1px solid var(--hairline-soft);
-  margin-bottom: 64px;
-}
-
-.hero-meta span {
-  padding: 13px 28px 13px 0;
-  margin-right: 28px;
-  border-right: 1px solid var(--hairline-soft);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-2);
-}
-
-.hero-meta span:last-child {
-  border-right: 0;
-  margin-right: 0;
 }
 
 .hero-title {
@@ -993,9 +1206,9 @@ button {
 .phase .ph-no {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 2.6rem;
-  font-weight: 450;
-  color: rgba(218, 113, 52, 0.6);
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-display);
+  color: var(--ember-400);
   line-height: 1;
 }
 
@@ -1059,7 +1272,7 @@ button {
   position: relative;
   overflow: hidden;
   padding: 130px 0;
-  background: linear-gradient(140deg, #7c2213, #400c04 70%);
+  background: linear-gradient(155deg, var(--ground-400) 0%, var(--ground-500) 48%, var(--ground-600) 100%);
 }
 
 .cta-full::before {
@@ -1090,7 +1303,7 @@ button {
 
 .cta-full h2 em {
   font-style: italic;
-  color: #ffe3c2;
+  color: var(--ember-50);
 }
 
 .cta-full .cta-body {
@@ -1110,7 +1323,7 @@ button {
 /* ---------- Footer ---------- */
 
 .site-footer {
-  background: #1c0001;
+  background: var(--ground-900);
   color: var(--text);
   padding: 72px 0 0;
   border-top: 1px solid var(--hairline-soft);
@@ -1138,7 +1351,7 @@ button {
   font-size: 0.78rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(217, 154, 104, 0.7);
+  color: var(--text-2);
 }
 
 .footer-col {
@@ -1152,8 +1365,8 @@ button {
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(217, 154, 104, 0.8);
-  margin-bottom: 10px;
+  color: var(--text-2);
+  margin-bottom: var(--sp-3);
 }
 
 .footer-col a {
@@ -1164,7 +1377,6 @@ button {
 
 .footer-col a:hover {
   color: var(--accent-2);
-  font-style: italic;
 }
 
 .footer-contact {
@@ -1307,9 +1519,10 @@ button {
 
 .price-card {
   border: 1px solid var(--hairline);
-  background: var(--surface);
-  padding: 28px;
+  background: var(--surface-2);
+  padding: var(--sp-7);
   border-radius: var(--radius);
+  box-shadow: var(--e-2);
 }
 
 .price-card .price-card-label {
@@ -1391,7 +1604,6 @@ button {
 
 .faq-q button:hover {
   color: var(--accent-2);
-  font-style: italic;
 }
 
 .faq-icon {
@@ -1426,10 +1638,11 @@ button {
 /* ---------- Forms ---------- */
 
 .form-card {
-  background: var(--surface);
+  background: var(--surface-2);
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
-  padding: 36px;
+  padding: var(--sp-9);
+  box-shadow: var(--e-3);
 }
 
 .field {
@@ -1459,9 +1672,9 @@ button {
   width: 100%;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline-strong);
   border-radius: 0;
-  padding: 10px 2px;
+  padding: var(--sp-3) var(--sp-1);
   font-family: inherit;
   font-size: 1rem;
   color: var(--text);
@@ -1470,14 +1683,14 @@ button {
 
 .field textarea {
   resize: vertical;
-  min-height: 90px;
-  border: 1px solid var(--hairline-soft);
-  padding: 12px 14px;
+  min-height: 96px;
+  border: 1px solid var(--hairline-strong);
+  padding: var(--sp-3) var(--sp-4);
 }
 
 .field input::placeholder,
 .field textarea::placeholder {
-  color: rgba(217, 154, 104, 0.5);
+  color: var(--text-3);
 }
 
 .field input:focus,
@@ -1508,8 +1721,8 @@ button {
 .form-status-ok {
   margin-top: 14px;
   font-size: 0.92rem;
-  font-weight: 560;
-  color: var(--accent-2);
+  font-weight: var(--fw-semibold);
+  color: var(--success);
   text-align: center;
 }
 
@@ -1518,8 +1731,11 @@ button {
 .skeleton {
   position: relative;
   overflow: hidden;
-  background: var(--inset);
-  border-radius: 2px;
+  /* --inset on --canvas was 1.03:1 — the loading state was invisible
+     against the page it loads into. */
+  background: var(--surface-3);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-sm);
 }
 
 .skeleton::after {
@@ -1527,8 +1743,8 @@ button {
   position: absolute;
   inset: 0;
   transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, rgba(255, 213, 169, 0.1), transparent);
-  animation: shimmer 1.4s infinite;
+  background: linear-gradient(90deg, transparent, var(--hairline), transparent);
+  animation: shimmer 1.4s var(--ease-standard) infinite;
 }
 
 @keyframes shimmer {
@@ -1569,7 +1785,6 @@ button {
 
 .price-row h3 a:hover {
   color: var(--accent-2);
-  font-style: italic;
 }
 
 .price-row .row-desc {
@@ -1630,7 +1845,9 @@ button {
   overflow: hidden;
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
-  background: url("/textures/ember.jpg") center 120% / 160% auto no-repeat, #240001;
+  background: url("/textures/ember.jpg") center 120% / 160% auto no-repeat,
+    var(--ground-750);
+  box-shadow: var(--e-2);
 }
 
 .monogram {
@@ -1652,6 +1869,8 @@ button {
   height: 100%;
   object-fit: cover;
   aspect-ratio: 5 / 6;
+  border-radius: var(--radius);
+  /* Same grade as the ember/smoke plates so photography joins the palette. */
   filter: saturate(0.85) contrast(1.08) sepia(0.12);
 }
 
@@ -1767,7 +1986,8 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  border: 1px solid rgba(255, 106, 82, 0.5);
+  border: 1px solid var(--danger);
+  background: var(--danger-quiet);
   color: var(--danger);
   font-weight: 700;
   font-size: 0.74rem;
@@ -1801,8 +2021,8 @@ button {
   font-size: 0.8rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(217, 154, 104, 0.7);
-  margin-top: 16px;
+  color: var(--text-2);
+  margin-top: var(--sp-4);
 }
 
 .notfound-actions {
@@ -1877,7 +2097,7 @@ button {
   position: relative;
   width: 3px;
   height: 100%;
-  background: rgba(255, 213, 169, 0.1);
+  background: var(--hairline-soft);
 }
 
 .scroll-timeline .tl-fill {
@@ -1889,34 +2109,60 @@ button {
   background: linear-gradient(180deg, var(--accent), var(--aura));
 }
 
+/* 8px diamond, 44px hit area — the target is the button, the diamond is ::before. */
 .scroll-timeline .tl-marker {
   position: absolute;
-  right: -2.5px;
-  width: 8px;
-  height: 8px;
+  right: calc((var(--tap-min) - 3px) / -2);
+  width: var(--tap-min);
+  height: var(--tap-min);
   padding: 0;
-  transform: translateY(-50%) rotate(45deg);
-  background: var(--canvas);
-  border: 1.5px solid rgba(255, 213, 169, 0.4);
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
   cursor: pointer;
   pointer-events: auto;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.scroll-timeline .tl-marker:hover,
-.scroll-timeline .tl-marker.active {
+.scroll-timeline .tl-marker::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
+  background: var(--canvas);
+  border: 1.5px solid var(--hairline-strong);
+  transition: background-color var(--dur-2) var(--ease-standard),
+    border-color var(--dur-2) var(--ease-standard),
+    box-shadow var(--dur-2) var(--ease-standard);
+}
+
+.scroll-timeline .tl-marker:hover::before,
+.scroll-timeline .tl-marker.active::before {
   background: var(--accent);
   border-color: var(--accent);
+  box-shadow: var(--e-glow);
+}
+
+.scroll-timeline .tl-marker:focus-visible {
+  outline: none;
+}
+
+.scroll-timeline .tl-marker:focus-visible::before {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 
 .scroll-timeline .tl-label {
   position: absolute;
   right: 20px;
   top: 50%;
-  transform: translateY(-50%) rotate(-45deg) translateX(6px);
+  transform: translateY(-50%) translateX(6px);
   transform-origin: right center;
-  background: #1e0001;
-  border: 1px solid var(--hairline-soft);
+  background: var(--ground-850);
+  border: 1px solid var(--hairline);
+  box-shadow: var(--e-3);
+  border-radius: var(--r-sm);
   color: var(--text);
   font-size: 0.66rem;
   font-weight: 700;
@@ -1932,7 +2178,7 @@ button {
 .scroll-timeline .tl-marker:hover .tl-label,
 .scroll-timeline .tl-marker:focus-visible .tl-label {
   opacity: 1;
-  transform: translateY(-50%) rotate(-45deg) translateX(0);
+  transform: translateY(-50%) translateX(0);
 }
 
 /* ---------- Reveal ---------- */
@@ -2100,11 +2346,6 @@ button {
   .cta-actions .btn {
     flex: 1 1 auto;
   }
-
-  .hero-meta span {
-    padding-right: 16px;
-    margin-right: 16px;
-  }
 }
 
 /* ---------- Reduced motion ---------- */
@@ -2151,4 +2392,505 @@ button {
   display: block;
   margin: 0 auto 26px;
   opacity: 0.92;
+}
+
+/* ==========================================================================
+   RECOVERED COMPONENTS
+   These class names were shipped in JSX with no CSS rule behind them, so the
+   markup rendered as unstyled default flow. Each is now a real component.
+   ========================================================================== */
+
+/* .section-head — about/page.tsx, pricing/page.tsx (x4 uses, 0 rules) */
+.section-head {
+  margin-bottom: var(--sp-8);
+}
+
+.section-head h2 {
+  margin-top: var(--sp-1);
+  /* Was inline: 1.9rem on /about, 1.7rem on /pricing for the same rank. */
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-medium);
+}
+
+.section-head .lede {
+  margin-top: var(--sp-3);
+}
+
+/* .why-card / .why-check — about/page.tsx "What you won't get here".
+   Was a bare .card: the icon span and the copy stacked instead of sitting
+   side by side, and the inline background/border on the span had no box to
+   paint because the class had no size, shape or display. */
+.why-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-4);
+  align-items: start;
+}
+
+.why-check {
+  display: grid;
+  place-items: center;
+  width: var(--sp-8);
+  height: var(--sp-8);
+  flex-shrink: 0;
+  border: 1px solid var(--danger);
+  background: var(--danger-quiet);
+  color: var(--danger);
+  border-radius: var(--r-sm);
+}
+
+.why-check--ok {
+  border-color: var(--success);
+  background: var(--success-quiet);
+  color: var(--success);
+}
+
+.why-card p {
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* .card-arrow — services/[slug]/page.tsx "All services →" (0 rules) */
+.card-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--tap-min);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--text-2);
+  transition: color var(--dur-2) var(--ease-standard);
+}
+
+.card-arrow:hover {
+  color: var(--accent-2);
+}
+
+.card-arrow svg {
+  transition: transform var(--dur-2) var(--ease-standard);
+}
+
+.card-arrow:hover svg {
+  transform: translateX(4px);
+}
+
+/* .serif-display — not-found.tsx h1 (0 rules; h1 default was already serif,
+   so the class was a no-op. Made explicit rather than deleted.) */
+.serif-display {
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-display);
+}
+
+/* .footer-brand / .footer-bottom-note — site-footer.tsx (0 rules) */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-bottom-note {
+  color: var(--text-3);
+  font-style: italic;
+  font-family: var(--font-display);
+}
+
+/* .wa-form — whatsapp-form.tsx root <form> (0 rules) */
+.wa-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.wa-form .btn {
+  margin-top: var(--sp-2);
+}
+
+/* ==========================================================================
+   STATE LAYER
+   Before: 25 :hover rules, 1 :active, 1 :disabled, 2 :focus-visible.
+   Every interactive component now declares the full set.
+   ========================================================================== */
+
+/* Inputs — default / hover / focus / invalid / disabled all distinct */
+.field input:hover,
+.field textarea:hover {
+  border-color: var(--hairline-strong);
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 1px 0 0 var(--accent);
+}
+
+.field textarea:focus {
+  box-shadow: var(--e-glow);
+}
+
+.field input:disabled,
+.field textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.field input[aria-invalid="true"]:focus,
+.field textarea[aria-invalid="true"]:focus {
+  border-color: var(--danger);
+  box-shadow: 0 1px 0 0 var(--danger);
+}
+
+.field-error::before {
+  content: "▲";
+  font-size: 0.7em;
+  margin-right: var(--sp-2);
+}
+
+/* Index rows are links — they had hover but no keyboard-visible state */
+.index-row:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.index-row:focus-visible::before,
+.index-row:focus-within::before {
+  transform: scaleX(1);
+}
+
+.index-row:active {
+  background: var(--surface);
+}
+
+/* FAQ trigger */
+.faq-q button:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.faq-q button:active {
+  color: var(--ember-300);
+}
+
+.faq-item.open .faq-q button {
+  color: var(--accent-2);
+}
+
+.faq-panel {
+  transition: grid-template-rows var(--dur-3) var(--ease-standard);
+}
+
+.faq-icon {
+  transition: transform var(--dur-3) var(--ease-standard);
+}
+
+.faq-item.open .faq-icon {
+  transform: rotate(180deg);
+}
+
+/* Nav — current page must be visible, not just hoverable */
+.desktop-nav a {
+  min-height: var(--tap-min);
+  display: inline-flex;
+  align-items: center;
+}
+
+.desktop-nav a[aria-current="page"] {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+.desktop-nav a:active {
+  color: var(--accent-2);
+}
+
+.nav-toggle:active {
+  background: var(--surface-2);
+}
+
+.mobile-nav a {
+  min-height: var(--tap-min);
+  display: flex;
+  align-items: center;
+}
+
+.mobile-nav a:active {
+  color: var(--accent);
+}
+
+/* Footer links were ~19px tall hit areas in a stacked list */
+.footer-col a,
+.footer-contact {
+  min-height: var(--tap-min);
+  display: inline-flex;
+  align-items: center;
+  transition: color var(--dur-2) var(--ease-standard);
+}
+
+.footer-col {
+  gap: 0;
+}
+
+/* Brand lockup */
+.brand {
+  min-height: var(--tap-min);
+  transition: opacity var(--dur-2) var(--ease-standard);
+}
+
+.brand:hover {
+  opacity: 0.86;
+}
+
+.brand:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* Skip link — was unstyled beyond position */
+.skip-link {
+  border-radius: var(--r-sm);
+  box-shadow: var(--e-3);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   MOTION — every transition maps to the 4 duration / 4 easing tokens.
+   ========================================================================== */
+
+.u-link::after {
+  transition: transform var(--dur-3) var(--ease-standard),
+    opacity var(--dur-3) var(--ease-standard);
+}
+
+.index-row::before,
+.card-hover::after {
+  transition: transform var(--dur-3) var(--ease-standard),
+    right var(--dur-3) var(--ease-standard);
+}
+
+.idx-arrow,
+.idx-title,
+.point-list li,
+.price-row {
+  transition: transform var(--dur-2) var(--ease-standard),
+    color var(--dur-2) var(--ease-standard),
+    padding-left var(--dur-2) var(--ease-standard),
+    background-color var(--dur-2) var(--ease-standard);
+}
+
+.rv {
+  transition: opacity var(--dur-4) var(--ease-entrance),
+    transform var(--dur-4) var(--ease-entrance);
+}
+
+.mask-in {
+  animation: rise 1s var(--ease-emphatic) forwards;
+}
+
+/* ==========================================================================
+   DENSITY — the page-hero was 76/60 while .section was 96/96, so every
+   inner page opened tighter than the home page for no reason.
+   ========================================================================== */
+
+.section {
+  padding: var(--sp-24) 0;
+}
+
+.section-tight {
+  padding: var(--sp-16) 0;
+}
+
+.page-hero {
+  padding: var(--sp-22) 0 var(--sp-16);
+}
+
+.container {
+  padding-inline: var(--sp-7);
+}
+
+/* Long-form measure: prose was capped by an inline maxWidth: 760 on three
+   pages and uncapped elsewhere. One rule owns it now. */
+.prose {
+  max-width: var(--measure);
+}
+
+.prose > p,
+.prose > ul,
+.prose > ol {
+  max-width: var(--measure);
+}
+
+/* ==========================================================================
+   COLOUR-SCHEME DECLARATION
+   This is a single-scheme (dark) product by art direction. Declaring it
+   stops the UA painting light form controls, scrollbars and autofill
+   against the ember ground.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: var(--text);
+  -webkit-box-shadow: 0 0 0 1000px var(--ground-800) inset;
+  caret-color: var(--text);
+}
+
+@media (max-width: 760px) {
+  /* Mobile keeps the header fully opaque even where blur works — with the
+     drawer, the grain layer and a scrolling page underneath, translucency
+     reads as a bug rather than as glass. */
+  .site-header {
+    background: var(--canvas);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .container {
+    padding-inline: var(--sp-5);
+  }
+
+  .section {
+    padding: var(--sp-18) 0;
+  }
+
+  .page-hero {
+    padding: var(--sp-16) 0 var(--sp-12);
+  }
+
+  /* .btn-sm sat at ~32px tall on the smallest screens */
+  .btn-sm {
+    min-height: var(--tap-min);
+  }
+}
+
+/* ==========================================================================
+   TYPE RANKS — replacing 30+ one-off inline font-sizes.
+   Before: the same semantic rank was 1.7rem on /pricing, 1.9rem on /about,
+   1.6rem on /services and 1.5rem on /process. Four sizes, one rank.
+   ========================================================================== */
+
+.subsection-title {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-medium);
+  margin-top: var(--sp-14);
+  margin-bottom: var(--sp-5);
+}
+
+.subsection-title:first-child {
+  margin-top: 0;
+}
+
+.panel-title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-medium);
+  margin-bottom: var(--sp-3);
+}
+
+.panel-body {
+  font-size: var(--fs-base);
+  color: var(--text-2);
+  max-width: var(--measure);
+}
+
+.card-title {
+  font-family: var(--font-body);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-body);
+  margin-bottom: var(--sp-2);
+}
+
+.card-body {
+  font-size: var(--fs-base);
+  color: var(--text-2);
+  margin-bottom: var(--sp-4);
+}
+
+.card-body:last-child {
+  margin-bottom: 0;
+}
+
+.card-body strong {
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+}
+
+.form-title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-medium);
+  margin-bottom: var(--sp-2);
+}
+
+.form-sub {
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  margin-bottom: var(--sp-6);
+}
+
+.row-title-sm {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-body);
+}
+
+.prose-h2-spaced {
+  margin-top: var(--sp-12);
+}
+
+/* Phase headings were inline 1.8rem; the .phase h3 rule said 1.45rem. */
+.phase h3 {
+  font-size: var(--fs-xl);
+  margin: var(--sp-5) 0 var(--sp-1);
+}
+
+.checklist li span {
+  font-size: var(--fs-base);
+  color: var(--text-2);
+}
+
+.mobile-nav a[aria-current="page"] {
+  color: var(--accent-2);
+  font-style: italic;
+}
+
+/* ==========================================================================
+   ICONOGRAPHY — one stroke weight, one size scale, one baseline rule.
+   Before: CheckIcon 2.4 / CrossIcon 2.6 / ArrowRight 2 / Spinner 2.5, at
+   sizes 15,16,17,18,20 with a solid-fill WhatsApp glyph in the same rows.
+   ========================================================================== */
+
+:root {
+  --icon-sm: 16px;
+  --icon-md: 20px;
+  --icon-lg: 24px;
+  --wa-glyph: var(--canvas); /* was an undefined token falling back to #fff */
+}
+
+/* Optical alignment to the text baseline rather than the line box. */
+.btn svg,
+.chip svg,
+.checklist li svg,
+.footer-contact svg,
+.card-arrow svg {
+  flex-shrink: 0;
+  vertical-align: -0.125em;
+}
+
+.checklist li svg {
+  margin-top: 3px;
+  color: var(--accent);
+}
+
+/* The drawer must never let the page show through it, whatever the engine
+   does with backdrop-filter or blend modes on the grain layer. */
+.mobile-panel {
+  background-color: var(--ground-850);
+  isolation: isolate;
 }

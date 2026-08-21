@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/content/site-content";
 
 /** Slide-in mobile navigation. Only this piece of the header is a client component. */
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!open) return;
@@ -53,6 +55,7 @@ export function MobileMenu() {
               href={link.href}
               onClick={() => setOpen(false)}
               tabIndex={open ? 0 : -1}
+              aria-current={pathname === link.href ? "page" : undefined}
             >
               {link.label}
             </Link>

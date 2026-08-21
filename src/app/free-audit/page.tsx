@@ -49,7 +49,7 @@ export default function FreeAuditPage() {
         <div className="container service-detail-grid">
           <div>
             <Reveal>
-              <h2 style={{ fontSize: "1.7rem", marginBottom: 20 }}>
+              <h2 className="subsection-title">
                 What we check
               </h2>
               <ol className="point-list">
@@ -65,10 +65,10 @@ export default function FreeAuditPage() {
             </Reveal>
 
             <Reveal className="inset-panel" >
-              <h2 style={{ fontSize: "1.25rem", marginBottom: 10 }}>
+              <h2 className="panel-title">
                 Want the deep version?
               </h2>
-              <p style={{ fontSize: "0.96rem", color: "var(--text-2)" }}>
+              <p className="card-body">
                 The full{" "}
                 <Link href="/services/website-audit">
                   Website Audit (PKR 35,000–50,000)
@@ -82,10 +82,10 @@ export default function FreeAuditPage() {
           </div>
 
           <Reveal className="form-card">
-            <h2 style={{ fontSize: "1.4rem", marginBottom: 6 }}>
+            <h2 className="form-title">
               Request your mini-audit
             </h2>
-            <p style={{ fontSize: "0.93rem", color: "var(--text-2)", marginBottom: 22 }}>
+            <p className="form-sub">
               Fills in a WhatsApp message to us — nothing is stored anywhere.
             </p>
             <AuditForm />
@@ -98,10 +98,10 @@ export default function FreeAuditPage() {
           <Reveal className="inset-panel" >
             <div style={{ display: "flex", flexWrap: "wrap", gap: 18, alignItems: "center", justifyContent: "space-between" }}>
               <div>
-                <h2 style={{ fontSize: "1.3rem", marginBottom: 6 }}>
+                <h2 className="panel-title">
                   Or just WhatsApp us
                 </h2>
-                <p style={{ fontSize: "0.95rem", color: "var(--text-2)" }}>
+                <p className="card-body">
                   No form needed. Say hello, send your link, we&rsquo;ll take
                   it from there. Number: {WHATSAPP_DISPLAY}
                 </p>
@@ -114,7 +114,7 @@ export default function FreeAuditPage() {
                 rel="noopener"
                 className="btn btn-primary"
               >
-                <WhatsAppIcon size={18} /> WhatsApp us directly
+                <WhatsAppIcon size={16} /> WhatsApp us directly
               </a>
             </div>
           </Reveal>
