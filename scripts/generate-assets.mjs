@@ -14,13 +14,13 @@ import path from "node:path";
 const run = promisify(execFile);
 const ROOT = process.cwd();
 
-const INK = "#0E2931";
-const CANVAS = "#E2E2E0";
-const TEAL = "#4FA3A0";
-const TEAL_DIM = "#7FC1BC";
-const MID_TEAL = "#2B7574";
-const MUTED_ON_INK = "#A7B6B8";
-const HATCH_INK = "#16404A";
+const INK = "#2A0001";
+const CANVAS = "#FFD5A9";
+const TEAL = "#DA7134";
+const TEAL_DIM = "#E89154";
+const MID_TEAL = "#DA7134";
+const MUTED_ON_INK = "#F0B98D";
+const HATCH_INK = "#400C04";
 
 /* Z polygon + period dot in a 48x48 design space (matches src/app/icon.svg). */
 const Z_POLY = [
@@ -188,7 +188,7 @@ async function ogImage(outPath, { eyebrow, lines, sub }) {
   for (const line of lines) {
     args.push(
       "-font", "DejaVu-Serif-Bold", "-pointsize", "102", "-kerning", "1",
-      "-fill", "#ECEEEe", "-gravity", "NorthWest",
+      "-fill", "#FFD5A9", "-gravity", "NorthWest",
       "-annotate", `+${tx}+${y}`, line
     );
     y += 132;
