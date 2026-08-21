@@ -1,9 +1,14 @@
+# dependencies
 node_modules/
-dist/
+
+# next.js build output (regenerated with `npm run build`)
+.next/
+out/
+next-env.d.ts
+
+# misc
 .DS_Store
+*.pem
+npm-debug.log*
 .env
 .env.*
-!.env.example
-
-playwright-report/
-test-results/

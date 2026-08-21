@@ -1,0 +1,18 @@
+/* TEAM */
+Founder & builder: Muhammad Zarrar
+Site: Zarrar.Solutions
+Location: Rawalpindi, Pakistan
+Serving: Islamabad, Rawalpindi, Pakistan-wide
+WhatsApp: +92 333 5666050
+Email: muhummadzarrar09@gmail.com
+
+/* SITE */
+Stack: Next.js (App Router, static export), React, TypeScript
+UI libraries: none
+Fonts: Inter + Playfair Display, self-hosted — no CDN calls
+Trackers: none. Cookies: none. Forms open WhatsApp on your device.
+Installable: yes (PWA)
+Standard we audit against: server-rendered HTML, <3s on mobile 4G,
+one clean WhatsApp flow, honest PKR pricing in writing.
+
+Last shipped: 2026-08-21

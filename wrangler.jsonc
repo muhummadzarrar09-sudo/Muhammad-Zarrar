@@ -1,0 +1,10 @@
+{
+  // Cloudflare Pages deploy config. Deploy with:
+  //   npm run build && npx wrangler pages deploy out
+  // or connect the repo in the Cloudflare Pages dashboard
+  // (build command: npm run build · output directory: out).
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "zarrar-solutions",
+  "pages_build_output_dir": "out",
+  "compatibility_date": "2026-08-01"
+}
