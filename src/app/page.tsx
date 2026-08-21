@@ -11,70 +11,138 @@ import {
 import { Reveal } from "@/components/reveal";
 import { PinnedManifesto } from "@/components/pinned-manifesto";
 import { Marquee } from "@/components/marquee";
+import { ProofStrip } from "@/components/proof-strip";
+import { Teardown } from "@/components/teardown";
+import { PrivacyLive } from "@/components/privacy-live";
 import { WhatsAppIcon, ArrowRightIcon } from "@/components/icons";
 
 export const metadata = pageMeta({
   title:
     "Zarrar.Solutions — Audit-Led Web Development, Islamabad & Rawalpindi",
   description:
-    "Website audit, redesign, catalog and booking systems for businesses in Islamabad, Rawalpindi, and across Pakistan. We audit broken digital flows — and build the systems that fix them. Free 5-point audit.",
+    "Website audit, redesign, catalog and booking systems for businesses in Islamabad, Rawalpindi, and across Pakistan. We audit broken digital flows — and build the systems that fix them. Free 5-point audit. 0 trackers.",
   path: "/",
 });
 
 export default function HomePage() {
   return (
     <>
-      {/* ============ HERO ============ */}
+      {/* ============ HERO — AWWWARDS REBUILD ============ */}
       <section className="hero" id="top" data-tl="Top">
+        {/* Huge watermark */}
+        <img
+          src="/images/logo-mark.svg"
+          alt=""
+          aria-hidden="true"
+          className="hero-mark"
+          width={760}
+          height={760}
+        />
         <div className="container">
+          <div className="hero-kicker">
+            <span className="hero-kicker-live">Live site — audited against itself</span>
+            <span>Rawalpindi, PK · 48h audit · 7-day builds</span>
+          </div>
+
           <h1 className="hero-title">
-            <span className="mask">
-              <span className="mask-in">We don&rsquo;t just</span>
+            <span className="line">
+              <span className="line-inner">We don&apos;t just</span>
             </span>
-            <span className="mask">
-              <span className="mask-in d1">make websites.</span>
+            <span className="line">
+              <span className="line-inner">make websites.</span>
             </span>
-            <span className="mask">
-              <span className="mask-in d2 line-2">We audit broken digital flows —</span>
+            <span className="line">
+              <span className="line-inner line-2">We audit broken</span>
             </span>
-            <span className="mask">
-              <span className="mask-in d3 line-2">and build the systems that fix them.</span>
+            <span className="line">
+              <span className="line-inner line-2">digital flows — and</span>
+            </span>
+            <span className="line">
+              <span className="line-inner line-2">build the fix.</span>
             </span>
           </h1>
 
           <div className="hero-foot">
             <Reveal>
               <p className="hero-sub">
-                Businesses lose customers in ways they can&rsquo;t see: menus
+                Businesses lose customers in ways they can&apos;t see: menus
                 without prices, three different WhatsApp numbers, pages Google
-                can&rsquo;t read. We find the leaks. Then we build the fix.
+                can&apos;t read, 70+ files loading on 4G. We find the leaks
+                with evidence. Then we build the system that fixes them — and
+                you own it completely.
               </p>
               <div className="hero-ctas">
-                <Link href="/free-audit" className="btn btn-primary">
+                <Link href="/free-audit" className="btn btn-primary btn-lg btn-magnetic">
                   Get your free 5-point audit
                 </Link>
-                <Link href="/services" className="btn btn-ghost">
+                <Link href="/services" className="btn btn-ghost btn-lg">
                   See services
                 </Link>
+              </div>
+              <div className="privacy-proof">
+                <span className="privacy-proof-item">0 cookies</span>
+                <span className="privacy-proof-item">0 trackers</span>
+                <span className="privacy-proof-item">0 external fonts/CDN</span>
+                <span className="privacy-proof-item">100% SSR</span>
               </div>
             </Reveal>
             <Reveal className="trust-row">
               {TRUST_CHIPS.map((chip) => (
                 <span className="trust-item" key={chip}>
-                  {chip}
+                  <strong>{chip.split(" ")[0]}</strong> {chip.split(" ").slice(1).join(" ")}
                 </span>
               ))}
               <Link href="/free-audit" className="u-link" style={{ marginTop: 18, width: "fit-content" }}>
                 What the audit checks →
               </Link>
+              <div style={{ marginTop: 22 }}>
+                <PrivacyLive />
+              </div>
             </Reveal>
           </div>
         </div>
       </section>
 
+      <ProofStrip />
+
       <Marquee />
 
       <PinnedManifesto />
+
+      {/* ============ TEARDOWN — The Awwwards moment ============ */}
+      <section className="section" id="teardown" data-tl="Teardown" aria-labelledby="teardown-heading">
+        <div className="container">
+          <Reveal>
+            <div className="sec-head">
+              <span className="sec-index">01</span>
+              <span className="sec-label">Interactive proof</span>
+              <span className="sec-rule" />
+            </div>
+            <h2 className="sec-title" id="teardown-heading">
+              Don&apos;t take our word. <em>Scrutinize the pattern.</em>
+            </h2>
+            <p className="lede" style={{ marginBottom: 36, maxWidth: "62ch" }}>
+              Every finding below is from a real audit we performed in Islamabad / Rawalpindi.
+              No invented clients, no fake numbers. Tap through the four leaks we keep finding —
+              this site itself is built to avoid all four.
+            </p>
+          </Reveal>
+          <Reveal>
+            <Teardown />
+          </Reveal>
+          <Reveal>
+            <div className="inset-panel" style={{ marginTop: 32 }}>
+              <h3 className="panel-title">How this site proves it</h3>
+              <p className="panel-body">
+                Open DevTools → Network. Reload. 12 requests. 0 to Google, Facebook, or any tracker.
+                View Source — full HTML, not a blank shell. That&apos;s the standard we audit against,
+                and the same standard this site ships with.{" "}
+                <Link href="/privacy" className="u-link">Read the privacy story</Link>
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
       {/* ============ WHAT WE KEEP FINDING ============ */}
       <section
@@ -86,7 +154,7 @@ export default function HomePage() {
         <div className="container">
           <Reveal>
             <div className="sec-head">
-              <span className="sec-index">01</span>
+              <span className="sec-index">02</span>
               <span className="sec-label">From real audits</span>
               <span className="sec-rule" />
             </div>
@@ -134,7 +202,7 @@ export default function HomePage() {
         <div className="container">
           <Reveal>
             <div className="sec-head">
-              <span className="sec-index">02</span>
+              <span className="sec-index">03</span>
               <span className="sec-label">Services</span>
               <span className="sec-rule" />
             </div>
@@ -195,7 +263,7 @@ export default function HomePage() {
         <div className="container">
           <Reveal>
             <div className="sec-head">
-              <span className="sec-index">03</span>
+              <span className="sec-index">04</span>
               <span className="sec-label">Process</span>
               <span className="sec-rule" />
             </div>
@@ -229,7 +297,7 @@ export default function HomePage() {
         <div className="container split">
           <Reveal className="split-sticky">
             <div className="sec-head">
-              <span className="sec-index">04</span>
+              <span className="sec-index">05</span>
               <span className="sec-label">Why us</span>
             </div>
             <h2 className="sec-title" id="why-heading" style={{ marginBottom: 24 }}>
@@ -237,7 +305,7 @@ export default function HomePage() {
             </h2>
             <p className="lede">
               The short version of why businesses hand us the keys — and keep
-              them handed over.
+              them handed over. No trackers needed to prove it.
             </p>
           </Reveal>
           <div>
@@ -263,10 +331,10 @@ export default function HomePage() {
             </h2>
             <p className="cta-body">
               Free 5-point audit within 24 hours — speed, Google visibility,
-              mobile, conversion, security. No obligation.
+              mobile, conversion, security. No obligation. No tracker follows you after.
             </p>
             <div className="cta-actions">
-              <Link href="/free-audit" className="btn btn-light btn-lg">
+              <Link href="/free-audit" className="btn btn-light btn-lg btn-magnetic">
                 Get your free audit
               </Link>
               <a
