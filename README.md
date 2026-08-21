@@ -53,20 +53,25 @@ The monogram card stays, and the site ships honest.
   JS stays near the framework baseline (~<100KB gzip on core pages); no
   images except generated brand assets; `prefers-reduced-motion` respected
 
-### Design system ("ALONE" palette)
+### Design system ("The Manifesto" palette)
 
-`src/app/globals.css` is the single source of truth: canvas `#E2E2E0`,
-surfaces `#FFFFFF` / insets `#F3F3F1`, ink `#0E2931`, primary teal `#12484C`,
-secondary teal `#2B7574`, heat accent `#861211` (audit findings only). Serif
-display (Playfair) + Inter body, pill chips, 14–22px radii, hairline borders,
-diagonal-hatch texture accents, dark-ink section rhythm.
+`src/app/globals.css` is the single source of truth: eclipse `#2A0001`
+canvas, aura `#852616` dark-rust section rhythm, sunbeam `#DA7134` primary,
+bliss `#E89154` secondary, ardent `#FFD5A9` text. Serif display (Playfair) +
+Inter body, **sharp corners — no pills anywhere**, glow-and-sheen hover
+states on cards and buttons, diagonal-hatch accents, ember glow in the hero.
 
-### Loading states
+### Motion
 
-- No splash screens — pages are static/SSR and instant.
-- Route changes: 2px teal top progress bar.
-- Forms: `idle → Sending… (inline spinner) → Sent — we reply within 24h → retry on error`, never layout shift.
-- `.skeleton` shimmer utility available for any future client-side block.
+- **Pinned manifesto** (home): full-screen section pinned with GSAP
+  ScrollTrigger; lines land on scroll, then release. GSAP is dynamically
+  imported so only the home page loads it; skipped entirely under
+  `prefers-reduced-motion`.
+- **Scroll timeline**: the native scrollbar is hidden and replaced by a
+  right-edge rail — progress fill plus diamond markers per section
+  (`section[data-tl]`), keyboard-focusable, click-to-jump.
+- Route changes: 2px sunbeam top progress bar.
+- Section entry: IntersectionObserver fade/slide; reduced-motion respected.
 
 ### SEO
 
