@@ -3,7 +3,7 @@ import { WhatsAppIcon } from "./icons";
 import { waLink, DEFAULT_WA_MESSAGE } from "@/lib/site";
 import { Reveal } from "./reveal";
 
-/** Dark ink call-to-action band. Serif headline, two actions. */
+/** Full-bleed aura closing band with ember texture. Serif statement + actions. */
 export function CtaBand({
   headline,
   body,
@@ -18,24 +18,22 @@ export function CtaBand({
   whatsappMessage?: string;
 }) {
   return (
-    <section className="section section-ink cta-band">
+    <section className="cta-full">
       <div className="container">
-        <Reveal className="cta-band-inner">
-          <div className="cta-band-text">
-            <h2 className="serif-display">{headline}</h2>
-            <p>{body}</p>
-          </div>
-          <div className="cta-band-actions">
-            <Link href={primaryHref} className="btn btn-light btn-lg">
+        <Reveal>
+          <h2>{headline}</h2>
+          <p className="cta-body">{body}</p>
+          <div className="cta-actions">
+            <Link href={primaryHref} className="btn btn-light">
               {primaryLabel}
             </Link>
             <a
               href={waLink(whatsappMessage)}
               target="_blank"
               rel="noopener"
-              className="btn btn-ghost-on-ink btn-lg"
+              className="btn btn-ghost-on-ink"
             >
-              <WhatsAppIcon size={18} /> WhatsApp us
+              <WhatsAppIcon size={16} /> WhatsApp us
             </a>
           </div>
         </Reveal>

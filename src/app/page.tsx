@@ -10,13 +10,8 @@ import {
 } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
 import { PinnedManifesto } from "@/components/pinned-manifesto";
-import {
-  WhatsAppIcon,
-  CheckIcon,
-  CrossIcon,
-  ArrowRightIcon,
-} from "@/components/icons";
-import { FREE_AUDIT_POINTS } from "@/content/site-content";
+import { Marquee } from "@/components/marquee";
+import { WhatsAppIcon, ArrowRightIcon } from "@/components/icons";
 
 export const metadata = pageMeta({
   title:
@@ -31,142 +26,162 @@ export default function HomePage() {
     <>
       {/* ============ HERO ============ */}
       <section className="hero" id="top" data-tl="Top">
-        <div className="container hero-grid">
-          <Reveal>
-            <span className="hero-eyebrow">
-              <span className="dot" aria-hidden="true" />
-              Audit-led digital systems · Islamabad &amp; Rawalpindi
+        <div className="container">
+          <div className="hero-meta">
+            <span>Audit-led digital systems</span>
+            <span>Islamabad — Rawalpindi</span>
+            <span>Built by Muhammad Zarrar</span>
+          </div>
+
+          <h1 className="hero-title">
+            <span className="mask">
+              <span className="mask-in">We don&rsquo;t just</span>
             </span>
-            <h1 className="hero-title">
-              <span>We don&rsquo;t just make websites.</span>{" "}
-              <span className="line-2">
-                We audit broken digital flows — and build the systems that fix
-                them.
-              </span>
-            </h1>
-            <p className="hero-sub">
-              Businesses lose customers in ways they can&rsquo;t see: menus
-              without prices, three different WhatsApp numbers, pages Google
-              can&rsquo;t read. We find the leaks. Then we build the fix.
-            </p>
-            <div className="hero-ctas">
-              <Link href="/free-audit" className="btn btn-primary btn-lg">
-                Get your free 5-point audit
-              </Link>
-              <Link href="/services" className="btn btn-ghost btn-lg">
-                See services
-              </Link>
-            </div>
-            <div className="hero-trust">
+            <span className="mask">
+              <span className="mask-in d1">make websites.</span>
+            </span>
+            <span className="mask">
+              <span className="mask-in d2 line-2">We audit broken digital flows —</span>
+            </span>
+            <span className="mask">
+              <span className="mask-in d3 line-2">and build the systems that fix them.</span>
+            </span>
+          </h1>
+
+          <div className="hero-foot">
+            <Reveal>
+              <p className="hero-sub">
+                Businesses lose customers in ways they can&rsquo;t see: menus
+                without prices, three different WhatsApp numbers, pages Google
+                can&rsquo;t read. We find the leaks. Then we build the fix.
+              </p>
+              <div className="hero-ctas">
+                <Link href="/free-audit" className="btn btn-primary">
+                  Get your free 5-point audit
+                </Link>
+                <Link href="/services" className="btn btn-ghost">
+                  See services
+                </Link>
+              </div>
+            </Reveal>
+            <Reveal className="trust-row">
               {TRUST_CHIPS.map((chip) => (
-                <span className="chip" key={chip}>
-                  <CheckIcon size={14} /> {chip}
+                <span className="trust-item" key={chip}>
+                  {chip}
                 </span>
               ))}
-            </div>
-          </Reveal>
-
-          <Reveal className="hero-card card">
-            <span className="hero-card-tag">Free · 24 hours</span>
-            <p className="card-label">The 5-point mini-audit checks</p>
-            <ul>
-              {FREE_AUDIT_POINTS.map((point) => (
-                <li key={point.name}>
-                  <CheckIcon size={15} />
-                  <span>{point.name}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="card-foot">
-              Send a link, get five findings.{" "}
-              <Link href="/free-audit">Get yours →</Link>
-            </p>
-          </Reveal>
+              <Link href="/free-audit" className="u-link" style={{ marginTop: 18, width: "fit-content" }}>
+                What the audit checks →
+              </Link>
+            </Reveal>
+          </div>
         </div>
       </section>
+
+      <Marquee />
 
       <PinnedManifesto />
 
       {/* ============ WHAT WE KEEP FINDING ============ */}
-      <section className="section section-ink" id="findings" data-tl="Findings" aria-labelledby="findings-heading">
+      <section
+        className="section section-ink"
+        id="findings"
+        data-tl="Findings"
+        aria-labelledby="findings-heading"
+      >
         <div className="container">
-          <Reveal className="section-head">
-            <span className="eyebrow">From real audits</span>
-            <h2 id="findings-heading">What we keep finding</h2>
-            <p className="lede">
-              These aren&rsquo;t hypothetical failure modes. They&rsquo;re the
-              patterns we find again and again in Pakistani business websites.
-            </p>
+          <Reveal>
+            <div className="sec-head">
+              <span className="sec-index">01</span>
+              <span className="sec-label">From real audits</span>
+              <span className="sec-rule" />
+            </div>
+            <h2 className="sec-title" id="findings-heading">
+              The same leaks, <em>over and over.</em>
+            </h2>
           </Reveal>
-          <div className="findings-grid">
+
+          <div className="index-list">
             {FINDINGS.map((finding, i) => (
-              <Reveal key={finding.title} className="finding-card" as="article">
-                <span className="finding-x" aria-hidden="true">
-                  <CrossIcon size={17} />
+              <Reveal key={finding.title} className="index-row" as="article">
+                <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3 className="idx-title" style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.7rem)" }}>
+                    {finding.title}
+                  </h3>
+                  <p className="idx-sub">{finding.body}</p>
+                </div>
+                <span className="idx-mark" aria-hidden="true">
+                  ✗
                 </span>
-                <h3>{finding.title}</h3>
-                <p>{finding.body}</p>
               </Reveal>
             ))}
           </div>
+
           <Reveal className="findings-close">
             <p>
-              Every one of these is from a real audit we performed. Yours takes
-              48 hours.
+              Every one of these is from a real audit we performed. Yours
+              takes 48 hours.
             </p>
             <Link href="/free-audit">
-              Start free with the 5-point mini-audit{" "}
-              <ArrowRightIcon size={15} />
+              Start free — 5-point mini-audit →
             </Link>
           </Reveal>
         </div>
       </section>
 
       {/* ============ SERVICES ============ */}
-      <section className="section" id="services" data-tl="Services" aria-labelledby="services-heading">
+      <section
+        className="section"
+        id="services"
+        data-tl="Services"
+        aria-labelledby="services-heading"
+      >
         <div className="container">
-          <Reveal className="section-head">
-            <span className="eyebrow">Services</span>
-            <h2 id="services-heading">What we build</h2>
-            <p className="lede">
-              Five services, one starting point: evidence. Every engagement
-              begins with what&rsquo;s actually wrong — then we price the fix
-              in writing.
-            </p>
+          <Reveal>
+            <div className="sec-head">
+              <span className="sec-index">02</span>
+              <span className="sec-label">Services</span>
+              <span className="sec-rule" />
+            </div>
+            <h2 className="sec-title" id="services-heading">
+              Five ways we <em>fix the flow.</em>
+            </h2>
           </Reveal>
-          <div className="grid grid-3">
+
+          <div className="index-list">
             {SERVICES.map((service, i) => (
               <Reveal key={service.slug}>
-                <Link
-                  href={`/services/${service.slug}`}
-                  className="card card-hover service-card"
-                >
-                  <h3>{service.name}</h3>
-                  <p>{service.blurb}</p>
-                  <span className="card-meta">
+                <Link href={`/services/${service.slug}`} className="index-row">
+                  <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h3 className="idx-title">{service.name}</h3>
+                    <p className="idx-sub">{service.blurb}</p>
+                  </div>
+                  <span className="idx-side">
                     <span className="price-pill">{service.priceLabel}</span>
-                    <span className="card-arrow">
-                      Explore <ArrowRightIcon size={15} />
+                    <span className="idx-arrow">
+                      <ArrowRightIcon size={20} />
                     </span>
                   </span>
                 </Link>
               </Reveal>
             ))}
             <Reveal>
-              <Link
-                href="/pricing"
-                className="card card-hover service-card service-card-accent"
-              >
-                <h3>Add-ons &amp; Monthly Care</h3>
-                <p>
-                  WhatsApp flows, installable PWAs, local SEO, quote
-                  calculators — and a care plan that keeps everything updated,
-                  reported, and owned by you.
-                </p>
-                <span className="card-meta">
+              <Link href="/pricing" className="index-row index-row-accent">
+                <span className="idx-no">06</span>
+                <div>
+                  <h3 className="idx-title">Add-ons &amp; Monthly Care</h3>
+                  <p className="idx-sub">
+                    WhatsApp flows, installable PWAs, local SEO, quote
+                    calculators — and a care plan that keeps everything
+                    updated, reported, and owned by you.
+                  </p>
+                </div>
+                <span className="idx-side">
                   <span className="price-pill">from PKR 20,000/mo</span>
-                  <span className="card-arrow">
-                    See pricing <ArrowRightIcon size={15} />
+                  <span className="idx-arrow">
+                    <ArrowRightIcon size={20} />
                   </span>
                 </span>
               </Link>
@@ -176,24 +191,32 @@ export default function HomePage() {
       </section>
 
       {/* ============ PROCESS ============ */}
-      <section className="section-tight" id="process" data-tl="Process" aria-labelledby="process-heading" style={{ paddingTop: 0 }}>
+      <section
+        className="section"
+        id="process"
+        data-tl="Process"
+        aria-labelledby="process-heading"
+        style={{ paddingTop: 0 }}
+      >
         <div className="container">
-          <Reveal className="section-head">
-            <span className="eyebrow">Process</span>
-            <h2 id="process-heading">Four phases. Honest timelines.</h2>
+          <Reveal>
+            <div className="sec-head">
+              <span className="sec-index">03</span>
+              <span className="sec-label">Process</span>
+              <span className="sec-rule" />
+            </div>
+            <h2 className="sec-title" id="process-heading">
+              Four phases. <em>Honest timelines.</em>
+            </h2>
           </Reveal>
-          <div className="process-grid">
+          <div className="phase-grid">
             {PROCESS_STEPS.map((step, i) => (
-              <Reveal
-                key={step.name}
-                className={`process-step ${i === 3 ? "process-step-dark" : ""}`}
-                as="article"
-              >
-                <span className="step-no" aria-hidden="true">
-                  0{i + 1}
+              <Reveal key={step.name} className="phase" as="article">
+                <span className="ph-no" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3>{step.name}</h3>
-                <span className="step-time">{step.timeline}</span>
+                <span className="ph-time">{step.timeline}</span>
                 <p>{step.summary}</p>
               </Reveal>
             ))}
@@ -202,20 +225,31 @@ export default function HomePage() {
       </section>
 
       {/* ============ WHY US ============ */}
-      <section className="section" id="why" data-tl="Why us" aria-labelledby="why-heading">
-        <div className="container">
-          <Reveal className="section-head">
-            <span className="eyebrow">Why us</span>
-            <h2 id="why-heading">
-              The short version: evidence, ownership, and a direct line
+      <section
+        className="section"
+        id="why"
+        data-tl="Why us"
+        aria-labelledby="why-heading"
+        style={{ paddingTop: 0 }}
+      >
+        <div className="container split">
+          <Reveal className="split-sticky">
+            <div className="sec-head">
+              <span className="sec-index">04</span>
+              <span className="sec-label">Why us</span>
+            </div>
+            <h2 className="sec-title" id="why-heading" style={{ marginBottom: 24 }}>
+              Evidence, ownership, and a <em>direct line.</em>
             </h2>
+            <p className="lede">
+              The short version of why businesses hand us the keys — and keep
+              them handed over.
+            </p>
           </Reveal>
-          <div className="grid grid-2">
-            {WHY_US.map((point) => (
-              <Reveal key={point.title} className="card card-hover why-card">
-                <span className="why-check" aria-hidden="true">
-                  <CheckIcon size={17} />
-                </span>
+          <div>
+            {WHY_US.map((point, i) => (
+              <Reveal key={point.title} className="why-row" as="article">
+                <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
                 <div>
                   <h3>{point.title}</h3>
                   <p>{point.body}</p>
@@ -226,20 +260,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ============ CTA BAND ============ */}
-      <section className="section section-ink cta-band" id="start" data-tl="Start" aria-labelledby="cta-heading">
+      {/* ============ CTA ============ */}
+      <section className="cta-full" id="start" data-tl="Start" aria-labelledby="cta-heading">
         <div className="container">
-          <Reveal className="cta-band-inner">
-            <div className="cta-band-text">
-              <h2 id="cta-heading" className="serif-display">
-                Send us your website link.
-              </h2>
-              <p>
-                Free 5-point audit within 24 hours — speed, Google visibility,
-                mobile, conversion, security. No obligation.
-              </p>
-            </div>
-            <div className="cta-band-actions">
+          <Reveal>
+            <h2 id="cta-heading">
+              Send us your <em>website link.</em>
+            </h2>
+            <p className="cta-body">
+              Free 5-point audit within 24 hours — speed, Google visibility,
+              mobile, conversion, security. No obligation.
+            </p>
+            <div className="cta-actions">
               <Link href="/free-audit" className="btn btn-light btn-lg">
                 Get your free audit
               </Link>
@@ -251,7 +283,7 @@ export default function HomePage() {
                 rel="noopener"
                 className="btn btn-ghost-on-ink btn-lg"
               >
-                <WhatsAppIcon size={18} /> WhatsApp us
+                <WhatsAppIcon size={16} /> WhatsApp us
               </a>
             </div>
           </Reveal>
