@@ -1,28 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="Zarrar.Solutions ZS monogram">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="Zarrar.Solutions ZS monogram — small">
   <title>Zarrar.Solutions</title>
-  <!--
-    SMALL-SIZE VARIANT of public/images/logo-mark.svg.
-    Below ~64px the full mark's cream pinstripes, maroon shade and dark
-    keyline collapse into a brown blob (verified at 32px). This variant keeps
-    the same skeleton, proportions and palette but drops every detail that
-    cannot survive: no inline stripe, no drop shade, no keyline. Two flat
-    colours on the eclipse ground.
-    Used by: favicon, src/components/logo.tsx (header + footer lockup).
-  -->
-
-  <!-- Z — solid cream slab, same geometry as the full mark -->
-  <path d="M150,150 H322 V193 L232,314 H322 V357 H150 V314 L240,193 H150 Z"
-        fill="#f2e2c4"/>
-
-  <!-- S — copper, thicker than the full mark so it holds at 16px -->
-  <path d="M366,212 C364,182 336,158 308,164 C282,170 266,193 274,215
-           C282,238 314,250 335,264 C357,279 369,303 357,327
-           C344,352 309,360 283,346 C267,337 259,321 258,308"
-        fill="none" stroke="#2a0001" stroke-width="46"
-        stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M366,212 C364,182 336,158 308,164 C282,170 266,193 274,215
-           C282,238 314,250 335,264 C357,279 369,303 357,327
-           C344,352 309,360 283,346 C267,337 259,321 258,308"
-        fill="none" stroke="#da7134" stroke-width="30"
-        stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- SMALL — same skeleton as full mark, flat colors only, verified at 32px -->
+  <!-- Z — cream slab -->
+  <path d="M150,152 H320 V192 L232,314 H320 V356 H150 V314 L240,192 H150 Z" fill="#f2e2c4"/>
+  <!-- S — copper, double-stroke for legibility at 16px -->
+  <path d="M368,214 C366,184 338,160 310,166 C284,172 268,195 276,217 C284,240 316,252 337,266 C359,281 371,305 359,329 C346,354 311,362 285,348 C269,339 261,323 260,310"
+        fill="none" stroke="#2a0001" stroke-width="48" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M368,214 C366,184 338,160 310,166 C284,172 268,195 276,217 C284,240 316,252 337,266 C359,281 371,305 359,329 C346,354 311,362 285,348 C269,339 261,323 260,310"
+        fill="none" stroke="#da7134" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
