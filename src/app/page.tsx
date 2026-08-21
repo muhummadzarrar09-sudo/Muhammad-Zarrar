@@ -9,6 +9,7 @@ import {
   PROCESS_STEPS,
 } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
+import { PinnedManifesto } from "@/components/pinned-manifesto";
 import {
   WhatsAppIcon,
   CheckIcon,
@@ -29,7 +30,7 @@ export default function HomePage() {
   return (
     <>
       {/* ============ HERO ============ */}
-      <section className="hero">
+      <section className="hero" id="top" data-tl="Top">
         <div className="container hero-grid">
           <Reveal>
             <span className="hero-eyebrow">
@@ -84,8 +85,10 @@ export default function HomePage() {
         </div>
       </section>
 
+      <PinnedManifesto />
+
       {/* ============ WHAT WE KEEP FINDING ============ */}
-      <section className="section section-ink" aria-labelledby="findings-heading">
+      <section className="section section-ink" id="findings" data-tl="Findings" aria-labelledby="findings-heading">
         <div className="container">
           <Reveal className="section-head">
             <span className="eyebrow">From real audits</span>
@@ -120,7 +123,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ SERVICES ============ */}
-      <section className="section" aria-labelledby="services-heading">
+      <section className="section" id="services" data-tl="Services" aria-labelledby="services-heading">
         <div className="container">
           <Reveal className="section-head">
             <span className="eyebrow">Services</span>
@@ -173,7 +176,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ PROCESS ============ */}
-      <section className="section-tight" aria-labelledby="process-heading" style={{ paddingTop: 0 }}>
+      <section className="section-tight" id="process" data-tl="Process" aria-labelledby="process-heading" style={{ paddingTop: 0 }}>
         <div className="container">
           <Reveal className="section-head">
             <span className="eyebrow">Process</span>
@@ -199,7 +202,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ WHY US ============ */}
-      <section className="section" aria-labelledby="why-heading">
+      <section className="section" id="why" data-tl="Why us" aria-labelledby="why-heading">
         <div className="container">
           <Reveal className="section-head">
             <span className="eyebrow">Why us</span>
@@ -224,7 +227,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ CTA BAND ============ */}
-      <section className="section section-ink cta-band" aria-labelledby="cta-heading">
+      <section className="section section-ink cta-band" id="start" data-tl="Start" aria-labelledby="cta-heading">
         <div className="container">
           <Reveal className="cta-band-inner">
             <div className="cta-band-text">
