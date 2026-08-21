@@ -52,14 +52,14 @@ export default function ProcessPage() {
                 <span className="ph-no" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 style={{ fontSize: "1.8rem" }}>{step.name}</h3>
+                <h3>{step.name}</h3>
                 <span className="ph-time">{step.timeline}</span>
                 <p>{step.detail}</p>
                 <ul className="checklist" style={{ marginTop: 20 }}>
                   {step.deliverables.map((d) => (
                     <li key={d}>
-                      <CheckIcon size={15} />
-                      <span style={{ fontSize: "0.95rem", color: "var(--text-2)" }}>
+                      <CheckIcon size={16} />
+                      <span>
                         {d}
                       </span>
                     </li>
@@ -70,10 +70,10 @@ export default function ProcessPage() {
           </div>
 
           <Reveal className="inset-panel process-after">
-            <h2 style={{ fontSize: "1.5rem", marginBottom: 10 }}>
+            <h2 className="panel-title">
               After launch: optional care plan
             </h2>
-            <p style={{ color: "var(--text-2)", fontSize: "0.98rem", maxWidth: "66ch" }}>
+            <p className="panel-body">
               Hosting, updates, small changes within 48 hours, and a
               plain-language monthly report — from PKR 20,000/month. Or
               don&rsquo;t: you own everything, and it runs fine without us.

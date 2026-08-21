@@ -129,17 +129,17 @@ export function WhatsAppForm({
       >
         {status === "idle" && (
           <>
-            <WhatsAppIcon size={18} /> {ctaLabel}
+            <WhatsAppIcon size={16} /> {ctaLabel}
           </>
         )}
         {status === "sending" && (
           <>
-            <SpinnerIcon size={18} /> Sending…
+            <SpinnerIcon size={16} /> Sending…
           </>
         )}
         {status === "sent" && (
           <>
-            <CheckIcon size={18} /> Sent — we reply within 24h
+            <CheckIcon size={16} /> Sent — we reply within 24h
           </>
         )}
         {status === "error" && <>Something failed — tap to retry</>}

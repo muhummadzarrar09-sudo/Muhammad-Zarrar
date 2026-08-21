@@ -119,7 +119,7 @@ export default async function ServiceDetailPage({
             </Reveal>
 
             <Reveal>
-              <h2 style={{ marginTop: 48 }}>What&rsquo;s included</h2>
+              <h2 className="prose-h2-spaced">What&rsquo;s included</h2>
               <ul className="checklist checklist-2col">
                 {service.included.map((item) => (
                   <li key={item}>
@@ -131,13 +131,13 @@ export default async function ServiceDetailPage({
             </Reveal>
 
             <Reveal>
-              <h2 style={{ marginTop: 48 }}>Who it&rsquo;s for</h2>
+              <h2 className="prose-h2-spaced">Who it&rsquo;s for</h2>
               <p className="muted">{service.whoFor}</p>
             </Reveal>
 
             {service.tiers && (
               <Reveal>
-                <h2 style={{ marginTop: 48 }}>Tiers</h2>
+                <h2 className="prose-h2-spaced">Tiers</h2>
                 <div className="grid grid-3">
                   {service.tiers.map((tier) => (
                     <div className="card tier-card" key={tier.label}>
@@ -151,7 +151,7 @@ export default async function ServiceDetailPage({
             )}
 
             <Reveal>
-              <h2 style={{ marginTop: 48 }}>Common questions</h2>
+              <h2 className="prose-h2-spaced">Common questions</h2>
               <FaqAccordion items={service.faqs} />
             </Reveal>
           </div>
@@ -177,7 +177,7 @@ export default async function ServiceDetailPage({
               </p>
             </Reveal>
             <Link href="/services" className="card-arrow aside-back">
-              All services <ArrowRightIcon size={15} />
+              All services <ArrowRightIcon size={16} />
             </Link>
           </aside>
         </div>

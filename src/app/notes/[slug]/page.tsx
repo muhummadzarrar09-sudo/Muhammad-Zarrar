@@ -84,7 +84,7 @@ export default async function NotePage({
 
       <section className="section">
         <div className="container">
-          <div className="prose" style={{ maxWidth: 760 }}>
+          <div className="prose">
             {note.sections.map((section) => (
               <Reveal key={section.heading}>
                 <h2>{section.heading}</h2>

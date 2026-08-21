@@ -40,7 +40,7 @@ export default function TermsPage() {
 
       <section className="section">
         <div className="container">
-          <div className="prose" style={{ maxWidth: 760 }}>
+          <div className="prose">
             <Reveal>
               <h2>Quotes and scope</h2>
               <p>

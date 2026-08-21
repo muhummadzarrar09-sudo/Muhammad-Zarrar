@@ -48,12 +48,12 @@ export default function ContactPage() {
           <div>
             <div className="grid" style={{ gap: 16 }}>
               <Reveal className="card">
-                <h2 style={{ fontSize: "1.2rem", marginBottom: 8, fontFamily: "var(--font-body)", fontWeight: 660 }}>
+                <h2 className="card-title">
                   WhatsApp — fastest
                 </h2>
-                <p style={{ color: "var(--text-2)", fontSize: "0.96rem", marginBottom: 16 }}>
+                <p className="card-body">
                   The channel we build for clients is the one we answer on.
-                  Number: <strong style={{ color: "var(--text)" }}>{WHATSAPP_DISPLAY}</strong>
+                  Number: <strong>{WHATSAPP_DISPLAY}</strong>
                 </p>
                 <a
                   href={waLink(DEFAULT_WA_MESSAGE)}
@@ -61,15 +61,15 @@ export default function ContactPage() {
                   rel="noopener"
                   className="btn btn-primary"
                 >
-                  <WhatsAppIcon size={17} /> Start a conversation
+                  <WhatsAppIcon size={16} /> Start a conversation
                 </a>
               </Reveal>
 
               <Reveal className="card">
-                <h2 style={{ fontSize: "1.2rem", marginBottom: 8, fontFamily: "var(--font-body)", fontWeight: 660 }}>
+                <h2 className="card-title">
                   Email
                 </h2>
-                <p style={{ color: "var(--text-2)", fontSize: "0.96rem", marginBottom: 16 }}>
+                <p className="card-body">
                   For briefs, documents, and anything longer than a chat.
                 </p>
                 <a href={`mailto:${EMAIL}`} className="btn btn-ghost">
@@ -78,10 +78,10 @@ export default function ContactPage() {
               </Reveal>
 
               <Reveal className="card">
-                <h2 style={{ fontSize: "1.2rem", marginBottom: 8, fontFamily: "var(--font-body)", fontWeight: 660 }}>
+                <h2 className="card-title">
                   Location &amp; hours
                 </h2>
-                <p style={{ color: "var(--text-2)", fontSize: "0.96rem" }}>
+                <p className="card-body">
                   Rawalpindi, Pakistan — serving Islamabad, Rawalpindi, and
                   businesses Pakistan-wide. Monday to Saturday, 10:00–19:00
                   PKT. Meetings by call or video; everything important gets
@@ -92,10 +92,10 @@ export default function ContactPage() {
           </div>
 
           <Reveal className="form-card">
-            <h2 style={{ fontSize: "1.4rem", marginBottom: 6 }}>
+            <h2 className="form-title">
               Send a quick message
             </h2>
-            <p style={{ fontSize: "0.93rem", color: "var(--text-2)", marginBottom: 22 }}>
+            <p className="form-sub">
               Opens WhatsApp with your message pre-filled — nothing is stored.
             </p>
             <ContactForm />

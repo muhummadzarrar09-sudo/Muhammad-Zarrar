@@ -70,10 +70,10 @@ export default function ServicesPage() {
 
           <Reveal className="inset-panel" >
             <div style={{ marginTop: 26 }}>
-              <h2 style={{ fontSize: "1.6rem", marginBottom: 10 }}>
+              <h2 className="panel-title">
                 Add-ons &amp; care plans
               </h2>
-              <p style={{ color: "var(--text-2)", fontSize: "0.98rem", maxWidth: "62ch" }}>
+              <p className="panel-body">
                 {ADDONS.map((a) => a.name).join(" · ")} — bolt any of these
                 onto a build, or onto a site you already have.{" "}
                 <Link href="/pricing" className="u-link">

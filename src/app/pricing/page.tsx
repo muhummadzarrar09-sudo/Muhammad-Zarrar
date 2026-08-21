@@ -74,7 +74,7 @@ export default function PricingPage() {
       <section className="section" id="rates" data-tl="Rates" aria-labelledby="services-pricing-heading">
         <div className="container">
           <Reveal className="section-head">
-            <h2 id="services-pricing-heading" style={{ fontSize: "1.7rem" }}>
+            <h2 id="services-pricing-heading">
               Services
             </h2>
           </Reveal>
@@ -93,7 +93,7 @@ export default function PricingPage() {
           </div>
 
           <Reveal>
-            <h2 style={{ fontSize: "1.7rem", marginTop: 56, marginBottom: 18 }} id="redesign-tiers-heading">
+            <h2 className="subsection-title" id="redesign-tiers-heading">
               Audit + Redesign tiers
             </h2>
             <div className="grid grid-3">
@@ -112,7 +112,7 @@ export default function PricingPage() {
       <section className="section-tight" aria-labelledby="addons-heading" style={{ paddingTop: 0 }}>
         <div className="container">
           <Reveal className="section-head">
-            <h2 id="addons-heading" style={{ fontSize: "1.7rem" }}>
+            <h2 id="addons-heading">
               Add-ons
             </h2>
             <p className="lede">
@@ -124,7 +124,7 @@ export default function PricingPage() {
             {ADDONS.map((addon) => (
               <Reveal key={addon.name}>
                 <div className="price-row">
-                  <h3 style={{ fontSize: "1.05rem", fontFamily: "var(--font-body)", fontWeight: 660 }}>
+                  <h3 className="row-title-sm">
                     {addon.name}
                   </h3>
                   <p className="row-desc">{addon.desc}</p>
