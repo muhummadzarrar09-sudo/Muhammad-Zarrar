@@ -10,7 +10,7 @@ import { JsonLd } from "@/components/jsonld";
 import { SITE_URL, SITE_NAME, POSITIONING } from "@/lib/site";
 
 /* Self-hosted fonts — zero CDN calls. Inter (variable) for body/UI,
-   Playfair Display for editorial serif display headlines. */
+   Fraunces (variable, optical editorial serif) for display headlines. */
 const inter = localFont({
   src: [{ path: "../fonts/inter-latin-wght-normal.woff2" }],
   variable: "--font-inter",
@@ -18,14 +18,12 @@ const inter = localFont({
   weight: "100 900",
 });
 
-const playfair = localFont({
+const fraunces = localFont({
   src: [
-    { path: "../fonts/playfair-latin-500-normal.woff2", weight: "500", style: "normal" },
-    { path: "../fonts/playfair-latin-600-normal.woff2", weight: "600", style: "normal" },
-    { path: "../fonts/playfair-latin-700-normal.woff2", weight: "700", style: "normal" },
-    { path: "../fonts/playfair-latin-600-italic.woff2", weight: "600", style: "italic" },
+    { path: "../fonts/fraunces-latin-wght-normal.woff2", weight: "100 900", style: "normal" },
+    { path: "../fonts/fraunces-latin-wght-italic.woff2", weight: "100 900", style: "italic" },
   ],
-  variable: "--font-playfair",
+  variable: "--font-fraunces",
   display: "swap",
 });
 
@@ -100,7 +98,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
       <body>
         <a className="skip-link" href="#main">
           Skip to content

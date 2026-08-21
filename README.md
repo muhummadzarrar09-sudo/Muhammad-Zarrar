@@ -42,8 +42,8 @@ The monogram card stays, and the site ships honest.
   to Cloudflare Pages with zero server cost
 - **Server Components by default.** Client Components only: `mobile-menu`,
   `route-progress`, `reveal`, `faq`, `whatsapp-form`, `register-sw`
-- **Self-hosted fonts** via `next/font/local` (Inter variable + Playfair
-  Display from `src/fonts/`) — no Google Fonts CDN, no third-party scripts,
+- **Self-hosted fonts** via `next/font/local` (Inter variable + Fraunces
+  variable from `src/fonts/`) — no Google Fonts CDN, no third-party scripts,
   no trackers, no external APIs
 - **PWA**: `manifest` (via `src/app/manifest.ts`), 192/512/maskable icons,
   pass-through service worker (`public/sw.js`) — installable
@@ -53,13 +53,16 @@ The monogram card stays, and the site ships honest.
   JS stays near the framework baseline (~<100KB gzip on core pages); no
   images except generated brand assets; `prefers-reduced-motion` respected
 
-### Design system ("The Manifesto" palette)
+### Design system ("The Manifesto" palette · editorial edition)
 
 `src/app/globals.css` is the single source of truth: eclipse `#2A0001`
-canvas, aura `#852616` dark-rust section rhythm, sunbeam `#DA7134` primary,
-bliss `#E89154` secondary, ardent `#FFD5A9` text. Serif display (Playfair) +
-Inter body, **sharp corners — no pills anywhere**, glow-and-sheen hover
-states on cards and buttons, diagonal-hatch accents, ember glow in the hero.
+canvas, aura `#852616` section rhythm, sunbeam `#DA7134` primary,
+bliss `#E89154` secondary, ardent `#FFD5A9` type. Fraunces (variable,
+italic accents) for display + Inter for body. **Print discipline on a dark
+ground: hairline rules, numbered index rows instead of card grids, sharp
+2px corners — no pills, no shadows, no glow.** Film grain overlay and a
+photographic ember texture (`public/textures/ember.jpg`) kill the flat
+template look.
 
 ### Motion
 
