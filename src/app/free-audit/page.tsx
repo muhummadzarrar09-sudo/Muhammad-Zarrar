@@ -34,7 +34,7 @@ export default function FreeAuditPage() {
               <span aria-current="page">Free 5-Point Audit</span>
             </nav>
             <span className="eyebrow">Free · replies within 24 hours</span>
-            <h1>Free 5-Point Mini-Audit</h1>
+            <h1>Free 5-Point <em>Mini-Audit.</em></h1>
             <p className="lede">
               Send us your website link — or tell us you don&rsquo;t have one
               yet. Within 24 hours we reply with five findings about your

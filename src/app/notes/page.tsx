@@ -52,7 +52,7 @@ export default function NotesIndexPage() {
               <span aria-current="page">Field Notes</span>
             </nav>
             <span className="eyebrow">Field Notes</span>
-            <h1>Evidence, written down.</h1>
+            <h1>Evidence, <em>written down.</em></h1>
             <p className="lede">
               Short notes from real audits and real builds. No growth-hacking,
               no listicles — what we found, what it cost the business, and
@@ -64,20 +64,19 @@ export default function NotesIndexPage() {
 
       <section className="section">
         <div className="container">
-          <div className="grid" style={{ gap: 20 }}>
-            {NOTES.map((note) => (
+          <div className="index-list">
+            {NOTES.map((note, i) => (
               <Reveal key={note.slug}>
-                <Link
-                  href={`/notes/${note.slug}`}
-                  className="card card-hover service-card"
-                >
-                  <p className="note-date">{note.date}</p>
-                  <h3 style={{ fontSize: "1.5rem" }}>{note.title}</h3>
-                  <p>{note.excerpt}</p>
-                  <span className="card-meta">
-                    <span className="chip chip-hatch">~3 min read</span>
-                    <span className="card-arrow">
-                      Read <ArrowRightIcon size={15} />
+                <Link href={`/notes/${note.slug}`} className="index-row">
+                  <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h3 className="idx-title">{note.title}</h3>
+                    <p className="idx-sub">{note.excerpt}</p>
+                  </div>
+                  <span className="idx-side">
+                    <span className="note-date">{note.date}</span>
+                    <span className="idx-arrow">
+                      <ArrowRightIcon size={20} />
                     </span>
                   </span>
                 </Link>

@@ -63,7 +63,7 @@ export default function AboutPage() {
               <span aria-current="page">About</span>
             </nav>
             <span className="eyebrow">About</span>
-            <h1>One builder. A system that ships.</h1>
+            <h1>One builder. <em>A system that ships.</em></h1>
             <p className="lede">
               Zarrar.Solutions is Muhammad Zarrar — a senior full-stack builder
               in Rawalpindi — plus a working system of audits, specs, and

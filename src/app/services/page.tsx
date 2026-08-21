@@ -34,7 +34,9 @@ export default function ServicesPage() {
               <span aria-current="page">Services</span>
             </nav>
             <span className="eyebrow">Services</span>
-            <h1>Five services. One starting point: evidence.</h1>
+            <h1>
+              Five services. One starting point: <em>evidence.</em>
+            </h1>
             <p className="lede">
               Every engagement starts with an audit, because fixing the wrong
               thing costs more than finding the right thing. Pick a service —
@@ -46,48 +48,38 @@ export default function ServicesPage() {
 
       <section className="section" id="services-list" data-tl="Services" aria-label="Service list">
         <div className="container">
-          <div className="grid" style={{ gap: 24 }}>
-            {SERVICES.map((service) => (
+          <div className="index-list">
+            {SERVICES.map((service, i) => (
               <Reveal key={service.slug}>
-                <Link
-                  href={`/services/${service.slug}`}
-                  className="card card-hover service-card"
-                  style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: 24 }}
-                >
-                  <div style={{ flex: "1 1 340px", minWidth: 0 }}>
-                    <h3 style={{ fontSize: "1.5rem", marginBottom: 8 }}>{service.name}</h3>
-                    <p style={{ flexGrow: 0 }}>{service.blurb}</p>
+                <Link href={`/services/${service.slug}`} className="index-row">
+                  <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h3 className="idx-title">{service.name}</h3>
+                    <p className="idx-sub">{service.blurb}</p>
                   </div>
-                  <span className="card-meta" style={{ borderTop: "none", paddingTop: 0, marginLeft: "auto", flexShrink: 0 }}>
+                  <span className="idx-side">
                     <span className="price-pill">{service.priceLabel}</span>
-                    <span className="card-arrow">
-                      Details <ArrowRightIcon size={15} />
+                    <span className="idx-arrow">
+                      <ArrowRightIcon size={20} />
                     </span>
                   </span>
                 </Link>
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
 
-      <section className="section-tight" aria-labelledby="addons-heading" style={{ paddingTop: 0 }}>
-        <div className="container">
-          <Reveal className="inset-panel">
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 20, justifyContent: "space-between" }}>
-              <div style={{ maxWidth: 560 }}>
-                <h2 id="addons-heading" style={{ fontSize: "1.45rem", marginBottom: 8 }}>
-                  Add-ons &amp; care plans
-                </h2>
-                <p style={{ color: "var(--text-2)", fontSize: "0.97rem" }}>
-                  WhatsApp order flows (PKR 80,000) · installable PWAs (PKR
-                  60,000) · local SEO (PKR 40,000–80,000) · quote calculators
-                  (PKR 80,000–150,000) · monthly care from PKR 20,000.
-                </p>
-              </div>
-              <Link href="/pricing" className="btn btn-ghost">
-                Full pricing <ArrowRightIcon size={15} />
-              </Link>
+          <Reveal className="inset-panel" >
+            <div style={{ marginTop: 26 }}>
+              <h2 style={{ fontSize: "1.6rem", marginBottom: 10 }}>
+                Add-ons &amp; care plans
+              </h2>
+              <p style={{ color: "var(--text-2)", fontSize: "0.98rem", maxWidth: "62ch" }}>
+                {ADDONS.map((a) => a.name).join(" · ")} — bolt any of these
+                onto a build, or onto a site you already have.{" "}
+                <Link href="/pricing" className="u-link">
+                  Full pricing
+                </Link>
+              </p>
             </div>
           </Reveal>
         </div>

@@ -61,7 +61,7 @@ export default function PricingPage() {
               <span aria-current="page">Pricing</span>
             </nav>
             <span className="eyebrow">Pricing</span>
-            <h1>In PKR, in writing.</h1>
+            <h1>In PKR, <em>in writing.</em></h1>
             <p className="lede">
               Prices are ranges because scope varies — you get an exact written
               quote after the audit, and you can add or remove modules to fit

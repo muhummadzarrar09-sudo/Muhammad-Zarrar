@@ -33,7 +33,9 @@ export default function ProcessPage() {
               <span aria-current="page">Process</span>
             </nav>
             <span className="eyebrow">Process</span>
-            <h1>Four phases. Honest timelines.</h1>
+            <h1>
+              Four phases. <em>Honest timelines.</em>
+            </h1>
             <p className="lede">
               No mystery phases, no &ldquo;we&rsquo;ll get back to you.&rdquo;
               This is the whole pipeline, with the real numbers attached.
@@ -44,51 +46,43 @@ export default function ProcessPage() {
 
       <section className="section" id="phases" data-tl="Phases" aria-label="Process phases">
         <div className="container">
-          <div className="grid grid-2" style={{ gap: 22 }}>
+          <div className="grid grid-2" style={{ gap: 56 }}>
             {PROCESS_STEPS.map((step, i) => (
-              <Reveal
-                key={step.name}
-                className={`card card-hover process-step ${i === 3 ? "process-step-dark" : ""}`}
-                as="article"
-              >
-                <div>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 14 }}>
-                    <span className="step-no" aria-hidden="true">0{i + 1}</span>
-                    <h3 style={{ fontSize: "1.5rem" }}>{step.name}</h3>
-                    <span className="step-time" style={{ marginLeft: "auto" }}>{step.timeline}</span>
-                  </div>
-                  <p style={{ marginTop: 14, color: "inherit" }}>{step.detail}</p>
-                  <ul className="checklist" style={{ marginTop: 18 }}>
-                    {step.deliverables.map((d) => (
-                      <li key={d}>
-                        <CheckIcon size={15} />
-                        <span style={{ fontSize: "0.94rem" }}>{d}</span>
-                      </li>
-                    ))}
-                    </ul>
-                </div>
+              <Reveal key={step.name} className="phase" as="article">
+                <span className="ph-no" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 style={{ fontSize: "1.8rem" }}>{step.name}</h3>
+                <span className="ph-time">{step.timeline}</span>
+                <p>{step.detail}</p>
+                <ul className="checklist" style={{ marginTop: 20 }}>
+                  {step.deliverables.map((d) => (
+                    <li key={d}>
+                      <CheckIcon size={15} />
+                      <span style={{ fontSize: "0.95rem", color: "var(--text-2)" }}>
+                        {d}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </Reveal>
             ))}
           </div>
 
           <Reveal className="inset-panel process-after">
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 20, justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ maxWidth: 620 }}>
-                <h2 style={{ fontSize: "1.4rem", marginBottom: 8 }}>
-                  After launch: optional care plan
-                </h2>
-                <p style={{ color: "var(--text-2)", fontSize: "0.97rem" }}>
-                  Hosting, updates, small changes within 48 hours, and a
-                  plain-language monthly report — from PKR 20,000/month. Or
-                  don&rsquo;t: you own everything, and it runs fine without
-                  us. The plan exists for owners who&rsquo;d rather never
-                  think about it.
-                </p>
-              </div>
-              <Link href="/pricing" className="btn btn-ghost">
+            <h2 style={{ fontSize: "1.5rem", marginBottom: 10 }}>
+              After launch: optional care plan
+            </h2>
+            <p style={{ color: "var(--text-2)", fontSize: "0.98rem", maxWidth: "66ch" }}>
+              Hosting, updates, small changes within 48 hours, and a
+              plain-language monthly report — from PKR 20,000/month. Or
+              don&rsquo;t: you own everything, and it runs fine without us.
+              The plan exists for owners who&rsquo;d rather never think about
+              it.{" "}
+              <Link href="/pricing" className="u-link">
                 See care plan pricing
               </Link>
-            </div>
+            </p>
           </Reveal>
         </div>
       </section>

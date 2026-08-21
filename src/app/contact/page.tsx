@@ -33,7 +33,7 @@ export default function ContactPage() {
               <span aria-current="page">Contact</span>
             </nav>
             <span className="eyebrow">Contact</span>
-            <h1>Talk to the builder.</h1>
+            <h1>Talk to <em>the builder.</em></h1>
             <p className="lede">
               No support tickets, no account managers, no &ldquo;our team will
               reach out.&rdquo; Messages land with the person who writes the
