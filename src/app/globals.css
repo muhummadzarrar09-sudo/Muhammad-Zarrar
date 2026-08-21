@@ -2136,3 +2136,19 @@ button {
     transform: none;
   }
 }
+
+/* ============ monogram placements (logo appears exactly twice, on purpose) ============ */
+.monogram-mark {
+  width: min(62%, 250px);
+  height: auto;
+  display: block;
+  margin-inline: auto;
+}
+
+.notfound-mark {
+  width: 88px;
+  height: 88px;
+  display: block;
+  margin: 0 auto 26px;
+  opacity: 0.92;
+}

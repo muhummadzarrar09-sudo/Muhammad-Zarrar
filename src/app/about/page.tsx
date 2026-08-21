@@ -87,9 +87,14 @@ export default function AboutPage() {
                 priority
               />
             ) : (
-              <span className="monogram" aria-hidden="true">
-                MZ<span className="mono-dot">.</span>
-              </span>
+              <img
+                src="/images/logo-mark.svg"
+                alt=""
+                aria-hidden="true"
+                className="monogram-mark"
+                width={240}
+                height={240}
+              />
             )}
           </Reveal>
           <div className="prose">

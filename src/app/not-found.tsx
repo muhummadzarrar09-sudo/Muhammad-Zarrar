@@ -8,6 +8,14 @@ export const metadata = {
 export default function NotFound() {
   return (
     <section className="notfound">
+      <img
+        src="/images/logo-mark.svg"
+        alt=""
+        aria-hidden="true"
+        className="notfound-mark"
+        width={96}
+        height={96}
+      />
       <span className="status-code">Audit finding · 404</span>
       <h1 className="serif-display">This page failed its audit.</h1>
       <p>
