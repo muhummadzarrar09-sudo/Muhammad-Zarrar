@@ -27,12 +27,6 @@ export default function HomePage() {
       {/* ============ HERO ============ */}
       <section className="hero" id="top" data-tl="Top">
         <div className="container">
-          <div className="hero-meta">
-            <span>Audit-led digital systems</span>
-            <span>Islamabad — Rawalpindi</span>
-            <span>Built by Muhammad Zarrar</span>
-          </div>
-
           <h1 className="hero-title">
             <span className="mask">
               <span className="mask-in">We don&rsquo;t just</span>

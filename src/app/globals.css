@@ -1027,29 +1027,6 @@ button {
   position: relative;
 }
 
-.hero-meta {
-  display: flex;
-  flex-wrap: wrap;
-  border-block: 1px solid var(--hairline-soft);
-  margin-bottom: 64px;
-}
-
-.hero-meta span {
-  padding: 13px 28px 13px 0;
-  margin-right: 28px;
-  border-right: 1px solid var(--hairline-soft);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-2);
-}
-
-.hero-meta span:last-child {
-  border-right: 0;
-  margin-right: 0;
-}
-
 .hero-title {
   font-size: clamp(2.6rem, 11.5vw, 7.1rem);
   font-weight: 460;
@@ -2368,11 +2345,6 @@ button {
   .hero-ctas .btn,
   .cta-actions .btn {
     flex: 1 1 auto;
-  }
-
-  .hero-meta span {
-    padding-right: 16px;
-    margin-right: 16px;
   }
 }
 
