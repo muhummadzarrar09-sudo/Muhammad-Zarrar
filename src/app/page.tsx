@@ -38,6 +38,9 @@ export default function HomePage() {
         />
         <div className="container">
           <div className="hero-kicker">
+            <span className="hero-emblem" aria-hidden="true">
+              <img src="/images/logo-mark.svg" alt="" width={56} height={56} />
+            </span>
             <span className="hero-kicker-live">0 trackers · 0 cookies · 100% owned</span>
             <span>Rawalpindi · 48h audit · 7-day build</span>
           </div>

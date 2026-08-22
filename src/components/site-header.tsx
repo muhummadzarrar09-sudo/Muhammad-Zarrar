@@ -11,7 +11,8 @@ export function SiteHeader() {
 
   return (
     <header className="site-header">
-      <div className="container header-inner">
+      <div className="container">
+        <div className="header-inner">
         <Link href="/" className="brand" aria-label="Zarrar.Solutions — home">
           <LogoMark size={34} />
           <span className="brand-name">
@@ -40,6 +41,7 @@ export function SiteHeader() {
             Free 5-Point Audit
           </Link>
           <MobileMenu />
+        </div>
         </div>
       </div>
     </header>
