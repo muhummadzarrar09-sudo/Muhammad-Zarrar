@@ -56,11 +56,11 @@ The monogram card stays, and the site ships honest.
 ### Design system ("Warm Lumen" · glass editorial)
 
 `src/app/globals.css` is the single source of truth: linen `#F6F1E8`
-canvas, teal `#0C6B66` primary, champagne bronze `#8B6234` for the mark,
-espresso `#1B1814` type. Fraunces (variable, italic accents) for display +
-Inter for body. **Frosted glass on a warm light ground: hairline rules,
-numbered index rows, soft 22px corners, mesh orbs instead of rust.** A
-whisper of film grain keeps it from going flat.
+canvas, teal `#0C6B66` primary, espresso `#1B1814` type. The clay ZS mark
+stays rust/copper. Fraunces (variable, italic accents) for display + Inter
+for body. **iOS liquid glass on a warm wallpaper: floating pill header,
+grouped glass tiles, 48px blur.** A whisper of film grain keeps it from
+going flat.
 
 ### Motion
 

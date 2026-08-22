@@ -1,7 +1,7 @@
 /* ==========================================================================
-   Zarrar.Solutions — "THE MANIFESTO" · editorial edition
-   Fire palette, hairline rules, index rows, film grain, oversized Fraunces.
-   No pills. No card grids. No glow slop. Print discipline on dark ground.
+   Zarrar.Solutions — "WARM LUMEN" · glass editorial
+   Light linen canvas, warm teal accent, champagne gold, frosted glass.
+   Inviting tech — not rusty, not cold. Oversized Fraunces, generous air.
    ========================================================================== */
 
 /* ==========================================================================
@@ -11,72 +11,80 @@
    ========================================================================== */
 
 :root {
-  /* ---- Ember ramp (derived from the brand accent #da7134, 50→900) -------
-     Contrast vs --canvas noted per step; 600 and darker are NON-TEXT only. */
-  --ember-50: #fadfc8;   /* 14.97:1 */
-  --ember-100: #f5cdb0;  /* 12.96:1 */
-  --ember-200: #efb994;  /* 10.92:1 */
-  --ember-300: #e79f72;  /*  8.75:1 */
-  --ember-400: #e18853;  /*  7.13:1 */
-  --ember-500: #da7134;  /*  5.82:1  ← brand accent */
-  --ember-550: #c1642e;  /*  4.67:1  pressed fill — label still AA */
-  --ember-600: #b55d2b;  /*  4.16:1  large text / icons only */
-  --ember-700: #8f4a22;  /*  2.88:1  non-text */
-  --ember-800: #663419;  /*  1.88:1  non-text */
-  --ember-900: #402010;  /*  1.31:1  non-text */
+  /* ---- Teal ramp (warm tech accent #0C6B66, 50→900) --------------------
+     Contrast vs --canvas noted per step. 50–300 are washes / non-text. */
+  --ember-50: #e8f6f4;   /* mint wash */
+  --ember-100: #d0ede9;
+  --ember-200: #a3d8d2;
+  --ember-300: #5bb8ae;  /* decorative */
+  --ember-400: #0e756f;  /*  4.92:1  large + body */
+  --ember-500: #0c6b66;  /*  5.64:1  ← brand accent */
+  --ember-550: #0a5854;  /* pressed fill */
+  --ember-600: #094f4b;  /* hover / on-light accent */
+  --ember-700: #073e3b;
+  --ember-800: #052e2c;
+  --ember-900: #031f1d;
 
-  /* ---- Ground ramp (the dark side of the same hue family) ---- */
-  --ground-900: #1c0001; /* footer — deepest */
-  --ground-850: #1e0001; /* mobile panel / tooltip */
-  --ground-800: #220001; /* inset wells */
-  --ground-750: #240001; /* monogram card */
-  --ground-700: #2a0001; /* canvas — the dominant 60% */
-  --ground-600: #360802;
-  --ground-500: #4a1109;
-  --ground-400: #5e180d; /* ink gradient light stop (AA-safe) */
-  --ground-300: #7c2213; /* NON-TEXT ONLY — decorative gradient tail */
+  /* ---- Ground ramp (warm linen, light → slightly deeper sand) ---- */
+  --ground-900: #ede6d8; /* footer */
+  --ground-850: #f3eee4; /* mobile panel / tooltip */
+  --ground-800: #f4efe6; /* inset wells */
+  --ground-750: #f2ebe0; /* monogram card */
+  --ground-700: #f6f1e8; /* canvas — the dominant 60% */
+  --ground-600: #efe8dc;
+  --ground-500: #e8dfd0;
+  --ground-400: #ddd4c4;
+  --ground-300: #c9bba8;
 
   /* ---- Roles ---- */
   --canvas: var(--ground-700);
   --inset: var(--ground-800);
-  --aura: #852616;
+  --aura: #e4f3f0;                    /* teal-tinted glass band */
   --accent: var(--ember-500);
-  --accent-hover: var(--ember-300); /* must differ from --accent-2 or links
-                                       have no visible hover at all */
+  --accent-hover: var(--ember-600);   /* darker, distinct from --accent-2 */
   --accent-2: var(--ember-400);
-  --accent-on-ink: var(--ember-300); /* accent that still reads on --ink */
-  --text: #ffd5a9;
-  --text-2: #d99a68;
-  --text-3: #ad744e;                 /* placeholders / de-emphasis — 4.89:1 */
-  --text-on-aura: #ffd5a9;
-  --text-2-on-aura: #f0b98d;
+  --accent-on-ink: var(--ember-600);
+  --on-accent: #ffffff;               /* labels on teal fills */
+  --gold: #8b6234;                    /* champagne bronze — 4.79:1 */
+  --text: #1b1814;                    /* 15.72:1 espresso */
+  --text-2: #534e46;                  /*  7.33:1 taupe */
+  --text-3: #645f57;                  /*  5.63:1 placeholders */
+  --text-on-aura: #1b1814;
+  --text-2-on-aura: #4a453c;
 
-  /* ---- Semantic — deliberately OUTSIDE the ember ramp so a status can
-     never be mistaken for decoration. All ≥4.5:1 on --canvas. ---- */
-  --danger: #ff5c47;      /* 6.26:1 on --canvas */
-  --danger-on-ink: #ff7361; /* 4.89:1 on --ground-400 */
-  --success: #4cc38a;  /* 8.63:1 */
-  --warning: #f5b544;  /* 10.53:1 */
-  --info: #7cb8e0;     /* 8.91:1 */
-  --danger-quiet: rgba(255, 92, 71, 0.14);
-  --success-quiet: rgba(76, 195, 138, 0.14);
+  /* ---- Semantic — outside the teal ramp. All ≥4.5:1 on --canvas. ---- */
+  --danger: #c53030;      /* 4.86:1 */
+  --danger-on-ink: #b91c1c;
+  --success: #246e4c;     /* 5.47:1 */
+  --warning: #8b5a0b;     /* 5.24:1 */
+  --info: #1d5fa8;        /* 5.74:1 */
+  --danger-quiet: rgba(197, 48, 48, 0.12);
+  --success-quiet: rgba(36, 110, 76, 0.12);
 
-  /* ---- Surfaces & lines (elevation by tone, on a dark ground) ---- */
-  --surface: rgba(255, 213, 169, 0.03);
-  --surface-2: rgba(255, 213, 169, 0.06);
-  --surface-3: rgba(255, 213, 169, 0.09);
-  --hairline: rgba(255, 213, 169, 0.28);
-  --hairline-soft: rgba(255, 213, 169, 0.16);
-  --hairline-strong: rgba(255, 213, 169, 0.42); /* 3:1 — focus & controls */
+  /* ---- Surfaces & lines (frosted glass on a light ground) ---- */
+  --surface: rgba(255, 255, 255, 0.42);
+  --surface-2: rgba(255, 255, 255, 0.58);
+  --surface-3: rgba(255, 255, 255, 0.76);
+  --hairline: rgba(27, 24, 20, 0.12);
+  --hairline-soft: rgba(27, 24, 20, 0.10);
+  --hairline-strong: rgba(27, 24, 20, 0.52); /* ≥3:1 — focus & controls */
 
-  /* ---- Elevation: one shadow system, four rungs. Warm-tinted, never
-     neutral black, so shadows belong to the palette. ---- */
+  /* ---- iOS liquid glass ---- */
+  --glass: rgba(255, 255, 255, 0.34);
+  --glass-strong: rgba(255, 255, 255, 0.52);
+  --glass-border: rgba(255, 255, 255, 0.58);
+  --glass-edge: rgba(27, 24, 20, 0.06);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.82), inset 0 -1px 0 rgba(27, 24, 20, 0.04);
+  --glass-blur: blur(48px) saturate(1.85);
+  --glass-shadow: 0 8px 32px rgba(27, 24, 20, 0.08), 0 1px 2px rgba(27, 24, 20, 0.04);
+
+  /* ---- Elevation: warm-tinted, never cold black. ---- */
   --e-0: none;
-  --e-1: 0 1px 2px rgba(10, 0, 1, 0.4);
-  --e-2: 0 4px 12px -2px rgba(10, 0, 1, 0.5), 0 2px 4px -2px rgba(10, 0, 1, 0.4);
-  --e-3: 0 12px 28px -6px rgba(10, 0, 1, 0.6), 0 4px 10px -4px rgba(10, 0, 1, 0.45);
-  --e-4: 0 28px 60px -12px rgba(10, 0, 1, 0.7), 0 8px 20px -8px rgba(10, 0, 1, 0.5);
-  --e-glow: 0 0 0 1px rgba(218, 113, 52, 0.28), 0 8px 26px -8px rgba(218, 113, 52, 0.34);
+  --e-1: 0 1px 2px rgba(27, 24, 20, 0.06);
+  --e-2: 0 8px 24px -8px rgba(27, 24, 20, 0.12), 0 2px 8px -2px rgba(27, 24, 20, 0.06);
+  --e-3: 0 18px 44px -12px rgba(27, 24, 20, 0.16), 0 6px 16px -6px rgba(12, 107, 102, 0.10);
+  --e-4: 0 28px 64px -16px rgba(27, 24, 20, 0.20), 0 10px 24px -8px rgba(12, 107, 102, 0.12);
+  --e-glow: 0 0 0 1px rgba(12, 107, 102, 0.22), 0 14px 36px -10px rgba(12, 107, 102, 0.28);
 
   /* ---- Spacing — strict 4pt grid. No raw px below. ---- */
   --sp-1: 4px;
@@ -130,11 +138,11 @@
   --ls-caps: 0.18em;
   --ls-caps-wide: 0.24em;
 
-  /* ---- Radius — 3 rungs, sharp editorial by design ---- */
-  --r-sm: 2px;
-  --r-md: 4px;
-  --r-lg: 8px;
-  --radius: var(--r-sm);
+  /* ---- Radius — 3 rungs, soft glass ---- */
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 26px;
+  --radius: var(--r-lg);
 
   /* ---- Motion — 4 durations, 4 easings. Everything maps to these. ---- */
   --dur-1: 120ms;  /* state tint */
@@ -167,11 +175,11 @@ html {
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 body {
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 html::-webkit-scrollbar,
@@ -244,8 +252,8 @@ button {
 }
 
 ::selection {
-  background: rgba(218, 113, 52, 0.5);
-  color: var(--ember-50);
+  background: rgba(12, 107, 102, 0.22);
+  color: var(--text);
 }
 
 :focus-visible {
@@ -257,7 +265,7 @@ button {
 /* Focus on the ink/aura grounds needs a light ring, not an ember one. */
 .section-ink :focus-visible,
 .cta-full :focus-visible {
-  outline-color: var(--ember-100);
+  outline-color: var(--accent);
 }
 
 .skip-link {
@@ -367,7 +375,7 @@ button {
 }
 
 .section-ink .index-row:hover .idx-title {
-  color: var(--ember-200);
+  color: var(--accent);
 }
 
 .section-ink .idx-mark {
@@ -527,13 +535,13 @@ button {
    tertiary (.btn-quiet) = text only. Distinguishable without colour alone. */
 .btn-primary {
   background: var(--accent);
-  color: var(--canvas);
+  color: var(--on-accent);
   box-shadow: var(--e-2);
 }
 
 .btn-primary:hover {
   background: var(--accent-hover);
-  color: var(--canvas);
+  color: var(--on-accent);
   box-shadow: var(--e-3);
 }
 
@@ -551,7 +559,7 @@ button {
 }
 
 .btn-quiet:hover {
-  color: var(--ember-300);
+  color: var(--accent-hover);
   background: var(--surface-2);
 }
 
@@ -574,7 +582,7 @@ button {
 
 .btn-light {
   background: var(--text);
-  color: var(--canvas);
+  color: var(--on-accent);
 }
 
 .btn-light {
@@ -582,25 +590,26 @@ button {
 }
 
 .btn-light:hover {
-  background: var(--ember-50);
-  color: var(--canvas);
+  background: var(--ember-800);
+  color: var(--on-accent);
   box-shadow: var(--e-3);
 }
 
 .btn-light:active {
-  background: var(--ember-100);
+  background: var(--ember-900);
   box-shadow: var(--e-1);
 }
 
 .btn-ghost-on-ink {
   background: transparent;
-  border-color: rgba(255, 213, 169, 0.45);
+  border-color: var(--hairline-strong);
   color: var(--text-on-aura);
+  background: var(--glass);
 }
 
 .btn-ghost-on-ink:hover {
-  border-color: var(--text-on-aura);
-  background: rgba(255, 213, 169, 0.08);
+  border-color: var(--accent);
+  background: var(--glass-strong);
   color: var(--text-on-aura);
 }
 
@@ -740,7 +749,7 @@ button {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(218, 113, 52, 0.07), transparent 65%);
+  background: linear-gradient(90deg, rgba(12, 107, 102, 0.08), transparent 65%);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s ease;
@@ -825,9 +834,9 @@ button {
   (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))
 ) {
   .site-header {
-    background: rgba(42, 0, 1, 0.86);
-    backdrop-filter: blur(12px) saturate(1.2);
-    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    background: rgba(246, 241, 232, 0.58);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
   }
 }
 
@@ -936,7 +945,7 @@ button {
 .menu-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(27, 24, 20, 0.28);
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--dur-3) var(--ease-standard);
@@ -1022,7 +1031,7 @@ button {
   inset: -10% -8% auto auto;
   width: min(1100px, 92%);
   aspect-ratio: 16 / 10;
-  background: url("/textures/ember.jpg") center 30% / cover no-repeat;
+  background: radial-gradient(ellipse at 60% 40%, rgba(160, 214, 206, 0.85), rgba(242, 214, 180, 0.35) 45%, transparent 70%);
   opacity: 0.58;
   mask-image: radial-gradient(68% 72% at 68% 38%, black 22%, transparent 78%);
   -webkit-mask-image: radial-gradient(68% 72% at 68% 38%, black 22%, transparent 78%);
@@ -1364,7 +1373,7 @@ button {
   bottom: -20%;
   width: min(820px, 75%);
   aspect-ratio: 16 / 9;
-  background: url("/textures/ember.jpg") center / cover no-repeat;
+  background: radial-gradient(ellipse at 50% 80%, rgba(160, 214, 206, 0.7), rgba(242, 214, 180, 0.3) 50%, transparent 75%);
   opacity: 0.55;
   transform: scaleX(-1);
   mask-image: linear-gradient(to top, black 25%, transparent 90%);
@@ -1385,7 +1394,7 @@ button {
 
 .cta-full h2 em {
   font-style: italic;
-  color: var(--ember-50);
+  color: var(--accent);
 }
 
 .cta-full .cta-body {
@@ -1853,7 +1862,7 @@ button {
 }
 
 .price-row:hover {
-  background: linear-gradient(90deg, rgba(218, 113, 52, 0.06), transparent 70%);
+  background: linear-gradient(90deg, rgba(12, 107, 102, 0.07), transparent 70%);
 }
 
 .price-row h3 {
@@ -1927,7 +1936,8 @@ button {
   overflow: hidden;
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
-  background: url("/textures/ember.jpg") center 120% / 160% auto no-repeat,
+  background:
+    radial-gradient(120% 80% at 50% 120%, rgba(160, 214, 206, 0.55), transparent 60%),
     var(--ground-750);
   box-shadow: var(--e-2);
 }
@@ -1953,7 +1963,7 @@ button {
   aspect-ratio: 5 / 6;
   border-radius: var(--radius);
   /* Same grade as the ember/smoke plates so photography joins the palette. */
-  filter: saturate(0.85) contrast(1.08) sepia(0.12);
+  filter: saturate(0.92) contrast(1.04);
 }
 
 .value-card {
@@ -2033,7 +2043,7 @@ button {
 
 .point-list li:hover {
   padding-left: 12px;
-  background: linear-gradient(90deg, rgba(218, 113, 52, 0.06), transparent 70%);
+  background: linear-gradient(90deg, rgba(12, 107, 102, 0.07), transparent 70%);
 }
 
 .point-list li::before {
@@ -2142,7 +2152,7 @@ button {
   position: absolute;
   inset: auto 0 -12% 0;
   height: 78%;
-  background: url("/textures/ember.jpg") center bottom / cover no-repeat;
+  background: radial-gradient(ellipse at 50% 100%, rgba(160, 214, 206, 0.55), rgba(242, 214, 180, 0.28) 40%, transparent 72%);
   opacity: 0.52;
   mask-image: linear-gradient(to top, black 28%, transparent 94%);
   -webkit-mask-image: linear-gradient(to top, black 28%, transparent 94%);
@@ -2751,7 +2761,7 @@ button {
 }
 
 .faq-q button:active {
-  color: var(--ember-300);
+  color: var(--accent-hover);
 }
 
 .faq-item.open .faq-q button {
@@ -2906,13 +2916,13 @@ button {
 
 /* ==========================================================================
    COLOUR-SCHEME DECLARATION
-   This is a single-scheme (dark) product by art direction. Declaring it
-   stops the UA painting light form controls, scrollbars and autofill
-   against the ember ground.
+   This is a single-scheme (light) product by art direction. Declaring it
+   stops the UA painting dark form controls, scrollbars and autofill
+   against the linen ground.
    ========================================================================== */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 input:-webkit-autofill,
@@ -2923,13 +2933,12 @@ textarea:-webkit-autofill {
 }
 
 @media (max-width: 760px) {
-  /* Mobile keeps the header fully opaque even where blur works — with the
-     drawer, the grain layer and a scrolling page underneath, translucency
-     reads as a bug rather than as glass. */
+  /* Frosted header stays glass on mobile — slightly more opaque so
+     content doesn't shout through the blur. */
   .site-header {
-    background: var(--canvas);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(18px) saturate(1.5);
+    -webkit-backdrop-filter: blur(18px) saturate(1.5);
   }
 
   .container {
@@ -3051,7 +3060,7 @@ textarea:-webkit-autofill {
   --icon-sm: 16px;
   --icon-md: 20px;
   --icon-lg: 24px;
-  --wa-glyph: var(--canvas); /* was an undefined token falling back to #fff */
+  --wa-glyph: #ffffff;
 }
 
 /* Optical alignment to the text baseline rather than the line box. */
@@ -3292,46 +3301,169 @@ body::after {
 }
 
 /* ==========================================================================
-   LIGHT, SOFT, SPACIOUS — Fix for crowded brutalism
-   User: lighter colors, softened borders, NOT CROWDED, one-sentence hero
+   iOS LIQUID GLASS — translucent, specular, wallpaper behind it
+   Apple Control Center / visionOS material. The clay mark stays the brand.
    ========================================================================== */
 
 :root {
-  /* Soften radius — was 2px sharp editorial, now 8px soft for Awwwards */
-  --radius: var(--r-lg);
-  /* Lighter surfaces — was 0.03/0.06/0.09, now more visible but still dark */
-  --surface: rgba(255, 213, 169, 0.05);
-  --surface-2: rgba(255, 213, 169, 0.08);
-  --surface-3: rgba(255, 213, 169, 0.12);
+  --radius: 26px;
+  --surface: rgba(255, 255, 255, 0.34);
+  --surface-2: rgba(255, 255, 255, 0.48);
+  --surface-3: rgba(255, 255, 255, 0.62);
 }
 
-/* Hero — spacious, one promise, lighter */
+/* Wallpaper — colour fields so the glass can actually refract */
+body {
+  background:
+    radial-gradient(1200px 800px at 6% -12%, rgba(255, 176, 138, 0.55), transparent 58%),
+    radial-gradient(1000px 720px at 98% -4%, rgba(132, 206, 196, 0.52), transparent 54%),
+    radial-gradient(900px 640px at 80% 108%, rgba(186, 168, 230, 0.28), transparent 56%),
+    radial-gradient(700px 520px at 18% 92%, rgba(255, 220, 176, 0.42), transparent 58%),
+    #f3eee6;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -25%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(46% 38% at 14% 18%, rgba(255, 190, 150, 0.55), transparent 70%),
+    radial-gradient(40% 34% at 88% 14%, rgba(150, 220, 210, 0.5), transparent 68%),
+    radial-gradient(38% 32% at 72% 82%, rgba(196, 176, 232, 0.32), transparent 70%),
+    radial-gradient(30% 26% at 40% 60%, rgba(255, 255, 255, 0.45), transparent 72%);
+  filter: blur(28px);
+}
+
+body::after {
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  z-index: 6;
+}
+
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Shared iOS material */
+.ios-glass,
+.card,
+.form-card,
+.price-card,
+.teardown,
+.privacy-live,
+.hero-kicker-live,
+.hero-emblem,
+.phase,
+.proof-metric,
+.tl-label {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.22) 100%);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
+}
+
+/* ---------- Floating island header (iOS 26 / Safari) ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 12px 0 8px;
+}
+
+@supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+  .site-header {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  height: 60px;
+  padding: 0 16px 0 14px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.56) 0%, rgba(255, 255, 255, 0.28) 100%);
+  backdrop-filter: blur(48px) saturate(1.9);
+  -webkit-backdrop-filter: blur(48px) saturate(1.9);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  box-shadow: 0 10px 36px rgba(27, 24, 20, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.88), inset 0 -1px 0 rgba(27, 24, 20, 0.04);
+}
+
+.brand-dot { color: #c45e2c; }
+
+.desktop-nav a {
+  border-bottom: 0;
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+.desktop-nav a:hover,
+.desktop-nav a[aria-current="page"] {
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--text);
+  border-bottom-color: transparent;
+}
+
+.nav-toggle {
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* ---------- Hero ---------- */
 .hero {
   min-height: 88vh;
   min-height: 88svh;
-  padding: var(--sp-24) 0 var(--sp-32);
-  background: radial-gradient(90% 80% at 72% 28%, rgba(94, 24, 13, 0.42) 0%, transparent 68%),
-              var(--canvas);
+  padding: calc(var(--sp-16) + 12px) 0 var(--sp-32);
+  background: transparent;
 }
 
 .hero::before {
-  opacity: 0.32 !important;
-  width: min(900px, 78%) !important;
-  right: -4% !important;
+  opacity: 1 !important;
+  width: min(980px, 86%) !important;
+  right: -8% !important;
   left: auto !important;
-  top: -6% !important;
+  top: -10% !important;
   bottom: auto !important;
-  mask-image: radial-gradient(72% 68% at 58% 42%, black 18%, transparent 74%) !important;
-  -webkit-mask-image: radial-gradient(72% 68% at 58% 42%, black 18%, transparent 74%) !important;
+  background: radial-gradient(ellipse at 58% 42%, rgba(255, 186, 150, 0.55), rgba(150, 214, 204, 0.45) 42%, transparent 72%) !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  filter: blur(18px);
 }
 
 .hero-mark {
-  opacity: 0.045 !important;
+  opacity: 0.14 !important;
   right: -2% !important;
-  top: 8% !important;
-  width: min(680px, 62vw) !important;
-  filter: saturate(0.9) contrast(1.05);
-  transform: none !important;
+  top: 6% !important;
+  width: min(620px, 58vw) !important;
+  filter: saturate(1.05) contrast(1.04);
+  transform: rotate(-4deg) !important;
+}
+
+.hero-emblem {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hero-emblem img {
+  width: 44px;
+  height: 44px;
 }
 
 .hero-title {
@@ -3342,6 +3474,8 @@ body::after {
   margin-left: 0 !important;
   font-weight: 480 !important;
 }
+
+.hero-title .line-2 { color: #c45e2c !important; }
 
 .hero-foot-light {
   margin-top: clamp(48px, 7vw, 96px) !important;
@@ -3356,57 +3490,77 @@ body::after {
   line-height: 1.7 !important;
 }
 
-/* Cards — softened */
+.hero-kicker-live {
+  border-radius: 999px;
+  padding: 8px 14px;
+}
+
+/* ---------- Cards / forms — iOS widgets ---------- */
+.card,
+.form-card,
+.price-card,
+.teardown,
+.monogram-card {
+  border-radius: 26px !important;
+  overflow: hidden;
+}
+
 .card {
-  border-radius: var(--r-lg) !important;
-  border-color: var(--hairline-soft) !important;
-  background: var(--surface-2) !important;
   padding: var(--sp-8) !important;
 }
 
-.card-hover:hover {
-  border-radius: var(--r-lg) !important;
-  background: var(--surface-3) !important;
-  border-color: var(--hairline) !important;
+.card-hover:hover,
+.card-hover:focus-within {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0.36) 100%) !important;
+  transform: translateY(-3px);
 }
 
-/* Proof strip — light, soft, spacious */
+.form-card,
+.price-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0.32) 100%) !important;
+}
+
+.field textarea {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+}
+
+/* ---------- Proof — four glass widgets ---------- */
 .proof-strip {
-  background: linear-gradient(180deg, rgba(255,213,169,0.06), transparent) !important;
-  border-block: 1px solid var(--hairline-soft) !important;
-  padding: var(--sp-10) 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  padding: var(--sp-8) 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .proof-strip-inner {
-  gap: 36px !important;
+  gap: 14px !important;
 }
 
 .proof-metric {
-  border-left: 1px solid var(--hairline-soft) !important;
-  padding-left: 20px !important;
-  border-radius: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 22px !important;
+  padding: 22px 20px !important;
+  min-height: 120px;
 }
 
 .proof-metric-value {
   font-family: var(--font-display) !important;
   font-style: italic !important;
   font-weight: 500 !important;
-  color: var(--ember-100) !important;
+  color: var(--accent) !important;
 }
 
-/* Teardown — soft, not terminal */
+/* ---------- Teardown widget ---------- */
 .teardown {
-  border: 1px solid var(--hairline-soft) !important;
-  border-radius: var(--r-lg) !important;
-  background: var(--surface-2) !important;
-  box-shadow: var(--e-3) !important;
+  overflow: hidden;
 }
 
 .teardown-head {
-  background: var(--surface) !important;
+  background: rgba(255, 255, 255, 0.28) !important;
   color: var(--text) !important;
-  border-bottom: 1px solid var(--hairline-soft) !important;
-  border-radius: var(--r-lg) var(--r-lg) 0 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4) !important;
 }
 
 .teardown-head h3 {
@@ -3417,10 +3571,7 @@ body::after {
   letter-spacing: -0.01em !important;
 }
 
-.teardown-col {
-  font-family: var(--font-body) !important;
-  padding: 26px !important;
-}
+.teardown-col { padding: 26px !important; }
 
 .teardown-v.bad,
 .teardown-v.good {
@@ -3429,61 +3580,78 @@ body::after {
   display: block !important;
 }
 
-/* Index rows — spacious, soft hover */
+/* ---------- Index rows = iOS grouped list ---------- */
 .index-list {
-  border-bottom: 1px solid var(--hairline-soft) !important;
-  gap: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 10px !important;
+  border: 0 !important;
 }
 
-.index-list::before {
-  display: none !important;
-}
+.index-list::before { display: none !important; }
 
 .index-row {
-  border-top: 1px solid var(--hairline-soft) !important;
-  padding: 36px 0 !important;
-  gap: 28px !important;
-  border-radius: var(--r-md);
-  transition: background 0.22s var(--ease-standard), transform 0.22s var(--ease-standard) !important;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 22px !important;
+  padding: 22px 24px !important;
+  gap: 24px !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.22) 100%);
+  backdrop-filter: blur(36px) saturate(1.7);
+  -webkit-backdrop-filter: blur(36px) saturate(1.7);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
+  transition: transform 0.22s var(--ease-standard), background 0.22s var(--ease-standard) !important;
 }
 
+.index-row::before { display: none; }
+
 .index-row:hover {
-  background: var(--surface-2) !important;
-  padding-left: 16px !important;
-  border-top-color: var(--hairline) !important;
-  transform: translateX(4px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.66) 0%, rgba(255, 255, 255, 0.34) 100%) !important;
+  transform: translateY(-2px);
+  padding-left: 24px !important;
 }
 
 .idx-no {
   font-family: var(--font-display) !important;
   font-style: italic !important;
-  color: var(--ember-300) !important;
+  color: var(--accent) !important;
   font-size: 1.15rem !important;
 }
 
 .idx-sub {
   border-left: none !important;
   padding-left: 0 !important;
-  margin-top: 10px !important;
+  margin-top: 8px !important;
   font-size: 1rem !important;
   line-height: 1.6 !important;
 }
 
-/* Section ink — lighter, softer */
+/* ---------- Section ink — another glass sheet ---------- */
 .section-ink {
-  background: linear-gradient(155deg, #6a1e12 0%, #4a1109 52%, #3a0a04 100%) !important;
-  border-block: none !important;
-}
-
-.section-ink::after {
-  display: none !important;
-}
-
-/* Marquee — soft, light */
-.marquee {
-  border-block: 1px solid var(--hairline-soft) !important;
   background: transparent !important;
-  padding: 18px 0 !important;
+  border: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.section-ink .container {
+  padding-top: 48px;
+  padding-bottom: 48px;
+  border-radius: 32px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(228, 243, 240, 0.28) 100%);
+  backdrop-filter: blur(40px) saturate(1.7);
+  -webkit-backdrop-filter: blur(40px) saturate(1.7);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
+}
+
+.section-ink .sec-title em { color: var(--accent) !important; }
+
+/* ---------- Marquee ---------- */
+.marquee {
+  border: 0 !important;
+  background: transparent !important;
+  padding: 10px 0 !important;
+  backdrop-filter: none !important;
 }
 
 .marquee-track > span {
@@ -3493,12 +3661,9 @@ body::after {
   letter-spacing: 0.22em !important;
 }
 
-/* Privacy live — soft */
+/* ---------- Privacy pill ---------- */
 .privacy-live {
-  border: 1px solid var(--hairline-soft) !important;
-  border-radius: var(--r-lg) !important;
-  background: var(--surface-2) !important;
-  box-shadow: var(--e-1) !important;
+  border-radius: 999px !important;
   font-family: var(--font-body) !important;
   text-transform: none !important;
   letter-spacing: 0.02em !important;
@@ -3506,65 +3671,207 @@ body::after {
   font-weight: 500 !important;
 }
 
-/* Buttons — soft */
+/* ---------- Buttons — iOS capsules ---------- */
 .btn {
-  border-radius: var(--r-lg) !important;
+  border-radius: 999px !important;
   border-width: 1px !important;
 }
 
 .btn-primary {
-  box-shadow: var(--e-2) !important;
+  background: var(--accent) !important;
+  color: var(--on-accent) !important;
+  box-shadow: 0 8px 24px -8px rgba(12, 107, 102, 0.5) !important;
 }
 
 .btn-primary:hover {
-  box-shadow: var(--e-3) !important;
+  background: var(--accent-hover) !important;
+  color: var(--on-accent) !important;
   transform: translateY(-1px) !important;
 }
 
 .btn-primary:active {
-  box-shadow: var(--e-1) !important;
+  background: var(--ember-700) !important;
   transform: translateY(0) !important;
 }
 
-/* Phase — soft */
+.btn-ghost,
+.btn-ghost-on-ink {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.22)) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  color: var(--text) !important;
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+}
+
+.btn-light {
+  background: var(--text) !important;
+  color: var(--on-accent) !important;
+}
+
+.btn-light:hover {
+  background: var(--ember-800) !important;
+  color: var(--on-accent) !important;
+}
+
+/* ---------- Phases as glass tiles ---------- */
+.phase-grid { gap: 14px !important; }
+
 .phase {
-  border-top: 1px solid var(--hairline-soft) !important;
-  padding-top: 28px !important;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 24px !important;
+  padding: 26px 22px !important;
 }
 
-.phase::before {
-  display: none !important;
-}
+.phase::before { display: none !important; }
+.phase .ph-no { color: var(--accent) !important; }
 
-/* Why rows — soft */
+/* ---------- Why rows ---------- */
 .why-row {
-  border-top: 1px solid var(--hairline-soft) !important;
-  padding: 32px 0 !important;
+  border-top: 0 !important;
+  padding: 18px 0 !important;
 }
 
-/* CTA — softer */
+/* ---------- CTA as a glass sheet ---------- */
 .cta-full {
-  border-top: none !important;
-  border-bottom: none !important;
-  padding: 112px 0 !important;
+  border: 0 !important;
+  padding: 48px 0 80px !important;
+  background: transparent !important;
 }
 
-/* Remove brutal breaks if any remain */
+.cta-full::before { display: none !important; }
+
+.cta-full .container {
+  padding: 56px 40px;
+  border-radius: 32px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(228, 243, 240, 0.32) 100%);
+  backdrop-filter: blur(48px) saturate(1.85);
+  -webkit-backdrop-filter: blur(48px) saturate(1.85);
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
+}
+
+.cta-full h2,
+.cta-full .cta-body,
+.findings-close p,
+.findings-close a { color: var(--text) !important; }
+
+.findings-close a { color: var(--accent) !important; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top: 0;
+  padding-top: 24px;
+}
+
+.site-footer .container {
+  padding-top: 40px;
+  border-radius: 32px 32px 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(237, 230, 216, 0.55));
+  backdrop-filter: blur(40px) saturate(1.5);
+  -webkit-backdrop-filter: blur(40px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 0;
+}
+
+/* ---------- Mobile drawer = iOS sheet ---------- */
+.mobile-panel {
+  top: 12px !important;
+  right: 12px !important;
+  bottom: 12px !important;
+  width: min(340px, calc(100vw - 24px)) !important;
+  border-radius: 28px !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(246, 241, 232, 0.5)) !important;
+  background-color: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(56px) saturate(1.9) !important;
+  -webkit-backdrop-filter: blur(56px) saturate(1.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.62) !important;
+  isolation: auto;
+}
+
+.menu-overlay {
+  background: rgba(27, 24, 20, 0.18);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+}
+
+/* ---------- Manifesto ---------- */
+.manifesto { background: transparent; }
+.manifesto-sticky::before {
+  opacity: 0.95 !important;
+  filter: blur(22px);
+}
+
+/* ---------- Monogram card holds the REAL clay logo ---------- */
+.monogram-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.22)) !important;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(255, 255, 255, 0.58) !important;
+}
+
+/* value cards should stay as glass widgets, not hairline-only */
+.value-card {
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 24px !important;
+  padding: 26px 22px !important;
+}
+
+/* Timeline */
+.scroll-timeline .tl-label {
+  border-radius: 10px;
+}
+.scroll-timeline .tl-fill {
+  background: linear-gradient(180deg, var(--accent), #c45e2c);
+}
+
+.skip-link {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: 999px;
+}
+
 .brutal-break,
-.side-label {
-  display: none !important;
-}
+.side-label { display: none !important; }
 
-/* Overall — more whitespace, not crowded */
-.section {
-  padding: 112px 0 !important;
-}
+.section { padding: 104px 0 !important; }
+
+.page-hero { border-bottom: 0; }
 
 @media (max-width: 760px) {
-  .section {
-    padding: 80px 0 !important;
+  .section { padding: 72px 0 !important; }
+  .hero { padding: var(--sp-14) 0 var(--sp-18) !important; }
+  .site-header {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 8px 0;
   }
-  .hero {
-    padding: var(--sp-16) 0 var(--sp-20) !important;
+  .header-inner { height: 56px; }
+  .cta-full .container { padding: 36px 22px; }
+  .section-ink .container { padding: 32px 18px; }
+  .hero-emblem { width: 48px; height: 48px; border-radius: 14px; }
+  .hero-emblem img { width: 36px; height: 36px; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .header-inner,
+  .card,
+  .form-card,
+  .price-card,
+  .teardown,
+  .privacy-live,
+  .mobile-panel,
+  .section-ink .container,
+  .cta-full .container,
+  .site-footer .container,
+  .proof-metric,
+  .phase,
+  .index-row {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #f4efe6 !important;
   }
 }
