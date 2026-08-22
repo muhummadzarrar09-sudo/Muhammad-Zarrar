@@ -1,12 +1,11 @@
 const ITEMS = [
-  "Website Audits",
-  "Audit + Redesign",
-  "RetailFlow",
-  "BookingFlow",
-  "Dashboards",
-  "Installable PWAs",
-  "Local SEO",
-  "WhatsApp Systems",
+  "A diagnosis you can keep",
+  "A number in writing",
+  "One WhatsApp that converts",
+  "You own the keys",
+  "Reply in 24 hours",
+  "No sequence, no chase",
+  "The builder reads it",
 ];
 
 /** Slow editorial marquee — pure CSS animation, static under reduced motion. */

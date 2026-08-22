@@ -9,7 +9,7 @@ import { Resvg } from "@resvg/resvg-js";
 import fs from "node:fs";
 
 const SRC = "public/images/logo-mark.svg";
-const GROUND = "#F6F1E8"; // --canvas / themeColor
+const GROUND = "#C4C3B6"; // --canvas / themeColor
 const raw = fs.readFileSync(SRC, "utf8");
 
 /** Wrap the mark on the eclipse ground with `pad` units of safe zone. */

@@ -3,18 +3,18 @@
 import { useEffect, useRef } from "react";
 
 const LINES = [
-  "Most websites don't fail loudly.",
-  "They fail quietly —",
-  "a slow load here, a blank page to Google there,",
-  "money leaking out of flows nobody ever audited.",
+  "You're not behind.",
+  "You're running a real business",
+  "on a site that never got diagnosed.",
+  "Tell us what's going on.",
 ];
 
-const FINAL_LINE = "We find the leaks. Then we build the fix.";
+const FINAL_LINE = "We'll meet you there.";
 
 /**
- * CSS scroll-driven manifesto — no GSAP, no external deps.
- * Uses animation-timeline: view() when available, otherwise
- * IntersectionObserver adds .in-view. Respects reduced-motion.
+ * Manifesto folio. CSS sticky holds the frame (see globals).
+ * With motion on, letters write with the wheel in src/motion/manifesto.ts.
+ * Without it: CSS view-timeline, then IntersectionObserver.
  */
 export function PinnedManifesto() {
   const rootRef = useRef<HTMLElement>(null);
@@ -29,39 +29,50 @@ export function PinnedManifesto() {
       return;
     }
 
-    // If browser supports view timeline, let CSS handle it
-    if (CSS.supports("animation-timeline: view()")) return;
-
-    const lines = el.querySelectorAll<HTMLElement>(".manifesto-line");
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) e.target.classList.add("in-view");
-        });
-      },
-      { threshold: 0.18, rootMargin: "0px 0px -12% 0px" }
-    );
-    lines.forEach((l) => io.observe(l));
-    return () => io.disconnect();
+    let io: IntersectionObserver | undefined;
+    const arm = () => {
+      if (document.documentElement.classList.contains("has-motion")) return;
+      if (CSS.supports("animation-timeline: view()")) return;
+      const lines = el.querySelectorAll<HTMLElement>(".manifesto-line");
+      io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("in-view");
+          });
+        },
+        { threshold: 0.18, rootMargin: "0px 0px -12% 0px" }
+      );
+      lines.forEach((l) => io!.observe(l));
+    };
+    const t = window.setTimeout(arm, 120);
+    return () => {
+      window.clearTimeout(t);
+      io?.disconnect();
+    };
   }, []);
 
   return (
     <section
       className="manifesto"
       id="manifesto"
-      data-tl="Manifesto"
-      aria-label="The manifesto"
+      data-tl="With you"
+      data-motion
+      aria-label="A note"
       ref={rootRef}
     >
       <div className="manifesto-sticky">
         <div className="manifesto-inner">
-          <span className="manifesto-kicker">The Manifesto — 0 trackers needed</span>
+          <span className="manifesto-kicker">A note</span>
           {LINES.map((line) => (
             <p className="manifesto-line" key={line}>
-              {line}
+              <span className="type-src">{line}</span>
+              <span className="type-out" aria-hidden="true" />
             </p>
           ))}
-          <p className="manifesto-line manifesto-final">{FINAL_LINE}</p>
+          <p className="manifesto-line manifesto-final">
+            <span className="type-src">{FINAL_LINE}</span>
+            <span className="type-out" aria-hidden="true" />
+          </p>
         </div>
       </div>
     </section>

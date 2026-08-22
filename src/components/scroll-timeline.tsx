@@ -74,13 +74,16 @@ export function ScrollTimeline() {
   }, [pathname, markers]);
 
   function jump(id: string) {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "auto"
-          : "smooth",
-      });
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduced && document.documentElement.classList.contains("has-lenis")) {
+      window.dispatchEvent(
+        new CustomEvent("motion:scrollTo", { detail: `#${id}` })
+      );
+      return;
+    }
+    document.getElementById(id)?.scrollIntoView({
+      behavior: reduced ? "auto" : "smooth",
+    });
   }
 
   return (

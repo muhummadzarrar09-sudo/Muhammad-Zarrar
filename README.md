@@ -53,14 +53,13 @@ The monogram card stays, and the site ships honest.
   JS stays near the framework baseline (~<100KB gzip on core pages); no
   images except generated brand assets; `prefers-reduced-motion` respected
 
-### Design system ("Warm Lumen" · glass editorial)
+### Design system ("Putty Gallery" · Structured spirit)
 
-`src/app/globals.css` is the single source of truth: linen `#F6F1E8`
-canvas, teal `#0C6B66` primary, espresso `#1B1814` type. The clay ZS mark
-stays rust/copper. Fraunces (variable, italic accents) for display + Inter
-for body. **iOS liquid glass on a warm wallpaper: floating pill header,
-grouped glass tiles, 48px blur.** A whisper of film grain keeps it from
-going flat.
+`src/app/globals.css` is the single source of truth: putty `#C4C3B6`
+canvas, ink `#111110` type and buttons. The clay ZS mark is the only
+colour (rust/copper). Fraunces for display + Inter for utility.
+**Museum wall: oversized serif, hairline labels, one black room, whisper
+glass.** No teal, no orbs, no heavy shadows.
 
 ### Motion
 

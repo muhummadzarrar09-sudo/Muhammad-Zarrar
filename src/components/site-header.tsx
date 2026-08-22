@@ -37,8 +37,8 @@ export function SiteHeader() {
         </nav>
 
         <div className="header-actions">
-          <Link href="/free-audit" className="btn btn-primary btn-sm header-cta">
-            Free 5-Point Audit
+          <Link href="/#brief" className="btn btn-primary btn-sm header-cta">
+            Write your brief
           </Link>
           <MobileMenu />
         </div>
