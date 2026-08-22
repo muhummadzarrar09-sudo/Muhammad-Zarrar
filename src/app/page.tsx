@@ -12,6 +12,24 @@ import { ProofStrip } from "@/components/proof-strip";
 import { WhatsAppIcon } from "@/components/icons";
 import { waLink } from "@/lib/site";
 
+function CodeGlyph({ side }: { side: "left" | "right" }) {
+  return (
+    <svg
+      className="hero-code-glyph"
+      viewBox="0 0 200 260"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="0.75" y="0.75" width="198.5" height="258.5" rx="6" fill="#C4C3B6" stroke="#111110" strokeOpacity="0.22" strokeWidth="1.5" />
+      <path d={side === "left" ? "M133 60L58 130L133 200" : "M68 60L143 130L68 200"} stroke="#111110" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={side === "left" ? "M186 48L142 212" : "M58 48L14 212"} stroke="#111110" strokeWidth="8" strokeLinecap="round" />
+      <circle cx={side === "left" ? "24" : "176"} cy="24" r="4" fill="#111110" fillOpacity="0.4" />
+    </svg>
+  );
+}
+
 export const metadata = pageMeta({
   title:
     "Zarrar.Solutions — Tell us what's leaking. Walk out with a written plan.",
@@ -27,7 +45,7 @@ export default function HomePage() {
         <div className="hero-stage">
           <div className="hero-sign hero-sign-l" aria-hidden="true">
             <div className="hero-sign-pane">
-              <img src="/images/dev-sign.png" alt="" width={1400} height={933} />
+              <CodeGlyph side="left" />
             </div>
           </div>
           <h1 className="hero-promise hero-cluster">
@@ -36,7 +54,7 @@ export default function HomePage() {
           </h1>
           <div className="hero-sign hero-sign-r" aria-hidden="true">
             <div className="hero-sign-pane">
-              <img src="/images/dev-sign.png" alt="" width={1400} height={933} />
+              <CodeGlyph side="right" />
             </div>
           </div>
         </div>

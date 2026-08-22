@@ -51,8 +51,9 @@ export function playHero() {
       trigger: root,
       start: "top top",
       end: pinEnd,
-      pin: true,
-      anticipatePin: 1,
+      // Do not let ScrollTrigger physically re-parent a React-owned section.
+      // CSS owns the visual hold; the timeline remains fully scrubbed.
+      pin: false,
       scrub,
       invalidateOnRefresh: true,
     },

@@ -69,8 +69,10 @@ export function playExhibit() {
       trigger: root,
       start: "top top",
       end: pinEnd,
-      pin: true,
-      anticipatePin: 1,
+      // Physical GSAP pinning reparents the section and conflicts with App
+      // Router deletion during a route transition. Keep the scroll-scrubbed
+      // sequence; CSS provides the visual full-screen stage.
+      pin: false,
       scrub,
       invalidateOnRefresh: true,
     },

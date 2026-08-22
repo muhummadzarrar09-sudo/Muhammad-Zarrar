@@ -80,11 +80,20 @@ function bootMotion(pathname: string): MotionHandle {
   html.classList.add("has-motion", "has-lenis");
 
   const lenis = new Lenis({
-    duration: 1.15,
-    easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    // A slightly longer settle makes wheel, trackpad and in-page anchor
+    // travel feel like one continuous gallery walk, rather than a sequence
+    // of browser jumps. ScrollTrigger remains tied to Lenis below, so every
+    // scrubbed scene also runs backwards cleanly on the return journey.
+    duration: 1.32,
+    easing: (t: number) => 1 - Math.pow(1 - t, 4),
     smoothWheel: true,
-    touchMultiplier: 1.1,
-    anchors: true,
+    wheelMultiplier: 0.88,
+    touchMultiplier: 1.06,
+    syncTouch: false,
+    anchors: {
+      offset: -8,
+      duration: 1.32,
+    },
   });
 
   lenis.on("scroll", ScrollTrigger.update);
@@ -107,9 +116,25 @@ function bootMotion(pathname: string): MotionHandle {
 
   const onScrollTo = (event: Event) => {
     const detail = (event as CustomEvent<string>).detail;
-    if (detail) lenis.scrollTo(detail, { offset: -8, duration: 1.15 });
+    if (detail) lenis.scrollTo(detail, { offset: -8, duration: 1.32 });
   };
   window.addEventListener("motion:scrollTo", onScrollTo);
+
+  // App Router swaps the page subtree before passive effect cleanup runs.
+  // A pinned ScrollTrigger must release its spacer *before* that swap, or
+  // GSAP can attempt to remove a pin node React has already removed.
+  const onBeforeNavigate = (event: MouseEvent) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const anchor = (event.target as HTMLElement | null)?.closest("a[href]") as HTMLAnchorElement | null;
+    if (!anchor || anchor.target === "_blank" || anchor.hasAttribute("download")) return;
+    const href = anchor.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
+    const destination = new URL(anchor.href, window.location.href);
+    if (destination.origin !== window.location.origin) return;
+    if (destination.pathname === window.location.pathname && destination.hash === window.location.hash) return;
+    killWireframes();
+  };
+  document.addEventListener("click", onBeforeNavigate, true);
 
   return {
     scrollTo: (target, opts) => {
@@ -118,6 +143,7 @@ function bootMotion(pathname: string): MotionHandle {
     destroy: () => {
       window.removeEventListener("load", onRefresh);
       window.removeEventListener("motion:scrollTo", onScrollTo);
+      document.removeEventListener("click", onBeforeNavigate, true);
       killWireframes();
       gsap.ticker.remove(ticker);
       lenis.destroy();

@@ -132,6 +132,18 @@ export function playWireframes(pathname: string) {
 }
 
 export function killWireframes() {
-  ctx?.revert();
+  const active = ctx;
+  // Usually called by the capture-phase navigation handler in engine.ts,
+  // before React replaces a page that contains pinned elements.
   ctx = null;
+  if (!active) return;
+  try {
+    active.revert();
+  } catch (error) {
+    // Route cleanup must never take down navigation. This defensive branch
+    // covers a browser back/forward race where React already released a pin.
+    if (!(error instanceof DOMException && error.name === "NotFoundError")) {
+      throw error;
+    }
+  }
 }
