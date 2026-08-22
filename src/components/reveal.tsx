@@ -26,16 +26,23 @@ export function Reveal({
     if (el.closest("[data-motion], .page-hero")) return;
 
     el.classList.add("rv");
+    /*
+     * Keep this reversible. A one-shot reveal makes a long page feel inert
+     * when someone scrolls back through it; toggling the state lets every
+     * section gently re-enter in either direction without hiding content
+     * before JavaScript has loaded.
+     */
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("rv-in");
-            io.unobserve(entry.target);
-          }
+          entry.target.classList.toggle("rv-in", entry.isIntersecting);
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -36px 0px" }
+      {
+        threshold: 0.12,
+        // The element is reset only once it has properly left the reading area.
+        rootMargin: "-8% 0px -12% 0px",
+      }
     );
     io.observe(el);
     return () => io.disconnect();
