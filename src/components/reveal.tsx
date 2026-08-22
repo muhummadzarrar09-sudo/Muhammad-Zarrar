@@ -23,6 +23,7 @@ export function Reveal({
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (el.closest("[data-motion], .page-hero")) return;
 
     el.classList.add("rv");
     const io = new IntersectionObserver(

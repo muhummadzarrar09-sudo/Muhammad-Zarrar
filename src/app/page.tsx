@@ -1,255 +1,271 @@
-import Link from "next/link";
 import { pageMeta } from "@/lib/seo";
-import { waLink } from "@/lib/site";
-import { SERVICES } from "@/content/services";
 import {
-  FINDINGS,
-  WHY_US,
-  PROCESS_STEPS,
-} from "@/content/site-content";
-import { Reveal } from "@/components/reveal";
+  CONTRAST,
+  NEXT_STEPS,
+  OUTCOMES,
+  RECOGNITIONS,
+} from "@/content/qualify";
+import { QualifyForm } from "@/components/qualify-form";
 import { PinnedManifesto } from "@/components/pinned-manifesto";
 import { Marquee } from "@/components/marquee";
 import { ProofStrip } from "@/components/proof-strip";
-import { Teardown } from "@/components/teardown";
-import { PrivacyLive } from "@/components/privacy-live";
-import { WhatsAppIcon, ArrowRightIcon } from "@/components/icons";
+import { WhatsAppIcon } from "@/components/icons";
+import { waLink } from "@/lib/site";
 
 export const metadata = pageMeta({
   title:
-    "Zarrar.Solutions — Audit-Led Web Development, Islamabad & Rawalpindi",
+    "Zarrar.Solutions — Tell us what's leaking. Walk out with a written plan.",
   description:
-    "We audit why your website isn't selling — then build the system that does. Free 5-point audit. 0 trackers, 0 cookies, 100% yours.",
+    "A qualifying brief for business owners in Islamabad & Rawalpindi. Say what you need and what you hoped to pay. We reply within 24 hours with findings — and an honest quote.",
   path: "/",
 });
 
 export default function HomePage() {
   return (
     <>
-      {/* ============ HERO — ONE SENTENCE PROMISE, LIGHT, SPACIOUS ============ */}
-      <section className="hero" id="top" data-tl="Top">
-        <img
-          src="/images/logo-mark.svg"
-          alt=""
-          aria-hidden="true"
-          className="hero-mark"
-          width={760}
-          height={760}
-        />
-        <div className="container">
-          <div className="hero-kicker">
-            <span className="hero-kicker-live">0 trackers · 0 cookies · 100% owned</span>
-            <span>Rawalpindi · 48h audit · 7-day build</span>
+      <section className="hero hero-minimal" id="top" data-tl="Welcome" data-motion>
+        <div className="hero-stage">
+          <div className="hero-sign hero-sign-l" aria-hidden="true">
+            <div className="hero-sign-pane">
+              <img src="/images/dev-sign.png" alt="" width={1400} height={933} />
+            </div>
           </div>
-
-          {/* ONE SENTENCE PROMISE */}
-          <h1 className="hero-title">
-            <span className="line">
-              <span className="line-inner">We audit why your site</span>
-            </span>
-            <span className="line">
-              <span className="line-inner">isn&apos;t selling —</span>
-            </span>
-            <span className="line">
-              <span className="line-inner line-2">then build the system</span>
-            </span>
-            <span className="line">
-              <span className="line-inner line-2">that does.</span>
-            </span>
+          <h1 className="hero-promise hero-cluster">
+            <span className="hero-line">You leave understood</span>
+            <span className="hero-line hero-line-em">— not pitched.</span>
           </h1>
-
-          <div className="hero-foot hero-foot-light">
-            <Reveal>
-              <p className="hero-sub">
-                No fake teams. No rented themes. One senior builder, one WhatsApp flow,
-                one system you own completely. Free 5-point audit in 24 hours.
-              </p>
-              <div className="hero-ctas">
-                <Link href="/free-audit" className="btn btn-primary btn-lg btn-magnetic">
-                  Get your free audit
-                </Link>
-              </div>
-            </Reveal>
-            <Reveal>
-              <div style={{ marginTop: 8 }}>
-                <PrivacyLive />
-              </div>
-              <p style={{ marginTop: 16, fontSize: "0.84rem", color: "var(--text-2)", maxWidth: "32ch", lineHeight: 1.5 }}>
-                Built to the same standard we audit against. Open DevTools → Network to verify.
-              </p>
-            </Reveal>
+          <div className="hero-sign hero-sign-r" aria-hidden="true">
+            <div className="hero-sign-pane">
+              <img src="/images/dev-sign.png" alt="" width={1400} height={933} />
+            </div>
           </div>
         </div>
+        <div className="hero-toolbar">
+          <div className="hero-ctas">
+            <a href="#brief" className="btn btn-primary">
+              Write your brief
+            </a>
+          </div>
+        </div>
+        <p className="hero-floor">
+          <span>This way</span>
+        </p>
       </section>
 
       <ProofStrip />
 
+      <section
+        className="section"
+        id="you"
+        data-tl="You"
+        data-motion
+        aria-labelledby="you-heading"
+      >
+        <div className="container">
+          <div className="sec-head">
+            <span className="sec-index">01</span>
+            <span className="sec-label">If this is your Tuesday</span>
+            <span className="sec-rule" />
+          </div>
+          <h2 className="sec-title" id="you-heading">
+            You&apos;re not behind. <em>You&apos;re undiagnosed.</em>
+          </h2>
+          <p className="lede sec-lede">
+            Most owners we meet already know something&apos;s off. They just
+            haven&apos;t had anyone name it without trying to sell a rebuild
+            first.
+          </p>
+          <div className="index-list recognize-list">
+            {RECOGNITIONS.map((item, i) => (
+              <article className="index-row" key={item.title}>
+                <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3 className="idx-title">{item.title}</h3>
+                  <p className="idx-sub">{item.body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="exhibit"
+        id="moment"
+        data-tl="Pause"
+        data-motion
+        aria-label="A pause"
+      >
+        <div className="exhibit-stage">
+          <img
+            src="/images/gallery/arch.jpg"
+            alt=""
+            className="exhibit-canvas"
+            width={1920}
+            height={1080}
+          />
+          <div className="notch-card">
+            <span className="notch-kicker">A pause</span>
+            <p className="notch-title">
+              <span className="type-src">
+                You don&apos;t need another website.
+              </span>
+              <span className="type-out" aria-hidden="true" />
+            </p>
+            <p className="notch-body">
+              <span className="type-src">
+                You need the one that takes the next order — and a number that
+                doesn&apos;t move unless the work does.
+              </span>
+              <span className="type-out" aria-hidden="true" />
+            </p>
+            <a className="notch-scroll" href="#brief">
+              Write the brief
+            </a>
+          </div>
+        </div>
+      </section>
+
       <Marquee />
+
+      <section
+        className="room-ink"
+        id="get"
+        data-tl="You get"
+        data-motion
+        aria-labelledby="get-heading"
+      >
+        <div className="container">
+          <p className="room-label">What you walk away with</p>
+          <h2 className="room-title" id="get-heading">
+            Not a pitch. A result.
+          </h2>
+          <div className="vignette-grid">
+            {OUTCOMES.map((item) => (
+              <figure className="vignette" key={item.title}>
+                <img src={item.src} alt="" width={400} height={400} />
+                <figcaption>
+                  <span className="vignette-cap">{item.title}</span>
+                  <span className="vignette-note">{item.body}</span>
+                </figcaption>
+                <span className="hex" aria-hidden="true" />
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="section section-ink"
+        id="different"
+        data-tl="Different"
+        data-motion
+        aria-labelledby="different-heading"
+      >
+        <div className="container">
+          <div className="sec-head">
+            <span className="sec-index">02</span>
+            <span className="sec-label">Why this feels different</span>
+            <span className="sec-rule" />
+          </div>
+          <h2 className="sec-title" id="different-heading">
+            The usual way, <em>and then this.</em>
+          </h2>
+          <div className="contrast-list">
+            {CONTRAST.map((row) => (
+              <article className="contrast-row" key={row.here}>
+                <p className="contrast-usual">
+                  <span>Usual</span>
+                  {row.usual}
+                </p>
+                <p className="contrast-here">
+                  <span>Here</span>
+                  {row.here}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="section"
+        id="next"
+        data-tl="Next"
+        data-motion
+        aria-labelledby="next-heading"
+      >
+        <div className="container">
+          <div className="sec-head">
+            <span className="sec-index">03</span>
+            <span className="sec-label">Then what happens</span>
+            <span className="sec-rule" />
+          </div>
+          <h2 className="sec-title" id="next-heading">
+            After you send it.
+          </h2>
+          <div className="phase-grid next-grid">
+            {NEXT_STEPS.map((step) => (
+              <article className="phase" key={step.no}>
+                <span className="ph-no" aria-hidden="true">
+                  {step.no}
+                </span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <PinnedManifesto />
 
-      {/* ============ TEARDOWN — Soft, spacious ============ */}
-      <section className="section" id="teardown" data-tl="Teardown" aria-labelledby="teardown-heading">
-        <div className="container">
-          <Reveal>
-            <div className="sec-head">
-              <span className="sec-index">01</span>
-              <span className="sec-label">Proof, not promises</span>
-              <span className="sec-rule" />
-            </div>
-            <h2 className="sec-title" id="teardown-heading">
-              The leaks we keep <em>finding.</em>
-            </h2>
-            <p className="lede" style={{ marginBottom: 36 }}>
-              Four patterns from real audits in Islamabad & Rawalpindi. This site avoids all four — by design.
-            </p>
-          </Reveal>
-          <Reveal>
-            <Teardown />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============ FINDINGS ============ */}
       <section
-        className="section section-ink"
-        id="findings"
-        data-tl="Findings"
-        aria-labelledby="findings-heading"
+        className="section qualify-section"
+        id="brief"
+        data-tl="Brief"
+        data-motion
+        aria-labelledby="brief-heading"
       >
-        <div className="container">
-          <Reveal>
-            <div className="sec-head">
-              <span className="sec-index">02</span>
-              <span className="sec-label">From real audits</span>
-              <span className="sec-rule" />
-            </div>
-            <h2 className="sec-title" id="findings-heading">
-              The same leaks, <em>over and over.</em>
-            </h2>
-          </Reveal>
-
-          <div className="index-list">
-            {FINDINGS.map((finding, i) => (
-              <Reveal key={finding.title} className="index-row" as="article">
-                <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
-                <div>
-                  <h3 className="idx-title">
-                    {finding.title}
-                  </h3>
-                  <p className="idx-sub">{finding.body}</p>
-                </div>
-                <span className="idx-mark" aria-hidden="true">✗</span>
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal className="findings-close">
-            <p>Every one from a real audit. Yours takes 48 hours.</p>
-            <Link href="/free-audit">Start free — 5-point mini-audit →</Link>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============ SERVICES ============ */}
-      <section
-        className="section"
-        id="services"
-        data-tl="Services"
-        aria-labelledby="services-heading"
-      >
-        <div className="container">
-          <Reveal>
-            <div className="sec-head">
-              <span className="sec-index">03</span>
-              <span className="sec-label">Services</span>
-              <span className="sec-rule" />
-            </div>
-            <h2 className="sec-title" id="services-heading">
-              Five ways we <em>fix the flow.</em>
-            </h2>
-          </Reveal>
-
-          <div className="index-list">
-            {SERVICES.map((service, i) => (
-              <Reveal key={service.slug}>
-                <Link href={`/services/${service.slug}`} className="index-row">
-                  <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
-                  <div>
-                    <h3 className="idx-title">{service.name}</h3>
-                    <p className="idx-sub">{service.blurb}</p>
-                  </div>
-                  <span className="idx-side">
-                    <span className="price-pill">{service.priceLabel}</span>
-                    <span className="idx-arrow"><ArrowRightIcon size={20} /></span>
-                  </span>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ PROCESS ============ */}
-      <section className="section" id="process" data-tl="Process" aria-labelledby="process-heading" style={{ paddingTop: 0 }}>
-        <div className="container">
-          <Reveal>
+        <div className="container qualify-wrap">
+          <div className="qualify-intro">
             <div className="sec-head">
               <span className="sec-index">04</span>
-              <span className="sec-label">Process</span>
+              <span className="sec-label">Your brief</span>
               <span className="sec-rule" />
             </div>
-            <h2 className="sec-title" id="process-heading">Four phases. <em>Honest timelines.</em></h2>
-          </Reveal>
-          <div className="phase-grid">
-            {PROCESS_STEPS.map((step, i) => (
-              <Reveal key={step.name} className="phase" as="article">
-                <span className="ph-no" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-                <h3>{step.name}</h3>
-                <span className="ph-time">{step.timeline}</span>
-                <p>{step.summary}</p>
-              </Reveal>
-            ))}
+            <h2 className="sec-title" id="brief-heading">
+              What you need. What you hoped to pay.{" "}
+              <em>Then the honest quote.</em>
+            </h2>
+            <p className="lede">
+              This is the last thing on the page on purpose. Fill it once.
+              We stop guessing in chat. You see the neighborhood of a real
+              quote before you send anything.
+            </p>
+            <p className="qualify-aside">
+              If your number is below what the work costs, we&apos;ll say so.
+              If it isn&apos;t a fit, we&apos;ll say that too. Either way you
+              leave with a straight answer.
+            </p>
+            <a
+              href={waLink(
+                "Hello Zarrar — I came from the site. I'd rather talk than fill the brief."
+              )}
+              target="_blank"
+              rel="noopener"
+              className="qualify-hello"
+            >
+              <WhatsAppIcon size={16} /> Or just say hello
+            </a>
           </div>
-        </div>
-      </section>
-
-      {/* ============ WHY US ============ */}
-      <section className="section" id="why" data-tl="Why us" aria-labelledby="why-heading" style={{ paddingTop: 0 }}>
-        <div className="container split">
-          <Reveal className="split-sticky">
-            <div className="sec-head">
-              <span className="sec-index">05</span>
-              <span className="sec-label">Why us</span>
-            </div>
-            <h2 className="sec-title" id="why-heading" style={{ marginBottom: 24 }}>Evidence, ownership, and a <em>direct line.</em></h2>
-            <p className="lede">Why businesses hand us the keys — and keep them.</p>
-          </Reveal>
-          <div>
-            {WHY_US.map((point, i) => (
-              <Reveal key={point.title} className="why-row" as="article">
-                <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
-                <div>
-                  <h3>{point.title}</h3>
-                  <p>{point.body}</p>
-                </div>
-              </Reveal>
-            ))}
+          <div className="form-card qualify-card">
+            <h3 className="form-title">The brief</h3>
+            <p className="form-sub">
+              Two minutes. Lands with the builder. Nothing is stored here.
+            </p>
+            <QualifyForm />
           </div>
-        </div>
-      </section>
-
-      {/* ============ CTA ============ */}
-      <section className="cta-full" id="start" data-tl="Start" aria-labelledby="cta-heading">
-        <div className="container">
-          <Reveal>
-            <h2 id="cta-heading">Send us your <em>link.</em></h2>
-            <p className="cta-body">Free 5-point audit in 24 hours. No spam. No tracker follows you after.</p>
-            <div className="cta-actions">
-              <Link href="/free-audit" className="btn btn-light btn-lg btn-magnetic">Get your free audit</Link>
-              <a href={waLink("Hello Zarrar.Solutions — here's my website link for the free 5-point audit: ")} target="_blank" rel="noopener" className="btn btn-ghost-on-ink btn-lg"><WhatsAppIcon size={16} /> WhatsApp us</a>
-            </div>
-          </Reveal>
         </div>
       </section>
     </>

@@ -34,7 +34,8 @@ export function PrivacyLive() {
     <div className="privacy-live" aria-live="polite">
       <span className="privacy-live-dot" aria-hidden="true" />
       <span>
-        <strong>LIVE:</strong> {cookies ?? 0} cookies · {external ?? 0} external requests · 0 trackers · open DevTools → Network to verify
+        <strong>Live</strong> · {cookies ?? 0} cookies · {external ?? 0}{" "}
+        external · 0 trackers
       </span>
     </div>
   );

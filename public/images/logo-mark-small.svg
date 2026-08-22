@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="Zarrar.Solutions ZS monogram — small">
   <title>Zarrar.Solutions</title>
-  <!-- SMALL — same skeleton as full mark, flat colors only, verified at 32px -->
-  <!-- Z — cream slab -->
-  <path d="M150,152 H320 V192 L232,314 H320 V356 H150 V314 L240,192 H150 Z" fill="#f2e2c4"/>
+  <!-- SMALL — same skeleton as full clay mark, flat colours, verified at 32px -->
+  <!-- Z — rust slab (actual logo body) -->
+  <path d="M150,152 H320 V192 L232,314 H320 V356 H150 V314 L240,192 H150 Z" fill="#a84424"/>
   <!-- S — copper, double-stroke for legibility at 16px -->
   <path d="M368,214 C366,184 338,160 310,166 C284,172 268,195 276,217 C284,240 316,252 337,266 C359,281 371,305 359,329 C346,354 311,362 285,348 C269,339 261,323 260,310"
-        fill="none" stroke="#2a0001" stroke-width="48" stroke-linecap="round" stroke-linejoin="round"/>
+        fill="none" stroke="#c4c3b6" stroke-width="48" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M368,214 C366,184 338,160 310,166 C284,172 268,195 276,217 C284,240 316,252 337,266 C359,281 371,305 359,329 C346,354 311,362 285,348 C269,339 261,323 260,310"
         fill="none" stroke="#da7134" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

@@ -3,7 +3,7 @@ import { WhatsAppIcon } from "./icons";
 import { waLink, DEFAULT_WA_MESSAGE } from "@/lib/site";
 import { Reveal } from "./reveal";
 
-/** Full-bleed aura closing band with ember texture. Serif statement + actions. */
+/** Full-bleed ink room. Serif statement + actions. */
 export function CtaBand({
   headline,
   body,
@@ -18,8 +18,9 @@ export function CtaBand({
   whatsappMessage?: string;
 }) {
   return (
-    <section className="cta-full">
+    <section className="cta-full" data-motion>
       <div className="container">
+        <p className="cta-plate">The close</p>
         <Reveal>
           <h2>{headline}</h2>
           <p className="cta-body">{body}</p>

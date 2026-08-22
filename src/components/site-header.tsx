@@ -11,7 +11,8 @@ export function SiteHeader() {
 
   return (
     <header className="site-header">
-      <div className="container header-inner">
+      <div className="container">
+        <div className="header-inner">
         <Link href="/" className="brand" aria-label="Zarrar.Solutions — home">
           <LogoMark size={34} />
           <span className="brand-name">
@@ -36,10 +37,11 @@ export function SiteHeader() {
         </nav>
 
         <div className="header-actions">
-          <Link href="/free-audit" className="btn btn-primary btn-sm header-cta">
-            Free 5-Point Audit
+          <Link href="/#brief" className="btn btn-primary btn-sm header-cta">
+            Write your brief
           </Link>
           <MobileMenu />
+        </div>
         </div>
       </div>
     </header>

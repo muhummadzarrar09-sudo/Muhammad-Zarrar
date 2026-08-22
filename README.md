@@ -53,16 +53,13 @@ The monogram card stays, and the site ships honest.
   JS stays near the framework baseline (~<100KB gzip on core pages); no
   images except generated brand assets; `prefers-reduced-motion` respected
 
-### Design system ("The Manifesto" palette · editorial edition)
+### Design system ("Putty Gallery" · Structured spirit)
 
-`src/app/globals.css` is the single source of truth: eclipse `#2A0001`
-canvas, aura `#852616` section rhythm, sunbeam `#DA7134` primary,
-bliss `#E89154` secondary, ardent `#FFD5A9` type. Fraunces (variable,
-italic accents) for display + Inter for body. **Print discipline on a dark
-ground: hairline rules, numbered index rows instead of card grids, sharp
-2px corners — no pills, no shadows, no glow.** Film grain overlay and a
-photographic ember texture (`public/textures/ember.jpg`) kill the flat
-template look.
+`src/app/globals.css` is the single source of truth: putty `#C4C3B6`
+canvas, ink `#111110` type and buttons. The clay ZS mark is the only
+colour (rust/copper). Fraunces for display + Inter for utility.
+**Museum wall: oversized serif, hairline labels, one black room, whisper
+glass.** No teal, no orbs, no heavy shadows.
 
 ### Motion
 

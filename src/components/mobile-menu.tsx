@@ -62,15 +62,15 @@ export function MobileMenu() {
           ))}
         </nav>
         <Link
-          href="/free-audit"
+          href="/#brief"
           className="btn btn-primary"
           onClick={() => setOpen(false)}
           tabIndex={open ? 0 : -1}
         >
-          Free 5-Point Audit
+          Write your brief
         </Link>
         <p className="mobile-panel-note">
-          Audit-led digital systems · Islamabad &amp; Rawalpindi
+          You talk to the builder · Islamabad &amp; Rawalpindi
         </p>
       </div>
     </>
