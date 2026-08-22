@@ -17,11 +17,11 @@ import { Resvg } from "@resvg/resvg-js";
 const run = promisify(execFile);
 const ROOT = process.cwd();
 
-const INK = "#2A0001";
-const TEAL_DIM = "#E89154";
-const MID_TEAL = "#DA7134";
-const MUTED_ON_INK = "#F0B98D";
-const HATCH_INK = "#400C04";
+const INK = "#F6F1E8";
+const TEAL_DIM = "#0C6B66";
+const MID_TEAL = "#0C6B66";
+const MUTED_ON_INK = "#534E46";
+const HATCH_INK = "#E4D9C8";
 
 const LOGO_SVG = path.join(ROOT, "public/images/logo-mark.svg");
 /* Supersampled (2x) size of the mark on the OG canvas, and its placement. */

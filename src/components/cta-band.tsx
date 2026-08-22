@@ -3,7 +3,7 @@ import { WhatsAppIcon } from "./icons";
 import { waLink, DEFAULT_WA_MESSAGE } from "@/lib/site";
 import { Reveal } from "./reveal";
 
-/** Full-bleed aura closing band with ember texture. Serif statement + actions. */
+/** Full-bleed glass closing band with warm orbs. Serif statement + actions. */
 export function CtaBand({
   headline,
   body,

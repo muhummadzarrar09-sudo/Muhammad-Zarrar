@@ -26,28 +26,25 @@ const ratio = (a, b) => {
 const over = (f, a, b) => f.map((c, i) => c * a + b[i] * (1 - a));
 
 const T = {
-  canvas: hex("#2a0001"),
-  ground850: hex("#1e0001"),
-  ground900: hex("#1c0001"),
-  ink1: hex("#5e180d"),
-  ink2: hex("#4a1109"),
-  ink3: hex("#360802"),
-  aura: hex("#852616"),
-  text: hex("#ffd5a9"),
-  text2: hex("#d99a68"),
-  text3: hex("#ad744e"),
-  text2OnAura: hex("#f0b98d"),
-  e50: hex("#fadfc8"),
-  e200: hex("#efb994"),
-  e300: hex("#e79f72"),
-  e400: hex("#e18853"),
-  e500: hex("#da7134"),
-  e550: hex("#c1642e"),
-  danger: hex("#ff5c47"),
-  dangerOnInk: hex("#ff7361"),
-  success: hex("#4cc38a"),
-  warning: hex("#f5b544"),
-  info: hex("#7cb8e0"),
+  canvas: hex("#f6f1e8"),
+  ground850: hex("#f3eee4"),
+  ground900: hex("#ede6d8"),
+  aura: hex("#e4f3f0"),
+  text: hex("#1b1814"),
+  text2: hex("#534e46"),
+  text3: hex("#645f57"),
+  text2OnAura: hex("#4a453c"),
+  e400: hex("#0e756f"),
+  e500: hex("#0c6b66"),
+  e550: hex("#0a5854"),
+  e600: hex("#094f4b"),
+  onAccent: hex("#ffffff"),
+  gold: hex("#8b6234"),
+  danger: hex("#c53030"),
+  dangerOnInk: hex("#b91c1c"),
+  success: hex("#246e4c"),
+  warning: hex("#8b5a0b"),
+  info: hex("#1d5fa8"),
 };
 
 const AA = 4.5;   // body text
@@ -64,48 +61,46 @@ const CASES = [
   [".idx-no ember-400 on --canvas", T.e400, T.canvas, AA],
   [".ph-no ember-400 on --canvas", T.e400, T.canvas, AA],
   [".finding-line --text-2 on --canvas", T.text2, T.canvas, AA],
+  ["--gold on --canvas", T.gold, T.canvas, AA],
 
-  // ---- the .section-ink / .cta-full gradient, sampled at all three stops ----
-  ["--text on ink stop 1", T.text, T.ink1, AA],
-  ["--text on ink stop 3", T.text, T.ink3, AA],
-  ["--text-2 on ink stop 1", T.text2, T.ink1, AA],
-  ["--text-2 on ink stop 2", T.text2, T.ink2, AA],
-  ["--text-2-on-aura on ink stop 1", T.text2OnAura, T.ink1, AA],
-  [".sec-index --accent-on-ink on ink stop 1", T.e300, T.ink1, AA],
-  [".idx-no --accent-on-ink on ink stop 1", T.e300, T.ink1, AA],
-  [".idx-mark --danger-on-ink on ink stop 1", T.dangerOnInk, T.ink1, AA],
-  [".index-row:hover .idx-title ember-200 on ink 1", T.e200, T.ink1, AA],
-  [".cta-full h2 em ember-50 on ink stop 1", T.e50, T.ink1, AA],
+  // ---- the .section-ink / .cta-full teal wash ----
+  ["--text on --aura", T.text, T.aura, AA],
+  ["--text-2-on-aura on --aura", T.text2OnAura, T.aura, AA],
+  ["--accent on --aura", T.e500, T.aura, AA],
+  ["--accent-on-ink on --aura", T.e600, T.aura, AA],
+  [".idx-mark --danger-on-ink on --aura", T.dangerOnInk, T.aura, AA],
 
   // ---- footer / panels ----
+  ["--text on footer --ground-900", T.text, T.ground900, AA],
   ["--text-2 on footer --ground-900", T.text2, T.ground900, AA],
   ["--text-3 footer-bottom-note on --ground-900", T.text3, T.ground900, AA],
   ["--text on mobile panel --ground-850", T.text, T.ground850, AA],
   ["--text-2 on mobile panel --ground-850", T.text2, T.ground850, AA],
 
-  // ---- semantic, all deliberately outside the ember ramp ----
+  // ---- semantic ----
   ["--danger on --canvas", T.danger, T.canvas, AA],
   ["--success on --canvas", T.success, T.canvas, AA],
   ["--warning on --canvas", T.warning, T.canvas, AA],
   ["--info on --canvas", T.info, T.canvas, AA],
 
   // ---- button labels across every state ----
-  [".btn-primary label (default)", T.canvas, T.e500, AA],
-  [".btn-primary label (hover)", T.canvas, T.e400, AA],
-  [".btn-primary label (active)", T.canvas, T.e550, AA],
-  [".btn-light label", T.canvas, T.text, AA],
+  [".btn-primary label (default)", T.onAccent, T.e500, AA],
+  [".btn-primary label (hover)", T.onAccent, T.e600, AA],
+  [".btn-primary label (active)", T.onAccent, T.e550, AA],
+  [".btn-light label", T.onAccent, T.text, AA],
   [".btn-ghost label on --canvas", T.text, T.canvas, AA],
 
   // ---- non-text UI components need 3:1 ----
-  ["--hairline-strong (inputs, ghost btn, toggle)", over(T.text, 0.42, T.canvas), T.canvas, LG],
-  [".tl-marker border --hairline-strong", over(T.text, 0.42, T.canvas), T.canvas, LG],
+  ["--hairline-strong (inputs, ghost btn, toggle)", over(T.text, 0.52, T.canvas), T.canvas, LG],
+  [".tl-marker border --hairline-strong", over(T.text, 0.52, T.canvas), T.canvas, LG],
   [".status-code border --danger", T.danger, T.canvas, LG],
   [".why-check border --danger", T.danger, T.canvas, LG],
-  ["LogoMark Z #ffd5a9 on --aura", T.text, T.aura, AA],
+  ["LogoMark Z teal on --canvas", T.e500, T.canvas, AA],
+  ["LogoMark S gold on --canvas", T.gold, T.canvas, AA],
 
   // ---- decorative rules: no WCAG obligation, floor only ----
-  ["--hairline (card frames, decorative)", over(T.text, 0.28, T.canvas), T.canvas, DEC],
-  ["--hairline-soft (section rules, decorative)", over(T.text, 0.16, T.canvas), T.canvas, DEC],
+  ["--hairline (card frames, decorative)", over(T.text, 0.12, T.canvas), T.canvas, DEC],
+  ["--hairline-soft (section rules, decorative)", over(T.text, 0.10, T.canvas), T.canvas, DEC],
 ];
 
 let failed = 0;

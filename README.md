@@ -53,16 +53,14 @@ The monogram card stays, and the site ships honest.
   JS stays near the framework baseline (~<100KB gzip on core pages); no
   images except generated brand assets; `prefers-reduced-motion` respected
 
-### Design system ("The Manifesto" palette · editorial edition)
+### Design system ("Warm Lumen" · glass editorial)
 
-`src/app/globals.css` is the single source of truth: eclipse `#2A0001`
-canvas, aura `#852616` section rhythm, sunbeam `#DA7134` primary,
-bliss `#E89154` secondary, ardent `#FFD5A9` type. Fraunces (variable,
-italic accents) for display + Inter for body. **Print discipline on a dark
-ground: hairline rules, numbered index rows instead of card grids, sharp
-2px corners — no pills, no shadows, no glow.** Film grain overlay and a
-photographic ember texture (`public/textures/ember.jpg`) kill the flat
-template look.
+`src/app/globals.css` is the single source of truth: linen `#F6F1E8`
+canvas, teal `#0C6B66` primary, champagne bronze `#8B6234` for the mark,
+espresso `#1B1814` type. Fraunces (variable, italic accents) for display +
+Inter for body. **Frosted glass on a warm light ground: hairline rules,
+numbered index rows, soft 22px corners, mesh orbs instead of rust.** A
+whisper of film grain keeps it from going flat.
 
 ### Motion
 
