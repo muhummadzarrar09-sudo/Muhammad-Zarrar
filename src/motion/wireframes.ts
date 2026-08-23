@@ -48,6 +48,29 @@ export const WIREFRAMES: WireframeScene[] = [
   /* hero-converge lives in ./hero.ts — the promise dissolves, bare
      chevrons meet as </>, then the loading line hands off to Lenis. */
   {
+    id: "proof-rail",
+    note: "The completed mark docks; four promises land left to right.",
+    page: "/",
+    trigger: "#after-hero",
+    start: "top 94%",
+    end: "bottom 48%",
+    scrub: 0.72,
+    tweens: [
+      {
+        target: ".proof-rail-head",
+        from: { x: -24, opacity: 0.18 },
+        to: { x: 0, opacity: 1 },
+        duration: 0.42,
+      },
+    ],
+    stagger: {
+      target: ".proof-rail-item",
+      from: { y: 24, opacity: 0.12 },
+      to: { y: 0, opacity: 1 },
+      each: 0.08,
+    },
+  },
+  {
     id: "recognize",
     note: "Tuesday rises with the wheel — each row a step, not a pop.",
     page: "/",

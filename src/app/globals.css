@@ -5710,3 +5710,177 @@ main {
     min-height: calc(100svh - 56px) !important;
   }
 }
+
+/* Proof rail — the completed code mark docks here before Section 01. This is
+   a compact handoff, not another hero and not a row of invented metrics. */
+.proof-strip.proof-rail-section {
+  position: relative;
+  z-index: 2;
+  padding: 0 !important;
+  background: #c4c3b6 !important;
+  border-top: 1px solid rgba(17, 17, 16, 0.18) !important;
+  border-bottom: 1px solid rgba(17, 17, 16, 0.18) !important;
+  overflow: hidden;
+}
+
+.proof-rail {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.82fr) minmax(0, 3.18fr);
+  min-height: 156px;
+}
+
+.proof-rail-head {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  padding: 26px 28px 26px 0;
+}
+
+.proof-rail-mark {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  color: #111110;
+  font-family: var(--font-body);
+  font-size: 2rem;
+  font-weight: 420;
+  line-height: 1;
+  letter-spacing: -0.2em;
+}
+
+.proof-rail-mark i {
+  margin-inline: 0.12em 0.04em;
+  font-style: normal;
+  font-weight: 300;
+}
+
+.proof-rail-kicker {
+  margin: 0 0 7px;
+  color: rgba(17, 17, 16, 0.58);
+  font-size: 0.61rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.proof-rail-head h2 {
+  margin: 0;
+  max-width: 9ch;
+  color: #111110;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 1.8vw, 1.75rem);
+  font-weight: 480;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+
+.proof-rail-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid rgba(17, 17, 16, 0.14);
+}
+
+.proof-rail-item {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 25px;
+  min-width: 0;
+  padding: 25px 18px 23px;
+}
+
+.proof-rail-item + .proof-rail-item {
+  border-left: 1px solid rgba(17, 17, 16, 0.14);
+}
+
+.proof-rail-item::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: #111110;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.proof-rail-item:hover::after {
+  transform: scaleX(1);
+}
+
+.proof-rail-index {
+  color: rgba(17, 17, 16, 0.46);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.proof-rail-item h3 {
+  margin: 0 0 8px;
+  color: #111110;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  font-weight: 680;
+  line-height: 1.25;
+}
+
+.proof-rail-item p {
+  margin: 0;
+  max-width: 24ch;
+  color: rgba(17, 17, 16, 0.6);
+  font-size: 0.68rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 1020px) {
+  .proof-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-rail-head {
+    padding: 22px 0;
+  }
+
+  .proof-rail-head h2 {
+    max-width: none;
+  }
+
+  .proof-rail-list {
+    border-top: 1px solid rgba(17, 17, 16, 0.14);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .proof-rail-head {
+    gap: 14px;
+  }
+
+  .proof-rail-mark {
+    font-size: 1.65rem;
+  }
+
+  .proof-rail-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .proof-rail-item {
+    gap: 15px;
+    min-height: 132px;
+    padding: 20px 14px 18px;
+  }
+
+  .proof-rail-item:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .proof-rail-item:nth-child(n + 3) {
+    border-top: 1px solid rgba(17, 17, 16, 0.14);
+  }
+}
