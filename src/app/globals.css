@@ -5900,3 +5900,56 @@ main {
     width: clamp(26px, 8vw, 37px);
   }
 }
+
+/* Rail construction motion. Static borders remain the no-JS fallback; GSAP
+   takes over only after the motion engine is live. */
+.proof-rail-rule {
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  display: block;
+  height: 1px;
+  background: rgba(17, 17, 16, 0.22);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.proof-rail-rule-top { top: 0; }
+.proof-rail-rule-bottom { bottom: 0; }
+
+.proof-rail-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  display: block;
+  width: 1px;
+  background: rgba(17, 17, 16, 0.16);
+  transform-origin: top center;
+  pointer-events: none;
+}
+
+html.has-motion .proof-strip.proof-rail-section {
+  border-color: transparent !important;
+}
+
+html.has-motion .proof-rail-list,
+html.has-motion .proof-rail-item + .proof-rail-item {
+  border-color: transparent !important;
+}
+
+.proof-rail-head h2,
+.proof-rail-kicker,
+.proof-rail-mark,
+.proof-rail-index,
+.proof-rail-item h3,
+.proof-rail-item p {
+  will-change: transform, opacity;
+}
+
+@media (max-width: 760px) {
+  .proof-rail-item:nth-child(odd) .proof-rail-divider {
+    display: none;
+  }
+}

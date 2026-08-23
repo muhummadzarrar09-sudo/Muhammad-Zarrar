@@ -25,6 +25,7 @@ export function ProofStrip() {
       data-motion
       aria-labelledby="proof-rail-title"
     >
+      <span className="proof-rail-rule proof-rail-rule-top" aria-hidden="true" />
       <div className="container">
         <div className="proof-rail">
           <header className="proof-rail-head">
@@ -40,6 +41,7 @@ export function ProofStrip() {
           <ol className="proof-rail-list">
             {PROOF_POINTS.map((point, index) => (
               <li className="proof-rail-item" key={point.label}>
+                <span className="proof-rail-divider" aria-hidden="true" />
                 <span className="proof-rail-index" aria-hidden="true">
                   {String(index + 1).padStart(2, "0")}
                 </span>
@@ -52,6 +54,7 @@ export function ProofStrip() {
           </ol>
         </div>
       </div>
+      <span className="proof-rail-rule proof-rail-rule-bottom" aria-hidden="true" />
     </section>
   );
 }
