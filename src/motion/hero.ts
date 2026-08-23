@@ -14,7 +14,10 @@ function convergeX(
   const stageRect = stage.getBoundingClientRect();
   const slashWidth = slash.getBoundingClientRect().width;
   const centre = stageRect.width / 2;
-  const gap = Math.max(2, slashWidth * 0.02);
+  const gap = Math.max(2, slashWidth * 0.04);
+  // The slash path occupies x=8…32 (including its round stroke) inside a
+  // 40-unit viewBox, so its visible half-width is 30% of the SVG box.
+  const slashInkHalf = slashWidth * 0.3;
   // offsetLeft/offsetWidth describe the untransformed box. That matters here:
   // the opening pose is rotated, while the completed mark must resolve upright.
   const naturalLeft = el.offsetLeft;
@@ -25,8 +28,8 @@ function convergeX(
     : naturalLeft + el.offsetWidth * 0.22;
 
   return side === "left"
-    ? centre - slashWidth / 2 - gap - visibleInnerEdge
-    : centre + slashWidth / 2 + gap - visibleInnerEdge;
+    ? centre - slashInkHalf - gap - visibleInnerEdge
+    : centre + slashInkHalf + gap - visibleInnerEdge;
 }
 
 /** Lift a chevron from its lower corner until its visual centre meets the stage centre. */

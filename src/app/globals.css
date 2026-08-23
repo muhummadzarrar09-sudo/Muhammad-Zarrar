@@ -5736,41 +5736,22 @@ main {
   padding: 26px 28px 26px 0;
 }
 
-.code-mark-static {
-  position: relative;
-  display: inline-block;
-  width: 78px;
-  height: 64px;
-  color: #111110;
-}
-
-.code-mark-chevron {
-  position: absolute;
-  top: 0;
-  width: 40px;
-  height: 64px;
-  overflow: visible;
-}
-
-.code-mark-chevron:first-child { left: 0; }
-.code-mark-chevron:last-child { right: 0; }
-
-.code-mark-slash {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 22px;
-  transform: translate(-50%, -50%);
-  font-family: var(--font-body);
-  font-size: 3.75rem;
-  font-style: normal;
-  font-weight: 350;
-  line-height: 0.8;
-  text-align: center;
-}
-
 .proof-rail-mark {
-  flex: 0 0 78px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  color: #111110;
+  font-family: var(--font-body);
+  font-size: 2rem;
+  font-weight: 420;
+  line-height: 1;
+  letter-spacing: -0.2em;
+}
+
+.proof-rail-mark i {
+  margin-inline: 0.12em 0.04em;
+  font-style: normal;
+  font-weight: 300;
 }
 
 .proof-rail-kicker {
@@ -5882,19 +5863,7 @@ main {
   }
 
   .proof-rail-mark {
-    flex-basis: 64px;
-    width: 64px;
-    height: 52px;
-  }
-
-  .proof-rail-mark .code-mark-chevron {
-    width: 33px;
-    height: 52px;
-  }
-
-  .proof-rail-mark .code-mark-slash {
-    width: 18px;
-    font-size: 3.05rem;
+    font-size: 1.65rem;
   }
 
   .proof-rail-list {
@@ -5913,5 +5882,21 @@ main {
 
   .proof-rail-item:nth-child(n + 3) {
     border-top: 1px solid rgba(17, 17, 16, 0.14);
+  }
+}
+
+/* Completed loader mark: all three pieces now share one vector coordinate
+   system and the same 8-unit rounded stroke. No font-glyph sizing drift. */
+.hero-code-slash {
+  width: clamp(30px, 4.4vw, 60px);
+  height: auto;
+  aspect-ratio: 1 / 4;
+  overflow: visible;
+  font-size: 0;
+}
+
+@media (max-width: 760px) {
+  .hero-code-slash {
+    width: clamp(26px, 8vw, 37px);
   }
 }

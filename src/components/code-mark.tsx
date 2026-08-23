@@ -27,14 +27,3 @@ export function CodeChevron({
     </svg>
   );
 }
-
-/** A static, scaled copy of the hero's completed three-part code mark. */
-export function CodeMark({ className = "" }: { className?: string }) {
-  return (
-    <span className={`code-mark-static ${className}`.trim()} aria-hidden="true">
-      <CodeChevron side="left" className="code-mark-chevron" />
-      <span className="code-mark-slash">/</span>
-      <CodeChevron side="right" className="code-mark-chevron" />
-    </span>
-  );
-}

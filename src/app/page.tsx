@@ -35,7 +35,21 @@ export default function HomePage() {
             <h1 className="hero-promise-title">You leave understood</h1>
             <h3 className="hero-promise-subtitle">— not pitched.</h3>
           </div>
-          <span className="hero-code-slash" aria-hidden="true">/</span>
+          <svg
+            className="hero-code-slash"
+            viewBox="0 0 40 160"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M28 18L12 142"
+              stroke="currentColor"
+              strokeWidth="8"
+              strokeLinecap="round"
+            />
+          </svg>
           <div className="hero-sign hero-sign-r" aria-hidden="true">
             <div className="hero-sign-pane">
               <CodeChevron side="right" />
