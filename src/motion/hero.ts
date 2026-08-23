@@ -11,13 +11,13 @@ function convergeX(
   slash: HTMLElement
 ) {
   const stageRect = stage.getBoundingClientRect();
-  const rect = el.getBoundingClientRect();
-  const currentX = Number(gsap.getProperty(el, "x")) || 0;
   const slashWidth = slash.getBoundingClientRect().width;
-  const centre = stageRect.left + stageRect.width / 2;
+  const centre = stageRect.width / 2;
   const gap = Math.max(2, slashWidth * 0.02);
-  const naturalLeft = rect.left - currentX;
-  const naturalRight = rect.right - currentX;
+  // offsetLeft/offsetWidth describe the untransformed box. That matters here:
+  // the opening pose is rotated, while the completed mark must resolve upright.
+  const naturalLeft = el.offsetLeft;
+  const naturalRight = naturalLeft + el.offsetWidth;
 
   return side === "left"
     ? centre - slashWidth / 2 - gap - naturalRight
@@ -102,6 +102,7 @@ export function playHero() {
     {
       x: () => convergeX(left, "left", stage, slash),
       y: () => convergeY(left, stage),
+      rotation: 0,
       duration: 0.48,
     },
     0.2
@@ -111,6 +112,7 @@ export function playHero() {
       {
         x: () => convergeX(right, "right", stage, slash),
         y: () => convergeY(right, stage),
+        rotation: 0,
         duration: 0.48,
       },
       0.2

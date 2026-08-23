@@ -5545,3 +5545,24 @@ html.has-motion-reduced .hero-loader {
     top: 76%;
   }
 }
+
+/* Edge pose: the loose chevrons sit against the viewport itself—not inset—
+   with opposing 45-degree tilts. Scroll straightens them as they rise. */
+.hero-sign {
+  transform-origin: 50% 0;
+}
+
+.hero-sign-l {
+  left: 0;
+  transform: rotate(45deg);
+}
+
+.hero-sign-r {
+  right: 0;
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 760px) {
+  .hero-sign-l { left: 0; }
+  .hero-sign-r { right: 0; }
+}
