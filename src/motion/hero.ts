@@ -107,6 +107,7 @@ export function playHero() {
       anticipatePin: 1,
       scrub: window.matchMedia("(max-width: 760px)").matches ? 0.5 : 0.9,
       invalidateOnRefresh: true,
+      onLeave: handOff,
     },
   });
 

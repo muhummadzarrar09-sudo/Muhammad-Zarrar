@@ -5584,3 +5584,24 @@ html.has-motion-reduced .hero-loader {
   .hero-sign-l { left: calc(-1 * var(--hero-chevron-overlap)); }
   .hero-sign-r { right: calc(-1 * var(--hero-chevron-overlap)); }
 }
+
+/* Final-state correction: keep the navigation independently fixed above the
+   GSAP pin, and tighten the three visible strokes into one readable </> mark. */
+.site-header {
+  position: fixed !important;
+  inset: 0 0 auto 0;
+  width: 100%;
+}
+
+main {
+  padding-top: 68px;
+}
+
+.hero-code-slash {
+  width: clamp(22px, 2.8vw, 38px);
+}
+
+@media (max-width: 760px) {
+  main { padding-top: 56px; }
+  .hero-code-slash { width: 22px; }
+}
