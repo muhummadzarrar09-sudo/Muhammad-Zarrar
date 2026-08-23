@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SmartLink } from "./smooth-nav";
 import { NAV_LINKS } from "@/content/site-content";
 
 /** Accessible slide-in mobile navigation with a contained keyboard focus loop. */
@@ -89,52 +89,52 @@ export function MobileMenu() {
       >
         <nav aria-label="Mobile" className="mobile-nav">
           {NAV_LINKS.map((link) => (
-            <Link
+            <SmartLink
               key={link.href}
               href={link.href}
-              onClick={() => setOpen(false)}
+              onNavigate={() => setOpen(false)}
               tabIndex={open ? 0 : -1}
-              aria-current={pathname === link.href ? "page" : undefined}
+              ariaCurrent={pathname === link.href ? "page" : undefined}
             >
               {link.label}
-            </Link>
+            </SmartLink>
           ))}
         </nav>
         <nav aria-label="More pages" className="mobile-nav mobile-nav-secondary">
           <span className="mobile-nav-label">More</span>
-          <Link
+          <SmartLink
             href="/free-audit"
-            onClick={() => setOpen(false)}
+            onNavigate={() => setOpen(false)}
             tabIndex={open ? 0 : -1}
-            aria-current={pathname === "/free-audit" ? "page" : undefined}
+            ariaCurrent={pathname === "/free-audit" ? "page" : undefined}
           >
             Free 5-Point Audit
-          </Link>
-          <Link
+          </SmartLink>
+          <SmartLink
             href="/notes"
-            onClick={() => setOpen(false)}
+            onNavigate={() => setOpen(false)}
             tabIndex={open ? 0 : -1}
-            aria-current={pathname === "/notes" ? "page" : undefined}
+            ariaCurrent={pathname === "/notes" ? "page" : undefined}
           >
             Field Notes
-          </Link>
-          <Link
+          </SmartLink>
+          <SmartLink
             href="/contact"
-            onClick={() => setOpen(false)}
+            onNavigate={() => setOpen(false)}
             tabIndex={open ? 0 : -1}
-            aria-current={pathname === "/contact" ? "page" : undefined}
+            ariaCurrent={pathname === "/contact" ? "page" : undefined}
           >
             Contact
-          </Link>
+          </SmartLink>
         </nav>
-        <Link
+        <SmartLink
           href="/#brief"
           className="btn btn-primary"
-          onClick={() => setOpen(false)}
+          onNavigate={() => setOpen(false)}
           tabIndex={open ? 0 : -1}
         >
           Write your brief
-        </Link>
+        </SmartLink>
         <p className="mobile-panel-note">
           You talk to the builder · Islamabad &amp; Rawalpindi
         </p>

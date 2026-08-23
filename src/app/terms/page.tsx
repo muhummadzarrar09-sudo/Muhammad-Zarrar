@@ -106,7 +106,7 @@ export default function TermsPage() {
               <p>
                 Anything you&rsquo;d like worded differently or explained
                 further, ask before signing — email{" "}
-                <Link href={`mailto:${EMAIL}`}>{EMAIL}</Link>. A term you
+                <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. A term you
                 don&rsquo;t understand is a term we haven&rsquo;t finished
                 writing.
               </p>

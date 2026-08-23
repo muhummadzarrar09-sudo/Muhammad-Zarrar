@@ -5392,3 +5392,90 @@ html.has-motion .exhibit-stage {
     min-height: 180vh !important;
   }
 }
+
+/* ==========================================================================
+   LEVEL-UP LAYER — smooth-scroll plumbing & re-scroll polish
+   (engine.ts anchor offsets, marquee.ts, parallax.ts, lines.ts)
+   ========================================================================== */
+
+/* Anchor landings clear the 68px sticky header + air. Every hash target —
+   #brief, #main, marker jumps — parks its heading below the bar instead
+   of behind it. Mirrors ANCHOR_OFFSET in src/motion/engine.ts. */
+section[id],
+div[id],
+main[id] {
+  scroll-margin-top: 84px;
+}
+
+/* JS owns the marquee under has-motion: the velocity-reactive drift in
+   src/motion/marquee.ts replaces the flat CSS loop. Reduced-motion and
+   no-JS keep the CSS animation (or stillness), untouched. */
+html.has-motion .marquee-track {
+  animation: none;
+}
+
+/* Hero arrival masks — .hero-line rises out of its own clip (hero.ts).
+   The display face runs tight line-heights (0.92em), so a bare
+   overflow:hidden mask would slice ascenders/descenders ("understood"
+   losing its ink). The padding/negative-margin pair gives the glyphs
+   room inside the clip while keeping the vertical rhythm identical.
+   Same cushion for SplitText's generated .tl-line-mask wrappers. */
+.hero-line-mask,
+.tl-line-mask {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.18em;
+  margin-block: -0.18em;
+}
+
+html.has-motion .hero-line,
+html.has-motion .tl-line {
+  will-change: transform;
+}
+
+/* Richer section re-entry is intentionally NOT layered here — the
+   original .rv (opacity + 16px rise, 0.55s, reveal.tsx) stays exactly
+   as designed. New motion lives in the GSAP modules only. */
+
+/* Footer — back to top. A diamond, matching the scroll-rail markers;
+   glides via Lenis when present, plain scroll otherwise. */
+.footer-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 0.84rem;
+  color: var(--text-2);
+  background: none;
+  border: 0;
+  padding: 6px 0;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+
+.footer-top:hover {
+  color: var(--text-1);
+}
+
+.footer-top .diamond {
+  width: 8px;
+  height: 8px;
+  background: currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--dur-2, 0.3s) var(--ease-standard, ease);
+}
+
+.footer-top:hover .diamond {
+  transform: rotate(225deg);
+}
+
+.footer-bottom .footer-top {
+  margin-left: auto;
+}
+
+@media (max-width: 760px) {
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

@@ -1,8 +1,11 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { playExhibit } from "./exhibit";
-import { playHero } from "./hero";
+import { playHero, playHeroEnter } from "./hero";
+import { playPageHeroLines, playLineReveals } from "./lines";
 import { playManifesto } from "./manifesto";
+import { playMarquee, stopMarquee } from "./marquee";
+import { playParallax } from "./parallax";
 import { playPlaques } from "./plaques";
 import { playWalk } from "./walk";
 import { EASE, WIREFRAMES, type MotionVars, type WireframeScene } from "./wireframes";
@@ -114,6 +117,7 @@ function playScene(scene: WireframeScene) {
 
 export function playWireframes(pathname: string) {
   ctx?.revert();
+  stopMarquee();
   ctx = gsap.context(() => {
     const home = pathname === "/";
     playWalk();
@@ -122,11 +126,17 @@ export function playWireframes(pathname: string) {
       playScene(scene);
     }
     if (home) {
+      playHeroEnter();
       playHero();
       playExhibit();
       playPlaques();
       playManifesto();
+      playLineReveals();
+    } else {
+      playPageHeroLines();
     }
+    playParallax();
+    playMarquee();
   });
   ScrollTrigger.refresh();
 }
@@ -136,6 +146,7 @@ export function killWireframes() {
   // Usually called by the capture-phase navigation handler in engine.ts,
   // before React replaces a page that contains pinned elements.
   ctx = null;
+  stopMarquee();
   if (!active) return;
   try {
     active.revert();

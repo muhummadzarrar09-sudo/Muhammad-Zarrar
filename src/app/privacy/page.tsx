@@ -109,7 +109,7 @@ export default function PrivacyPage() {
               <h2>Questions</h2>
               <p>
                 Anything unclear, email{" "}
-                <Link href={`mailto:${EMAIL}`}>{EMAIL}</Link>. We&apos;ll
+                <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. We&apos;ll
                 answer in the same plain language this page uses. And if you find a tracker we missed,
                 we&apos;ll fix it and credit you publicly.
               </p>

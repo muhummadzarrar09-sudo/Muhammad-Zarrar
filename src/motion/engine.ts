@@ -10,6 +10,22 @@ export type MotionHandle = {
   destroy: () => void;
 };
 
+/**
+ * Live scroll signal for wheel-reactive scenes (marquee, parallax boosts).
+ * Written every Lenis frame in engine.ts, read by the scene modules.
+ */
+export const motionState = {
+  velocity: 0,
+  scrolling: false,
+};
+
+/**
+ * Anchor landings must clear the 68px sticky header plus breathing room.
+ * Every glide in the app (Lenis anchors, marker jumps, footer links,
+ * cross-route hash navigation) funnels through this single offset.
+ */
+export const ANCHOR_OFFSET = -84;
+
 type Live = {
   pathname: string;
   handle: MotionHandle;
@@ -91,12 +107,16 @@ function bootMotion(pathname: string): MotionHandle {
     touchMultiplier: 1.06,
     syncTouch: false,
     anchors: {
-      offset: -8,
+      offset: ANCHOR_OFFSET,
       duration: 1.32,
     },
   });
 
-  lenis.on("scroll", ScrollTrigger.update);
+  lenis.on("scroll", (e: { velocity: number }) => {
+    ScrollTrigger.update();
+    motionState.velocity = e.velocity;
+    motionState.scrolling = Math.abs(e.velocity) > 0.1;
+  });
 
   const ticker = (time: number) => {
     lenis.raf(time * 1000);
@@ -115,10 +135,41 @@ function bootMotion(pathname: string): MotionHandle {
   if (fonts?.ready) fonts.ready.then(onRefresh);
 
   const onScrollTo = (event: Event) => {
-    const detail = (event as CustomEvent<string>).detail;
-    if (detail) lenis.scrollTo(detail, { offset: -8, duration: 1.32 });
+    const detail = (event as CustomEvent<string | number>).detail;
+    if (detail === undefined || detail === null || detail === "") return;
+    if (typeof detail === "number") {
+      lenis.scrollTo(detail, { duration: 1.15 });
+    } else {
+      lenis.scrollTo(detail, { offset: ANCHOR_OFFSET, duration: 1.15 });
+    }
   };
   window.addEventListener("motion:scrollTo", onScrollTo);
+
+  /**
+   * Hash landings — cross-route (`/#brief` from an inner page) and reloads.
+   * The App Router swaps the DOM; a moment later we glide to the target
+   * with the same gallery-walk easing as every other scroll on the site,
+   * instead of the browser's instant jump.
+   */
+  const glideToHash = (duration = 1.15) => {
+    const hash = window.location.hash;
+    if (!hash || hash === "#") return;
+    const target = document.querySelector(hash);
+    if (!target) return;
+    lenis.scrollTo(target as HTMLElement, { offset: ANCHOR_OFFSET, duration });
+  };
+  const onHashChange = () => {
+    // Lenis `anchors` already glides same-document clicks; don't fight it.
+    if (lenis.isScrolling) return;
+    glideToHash();
+  };
+  window.addEventListener("hashchange", onHashChange);
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      if (!html.classList.contains("has-motion")) return;
+      glideToHash(1.32);
+    }, 180);
+  });
 
   // App Router swaps the page subtree before passive effect cleanup runs.
   // A pinned ScrollTrigger must release its spacer *before* that swap, or
@@ -138,15 +189,18 @@ function bootMotion(pathname: string): MotionHandle {
 
   return {
     scrollTo: (target, opts) => {
-      lenis.scrollTo(target, { offset: opts?.offset ?? -8, duration: 1.15 });
+      lenis.scrollTo(target, { offset: opts?.offset ?? ANCHOR_OFFSET, duration: 1.15 });
     },
     destroy: () => {
       window.removeEventListener("load", onRefresh);
       window.removeEventListener("motion:scrollTo", onScrollTo);
+      window.removeEventListener("hashchange", onHashChange);
       document.removeEventListener("click", onBeforeNavigate, true);
       killWireframes();
       gsap.ticker.remove(ticker);
       lenis.destroy();
+      motionState.velocity = 0;
+      motionState.scrolling = false;
       html.classList.remove("has-motion", "has-lenis");
     },
   };

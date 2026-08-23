@@ -100,3 +100,39 @@ export function playHero() {
     0.08
   );
 }
+
+/**
+ * Hero arrival — plays once on route load, before the wheel owns anything.
+ * The promise rises line-by-line out of masks while the two glass sign
+ * halves slide in from the wings; the toolbar and floor settle last.
+ * The converge scrub above only drives these parents again on scroll, so
+ * the entrance composes with it rather than fighting it.
+ */
+export function playHeroEnter() {
+  const root = document.querySelector<HTMLElement>(".hero-minimal");
+  if (!root) return;
+
+  const lines = root.querySelectorAll<HTMLElement>(".hero-line");
+  const left = root.querySelector<HTMLElement>(".hero-sign-l .hero-sign-pane");
+  const right = root.querySelector<HTMLElement>(".hero-sign-r .hero-sign-pane");
+  const cta = root.querySelector<HTMLElement>(".hero-ctas .btn");
+  const floor = root.querySelector<HTMLElement>(".hero-floor");
+
+  const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+  if (lines.length) {
+    tl.from(lines, { yPercent: 135, duration: 1.05, stagger: 0.16 }, 0.1);
+  }
+  if (left) {
+    tl.from(left, { xPercent: -60, opacity: 0, duration: 1.15, ease: "power2.out" }, 0.25);
+  }
+  if (right) {
+    tl.from(right, { xPercent: 60, opacity: 0, duration: 1.15, ease: "power2.out" }, 0.25);
+  }
+  if (cta) {
+    tl.from(cta, { y: 18, opacity: 0, duration: 0.8 }, 0.7);
+  }
+  if (floor) {
+    tl.from(floor, { opacity: 0, y: 10, duration: 0.7 }, 0.85);
+  }
+}

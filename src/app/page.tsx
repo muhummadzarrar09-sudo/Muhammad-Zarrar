@@ -49,8 +49,12 @@ export default function HomePage() {
             </div>
           </div>
           <h1 className="hero-promise hero-cluster">
-            <span className="hero-line">You leave understood</span>
-            <span className="hero-line hero-line-em">— not pitched.</span>
+            <span className="hero-line-mask">
+              <span className="hero-line">You leave understood</span>
+            </span>
+            <span className="hero-line-mask">
+              <span className="hero-line hero-line-em">— not pitched.</span>
+            </span>
           </h1>
           <div className="hero-sign hero-sign-r" aria-hidden="true">
             <div className="hero-sign-pane">
@@ -158,7 +162,7 @@ export default function HomePage() {
           <h2 className="room-title" id="get-heading">
             Not a pitch. A result.
           </h2>
-          <div className="vignette-grid">
+          <div className="vignette-grid" data-parallax="0.04">
             {OUTCOMES.map((item) => (
               <figure className="vignette" key={item.title}>
                 <img src={item.src} alt="" width={400} height={400} />
