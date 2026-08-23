@@ -5522,3 +5522,26 @@ html.has-motion-reduced .hero-loader {
   .hero-code-slash,
   .hero-loader { display: none !important; }
 }
+
+/* Hero correction: the two loose marks rest in the lower corners, then rise
+   diagonally to complete the code mark in the exact centre of the pinned room. */
+.site-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+}
+
+.hero-sign {
+  top: 78%;
+}
+
+@media (max-width: 760px) {
+  .hero.hero-minimal {
+    height: calc(100svh - 56px) !important;
+    min-height: calc(100svh - 56px) !important;
+  }
+
+  .hero-sign {
+    top: 76%;
+  }
+}

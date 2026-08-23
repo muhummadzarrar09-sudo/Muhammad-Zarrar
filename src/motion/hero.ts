@@ -24,6 +24,16 @@ function convergeX(
     : centre + slashWidth / 2 + gap - naturalLeft;
 }
 
+/** Lift a chevron from its lower corner until its visual centre meets the stage centre. */
+function convergeY(el: HTMLElement, stage: HTMLElement) {
+  const pane = el.querySelector<HTMLElement>(".hero-sign-pane");
+  const currentY = Number(gsap.getProperty(el, "y")) || 0;
+  const stageRect = stage.getBoundingClientRect();
+  const rect = (pane ?? el).getBoundingClientRect();
+  const naturalCentre = rect.top + rect.height / 2 - currentY;
+  return stageRect.top + stageRect.height / 2 - naturalCentre;
+}
+
 /**
  * A wheel-led opening scene:
  * 1. the promise dissolves;
@@ -63,7 +73,10 @@ export function playHero() {
     scrollTrigger: {
       id: "hero-converge",
       trigger: root,
-      start: "top 68px",
+      start: () => {
+        const header = document.querySelector<HTMLElement>(".site-header");
+        return `top ${header?.offsetHeight ?? 68}px`;
+      },
       end: window.matchMedia("(max-width: 760px)").matches ? "+=150%" : "+=220%",
       pin: true,
       pinSpacing: true,
@@ -88,7 +101,7 @@ export function playHero() {
     left,
     {
       x: () => convergeX(left, "left", stage, slash),
-      y: 0,
+      y: () => convergeY(left, stage),
       duration: 0.48,
     },
     0.2
@@ -97,7 +110,7 @@ export function playHero() {
       right,
       {
         x: () => convergeX(right, "right", stage, slash),
-        y: 0,
+        y: () => convergeY(right, stage),
         duration: 0.48,
       },
       0.2
