@@ -51,10 +51,10 @@ export default function HomePage() {
               <CodeChevron side="left" />
             </div>
           </div>
-          <h1 className="hero-promise hero-cluster">
-            <span className="hero-line">You leave understood</span>
-            <span className="hero-line hero-line-em">— not pitched.</span>
-          </h1>
+          <div className="hero-promise hero-cluster">
+            <h1 className="hero-promise-title">You leave understood</h1>
+            <h3 className="hero-promise-subtitle">— not pitched.</h3>
+          </div>
           <span className="hero-code-slash" aria-hidden="true">/</span>
           <div className="hero-sign hero-sign-r" aria-hidden="true">
             <div className="hero-sign-pane">

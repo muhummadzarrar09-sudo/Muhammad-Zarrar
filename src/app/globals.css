@@ -5605,3 +5605,66 @@ main {
   main { padding-top: 56px; }
   .hero-code-slash { width: 22px; }
 }
+
+/* Hero type hierarchy + a flat header surface. The previous translucent
+   header read as a dark shadow once the pale pinned scene moved beneath it. */
+.site-header {
+  background: #c4c3b6 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.hero-minimal .hero-promise.hero-cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: none !important;
+  padding-inline: clamp(24px, 20vw, 320px) !important;
+  text-align: center;
+}
+
+.hero-promise-title {
+  margin: 0;
+  max-width: 10ch;
+  color: #111110;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6.4vw, 5.4rem);
+  font-weight: 460;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.hero-promise-subtitle {
+  margin: 0.28em 0 0;
+  max-width: 13ch;
+  color: #111110;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.4vw, 3.8rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.018em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+@media (max-width: 760px) {
+  .hero-minimal .hero-promise.hero-cluster {
+    padding-inline: 21vw !important;
+  }
+
+  .hero-promise-title {
+    max-width: 9ch;
+    font-size: clamp(2rem, 10vw, 2.85rem);
+    line-height: 1;
+  }
+
+  .hero-promise-subtitle {
+    max-width: 11ch;
+    font-size: clamp(1.55rem, 7.5vw, 2.2rem);
+  }
+}
