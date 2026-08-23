@@ -5598,12 +5598,12 @@ main {
 }
 
 .hero-code-slash {
-  width: clamp(22px, 2.8vw, 38px);
+  width: clamp(42px, 6vw, 76px);
 }
 
 @media (max-width: 760px) {
   main { padding-top: 56px; }
-  .hero-code-slash { width: 22px; }
+  .hero-code-slash { width: 38px; }
 }
 
 /* Hero type hierarchy + a flat header surface. The previous translucent
