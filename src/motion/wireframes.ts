@@ -45,8 +45,8 @@ export type WireframeScene = {
 export const EASE = "none";
 
 export const WIREFRAMES: WireframeScene[] = [
-  /* hero-converge lives in ./hero.ts — type swooshes back,
-     glass sign halves ride a path and lock into one. */
+  /* hero-converge lives in ./hero.ts — the promise dissolves, bare
+     chevrons meet as </>, then the loading line hands off to Lenis. */
   {
     id: "recognize",
     note: "Tuesday rises with the wheel — each row a step, not a pop.",

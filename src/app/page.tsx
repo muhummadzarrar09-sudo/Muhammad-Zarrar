@@ -12,20 +12,23 @@ import { ProofStrip } from "@/components/proof-strip";
 import { WhatsAppIcon } from "@/components/icons";
 import { waLink } from "@/lib/site";
 
-function CodeGlyph({ side }: { side: "left" | "right" }) {
+function CodeChevron({ side }: { side: "left" | "right" }) {
   return (
     <svg
       className="hero-code-glyph"
-      viewBox="0 0 200 260"
+      viewBox="0 0 100 160"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
     >
-      <rect x="0.75" y="0.75" width="198.5" height="258.5" rx="6" fill="#C4C3B6" stroke="#111110" strokeOpacity="0.22" strokeWidth="1.5" />
-      <path d={side === "left" ? "M133 60L58 130L133 200" : "M68 60L143 130L68 200"} stroke="#111110" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={side === "left" ? "M186 48L142 212" : "M58 48L14 212"} stroke="#111110" strokeWidth="8" strokeLinecap="round" />
-      <circle cx={side === "left" ? "24" : "176"} cy="24" r="4" fill="#111110" fillOpacity="0.4" />
+      <path
+        d={side === "left" ? "M78 18L18 80L78 142" : "M22 18L82 80L22 142"}
+        stroke="currentColor"
+        strokeWidth="8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -45,17 +48,27 @@ export default function HomePage() {
         <div className="hero-stage">
           <div className="hero-sign hero-sign-l" aria-hidden="true">
             <div className="hero-sign-pane">
-              <CodeGlyph side="left" />
+              <CodeChevron side="left" />
             </div>
           </div>
           <h1 className="hero-promise hero-cluster">
             <span className="hero-line">You leave understood</span>
             <span className="hero-line hero-line-em">— not pitched.</span>
           </h1>
+          <span className="hero-code-slash" aria-hidden="true">/</span>
           <div className="hero-sign hero-sign-r" aria-hidden="true">
             <div className="hero-sign-pane">
-              <CodeGlyph side="right" />
+              <CodeChevron side="right" />
             </div>
+          </div>
+          <div className="hero-loader" role="status" aria-label="Preparing the next section">
+            <div className="hero-loader-meta">
+              <span>Loading</span>
+              <span><span className="hero-loader-value">0</span>%</span>
+            </div>
+            <span className="hero-loader-track" aria-hidden="true">
+              <span className="hero-loader-fill" />
+            </span>
           </div>
         </div>
         <div className="hero-toolbar">

@@ -2,6 +2,7 @@ export function ProofStrip() {
   return (
     <section
       className="proof-strip"
+      id="after-hero"
       data-motion
       aria-label="How this conversation works"
     >
