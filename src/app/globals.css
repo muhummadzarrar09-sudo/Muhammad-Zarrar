@@ -5523,9 +5523,9 @@ html.has-motion-reduced .hero-loader {
   .hero-loader { display: none !important; }
 }
 
-/* Exact edge pose: anchor each SVG vertex—not its padded element box—to a
-   lower viewport corner. One rotated arm lies on the bottom edge while the
-   other rises up the side; the marks then peel away along mirrored arcs. */
+/* Exact edge pose: each SVG vertex—not its padded element box—is anchored to
+   a bottom corner. The arms face up and inward (└ … ┘), then peel away along
+   mirrored arcs and rotate into normal </> order at the centre. */
 .site-header {
   position: sticky !important;
   top: 0 !important;
@@ -5535,7 +5535,7 @@ html.has-motion-reduced .hero-loader {
 .hero.hero-minimal {
   --hero-chevron-size: clamp(76px, 11vw, 150px);
   --hero-chevron-overlap: clamp(14px, 1.98vw, 27px);
-  --hero-chevron-lift: clamp(126px, 18.26vw, 249px);
+  --hero-chevron-lift: clamp(61px, 8.8vw, 120px);
 }
 
 .hero-sign {
@@ -5550,14 +5550,14 @@ html.has-motion-reduced .hero-loader {
 .hero-sign-l {
   left: calc(-1 * var(--hero-chevron-overlap));
   right: auto;
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
   transform-origin: 18% 50%;
 }
 
 .hero-sign-r {
   right: calc(-1 * var(--hero-chevron-overlap));
   left: auto;
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
   transform-origin: 82% 50%;
 }
 
@@ -5565,7 +5565,7 @@ html.has-motion-reduced .hero-loader {
   .hero.hero-minimal {
     --hero-chevron-size: clamp(64px, 20vw, 92px);
     --hero-chevron-overlap: clamp(12px, 3.6vw, 17px);
-    --hero-chevron-lift: clamp(106px, 33.2vw, 153px);
+    --hero-chevron-lift: clamp(51px, 16vw, 74px);
     height: calc(100svh - 56px) !important;
     min-height: calc(100svh - 56px) !important;
   }

@@ -18,21 +18,26 @@ function convergeX(
   // offsetLeft/offsetWidth describe the untransformed box. That matters here:
   // the opening pose is rotated, while the completed mark must resolve upright.
   const naturalLeft = el.offsetLeft;
-  const naturalRight = naturalLeft + el.offsetWidth;
+  // The SVG path occupies x=18…78 for `<` and x=22…82 for `>`.
+  // Meet those visible strokes—not the transparent viewBox padding.
+  const visibleInnerEdge = side === "left"
+    ? naturalLeft + el.offsetWidth * 0.78
+    : naturalLeft + el.offsetWidth * 0.22;
 
   return side === "left"
-    ? centre - slashWidth / 2 - gap - naturalRight
-    : centre + slashWidth / 2 + gap - naturalLeft;
+    ? centre - slashWidth / 2 - gap - visibleInnerEdge
+    : centre + slashWidth / 2 + gap - visibleInnerEdge;
 }
 
 /** Lift a chevron from its lower corner until its visual centre meets the stage centre. */
 function convergeY(el: HTMLElement, stage: HTMLElement) {
   const pane = el.querySelector<HTMLElement>(".hero-sign-pane");
-  const currentY = Number(gsap.getProperty(el, "y")) || 0;
-  const stageRect = stage.getBoundingClientRect();
-  const rect = (pane ?? el).getBoundingClientRect();
-  const naturalCentre = rect.top + rect.height / 2 - currentY;
-  return stageRect.top + stageRect.height / 2 - naturalCentre;
+  const paneTop = pane?.offsetTop ?? 0;
+  const paneHeight = pane?.offsetHeight ?? el.offsetHeight;
+  // Use the untransformed layout box: the opening corner is rotated around
+  // its vertex, but the completed upright glyph must be centred precisely.
+  const naturalCentre = el.offsetTop + paneTop + paneHeight / 2;
+  return stage.clientHeight / 2 - naturalCentre;
 }
 
 /** A mirrored, rising inward arc from either lower screen edge. */
