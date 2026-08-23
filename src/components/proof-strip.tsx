@@ -1,3 +1,5 @@
+import { CodeMark } from "./code-mark";
+
 const PROOF_POINTS = [
   {
     label: "Builder, not a handoff",
@@ -28,9 +30,7 @@ export function ProofStrip() {
       <div className="container">
         <div className="proof-rail">
           <header className="proof-rail-head">
-            <span className="proof-rail-mark" aria-hidden="true">
-              <span>&lt;</span><i>/</i><span>&gt;</span>
-            </span>
+            <CodeMark className="proof-rail-mark" />
             <div>
               <p className="proof-rail-kicker">What happens next</p>
               <h2 id="proof-rail-title">A straight conversation.</h2>

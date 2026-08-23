@@ -10,28 +10,8 @@ import { PinnedManifesto } from "@/components/pinned-manifesto";
 import { Marquee } from "@/components/marquee";
 import { ProofStrip } from "@/components/proof-strip";
 import { WhatsAppIcon } from "@/components/icons";
+import { CodeChevron } from "@/components/code-mark";
 import { waLink } from "@/lib/site";
-
-function CodeChevron({ side }: { side: "left" | "right" }) {
-  return (
-    <svg
-      className="hero-code-glyph"
-      viewBox="0 0 100 160"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d={side === "left" ? "M78 18L18 80L78 142" : "M22 18L82 80L22 142"}
-        stroke="currentColor"
-        strokeWidth="8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 export const metadata = pageMeta({
   title:
