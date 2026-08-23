@@ -5668,3 +5668,45 @@ main {
     font-size: clamp(1.55rem, 7.5vw, 2.2rem);
   }
 }
+
+/* The header must win visually over ScrollTrigger's fixed pin layer. Keep the
+   spacing tied to the header's real authored height (52px desktop, 56px phone). */
+body > .site-header {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: 0 !important;
+  z-index: 10000 !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translate3d(0, 0, 0);
+  isolation: isolate;
+  will-change: transform;
+}
+
+body > .site-header .header-inner,
+body > .site-header .brand,
+body > .site-header .desktop-nav,
+body > .site-header .header-actions {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+main {
+  padding-top: 52px;
+}
+
+.hero.hero-minimal {
+  height: calc(100svh - 52px) !important;
+  min-height: calc(100svh - 52px) !important;
+}
+
+@media (max-width: 760px) {
+  main { padding-top: 56px; }
+  .hero.hero-minimal {
+    height: calc(100svh - 56px) !important;
+    min-height: calc(100svh - 56px) !important;
+  }
+}
