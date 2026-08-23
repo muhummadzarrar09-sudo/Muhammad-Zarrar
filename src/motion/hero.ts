@@ -1,7 +1,8 @@
 import gsap from "gsap";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 /** Return the horizontal translation that puts a chevron beside the centre slash. */
 function convergeX(
@@ -32,6 +33,24 @@ function convergeY(el: HTMLElement, stage: HTMLElement) {
   const rect = (pane ?? el).getBoundingClientRect();
   const naturalCentre = rect.top + rect.height / 2 - currentY;
   return stageRect.top + stageRect.height / 2 - naturalCentre;
+}
+
+/** A mirrored, rising inward arc from either lower screen edge. */
+function risePath(
+  el: HTMLElement,
+  side: "left" | "right",
+  stage: HTMLElement,
+  slash: HTMLElement
+) {
+  const x = convergeX(el, side, stage, slash);
+  const y = convergeY(el, stage);
+  return [
+    { x: 0, y: 0 },
+    { x: x * 0.16, y: y * 0.08 },
+    { x: x * 0.4, y: y * 0.55 },
+    { x: x * 0.72, y: y * 0.88 },
+    { x, y },
+  ];
 }
 
 /**
@@ -100,20 +119,26 @@ export function playHero() {
   tl.to(
     left,
     {
-      x: () => convergeX(left, "left", stage, slash),
-      y: () => convergeY(left, stage),
       rotation: 0,
       duration: 0.48,
+      motionPath: {
+        path: risePath(left, "left", stage, slash),
+        curviness: 1.35,
+        autoRotate: false,
+      },
     },
     0.2
   )
     .to(
       right,
       {
-        x: () => convergeX(right, "right", stage, slash),
-        y: () => convergeY(right, stage),
         rotation: 0,
         duration: 0.48,
+        motionPath: {
+          path: risePath(right, "right", stage, slash),
+          curviness: 1.35,
+          autoRotate: false,
+        },
       },
       0.2
     )
