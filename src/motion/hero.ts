@@ -1,48 +1,28 @@
 import gsap from "gsap";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
-
-function meetX(el: HTMLElement, side: "l" | "r", stage: HTMLElement) {
-  const current = Number(gsap.getProperty(el, "x")) || 0;
-  const sr = stage.getBoundingClientRect();
-  const er = el.getBoundingClientRect();
-  const mid = sr.left + sr.width / 2;
-  const left = er.left - current;
-  if (side === "l") return mid - (left + er.width);
-  return mid - left;
-}
-
-function arc(el: HTMLElement, side: "l" | "r", stage: HTMLElement, dip: number) {
-  const end = meetX(el, side, stage);
-  return [
-    { x: 0, y: 0 },
-    { x: end * 0.48, y: dip },
-    { x: end, y: 0 },
-  ];
-}
+gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Hero leave — the promise swooshes back. The two halves of the
- * glass sign ride an arc and lock into one mark.
+ * Hero — GSAP PIN. The dev sign halves rest at the bottom corners, tilted 45°.
+ * GSAP pins the hero; the halves slide together and lock into one complete
+ * </> glyph. A loader line draws underneath, then the "Scroll to explore"
+ * prompt fades in.
  */
 export function playHero() {
   const root = document.querySelector<HTMLElement>(".hero-minimal");
   if (!root) return;
 
-  const stage = root.querySelector<HTMLElement>(".hero-stage");
   const left = root.querySelector<HTMLElement>(".hero-sign-l");
   const right = root.querySelector<HTMLElement>(".hero-sign-r");
   const type = root.querySelector<HTMLElement>(".hero-cluster");
   const bar = root.querySelector<HTMLElement>(".hero-toolbar");
+  const loaderLine = root.querySelector<HTMLElement>(".hero-loader-line");
   const floor = root.querySelector<HTMLElement>(".hero-floor");
-  if (!stage || !left || !right) return;
+  if (!left || !right) return;
 
   const mobile = window.matchMedia("(max-width: 760px)").matches;
-  const pinEnd = mobile ? "+=100%" : "+=160%";
-  const scrub = mobile ? 0.45 : 0.95;
-  const dip = mobile ? 36 : 72;
+  const scrub = mobile ? 0.5 : 0.9;
 
   const tl = gsap.timeline({
     defaults: { ease: "none" },
@@ -50,53 +30,102 @@ export function playHero() {
       id: "hero-converge",
       trigger: root,
       start: "top top",
-      end: pinEnd,
-      // Do not let ScrollTrigger physically re-parent a React-owned section.
-      // CSS owns the visual hold; the timeline remains fully scrubbed.
-      pin: false,
+      end: mobile ? "+=120%" : "+=160%",
+      pin: true,
       scrub,
       invalidateOnRefresh: true,
     },
   });
 
+  /* Phase 1: Promise text rises and softens (0 – 0.25) */
   if (type) {
     tl.fromTo(
       type,
-      { y: 0, scale: 1, opacity: 1, filter: "blur(0px)" },
-      { y: -90, scale: 0.42, opacity: 0, filter: "blur(10px)", duration: 0.55 },
+      { y: 0, opacity: 1 },
+      { y: mobile ? -30 : -50, opacity: 0.7, duration: 0.25 },
       0
     );
   }
   if (bar) {
-    tl.fromTo(bar, { opacity: 1, y: 0 }, { opacity: 0, y: 16, duration: 0.22 }, 0);
-  }
-  if (floor) {
-    tl.fromTo(floor, { opacity: 1 }, { opacity: 0, duration: 0.18 }, 0);
+    tl.fromTo(
+      bar,
+      { y: 0, opacity: 1 },
+      { y: mobile ? -20 : -35, opacity: 0.5, duration: 0.22 },
+      0
+    );
   }
 
-  tl.to(
+  /* Phase 2: Sign halves converge + un-tilt (0.05 – 0.65)
+     Use function-based values so invalidateOnRefresh recalculates. */
+  tl.fromTo(
     left,
+    { x: 0, y: 0, rotation: -45, scale: mobile ? 0.8 : 1 },
     {
-      duration: 1,
-      motionPath: {
-        path: arc(left, "l", stage, dip),
-        curviness: 1.25,
-        autoRotate: false,
+      x: () => {
+        const lock = root.querySelector<HTMLElement>(".hero-lock");
+        if (!lock) return 0;
+        const lr = lock.getBoundingClientRect();
+        const er = left.getBoundingClientRect();
+        return (lr.left + lr.width / 2) - (er.left + er.width / 2);
       },
+      y: () => {
+        const lock = root.querySelector<HTMLElement>(".hero-lock");
+        if (!lock) return 0;
+        const lr = lock.getBoundingClientRect();
+        const er = left.getBoundingClientRect();
+        return (lr.top + lr.height * 0.45) - (er.top + er.height / 2);
+      },
+      rotation: 0,
+      scale: mobile ? 0.6 : 0.7,
+      duration: 0.6,
+      ease: "power2.inOut",
     },
-    0.08
+    0.05
   );
 
-  tl.to(
+  tl.fromTo(
     right,
+    { x: 0, y: 0, rotation: 45, scale: mobile ? 0.8 : 1 },
     {
-      duration: 1,
-      motionPath: {
-        path: arc(right, "r", stage, dip),
-        curviness: 1.25,
-        autoRotate: false,
+      x: () => {
+        const lock = root.querySelector<HTMLElement>(".hero-lock");
+        if (!lock) return 0;
+        const lr = lock.getBoundingClientRect();
+        const er = right.getBoundingClientRect();
+        return (lr.left + lr.width / 2) - (er.left + er.width / 2);
       },
+      y: () => {
+        const lock = root.querySelector<HTMLElement>(".hero-lock");
+        if (!lock) return 0;
+        const lr = lock.getBoundingClientRect();
+        const er = right.getBoundingClientRect();
+        return (lr.top + lr.height * 0.45) - (er.top + er.height / 2);
+      },
+      rotation: 0,
+      scale: mobile ? 0.6 : 0.7,
+      duration: 0.6,
+      ease: "power2.inOut",
     },
-    0.08
+    0.05
   );
+
+  /* Phase 3: Loader line draws from center outward (0.65 – 0.82) */
+  if (loaderLine) {
+    tl.fromTo(
+      loaderLine,
+      { scaleX: 0, opacity: 0 },
+      { scaleX: 1, opacity: 1, duration: 0.17, ease: "power1.inOut" },
+      0.65
+    );
+  }
+
+  /* Phase 4: "Scroll to explore" prompt fades in (0.82 – 1.0) */
+  if (floor) {
+    tl.fromTo(
+      floor,
+      { opacity: 0, y: 16 },
+      { opacity: 1, y: 0, duration: 0.18 },
+      0.82
+    );
+  }
 }

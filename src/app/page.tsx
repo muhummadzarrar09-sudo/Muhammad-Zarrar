@@ -43,31 +43,39 @@ export default function HomePage() {
     <>
       <section className="hero hero-minimal" id="top" data-tl="Welcome" data-motion>
         <div className="hero-stage">
-          <div className="hero-sign hero-sign-l" aria-hidden="true">
-            <div className="hero-sign-pane">
-              <CodeGlyph side="left" />
+          <div className="hero-top">
+            <h1 className="hero-promise hero-cluster">
+              <span className="hero-line">You leave understood</span>
+              <span className="hero-line hero-line-em">— not pitched.</span>
+            </h1>
+            <div className="hero-toolbar">
+              <div className="hero-ctas">
+                <a href="#brief" className="btn btn-primary">
+                  Write your brief
+                </a>
+              </div>
             </div>
           </div>
-          <h1 className="hero-promise hero-cluster">
-            <span className="hero-line">You leave understood</span>
-            <span className="hero-line hero-line-em">— not pitched.</span>
-          </h1>
-          <div className="hero-sign hero-sign-r" aria-hidden="true">
-            <div className="hero-sign-pane">
-              <CodeGlyph side="right" />
+
+          <div className="hero-lock" aria-hidden="true">
+            <div className="hero-sign hero-sign-l">
+              <div className="hero-sign-pane">
+                <CodeGlyph side="left" />
+              </div>
+            </div>
+            <div className="hero-sign hero-sign-r">
+              <div className="hero-sign-pane">
+                <CodeGlyph side="right" />
+              </div>
             </div>
           </div>
+
+          <div className="hero-loader-line" aria-hidden="true" />
+
+          <p className="hero-floor">
+            <span>Scroll to explore</span>
+          </p>
         </div>
-        <div className="hero-toolbar">
-          <div className="hero-ctas">
-            <a href="#brief" className="btn btn-primary">
-              Write your brief
-            </a>
-          </div>
-        </div>
-        <p className="hero-floor">
-          <span>This way</span>
-        </p>
       </section>
 
       <ProofStrip />

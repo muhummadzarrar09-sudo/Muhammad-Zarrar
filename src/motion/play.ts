@@ -5,11 +5,16 @@ import { playHero } from "./hero";
 import { playManifesto } from "./manifesto";
 import { playPlaques } from "./plaques";
 import { playWalk } from "./walk";
+import { playTextSplit } from "./text-split";
+import { playContrastSlide } from "./contrast-slide";
+import { playProofRise } from "./proof-rise";
+import { playMarqueeVelocity } from "./marquee-velocity";
 import { EASE, WIREFRAMES, type MotionVars, type WireframeScene } from "./wireframes";
 
 gsap.registerPlugin(ScrollTrigger);
 
 let ctx: gsap.Context | null = null;
+let marqueeCleanup: (() => void) | undefined;
 
 function exists(selector: string) {
   return Boolean(document.querySelector(selector));
@@ -114,18 +119,47 @@ function playScene(scene: WireframeScene) {
 
 export function playWireframes(pathname: string) {
   ctx?.revert();
+  marqueeCleanup?.();
+
   ctx = gsap.context(() => {
     const home = pathname === "/";
-    playWalk();
+
+    // Each module wrapped in try/catch so one failure doesn't cascade
+    const safe = (name: string, fn: () => any) => {
+      try {
+        return fn();
+      } catch (error) {
+        console.error(`[motion] ${name} failed:`, error);
+        return undefined;
+      }
+    };
+
+    /* Walk — background color transitions between rooms */
+    safe("walk", playWalk);
+
+    /* Text split — word-by-word mask reveal on ALL page-hero h1s */
+    safe("textSplit", playTextSplit);
+
+    /* Wireframe scenes (recognize, contrast, next-steps, brief, page-leave) */
     for (const scene of WIREFRAMES) {
       if (scene.page === "/" && !home) continue;
-      playScene(scene);
+      safe(`scene:${scene.id}`, () => playScene(scene));
     }
+
     if (home) {
-      playHero();
-      playExhibit();
-      playPlaques();
-      playManifesto();
+      /* Home-specific animations */
+      safe("hero", playHero);
+      safe("exhibit", playExhibit);
+      safe("plaques", playPlaques);
+      safe("manifesto", playManifesto);
+      safe("proofRise", playProofRise);
+      safe("contrastSlide", playContrastSlide);
+      marqueeCleanup = safe("marqueeVelocity", playMarqueeVelocity);
+    } else {
+      /* Inner pages: contrast slide if present, proof rise if present */
+      safe("contrastSlide", playContrastSlide);
+      safe("proofRise", playProofRise);
+      marqueeCleanup = safe("marqueeVelocity", playMarqueeVelocity);
     }
   });
   ScrollTrigger.refresh();
@@ -133,15 +167,13 @@ export function playWireframes(pathname: string) {
 
 export function killWireframes() {
   const active = ctx;
-  // Usually called by the capture-phase navigation handler in engine.ts,
-  // before React replaces a page that contains pinned elements.
+  marqueeCleanup?.();
+  marqueeCleanup = undefined;
   ctx = null;
   if (!active) return;
   try {
     active.revert();
   } catch (error) {
-    // Route cleanup must never take down navigation. This defensive branch
-    // covers a browser back/forward race where React already released a pin.
     if (!(error instanceof DOMException && error.name === "NotFoundError")) {
       throw error;
     }

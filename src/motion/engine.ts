@@ -104,7 +104,13 @@ function bootMotion(pathname: string): MotionHandle {
   gsap.ticker.add(ticker);
   gsap.ticker.lagSmoothing(0);
 
-  playWireframes(pathname);
+  try {
+    playWireframes(pathname);
+  } catch (error) {
+    console.error("[motion] playWireframes crashed:", error);
+    /* Don't let one bad module take down Lenis + the whole motion stack.
+       The has-motion class is already set, so CSS fallbacks still apply. */
+  }
 
   const onRefresh = () => {
     if (!html.classList.contains("has-motion")) return;

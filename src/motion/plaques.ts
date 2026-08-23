@@ -5,9 +5,15 @@ gsap.registerPlugin(ScrollTrigger);
 
 const TILT = [-11, 7, -6];
 
+/* Scatter offsets — plaques start at random-ish positions and assemble */
+const SCATTER_X = [-120, 90, -60];
+const SCATTER_Y = [40, -30, 70];
+const SCATTER_ROTATE = [-25, 18, -15];
+
 /**
- * Three circular plaques hang into the black room — gallery nails,
- * not a fade. Wheel-tied. Scroll back and they lift off again.
+ * Three circular plaques hang into the black room — scatter-to-grid assembly.
+ * Start scattered and rotated, then assemble into their grid positions
+ * on scroll. Wheel-tied. Scroll back and they scatter again.
  */
 export function playPlaques() {
   const root = document.querySelector<HTMLElement>(".room-ink");
@@ -62,12 +68,23 @@ export function playPlaques() {
 
   plaques.forEach((el, i) => {
     const tilt = TILT[i] ?? (i % 2 === 0 ? -8 : 8);
+    const scatterX = (SCATTER_X[i] ?? (i % 2 === 0 ? -80 : 80)) * (mobile ? 0.5 : 1);
+    const scatterY = (SCATTER_Y[i] ?? 40) * (mobile ? 0.5 : 1);
+    const scatterRotate = SCATTER_ROTATE[i] ?? (i % 2 === 0 ? -15 : 15);
+
     gsap.fromTo(
       el,
-      { y: mobile ? 64 : 110, rotate: tilt, scale: 0.72, opacity: 0.15 },
       {
+        x: scatterX,
+        y: scatterY + (mobile ? 64 : 110),
+        rotation: scatterRotate + tilt,
+        scale: 0.6,
+        opacity: 0,
+      },
+      {
+        x: 0,
         y: 0,
-        rotate: 0,
+        rotation: 0,
         scale: 1,
         opacity: 1,
         ease: "none",

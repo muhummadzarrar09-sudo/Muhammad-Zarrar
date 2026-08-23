@@ -5,14 +5,23 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/content/site-content";
 
-/** Accessible slide-in mobile navigation with a contained keyboard focus loop. */
+/**
+ * Full-screen mobile navigation with GSAP choreography.
+ *
+ * When GSAP is loaded (html.has-motion), the menu uses a choreographed
+ * timeline: overlay fades → panel slides from right → nav links stagger
+ * in one-by-one from right with Y offset → CTA button pops last.
+ *
+ * Without GSAP, falls back to CSS transitions (translateX).
+ */
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Covers browser navigation as well as a click on one of the menu links.
   useEffect(() => setOpen(false), [pathname]);
 
   useEffect(() => {
@@ -23,7 +32,8 @@ export function MobileMenu() {
       Array.from(
         panelRef.current?.querySelectorAll<HTMLElement>(
           'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-        ) ?? []);
+        ) ?? []
+      );
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -57,6 +67,112 @@ export function MobileMenu() {
     };
   }, [open]);
 
+  /* GSAP choreography for open/close */
+  useEffect(() => {
+    const hasMotion = document.documentElement.classList.contains("has-motion");
+    if (!hasMotion) return;
+
+    const panel = panelRef.current;
+    const overlay = overlayRef.current;
+    if (!panel || !overlay) return;
+
+    /* Dynamically import GSAP to avoid SSR issues */
+    let cancelled = false;
+
+    import("gsap").then(({ default: gsap }) => {
+      if (cancelled) return;
+
+      /* Kill any previous timeline */
+      tlRef.current?.kill();
+
+      const navLinks = panel.querySelectorAll<HTMLElement>(".mobile-nav a");
+      const secondaryLinks = panel.querySelectorAll<HTMLElement>(".mobile-nav-secondary a");
+      const secondaryLabel = panel.querySelector<HTMLElement>(".mobile-nav-label");
+      const ctaBtn = panel.querySelector<HTMLElement>(".mobile-panel > .btn");
+      const panelNote = panel.querySelector<HTMLElement>(".mobile-panel-note");
+
+      /* Collect all staggerable items in order */
+      const allItems: HTMLElement[] = [
+        ...Array.from(navLinks),
+        ...(secondaryLabel ? [secondaryLabel] : []),
+        ...Array.from(secondaryLinks),
+        ...(ctaBtn ? [ctaBtn] : []),
+        ...(panelNote ? [panelNote] : []),
+      ];
+
+      if (open) {
+        /* Opening sequence */
+        const tl = gsap.timeline({
+          defaults: { ease: "power3.out" },
+        });
+
+        /* Make panel visible first (remove translateX) */
+        gsap.set(panel, { visibility: "visible", x: "100%" });
+        gsap.set(overlay, { opacity: 0, visibility: "visible", pointerEvents: "auto" });
+
+        /* Phase 1: Overlay fades in */
+        tl.to(overlay, { opacity: 1, duration: 0.3 }, 0);
+
+        /* Phase 2: Panel slides from right */
+        tl.to(panel, { x: "0%", duration: 0.45, ease: "power2.out" }, 0.08);
+
+        /* Phase 3: Nav items stagger in */
+        if (allItems.length) {
+          gsap.set(allItems, { opacity: 0, x: 30, y: 10 });
+          tl.to(
+            allItems,
+            {
+              opacity: 1,
+              x: 0,
+              y: 0,
+              duration: 0.35,
+              stagger: 0.04,
+              ease: "power2.out",
+            },
+            0.28
+          );
+        }
+
+        tlRef.current = tl;
+      } else {
+        /* Closing sequence */
+        const tl = gsap.timeline({
+          defaults: { ease: "power2.in" },
+          onComplete: () => {
+            gsap.set(panel, { visibility: "hidden" });
+            gsap.set(overlay, { visibility: "hidden", pointerEvents: "none" });
+          },
+        });
+
+        /* Reverse stagger items out */
+        if (allItems.length) {
+          tl.to(
+            allItems,
+            {
+              opacity: 0,
+              x: -20,
+              duration: 0.2,
+              stagger: 0.02,
+            },
+            0
+          );
+        }
+
+        /* Panel slides out */
+        tl.to(panel, { x: "100%", duration: 0.35 }, 0.1);
+
+        /* Overlay fades out */
+        tl.to(overlay, { opacity: 0, duration: 0.25 }, 0.15);
+
+        tlRef.current = tl;
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [open]);
+
   return (
     <>
       <button
@@ -73,6 +189,7 @@ export function MobileMenu() {
       </button>
 
       <div
+        ref={overlayRef}
         className={`menu-overlay ${open ? "show" : ""}`}
         aria-hidden="true"
         onClick={() => setOpen(false)}
