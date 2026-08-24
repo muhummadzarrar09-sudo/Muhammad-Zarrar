@@ -77,13 +77,17 @@
   --glass-blur: blur(18px) saturate(1.08);
   --glass-shadow: 0 1px 0 rgba(17, 17, 16, 0.04);
 
-  /* ---- Elevation: warm-tinted, never cold black. ---- */
+  /* ---- Elevation: warm-tinted, never cold black. Monotonic 4-rung scale:
+     e-1 (rest) < e-2 (controls) < e-3 (raised) < e-4 (floating).
+     A rung may be swapped for the rung above it — never for one below. ---- */
   --e-0: none;
-  --e-1: 0 1px 2px rgba(27, 24, 20, 0.06);
-  --e-2: 0 8px 24px -8px rgba(27, 24, 20, 0.12), 0 2px 8px -2px rgba(27, 24, 20, 0.06);
-  --e-3: 0 1px 0 rgba(17, 17, 16, 0.06);
-  --e-4: 0 1px 0 rgba(17, 17, 16, 0.08);
+  --e-1: 0 1px 2px rgba(27, 24, 20, 0.07);
+  --e-2: 0 2px 8px -2px rgba(27, 24, 20, 0.10), 0 1px 2px rgba(27, 24, 20, 0.05);
+  --e-3: 0 10px 28px -8px rgba(27, 24, 20, 0.18), 0 2px 8px -2px rgba(27, 24, 20, 0.07);
+  --e-4: 0 24px 64px -16px rgba(27, 24, 20, 0.28), 0 8px 20px -6px rgba(27, 24, 20, 0.12);
   --e-glow: 0 0 0 1px rgba(17, 17, 16, 0.22);
+  /* Pure white exists once, as a token — never as a raw hex below this block. */
+  --white: #ffffff;
 
   /* ---- Spacing — strict 4pt grid. No raw px below. ---- */
   --sp-1: 4px;
@@ -390,7 +394,7 @@ button {
 
 .sec-title {
   font-size: clamp(2rem, 4.8vw, 3.8rem);
-  font-weight: 480;
+  font-weight: var(--fw-display);
   max-width: 22ch;
   margin-bottom: 52px;
 }
@@ -541,11 +545,13 @@ button {
 .btn-primary:hover {
   background: var(--accent-hover);
   color: var(--on-accent);
+  transform: translateY(-1px);
   box-shadow: var(--e-3);
 }
 
 .btn-primary:active {
   background: var(--ember-550);
+  transform: translateY(0);
   box-shadow: var(--e-1);
 }
 
@@ -591,11 +597,13 @@ button {
 .btn-light:hover {
   background: var(--ember-800);
   color: var(--on-accent);
+  transform: translateY(-1px);
   box-shadow: var(--e-3);
 }
 
 .btn-light:active {
   background: var(--ember-900);
+  transform: translateY(0);
   box-shadow: var(--e-1);
 }
 
@@ -748,7 +756,7 @@ button {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(12, 107, 102, 0.08), transparent 65%);
+  background: linear-gradient(90deg, rgba(122, 46, 24, 0.08), transparent 65%);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s ease;
@@ -855,7 +863,7 @@ button {
 
 .brand-name {
   font-family: var(--font-display);
-  font-weight: 560;
+  font-weight: var(--fw-semibold);
   font-size: 1.12rem;
   letter-spacing: 0;
   color: var(--text);
@@ -1023,14 +1031,15 @@ button {
   isolation: isolate;
 }
 
-/* Full-bleed ember plate — one material, consistent 0.58 opacity band */
+/* Full-bleed clay plate — one material, consistent 0.58 opacity band.
+   Warm parchment→clay glow; the teal-era wash was retired with that theme. */
 .hero::before {
   content: "";
   position: absolute;
   inset: -10% -8% auto auto;
   width: min(1100px, 92%);
   aspect-ratio: 16 / 10;
-  background: radial-gradient(ellipse at 60% 40%, rgba(160, 214, 206, 0.85), rgba(242, 214, 180, 0.35) 45%, transparent 70%);
+  background: radial-gradient(ellipse at 60% 40%, rgba(242, 214, 180, 0.85), rgba(200, 122, 80, 0.30) 45%, transparent 70%);
   opacity: 0.58;
   mask-image: radial-gradient(68% 72% at 68% 38%, black 22%, transparent 78%);
   -webkit-mask-image: radial-gradient(68% 72% at 68% 38%, black 22%, transparent 78%);
@@ -1372,7 +1381,7 @@ button {
   bottom: -20%;
   width: min(820px, 75%);
   aspect-ratio: 16 / 9;
-  background: radial-gradient(ellipse at 50% 80%, rgba(160, 214, 206, 0.7), rgba(242, 214, 180, 0.3) 50%, transparent 75%);
+  background: radial-gradient(ellipse at 50% 80%, rgba(242, 214, 180, 0.7), rgba(200, 122, 80, 0.26) 50%, transparent 75%);
   opacity: 0.55;
   transform: scaleX(-1);
   mask-image: linear-gradient(to top, black 25%, transparent 90%);
@@ -1797,7 +1806,7 @@ button {
 .field-error {
   margin-top: 6px;
   font-size: 0.84rem;
-  font-weight: 560;
+  font-weight: var(--fw-semibold);
   color: var(--danger);
 }
 
@@ -1861,7 +1870,7 @@ button {
 }
 
 .price-row:hover {
-  background: linear-gradient(90deg, rgba(12, 107, 102, 0.07), transparent 70%);
+  background: linear-gradient(90deg, rgba(122, 46, 24, 0.07), transparent 70%);
 }
 
 .price-row h3 {
@@ -1936,7 +1945,7 @@ button {
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
   background:
-    radial-gradient(120% 80% at 50% 120%, rgba(160, 214, 206, 0.55), transparent 60%),
+    radial-gradient(120% 80% at 50% 120%, rgba(218, 154, 104, 0.38), transparent 60%),
     var(--ground-750);
   box-shadow: var(--e-2);
 }
@@ -1944,7 +1953,7 @@ button {
 .monogram {
   font-family: var(--font-display);
   font-size: 6.5rem;
-  font-weight: 480;
+  font-weight: var(--fw-display);
   font-style: italic;
   color: var(--text);
   position: relative;
@@ -2042,7 +2051,7 @@ button {
 
 .point-list li:hover {
   padding-left: 12px;
-  background: linear-gradient(90deg, rgba(12, 107, 102, 0.07), transparent 70%);
+  background: linear-gradient(90deg, rgba(122, 46, 24, 0.07), transparent 70%);
 }
 
 .point-list li::before {
@@ -2151,7 +2160,7 @@ button {
   position: absolute;
   inset: auto 0 -12% 0;
   height: 78%;
-  background: radial-gradient(ellipse at 50% 100%, rgba(160, 214, 206, 0.55), rgba(242, 214, 180, 0.28) 40%, transparent 72%);
+  background: radial-gradient(ellipse at 50% 100%, rgba(242, 214, 180, 0.55), rgba(200, 122, 80, 0.24) 40%, transparent 72%);
   opacity: 0.52;
   mask-image: linear-gradient(to top, black 28%, transparent 94%);
   -webkit-mask-image: linear-gradient(to top, black 28%, transparent 94%);
@@ -2168,7 +2177,7 @@ button {
 .manifesto-line {
   font-family: var(--font-display);
   font-size: clamp(1.7rem, 6.2vw, 3.8rem);
-  font-weight: 460;
+  font-weight: var(--fw-display);
   line-height: 1.12;
   letter-spacing: -0.028em;
   margin: 0 0 0.42em;
@@ -3059,7 +3068,7 @@ textarea:-webkit-autofill {
   --icon-sm: 16px;
   --icon-md: 20px;
   --icon-lg: 24px;
-  --wa-glyph: #ffffff;
+  --wa-glyph: var(--white);
 }
 
 /* Optical alignment to the text baseline rather than the line box. */
@@ -3313,7 +3322,7 @@ body::after {
 }
 
 body {
-  background: #c4c3b6;
+  background: var(--ground-700);
 }
 
 body::before {
@@ -3609,7 +3618,7 @@ main,
 
 /* ---------- Section ink — hard-cut bone room ---------- */
 .section-ink {
-  background: #e7e5e4 !important;
+  background: var(--ember-100) !important;
   border: 0 !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -3665,19 +3674,19 @@ main,
 }
 
 .btn-primary {
-  background: #111110 !important;
-  color: #ffffff !important;
+  background: var(--ember-500) !important;
+  color: var(--white) !important;
   box-shadow: none !important;
 }
 
 .btn-primary:hover {
-  background: #000000 !important;
-  color: #ffffff !important;
+  background: var(--ember-700) !important;
+  color: var(--white) !important;
   transform: none !important;
 }
 
 .btn-primary:active {
-  background: #000000 !important;
+  background: var(--ember-700) !important;
   transform: none !important;
 }
 
@@ -3691,13 +3700,13 @@ main,
 }
 
 .btn-light {
-  background: #ffffff !important;
-  color: #111110 !important;
+  background: var(--white) !important;
+  color: var(--ember-500) !important;
 }
 
 .btn-light:hover {
-  background: #e7e5e4 !important;
-  color: #111110 !important;
+  background: var(--ember-100) !important;
+  color: var(--ember-500) !important;
 }
 
 /* ---------- Phases — hairline columns ---------- */
@@ -3727,7 +3736,7 @@ main,
 .cta-full {
   border: 0 !important;
   padding: 120px 0 !important;
-  background: #000000 !important;
+  background: var(--ember-700) !important;
 }
 
 .cta-full::before { display: none !important; }
@@ -3743,15 +3752,15 @@ main,
 }
 
 .cta-full h2,
-.cta-full .cta-body { color: #ffffff !important; }
-.cta-full h2 em { color: #ffffff !important; font-style: italic; }
+.cta-full .cta-body { color: var(--white) !important; }
+.cta-full h2 em { color: var(--white) !important; font-style: italic; }
 
 .findings-close p,
 .findings-close a { color: var(--text) !important; }
 
 /* ---------- Footer — chalk base ---------- */
 .site-footer {
-  background: #ebebeb;
+  background: var(--ember-50);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border-top: 0;
@@ -3774,8 +3783,8 @@ main,
   bottom: 0 !important;
   width: min(340px, 88vw) !important;
   border-radius: 0 !important;
-  background: #e7e5e4 !important;
-  background-color: #e7e5e4 !important;
+  background: var(--ember-100) !important;
+  background-color: var(--ember-100) !important;
   backdrop-filter: blur(18px) saturate(1.08) !important;
   -webkit-backdrop-filter: blur(18px) saturate(1.08) !important;
   border: 0 !important;
@@ -3790,7 +3799,7 @@ main,
 }
 
 /* ---------- Manifesto ---------- */
-.manifesto { background: #c4c3b6; }
+.manifesto { background: var(--ground-700); }
 .manifesto-sticky::before {
   display: none !important;
 }
@@ -3801,7 +3810,7 @@ main,
 
 /* ---------- Monogram card — clay exhibit ---------- */
 .monogram-card {
-  background: #e7e5e4 !important;
+  background: var(--ember-100) !important;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border: 1px solid rgba(17, 17, 16, 0.12) !important;
@@ -3817,15 +3826,15 @@ main,
 
 .scroll-timeline .tl-label {
   border-radius: 2px;
-  background: #e7e5e4;
+  background: var(--ember-100);
 }
 .scroll-timeline .tl-fill {
-  background: #111110;
+  background: var(--ember-500);
 }
 
 .skip-link {
-  background: #111110;
-  color: #ffffff;
+  background: var(--ember-500);
+  color: var(--white);
   border-radius: 28.8px;
 }
 
@@ -3875,9 +3884,9 @@ main,
   .hero-emblem {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    background: #c4c3b6 !important;
+    background: var(--ground-700) !important;
   }
-  .mobile-panel { background: #e7e5e4 !important; }
+  .mobile-panel { background: var(--ember-100) !important; }
 }
 
 /* ==========================================================================
@@ -3917,7 +3926,7 @@ main,
   line-height: 1;
   letter-spacing: -0.018em;
   max-width: 18ch;
-  color: #000;
+  color: var(--ember-700);
 }
 
 .hero-promise em {
@@ -3934,7 +3943,7 @@ main,
   font-size: 15px;
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: #000;
+  color: var(--ember-700);
 }
 
 .stat-row span {
@@ -3971,7 +3980,7 @@ main,
   font-size: clamp(5.6rem, 26vw, 23.375rem);
   line-height: 0.84;
   letter-spacing: -0.038em;
-  color: #000;
+  color: var(--ember-700);
   white-space: nowrap;
   margin: 24px -8vw 0 -4vw;
   pointer-events: none;
@@ -4039,7 +4048,7 @@ main,
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: #000;
+  background: var(--ember-700);
 }
 
 .exhibit-canvas {
@@ -4057,8 +4066,8 @@ main,
   z-index: 1;
   width: min(400px, 86vw);
   min-height: 400px;
-  background: #000;
-  color: #fff;
+  background: var(--ember-700);
+  color: var(--white);
   padding: 32px 28px 28px;
   display: flex;
   flex-direction: column;
@@ -4079,7 +4088,7 @@ main,
   font-size: 12px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--white);
 }
 
 .notch-title {
@@ -4105,13 +4114,13 @@ main,
   font-size: 9px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--white);
 }
 
 /* Ink room + circular vignettes */
 .room-ink {
-  background: #000;
-  color: #fff;
+  background: var(--ember-700);
+  color: var(--white);
   padding: 96px 0 120px;
 }
 
@@ -4131,7 +4140,7 @@ main,
   font-weight: 500;
   line-height: 0.84;
   letter-spacing: -0.03em;
-  color: #fff;
+  color: var(--white);
   margin-bottom: 72px;
 }
 
@@ -4166,7 +4175,7 @@ main,
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.015em;
-  color: #fff;
+  color: var(--white);
 }
 
 .vignette-note {
@@ -4203,8 +4212,8 @@ main,
 }
 
 .cta-full .btn-ghost-on-ink {
-  color: #fff !important;
-  border-color: #fff !important;
+  color: var(--white) !important;
+  border-color: var(--white) !important;
 }
 
 .site-header {
@@ -4347,7 +4356,7 @@ html.has-motion-reduced .hero-floor {
   font-size: 13px;
   letter-spacing: 0;
   text-transform: none;
-  color: #111110;
+  color: var(--ember-500);
 }
 
 .hero-promise {
@@ -4356,7 +4365,7 @@ html.has-motion-reduced .hero-floor {
   line-height: 0.92 !important;
   letter-spacing: -0.034em !important;
   max-width: 13ch !important;
-  color: #111110;
+  color: var(--ember-500);
 }
 
 .hero-line {
@@ -4424,7 +4433,7 @@ html.has-motion-reduced .hero-floor {
 }
 
 .proof-caption span:first-child {
-  color: #111110;
+  color: var(--ember-500);
   letter-spacing: 0.18em;
 }
 
@@ -4440,8 +4449,8 @@ html.has-motion-reduced .hero-floor {
 
 /* Marquee — fade the edges like a wall label passing */
 .marquee {
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, var(--ember-700) 7%, var(--ember-700) 93%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, var(--ember-700) 7%, var(--ember-700) 93%, transparent);
 }
 
 /* Vignettes — painting first, then the label */
@@ -4542,7 +4551,7 @@ html.has-motion-reduced .hero-floor {
 }
 
 .notch-scroll:hover {
-  color: #fff;
+  color: var(--white);
   opacity: 0.7;
 }
 
@@ -4576,11 +4585,11 @@ html.has-motion-reduced .hero-floor {
   font-weight: 400;
   line-height: 1.25;
   letter-spacing: -0.015em;
-  color: #111110;
+  color: var(--ember-500);
 }
 
 .contrast-usual {
-  color: #3f3e3b;
+  color: var(--ember-400);
 }
 
 .contrast-usual span,
@@ -4638,6 +4647,18 @@ html.has-motion-reduced .hero-floor {
   gap: 8px;
 }
 
+/* Tight cut — the qualify form's secondary chip rows: denser grid,
+   quieter targets, so the primary question keeps the visual focus. */
+.q-chips-tight {
+  gap: 6px;
+}
+
+.q-chips-tight .q-chip {
+  min-height: 36px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+}
+
 .q-chip {
   appearance: none;
   min-height: 40px;
@@ -4645,7 +4666,7 @@ html.has-motion-reduced .hero-floor {
   border: 1px solid rgba(17, 17, 16, 0.22);
   border-radius: 28.8px;
   background: transparent;
-  color: #111110;
+  color: var(--ember-500);
   font-family: inherit;
   font-size: 13px;
   font-weight: 400;
@@ -4655,24 +4676,24 @@ html.has-motion-reduced .hero-floor {
 }
 
 .q-chip:hover {
-  border-color: #111110;
+  border-color: var(--ember-500);
 }
 
 .q-chip.is-on {
-  background: #111110;
-  border-color: #111110;
-  color: #ffffff;
+  background: var(--ember-500);
+  border-color: var(--ember-500);
+  color: var(--white);
 }
 
 .q-chip:focus-visible {
-  outline: 2px solid #111110;
+  outline: 2px solid var(--ember-500);
   outline-offset: 3px;
 }
 
 .q-quote {
   margin: 4px 0 26px;
   padding: 18px 18px 16px;
-  border-left: 2px solid #111110;
+  border-left: 2px solid var(--ember-500);
   background: rgba(231, 229, 228, 0.42);
 }
 
@@ -4682,30 +4703,30 @@ html.has-motion-reduced .hero-floor {
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.015em;
-  color: #111110;
+  color: var(--ember-500);
   margin-bottom: 6px;
 }
 
 .q-quote-b {
   font-size: 14px;
   line-height: 1.55;
-  color: #3f3e3b;
+  color: var(--ember-400);
 }
 
 .q-quote.is-low {
-  border-left-color: #8b1e1e;
+  border-left-color: var(--danger);
 }
 
 .q-quote.is-low .q-quote-k {
-  color: #8b1e1e;
+  color: var(--danger);
 }
 
 .q-quote.is-fit {
-  border-left-color: #14532d;
+  border-left-color: var(--success);
 }
 
 .q-quote.is-high {
-  border-left-color: #111110;
+  border-left-color: var(--ember-500);
 }
 
 .qualify-grid {
@@ -4827,12 +4848,12 @@ html.has-motion-reduced .qualify-card {
   gap: 8px;
   margin-top: 28px;
   min-height: 44px;
-  color: #111110;
+  color: var(--ember-500);
   font-size: 14px;
 }
 
 .qualify-hello:hover {
-  color: #111110;
+  color: var(--ember-500);
   opacity: 0.7;
 }
 
@@ -4885,7 +4906,7 @@ html.has-motion-reduced .qualify-card {
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: #000;
+  background: var(--ember-700);
 }
 
 .exhibit-stage {
@@ -4934,7 +4955,7 @@ html.has-motion .type-out.is-typing::after {
   content: "▍";
   display: inline-block;
   margin-left: 1px;
-  color: #fff;
+  color: var(--white);
   animation: type-caret 0.72s step-end infinite;
 }
 
@@ -5001,7 +5022,7 @@ html.has-motion-reduced .notch-body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: #c4c3b6;
+  background: var(--ground-700);
 }
 
 /* Each room is a solid wall again. */
@@ -5010,18 +5031,18 @@ html.has-motion .section,
 html.has-motion .qualify-section,
 html.has-motion .proof-strip,
 html.has-motion .page-hero {
-  background-color: #c4c3b6 !important;
+  background-color: var(--ground-700) !important;
   opacity: 1 !important;
 }
 
 html.has-motion .section-ink {
-  background-color: #e7e5e4 !important;
+  background-color: var(--ember-100) !important;
   opacity: 1 !important;
 }
 
 html.has-motion .room-ink {
-  background-color: #000000 !important;
-  color: #fff;
+  background-color: var(--ember-700) !important;
+  color: var(--white);
   opacity: 1 !important;
   isolation: isolate;
   position: relative;
@@ -5029,7 +5050,7 @@ html.has-motion .room-ink {
 }
 
 html.has-motion .exhibit {
-  background-color: #000000 !important;
+  background-color: var(--ember-700) !important;
   opacity: 1 !important;
   isolation: isolate;
   z-index: 1;
@@ -5039,8 +5060,8 @@ html.has-motion .exhibit {
 .manifesto,
 html.has-motion .manifesto {
   height: 280vh !important;
-  background: #c4c3b6 !important;
-  background-color: #c4c3b6 !important;
+  background: var(--ground-700) !important;
+  background-color: var(--ground-700) !important;
   overflow: clip !important;
   isolation: isolate;
   position: relative;
@@ -5054,7 +5075,7 @@ html.has-motion .manifesto-sticky {
   top: 0 !important;
   height: 100vh !important;
   height: 100svh !important;
-  background: #c4c3b6 !important;
+  background: var(--ground-700) !important;
   z-index: 1;
 }
 
@@ -5071,11 +5092,11 @@ html.has-motion .manifesto-line {
 }
 
 html.has-motion .manifesto .type-out.is-typing::after {
-  color: #111110;
+  color: var(--ember-500);
 }
 
 html.has-motion .cta-full {
-  background-color: #000000 !important;
+  background-color: var(--ember-700) !important;
   opacity: 1 !important;
 }
 
@@ -5115,7 +5136,7 @@ html.has-motion .cta-full {
   line-height: 1.02 !important;
   letter-spacing: -0.016em !important;
   font-weight: 460 !important;
-  color: #111110;
+  color: var(--ember-500);
 }
 
 .hero-minimal .hero-line {
@@ -5153,7 +5174,7 @@ html.has-motion .cta-full {
   width: min(22vw, 240px);
   aspect-ratio: 1 / 1.15;
   overflow: hidden;
-  background: #c4c3b6;
+  background: var(--ground-700);
   transform: translateY(-50%);
 }
 
@@ -5227,7 +5248,7 @@ html.has-motion .type-out.is-typing::after {
   content: "▍";
   display: inline-block;
   margin-left: 1px;
-  color: #fff;
+  color: var(--white);
   animation: type-caret 0.72s step-end infinite;
 }
 
@@ -5409,7 +5430,7 @@ html.has-motion .exhibit-stage {
 }
 
 .hero-sign {
-  color: #111110;
+  color: var(--ember-500);
 }
 
 .hero-sign-l { left: clamp(18px, 5vw, 80px); }
@@ -5437,7 +5458,7 @@ html.has-motion .exhibit-stage {
   transform: translate(-50%, -50%);
   transform-origin: center;
   opacity: 0;
-  color: #111110;
+  color: var(--ember-500);
   font-family: var(--font-body);
   font-size: clamp(7rem, 13vw, 11rem);
   font-weight: 350;
@@ -5455,7 +5476,7 @@ html.has-motion .exhibit-stage {
   width: clamp(150px, 18vw, 220px);
   transform: translateX(-50%);
   opacity: 0;
-  color: #111110;
+  color: var(--ember-500);
   font-family: var(--font-body);
   pointer-events: none;
 }
@@ -5468,6 +5489,8 @@ html.has-motion .exhibit-stage {
   font-weight: 650;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  /* Tabular figures — the 0→100 counter climbs without glyph jitter. */
+  font-variant-numeric: tabular-nums;
 }
 
 .hero-loader-track {
@@ -5480,7 +5503,7 @@ html.has-motion .exhibit-stage {
   display: block;
   width: 100%;
   height: 1px;
-  background: #111110;
+  background: var(--ember-500);
   transform: scaleX(0);
   transform-origin: left center;
 }
@@ -5609,7 +5632,7 @@ main {
 /* Hero type hierarchy + a flat header surface. The previous translucent
    header read as a dark shadow once the pale pinned scene moved beneath it. */
 .site-header {
-  background: #c4c3b6 !important;
+  background: var(--ground-700) !important;
   box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -5628,7 +5651,7 @@ main {
 .hero-promise-title {
   margin: 0;
   max-width: 10ch;
-  color: #111110;
+  color: var(--ember-500);
   font-family: var(--font-display);
   font-size: clamp(2.8rem, 6.4vw, 5.4rem);
   font-weight: 460;
@@ -5641,7 +5664,7 @@ main {
 .hero-promise-subtitle {
   margin: 0.28em 0 0;
   max-width: 13ch;
-  color: #111110;
+  color: var(--ember-500);
   font-family: var(--font-display);
   font-size: clamp(2rem, 4.4vw, 3.8rem);
   font-style: italic;
@@ -5717,7 +5740,7 @@ main {
   position: relative;
   z-index: 2;
   padding: 0 !important;
-  background: #c4c3b6 !important;
+  background: var(--ground-700) !important;
   border-top: 1px solid rgba(17, 17, 16, 0.18) !important;
   border-bottom: 1px solid rgba(17, 17, 16, 0.18) !important;
   overflow: hidden;
@@ -5740,7 +5763,7 @@ main {
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
-  color: #111110;
+  color: var(--ember-500);
   font-family: var(--font-body);
   font-size: 2rem;
   font-weight: 420;
@@ -5767,7 +5790,7 @@ main {
 .proof-rail-head h2 {
   margin: 0;
   max-width: 9ch;
-  color: #111110;
+  color: var(--ember-500);
   font-family: var(--font-display);
   font-size: clamp(1.35rem, 1.8vw, 1.75rem);
   font-weight: 480;
@@ -5804,7 +5827,7 @@ main {
   bottom: 0;
   left: 0;
   height: 2px;
-  background: #111110;
+  background: var(--ember-500);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -5823,7 +5846,7 @@ main {
 
 .proof-rail-item h3 {
   margin: 0 0 8px;
-  color: #111110;
+  color: var(--ember-500);
   font-family: var(--font-body);
   font-size: 0.76rem;
   font-weight: 680;
@@ -6044,7 +6067,7 @@ html.has-motion .proof-rail-item + .proof-rail-item {
 
 .recognize-scan-progress {
   z-index: 1;
-  background: #111110;
+  background: var(--ember-500);
 }
 
 .recognize-scan-track i {
@@ -6055,7 +6078,7 @@ html.has-motion .proof-rail-item + .proof-rail-item {
   height: 5px;
   border: 1px solid rgba(17, 17, 16, 0.48);
   border-radius: 50%;
-  background: #c4c3b6;
+  background: var(--ground-700);
 }
 
 .recognize-scan-active {
@@ -6067,8 +6090,8 @@ html.has-motion .proof-rail-item + .proof-rail-item {
   height: 9px;
   margin-left: -4.5px;
   border-radius: 50%;
-  background: #111110;
-  box-shadow: 0 0 0 4px #c4c3b6;
+  background: var(--ember-500);
+  box-shadow: 0 0 0 4px var(--ground-700);
 }
 
 /* RIGHT COLUMN: rows scroll */

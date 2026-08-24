@@ -1,84 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="Zarrar.Solutions ZS monogram — actual clay logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="Zarrar.Solutions ZS monogram — small">
   <title>Zarrar.Solutions</title>
-  <defs>
-    <!-- Copper gradient for S body -->
-    <linearGradient id="zs-copper" x1="0" y1="0" x2="0.9" y2="0.9">
-      <stop offset="0" stop-color="#ef9d5c"/>
-      <stop offset="0.32" stop-color="#e27a3a"/>
-      <stop offset="0.68" stop-color="#b85a2e"/>
-      <stop offset="1" stop-color="#8a3a1f"/>
-    </linearGradient>
-    <!-- Rust for Z -->
-    <linearGradient id="zs-rust" x1="0" y1="0" x2="0.7" y2="1">
-      <stop offset="0" stop-color="#c85a32"/>
-      <stop offset="0.45" stop-color="#a84424"/>
-      <stop offset="1" stop-color="#7a2e18"/>
-    </linearGradient>
-    <!-- Cream -->
-    <linearGradient id="zs-cream" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#f7e9c9"/>
-      <stop offset="1" stop-color="#f2e2c4"/>
-    </linearGradient>
-  </defs>
-
-  <!-- ============ Z — slab, exact to actual logo ============ -->
-  <!-- maroon drop shadow offset (from actual) -->
-  <path d="M156,158 H330 V202 L238,322 H330 V366 H156 V322 L246,202 H156 Z"
-        fill="#5a1a0e" opacity="0.95"/>
-  <!-- black keyline — thick, as in actual -->
-  <path d="M148,150 H322 V194 L230,316 H322 V358 H148 V316 L238,194 H148 Z"
-        fill="none" stroke="#0c0402" stroke-width="14" stroke-linejoin="miter" stroke-linecap="square"/>
-  <!-- rust body -->
-  <path d="M150,152 H320 V192 L232,314 H320 V356 H150 V314 L240,192 H150 Z"
-        fill="url(#zs-rust)"/>
-  <!-- inner dark contour for depth -->
-  <path d="M158,160 H312 V184 L224,306 H312 V348 H158 V314 L248,184 H158 Z"
-        fill="none" stroke="#3d160c" stroke-width="3" opacity="0.6"/>
-  <!-- cream inline — left edge + top/bottom inset, as in actual -->
-  <path d="M164,166 H298 V176 L216,298 H298 V342 H164 V312 L252,176 H164 Z"
-        fill="none" stroke="#f2e2c4" stroke-width="6.5" stroke-linejoin="miter" stroke-linecap="square"/>
-  <!-- subtle second cream pinstripe on left edge of Z (visible in actual) -->
-  <path d="M150,152 L150,314"
-        fill="none" stroke="#f7e9c9" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
-
-  <!-- ============ S — interlocked, layered like actual clay logo ============ -->
-  <!-- The S overlaps the Z diagonal — this is the key interlock -->
-
-  <!-- Black keyline for entire S -->
+  <!-- SMALL — same skeleton as full clay mark, flat colours, verified at 32px -->
+  <!-- Z — rust slab (actual logo body) -->
+  <path d="M150,152 H320 V192 L232,314 H320 V356 H150 V314 L240,192 H150 Z" fill="#a84424"/>
+  <!-- S — copper, double-stroke for legibility at 16px -->
   <path d="M368,214 C366,184 338,160 310,166 C284,172 268,195 276,217 C284,240 316,252 337,266 C359,281 371,305 359,329 C346,354 311,362 285,348 C269,339 261,323 260,310"
-        fill="none" stroke="#0c0402" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- Copper body — main S -->
+        fill="none" stroke="#c4c3b6" stroke-width="48" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M368,214 C366,184 338,160 310,166 C284,172 268,195 276,217 C284,240 316,252 337,266 C359,281 371,305 359,329 C346,354 311,362 285,348 C269,339 261,323 260,310"
-        fill="none" stroke="url(#zs-copper)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- === TOP TERMINAL — 3 layered stripes (as in actual logo) === -->
-  <!-- Outermost — cream -->
-  <path d="M376,206 C374,180 348,156 318,162"
-        fill="none" stroke="#f2e2c4" stroke-width="9" stroke-linecap="round"/>
-  <!-- Middle — light peach -->
-  <path d="M372,216 C370,190 344,166 314,172"
-        fill="none" stroke="#f5b07a" stroke-width="8" stroke-linecap="round"/>
-  <!-- Inner — orange copper -->
-  <path d="M368,226 C366,200 340,176 310,182"
-        fill="none" stroke="#e07a3a" stroke-width="7" stroke-linecap="round"/>
-
-  <!-- === BOTTOM TERMINAL — 3 layered stripes (mirrored) === -->
-  <!-- Outermost — cream -->
-  <path d="M268,318 C272,338 296,360 322,356 C336,354 348,344 354,332"
-        fill="none" stroke="#f2e2c4" stroke-width="9" stroke-linecap="round"/>
-  <!-- Middle — light peach -->
-  <path d="M272,308 C276,328 300,350 326,346 C340,344 352,334 358,322"
-        fill="none" stroke="#f5b07a" stroke-width="8" stroke-linecap="round"/>
-  <!-- Inner — orange copper -->
-  <path d="M276,298 C280,318 304,340 330,336 C344,334 356,324 362,312"
-        fill="none" stroke="#e07a3a" stroke-width="7" stroke-linecap="round"/>
-
-  <!-- Maroon shade along lower-right bowl for depth (as in actual) -->
-  <path d="M345,274 C364,289 373,310 362,330 C353,347 330,356 309,355"
-        fill="none" stroke="#5a1a0e" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
-
-  <!-- Final black outline highlight for crisp edge at small sizes -->
-  <path d="M368,214 C366,184 338,160 310,166 C284,172 268,195 276,217 C284,240 316,252 337,266 C359,281 371,305 359,329 C346,354 311,362 285,348"
-        fill="none" stroke="#0c0402" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+        fill="none" stroke="#da7134" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

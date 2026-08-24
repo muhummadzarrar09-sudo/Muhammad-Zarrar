@@ -49,7 +49,9 @@ The monogram card stays, and the site ships honest.
   pass-through service worker (`public/sw.js`) — installable
 - **Forms without a backend**: submits open a `wa.me` deep link with the
   URL-encoded message pre-filled — nothing is stored anywhere
-- Performance budget honored: no runtime deps beyond Next/React; total client
+- Performance budget honored: only runtime deps are gsap + lenis (home page
+  only, dynamically imported — every other route ships framework baseline);
+  total client
   JS stays near the framework baseline (~<100KB gzip on core pages); no
   images except generated brand assets; `prefers-reduced-motion` respected
 
@@ -58,8 +60,9 @@ The monogram card stays, and the site ships honest.
 `src/app/globals.css` is the single source of truth: putty `#C4C3B6`
 canvas, ink `#111110` type and buttons. The clay ZS mark is the only
 colour (rust/copper). Fraunces for display + Inter for utility.
-**Museum wall: oversized serif, hairline labels, one black room, whisper
-glass.** No teal, no orbs, no heavy shadows.
+**Museum wall: oversized serif, hairline labels, warm clay accent, whisper
+glass.** No teal, no orbs, no cold black shadows — elevation is warm-tinted
+and runs on a monotonic 4-rung scale.
 
 ### Motion
 
@@ -148,14 +151,14 @@ src/
   components/           # Server Components by default; client where needed
   content/              # all copy & data (services, findings, process…)
   lib/                  # site constants (placeholders live here), SEO helpers
-  fonts/                # self-hosted woff2 (Inter variable, Playfair Display)
+  fonts/                # self-hosted woff2 (Inter variable, Fraunces variable)
 public/                 # icons, og.png, sw.js
 scripts/                # asset generator + zero-dep static preview server
 ```
 
 ## Fonts
 
-Inter variable + Playfair Display (latin subsets) are vendored as woff2 files
+Inter variable + Fraunces variable (latin subsets) are vendored as woff2 files
 from the Fontsource project (SIL Open Font License). Sources kept as
 `devDependencies` for provenance: `@fontsource-variable/inter`,
 `@fontsource/playfair-display`.
