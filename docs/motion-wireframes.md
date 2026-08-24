@@ -26,7 +26,7 @@ The homepage is a gallery walk. Motion is tied to the wheel (`scrub`, ease none)
 | --- | --- |
 | `hero-leave` | The sentence thins as the walk begins |
 | `walk-*` | Whole frame dissolves room to room |
-| `recognize` | Tuesday rises with the wheel |
+| `recognize` | Tuesday rises with the wheel. Then the diagnosis word wipes in and its clay underline draws. Each finding is scanned in by a clay beam; the rail is live — a tick fills per finding, the counter counts, the rail settles to clay when the scan completes |
 | `exhibit-pin` | Painting holds. Card, then letters, on the wheel |
 | `plaque-*` | Three circular plaques hang from the nails |
 | `contrast` | Usual vs here |

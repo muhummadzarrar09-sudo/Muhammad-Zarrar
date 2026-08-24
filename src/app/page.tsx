@@ -94,7 +94,11 @@ export default function HomePage() {
               <span className="sec-rule" />
             </div>
             <h2 className="sec-title" id="you-heading">
-              You&apos;re not behind. <em>You&apos;re undiagnosed.</em>
+              You&apos;re not behind.{" "}
+              <em>
+                You&apos;re undiagnosed.
+                <i className="recognize-underline" aria-hidden="true" />
+              </em>
             </h2>
             <p className="lede sec-lede">
               Most owners we meet already know something&apos;s off. They just
@@ -122,6 +126,7 @@ export default function HomePage() {
               {RECOGNITIONS.map((item, i) => (
                 <article className="index-row recognize-row" key={item.title}>
                   <span className="recognize-row-rule" aria-hidden="true" />
+                  <span className="recognize-row-beam" aria-hidden="true" />
                   <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
                   <div>
                     <h3 className="idx-title">{item.title}</h3>

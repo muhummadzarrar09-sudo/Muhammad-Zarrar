@@ -44,7 +44,7 @@
   --accent-2: var(--ember-400);
   --accent-on-ink: #e7e5e4;
   --on-accent: #ffffff;
-  --gold: #7a2e18;                    /* clay rust — logo only, 5.30:1 */
+  --gold: #7a2e18;                    /* clay rust — brand mark + live diagnostic signal, 5.30:1 */
   --text: #111110;                    /* 10.64:1 ink */
   --text-2: #3f3e3b;                  /*  6.02:1 graphite */
   --text-3: #4a4944;                  /*  5.08:1 placeholders */
@@ -6119,6 +6119,81 @@ html.has-motion .proof-rail-item + .proof-rail-item {
   display: block;
   height: 1px;
   background: rgba(17, 17, 16, 0.18);
+}
+
+/* ——— The diagnostic scan language ———
+   Clay is the LIVE signal (beam, lit ticks, active ordinal, underline);
+   ink is the record it leaves behind. Motion owns these elements:
+   without JS every one of them is inert and invisible. */
+
+/* The beam — a thin clay scanner that sweeps each row on the wheel. */
+.recognize-row-beam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--gold);
+  box-shadow: 0 0 14px 1px rgba(122, 46, 24, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* Ticks — hollow until its finding registers, then clay and filled. */
+.recognize-scan-track i {
+  transition:
+    background-color 200ms var(--ease-standard),
+    border-color 200ms var(--ease-standard),
+    transform 200ms var(--ease-standard);
+}
+
+.recognize-scan-track i.is-lit {
+  border-color: var(--gold);
+  background: var(--gold);
+  transform: scale(1.5);
+}
+
+/* The ordinal burns clay while its finding is on the table. */
+.recognize-row .idx-no {
+  transition: color 220ms var(--ease-standard);
+}
+
+.recognize-row.is-active .idx-no {
+  color: var(--gold);
+}
+
+/* Complete — the whole rail settles to clay. Diagnosis finished. */
+.recognize-diagnostic.is-complete .recognize-scan-progress,
+.recognize-diagnostic.is-complete .recognize-scan-active {
+  background: var(--gold);
+}
+
+/* The diagnosis word carries the page's one clay underline.
+   inline-block so the wipe (clip-path) and the underline anchor both
+   apply — inline boxes ignore both. GSAP draws it; it never ships
+   visible without motion. */
+.recognize-intro .sec-title em {
+  position: relative;
+  display: inline-block;
+}
+
+.recognize-underline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.04em;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+}
+
+html.has-motion .recognize-underline {
+  opacity: 1;
 }
 
 html.has-motion .recognize-row {
