@@ -5982,55 +5982,45 @@ html.has-motion .proof-rail-item + .proof-rail-item {
   overflow: visible;
 }
 
+/* ══════════ ROOM 01 — THE DIAGNOSTIC SCAN ══════════
+   [ pinned intro ]  [ scan rail ]  [ cycling findings ]
+   The rail lives BETWEEN the text and the cards — never beneath them.
+   Under motion the section grows tall and a CSS-sticky stage holds the
+   room (GSAP pin:false house rule); without motion it degrades to a
+   plain readable three-column section. */
+
 .recognize-layout {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: clamp(56px, 8vw, 128px);
+  grid-template-columns: minmax(0, 5fr) 52px minmax(0, 7fr);
+  gap: clamp(40px, 5vw, 88px);
   align-items: start;
 }
 
-/* LEFT COLUMN: intro text + scan rail, both sticky together */
 .recognize-intro {
-  position: sticky;
-  top: 52px;
-  z-index: 10;
   align-self: start;
 }
 
-.recognize-intro .sec-head {
-  /* push the section header to the right of the scan rail */
-  padding-left: 52px;
-}
-
 .recognize-intro .sec-title {
-  padding-left: 52px;
   max-width: 10ch;
 }
 
 .recognize-intro .sec-lede {
-  padding-left: 52px;
   max-width: 38ch;
   margin-bottom: 0;
 }
 
-/* The scan rail — sticky in the left column, below the intro text */
+/* The scan rail — its own column, between text and findings. */
 .recognize-scan {
-  position: sticky;
-  top: 52px;
-  z-index: 11;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 11px;
   width: 52px;
-  height: fit-content;
   padding-block: 4px;
   color: rgba(17, 17, 16, 0.5);
   font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 0.14em;
-  /* sit at the left edge of the intro column */
-  margin-top: 28px;
 }
 
 .recognize-scan-start,
@@ -6046,7 +6036,7 @@ html.has-motion .proof-rail-item + .proof-rail-item {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: min(340px, 56vh);
+  height: min(340px, 48vh);
   flex-shrink: 0;
 }
 
@@ -6094,12 +6084,49 @@ html.has-motion .proof-rail-item + .proof-rail-item {
   box-shadow: 0 0 0 4px var(--ground-700);
 }
 
-/* RIGHT COLUMN: rows scroll */
-.recognize-diagnostic {
-  min-width: 0;
+/* ——— The pinned room (motion on) ——— */
+
+html.has-motion .recognize {
+  height: 360vh !important;
+  min-height: 360vh !important;
+  padding: 0 !important;
 }
 
-.recognize-list {
+html.has-motion .recognize-stage {
+  position: sticky;
+  top: 0;
+  display: grid;
+  align-items: center;
+  height: 100svh;
+  overflow: hidden;
+}
+
+html.has-motion .recognize-layout {
+  align-items: center;
+  height: 100%;
+}
+
+html.has-motion .recognize-scan {
+  align-self: center;
+}
+
+/* Findings stack in one grid cell and swap on the wheel. */
+html.has-motion .recognize-list {
+  display: grid;
+}
+
+html.has-motion .recognize-row {
+  grid-area: 1 / 1;
+  place-self: center start;
+  width: 100%;
+  margin: 0 !important;
+  border-top-color: transparent !important;
+  opacity: 0;
+}
+
+/* ——— Findings ——— */
+
+.recognize-diagnostic {
   min-width: 0;
 }
 
@@ -6196,16 +6223,6 @@ html.has-motion .recognize-underline {
   opacity: 1;
 }
 
-html.has-motion .recognize-row {
-  border-top-color: transparent !important;
-  opacity: 0.38;
-}
-
-html.has-motion .recognize-row.is-active,
-html.has-motion .recognize-diagnostic.is-complete .recognize-row {
-  opacity: 1;
-}
-
 .recognize-row .idx-title {
   font-size: clamp(1.2rem, 1.7vw, 1.55rem);
   line-height: 1.15;
@@ -6217,22 +6234,12 @@ html.has-motion .recognize-diagnostic.is-complete .recognize-row {
   color: rgba(17, 17, 16, 0.64);
 }
 
+/* ——— Responsive ——— */
+
 @media (max-width: 1020px) {
   .recognize-layout {
     grid-template-columns: 1fr;
-    gap: 58px;
-  }
-
-  .recognize-intro {
-    position: sticky;
-    top: 52px;
-    z-index: 10;
-  }
-
-  .recognize-intro .sec-head,
-  .recognize-intro .sec-title,
-  .recognize-intro .sec-lede {
-    padding-left: 0;
+    gap: 48px;
   }
 
   .recognize-intro .sec-title {
@@ -6242,15 +6249,26 @@ html.has-motion .recognize-diagnostic.is-complete .recognize-row {
   .recognize-scan {
     display: none;
   }
+
+  html.has-motion .recognize {
+    height: 320vh !important;
+    min-height: 320vh !important;
+  }
+
+  html.has-motion .recognize-layout {
+    align-items: start;
+    height: auto;
+    padding-block: clamp(72px, 12vh, 120px) 0;
+  }
+
+  html.has-motion .recognize-stage {
+    align-items: start;
+  }
 }
 
 @media (max-width: 760px) {
   .recognize-layout {
     gap: 40px;
-  }
-
-  .recognize-scan {
-    display: none;
   }
 
   .recognize-row {
@@ -6262,6 +6280,11 @@ html.has-motion .recognize-diagnostic.is-complete .recognize-row {
 
   .recognize-row .idx-title {
     font-size: 1.15rem;
+  }
+
+  html.has-motion .recognize {
+    height: 300vh !important;
+    min-height: 300vh !important;
   }
 }
 
