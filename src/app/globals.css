@@ -5968,7 +5968,8 @@ html.has-motion .proof-rail-item + .proof-rail-item {
 
 .recognize-intro {
   position: sticky;
-  top: 124px;
+  top: 52px;
+  z-index: 10;
   align-self: start;
   padding-right: clamp(0px, 2vw, 28px);
 }
@@ -5991,7 +5992,7 @@ html.has-motion .proof-rail-item + .proof-rail-item {
 
 .recognize-scan {
   position: sticky;
-  top: 124px;
+  top: 52px;
   display: grid;
   grid-template-rows: auto minmax(280px, 52vh) auto;
   justify-items: center;
@@ -6108,8 +6109,10 @@ html.has-motion .recognize-diagnostic.is-complete .recognize-row {
   }
 
   .recognize-intro {
-    position: static;
+    position: sticky;
+    top: 52px;
     padding-right: 0;
+    z-index: 10;
   }
 
   .recognize-intro .sec-title {
@@ -6117,7 +6120,7 @@ html.has-motion .recognize-diagnostic.is-complete .recognize-row {
   }
 
   .recognize-scan {
-    top: 88px;
+    top: 52px;
   }
 }
 
