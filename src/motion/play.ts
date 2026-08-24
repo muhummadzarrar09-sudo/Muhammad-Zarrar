@@ -4,6 +4,7 @@ import { playExhibit } from "./exhibit";
 import { playHero } from "./hero";
 import { playManifesto } from "./manifesto";
 import { playPlaques } from "./plaques";
+import { playRecognize } from "./recognize";
 import { playWalk } from "./walk";
 import { EASE, WIREFRAMES, type MotionVars, type WireframeScene } from "./wireframes";
 
@@ -125,6 +126,7 @@ export function playWireframes(pathname: string) {
       playHero();
       playExhibit();
       playPlaques();
+      playRecognize();
       playManifesto();
     }
   });

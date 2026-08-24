@@ -5953,3 +5953,201 @@ html.has-motion .proof-rail-item + .proof-rail-item {
     display: none;
   }
 }
+
+/* Section 01 — sticky editorial diagnosis on desktop, six measured findings. */
+#you {
+  overflow: visible;
+}
+
+.recognize-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(56px, 8vw, 128px);
+  align-items: start;
+}
+
+.recognize-intro {
+  position: sticky;
+  top: 124px;
+  align-self: start;
+  padding-right: clamp(0px, 2vw, 28px);
+}
+
+.recognize-intro .sec-title {
+  max-width: 9.5ch;
+}
+
+.recognize-intro .sec-lede {
+  max-width: 43ch;
+  margin-bottom: 0;
+}
+
+.recognize-diagnostic {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 24px;
+  min-width: 0;
+}
+
+.recognize-scan {
+  position: sticky;
+  top: 124px;
+  display: grid;
+  grid-template-rows: auto minmax(280px, 52vh) auto;
+  justify-items: center;
+  gap: 11px;
+  height: fit-content;
+  padding-block: 4px;
+  color: rgba(17, 17, 16, 0.5);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.recognize-scan-track {
+  position: relative;
+  display: flex;
+  width: 12px;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.recognize-scan-track::before,
+.recognize-scan-progress {
+  content: "";
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+.recognize-scan-track::before {
+  background: rgba(17, 17, 16, 0.16);
+}
+
+.recognize-scan-progress {
+  z-index: 1;
+  background: #111110;
+}
+
+.recognize-scan-track i {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 5px;
+  height: 5px;
+  border: 1px solid rgba(17, 17, 16, 0.48);
+  border-radius: 50%;
+  background: #c4c3b6;
+}
+
+.recognize-scan-active {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 3;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: #111110;
+  box-shadow: 0 0 0 4px #c4c3b6;
+}
+
+.recognize-list {
+  min-width: 0;
+}
+
+.recognize-row {
+  min-height: 156px;
+  grid-template-columns: 48px minmax(0, 1fr) !important;
+  align-items: start !important;
+  padding-block: 34px !important;
+  transition: opacity 260ms ease, padding-left 220ms var(--ease-standard) !important;
+}
+
+.recognize-row-rule {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: block;
+  height: 1px;
+  background: rgba(17, 17, 16, 0.18);
+}
+
+html.has-motion .recognize-row {
+  border-top-color: transparent !important;
+  opacity: 0.38;
+}
+
+html.has-motion .recognize-row.is-active,
+html.has-motion .recognize-diagnostic.is-complete .recognize-row {
+  opacity: 1;
+}
+
+.recognize-row .idx-title {
+  font-size: clamp(1.2rem, 1.7vw, 1.55rem);
+  line-height: 1.15;
+  letter-spacing: -0.018em;
+}
+
+.recognize-row .idx-sub {
+  max-width: 48ch;
+  color: rgba(17, 17, 16, 0.64);
+}
+
+@media (max-width: 1020px) {
+  .recognize-layout {
+    grid-template-columns: 1fr;
+    gap: 58px;
+  }
+
+  .recognize-intro {
+    position: static;
+    padding-right: 0;
+  }
+
+  .recognize-intro .sec-title {
+    max-width: 12ch;
+  }
+
+  .recognize-scan {
+    top: 88px;
+  }
+}
+
+@media (max-width: 760px) {
+  .recognize-layout {
+    gap: 40px;
+  }
+
+  .recognize-diagnostic {
+    grid-template-columns: 1fr;
+  }
+
+  .recognize-scan {
+    display: none;
+  }
+
+  .recognize-row {
+    min-height: 0;
+    grid-template-columns: 36px minmax(0, 1fr) !important;
+    gap: 18px !important;
+    padding-block: 26px !important;
+  }
+
+  .recognize-row .idx-title {
+    font-size: 1.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recognize-row {
+    opacity: 1 !important;
+  }
+}

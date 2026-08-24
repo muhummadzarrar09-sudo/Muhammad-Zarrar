@@ -118,36 +118,7 @@ export const WIREFRAMES: WireframeScene[] = [
       },
     ],
   },
-  {
-    id: "recognize",
-    note: "Tuesday rises with the wheel — each row a step, not a pop.",
-    page: "/",
-    trigger: "#you",
-    start: "top 92%",
-    end: "top 18%",
-    scrub: 1.05,
-    tweens: [
-      {
-        target: "#you .sec-title",
-        from: { y: 40, opacity: 0.16 },
-        to: { y: 0, opacity: 1, ease: "none" },
-        duration: 0.55,
-      },
-      {
-        target: "#you .lede",
-        from: { y: 28, opacity: 0.22 },
-        to: { y: 0, opacity: 1, ease: "none" },
-        at: 0.08,
-        duration: 0.5,
-      },
-    ],
-    stagger: {
-      target: "#you .index-row",
-      from: { y: 32, opacity: 0.16 },
-      to: { y: 0, opacity: 1 },
-      each: 0.06,
-    },
-  },
+  /* Section 01 diagnostic scan lives in ./recognize.ts. */
   /* exhibit-pin + typewriter live in ./exhibit.ts — painting stays,
      card and letters are the wheel. */
   /* plaque hang lives in ./plaques.ts — three circular
