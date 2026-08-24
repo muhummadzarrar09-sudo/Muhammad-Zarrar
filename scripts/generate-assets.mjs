@@ -9,6 +9,8 @@
  * change it here and re-run:  node scripts/generate-assets.mjs
  */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import fs from "node:fs";
+import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { Resvg } from "@resvg/resvg-js";
 
@@ -42,6 +44,53 @@ const TX = 820; // text column origin
 const esc = (t) =>
   t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+/* ---- Auto-fit: no line may cross the plate frame ----
+ * Frame right edge sits at x=2344 on the 2400 canvas; text must stop ~100px
+ * short of it. Every line is measured with the real fonts at its base size
+ * and scaled down if it would overflow — set once, safe forever. */
+const TEXT_MAX_X = 2240;
+const TEXT_MAX_W = TEXT_MAX_X - TX;
+
+const fontFiles = [FRAUNCES, FRAUNCES_ITALIC, INTER];
+
+const measureCache = new Map();
+
+/** Rendered width (px, 2400-canvas scale) of one text run at `size`. */
+function measureText(text, { family, weight, italic, size, ls }) {
+  const key = `${text}|${family}|${weight}|${italic}|${size}|${ls}`;
+  if (measureCache.has(key)) return measureCache.get(key);
+  const h = Math.ceil(size * 2.2);
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="3600" height="${h}" viewBox="0 0 3600 ${h}">` +
+    `<rect width="3600" height="${h}" fill="#ffffff"/>` +
+    `<text x="10" y="${Math.ceil(h * 0.72)}" font-family="${family}" font-weight="${weight}"` +
+    `${italic ? ` font-style="italic"` : ""} font-size="${size}" letter-spacing="${ls}" fill="#000000">${esc(text)}</text></svg>`;
+  const png = new Resvg(svg, { fontFiles }).render().asPng();
+  const tmp = path.join("/tmp", `og-measure-${Math.abs(hash(key))}.png`);
+  fs.writeFileSync(tmp, png);
+  execFileSync("convert", [tmp, "-colorspace", "gray", "-threshold", "50%", "-negate", tmp]);
+  const geom = execFileSync("identify", ["-format", "%@", tmp]).toString();
+  const w = parseInt(geom.split("x")[0], 10) || 0;
+  measureCache.set(key, w);
+  return w;
+}
+
+function hash(s) {
+  let h = 0;
+  for (const c of s) h = (h * 31 + c.charCodeAt(0)) | 0;
+  return h;
+}
+
+/** Largest size ≤ base that keeps every line inside TEXT_MAX_W. */
+function fitSize(lines, spec, base) {
+  let size = base;
+  for (const line of lines) {
+    const w = measureText(line, { ...spec, size });
+    if (w > TEXT_MAX_W) size = Math.min(size, Math.floor((base * TEXT_MAX_W) / w));
+  }
+  return size;
+}
+
 /** Canonical mark's inner markup (defs + paths), lifted out of its <svg>. */
 async function markInner() {
   const raw = await readFile(LOGO_SVG, "utf8");
@@ -74,15 +123,20 @@ function ogSvg({ eyebrow, lines, sub }, mark) {
       `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="${MARK}" height="${MARK}">${mark}</svg>` +
       `</g>`,
   );
+  /* fitted sizes — measured with the real fonts, never allowed to cross the frame */
+  const eyebrowSize = fitSize([eyebrow], { family: "Inter", weight: 600, ls: 10 }, 34);
+  const headlineSize = fitSize(lines, { family: "Fraunces", weight: 620, ls: -1 }, 118);
+  const subSize = fitSize(sub, { family: "Fraunces", weight: 400, italic: true, ls: 0 }, 54);
+
   /* eyebrow — Inter caps label */
   parts.push(
-    `<text x="${TX}" y="262" font-family="Inter" font-weight="600" font-size="34" letter-spacing="10" fill="${GRAPHITE}">${esc(eyebrow)}</text>`,
+    `<text x="${TX}" y="262" font-family="Inter" font-weight="600" font-size="${eyebrowSize}" letter-spacing="10" fill="${GRAPHITE}">${esc(eyebrow)}</text>`,
   );
   /* headline — Fraunces display, ink */
   let y = 424;
   for (const line of lines) {
     parts.push(
-      `<text x="${TX}" y="${y}" font-family="Fraunces" font-weight="620" font-size="118" letter-spacing="-1" fill="${INK}">${esc(line)}</text>`,
+      `<text x="${TX}" y="${y}" font-family="Fraunces" font-weight="620" font-size="${headlineSize}" letter-spacing="-1" fill="${INK}">${esc(line)}</text>`,
     );
     y += 152;
   }
@@ -90,7 +144,7 @@ function ogSvg({ eyebrow, lines, sub }, mark) {
   y += 54;
   for (const line of sub) {
     parts.push(
-      `<text x="${TX}" y="${y}" font-family="Fraunces" font-weight="400" font-style="italic" font-size="54" fill="${GRAPHITE}">${esc(line)}</text>`,
+      `<text x="${TX}" y="${y}" font-family="Fraunces" font-weight="400" font-style="italic" font-size="${subSize}" fill="${GRAPHITE}">${esc(line)}</text>`,
     );
     y += 84;
   }
@@ -98,8 +152,10 @@ function ogSvg({ eyebrow, lines, sub }, mark) {
   y += 46;
   parts.push(`<rect x="${TX}" y="${y}" width="260" height="6" fill="${INK}"/>`);
   y += 104;
+  const COLOPHON = "AUDIT-LED DIGITAL SYSTEMS · ISLAMABAD & RAWALPINDI · PAKISTAN-WIDE";
+  const colophonSize = fitSize([COLOPHON], { family: "Inter", weight: 400, ls: 4 }, 28);
   parts.push(
-    `<text x="${TX}" y="${y}" font-family="Inter" font-weight="400" font-size="30" letter-spacing="6" fill="${GRAPHITE}">AUDIT-LED DIGITAL SYSTEMS · ISLAMABAD &amp; RAWALPINDI · PAKISTAN-WIDE</text>`,
+    `<text x="${TX}" y="${y}" font-family="Inter" font-weight="400" font-size="${colophonSize}" letter-spacing="4" fill="${GRAPHITE}">${esc(COLOPHON)}</text>`,
   );
   parts.push(`</svg>`);
   return parts.join("\n");
@@ -190,7 +246,6 @@ const OG_PAGES = [
 await mkdir(path.join(ROOT, "public"), { recursive: true });
 
 const mark = await markInner();
-const fontFiles = [FRAUNCES, FRAUNCES_ITALIC, INTER];
 
 for (const page of OG_PAGES) {
   const resvg = new Resvg(ogSvg(page, mark), { fontFiles });
