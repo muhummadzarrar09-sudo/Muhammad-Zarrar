@@ -5998,7 +5998,7 @@ html.has-motion .proof-rail-item + .proof-rail-item {
 
 .recognize-layout {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) 52px minmax(0, 7fr);
+  grid-template-columns: minmax(0, 6fr) 52px minmax(0, 6fr);
   gap: clamp(40px, 5vw, 88px);
   align-items: start;
 }
@@ -6008,7 +6008,11 @@ html.has-motion .proof-rail-item + .proof-rail-item {
 }
 
 .recognize-intro .sec-title {
-  max-width: 10ch;
+  /* Sized so "You're undiagnosed." — the longest line — fits its column
+     with air on every breakpoint. It can never overflow or clip. */
+  max-width: none;
+  font-size: clamp(1.8rem, 3.1vw, 2.75rem);
+  line-height: 1.06;
 }
 
 .recognize-intro .sec-lede {
@@ -6094,8 +6098,8 @@ html.has-motion .proof-rail-item + .proof-rail-item {
 /* ——— The pinned room (motion on) ——— */
 
 html.has-motion .recognize {
-  height: 360vh !important;
-  min-height: 360vh !important;
+  height: 420vh !important;
+  min-height: 420vh !important;
   padding: 0 !important;
 }
 
@@ -6105,6 +6109,9 @@ html.has-motion .recognize-stage {
   display: grid;
   align-items: center;
   height: 100svh;
+  /* the 68px sticky navbar overlays the stage's top edge — pad it out so
+     the room centres in the space the header doesn't own */
+  padding-top: 84px;
   overflow: hidden;
 }
 
@@ -6212,6 +6219,7 @@ html.has-motion .recognize-row {
 .recognize-intro .sec-title em {
   position: relative;
   display: inline-block;
+  white-space: nowrap;
 }
 
 .recognize-underline {
@@ -6258,8 +6266,8 @@ html.has-motion .recognize-underline {
   }
 
   html.has-motion .recognize {
-    height: 320vh !important;
-    min-height: 320vh !important;
+    height: 380vh !important;
+    min-height: 380vh !important;
   }
 
   html.has-motion .recognize-layout {
@@ -6290,8 +6298,8 @@ html.has-motion .recognize-underline {
   }
 
   html.has-motion .recognize {
-    height: 300vh !important;
-    min-height: 300vh !important;
+    height: 340vh !important;
+    min-height: 340vh !important;
   }
 }
 

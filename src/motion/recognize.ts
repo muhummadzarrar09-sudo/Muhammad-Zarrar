@@ -47,7 +47,7 @@ export function playRecognize() {
   const mobile = window.matchMedia("(max-width: 760px)").matches;
   /* Stage heights live in CSS (360/320/300vh) — the scrub end matches the
    * sticky distance exactly: section height minus one viewport. */
-  const end = mobile ? "+=200%" : "+=260%";
+  const end = mobile ? "+=240%" : "+=320%";
 
   const tl = gsap.timeline({
     defaults: { ease: "none" },
@@ -119,19 +119,19 @@ export function playRecognize() {
     const title = row.querySelector<HTMLElement>(".idx-title");
     const body = row.querySelector<HTMLElement>(".idx-sub");
 
-    /* the card itself lands */
+    /* the card itself lands — unhurried */
     tl.fromTo(
       row,
-      { opacity: 0, y: 26 },
-      { opacity: 1, y: 0, duration: step * 0.3, immediateRender: i > 0 },
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: step * 0.4, immediateRender: i > 0 },
       at
     );
     /* …and departs upward as the next lands */
     if (i < rows.length - 1) {
       tl.to(
         row,
-        { opacity: 0, y: -26, duration: step * 0.3 },
-        at + step * 0.72
+        { opacity: 0, y: -20, duration: step * 0.4 },
+        at + step * 0.78
       );
     }
 
@@ -139,7 +139,7 @@ export function playRecognize() {
       tl.fromTo(
         rule,
         { scaleX: 0, transformOrigin: "left center" },
-        { scaleX: 1, duration: step * 0.35 },
+        { scaleX: 1, duration: step * 0.42 },
         at
       );
     }
@@ -147,39 +147,39 @@ export function playRecognize() {
       tl.fromTo(
         number,
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: step * 0.22 },
-        at + step * 0.04
+        { opacity: 1, y: 0, duration: step * 0.26 },
+        at + step * 0.05
       );
     }
     if (beam) {
-      tl.fromTo(beam, { opacity: 0 }, { opacity: 1, duration: step * 0.05 }, at + step * 0.02)
+      tl.fromTo(beam, { opacity: 0 }, { opacity: 1, duration: step * 0.06 }, at + step * 0.03)
         .fromTo(
           beam,
           { x: 0 },
-          { x: () => row.offsetWidth, duration: step * 0.34 },
-          at + step * 0.04
+          { x: () => row.offsetWidth, duration: step * 0.44 },
+          at + step * 0.05
         )
         .fromTo(
           beam,
           { opacity: 1 },
-          { opacity: 0, duration: step * 0.07, immediateRender: false },
-          at + step * 0.32
+          { opacity: 0, duration: step * 0.09, immediateRender: false },
+          at + step * 0.42
         );
     }
     if (title) {
       tl.fromTo(
         title,
-        { opacity: 0, y: 16, clipPath: "inset(0 100% 0 0)" },
-        { opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)", duration: step * 0.3 },
-        at + step * 0.08
+        { opacity: 0, y: 14, clipPath: "inset(0 100% 0 0)" },
+        { opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)", duration: step * 0.38 },
+        at + step * 0.12
       );
     }
     if (body) {
       tl.fromTo(
         body,
-        { opacity: 0, y: 12, clipPath: "inset(0 100% 0 0)" },
-        { opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)", duration: step * 0.28 },
-        at + step * 0.16
+        { opacity: 0, y: 10, clipPath: "inset(0 100% 0 0)" },
+        { opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)", duration: step * 0.34 },
+        at + step * 0.24
       );
     }
   });

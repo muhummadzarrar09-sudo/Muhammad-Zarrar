@@ -95,7 +95,8 @@ export default function HomePage() {
                 <span className="sec-rule" />
               </div>
               <h2 className="sec-title" id="you-heading">
-                You&apos;re not behind.{" "}
+                You&apos;re not behind.
+                <br />{" "}
                 <em>
                   You&apos;re undiagnosed.
                   <i className="recognize-underline" aria-hidden="true" />
