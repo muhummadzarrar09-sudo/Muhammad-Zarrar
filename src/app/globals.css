@@ -5966,53 +5966,65 @@ html.has-motion .proof-rail-item + .proof-rail-item {
   align-items: start;
 }
 
+/* LEFT COLUMN: intro text + scan rail, both sticky together */
 .recognize-intro {
   position: sticky;
   top: 52px;
   z-index: 10;
   align-self: start;
-  padding-right: clamp(0px, 2vw, 28px);
+}
+
+.recognize-intro .sec-head {
+  /* push the section header to the right of the scan rail */
+  padding-left: 52px;
 }
 
 .recognize-intro .sec-title {
-  max-width: 9.5ch;
+  padding-left: 52px;
+  max-width: 10ch;
 }
 
 .recognize-intro .sec-lede {
-  max-width: 43ch;
+  padding-left: 52px;
+  max-width: 38ch;
   margin-bottom: 0;
 }
 
-.recognize-diagnostic {
-  display: grid;
-  grid-template-columns: 38px minmax(0, 1fr);
-  gap: 24px;
-  min-width: 0;
-}
-
+/* The scan rail — sticky in the left column, below the intro text */
 .recognize-scan {
   position: sticky;
   top: 52px;
-  display: grid;
-  grid-template-rows: auto minmax(280px, 52vh) auto;
-  justify-items: center;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 11px;
+  width: 52px;
   height: fit-content;
   padding-block: 4px;
   color: rgba(17, 17, 16, 0.5);
   font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 0.14em;
+  /* sit at the left edge of the intro column */
+  margin-top: 28px;
+}
+
+.recognize-scan-start,
+.recognize-scan-end {
+  display: block;
+  text-align: center;
 }
 
 .recognize-scan-track {
   position: relative;
   display: flex;
   width: 12px;
-  height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  height: min(340px, 56vh);
+  flex-shrink: 0;
 }
 
 .recognize-scan-track::before,
@@ -6057,6 +6069,11 @@ html.has-motion .proof-rail-item + .proof-rail-item {
   border-radius: 50%;
   background: #111110;
   box-shadow: 0 0 0 4px #c4c3b6;
+}
+
+/* RIGHT COLUMN: rows scroll */
+.recognize-diagnostic {
+  min-width: 0;
 }
 
 .recognize-list {
@@ -6111,8 +6128,13 @@ html.has-motion .recognize-diagnostic.is-complete .recognize-row {
   .recognize-intro {
     position: sticky;
     top: 52px;
-    padding-right: 0;
     z-index: 10;
+  }
+
+  .recognize-intro .sec-head,
+  .recognize-intro .sec-title,
+  .recognize-intro .sec-lede {
+    padding-left: 0;
   }
 
   .recognize-intro .sec-title {
@@ -6120,17 +6142,13 @@ html.has-motion .recognize-diagnostic.is-complete .recognize-row {
   }
 
   .recognize-scan {
-    top: 52px;
+    display: none;
   }
 }
 
 @media (max-width: 760px) {
   .recognize-layout {
     gap: 40px;
-  }
-
-  .recognize-diagnostic {
-    grid-template-columns: 1fr;
   }
 
   .recognize-scan {

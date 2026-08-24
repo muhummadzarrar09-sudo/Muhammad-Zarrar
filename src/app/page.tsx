@@ -101,9 +101,7 @@ export default function HomePage() {
               haven&apos;t had anyone name it without trying to sell a rebuild
               first.
             </p>
-          </div>
 
-          <div className="recognize-diagnostic">
             <div className="recognize-scan" aria-hidden="true">
               <span className="recognize-scan-start">01</span>
               <span className="recognize-scan-track">
@@ -117,7 +115,9 @@ export default function HomePage() {
                 {String(RECOGNITIONS.length).padStart(2, "0")}
               </span>
             </div>
+          </div>
 
+          <div className="recognize-diagnostic">
             <div className="index-list recognize-list">
               {RECOGNITIONS.map((item, i) => (
                 <article className="index-row recognize-row" key={item.title}>

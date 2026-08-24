@@ -60,9 +60,9 @@ export function playRecognize() {
         ease: "none",
         scrollTrigger: {
           id: "recognize-scan-progress",
-          trigger: diagnostic,
-          start: "top 68%",
-          end: "bottom 42%",
+          trigger: root,
+          start: "top 60%",
+          end: "bottom 38%",
           scrub: 0.7,
         },
       }
@@ -76,9 +76,9 @@ export function playRecognize() {
         ease: "none",
         scrollTrigger: {
           id: "recognize-scan-dot",
-          trigger: diagnostic,
-          start: "top 68%",
-          end: "bottom 42%",
+          trigger: root,
+          start: "top 60%",
+          end: "bottom 38%",
           scrub: 0.7,
           invalidateOnRefresh: true,
         },
