@@ -178,11 +178,18 @@ html {
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  /* `hidden` on html/body creates a scroll container, which silently kills
+     EVERY position:sticky inside it — the sticky site-header, the painting
+     room's stage, the manifesto folio, and the recognize room never pinned.
+     `clip` clips the same overflow without creating a scroll container.
+     Keep `hidden` one line above as the old-Safari fallback. */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 html::-webkit-scrollbar,
