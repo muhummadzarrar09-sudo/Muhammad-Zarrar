@@ -45,38 +45,80 @@ export type WireframeScene = {
 export const EASE = "none";
 
 export const WIREFRAMES: WireframeScene[] = [
-  /* hero-converge lives in ./hero.ts — type swooshes back,
-     glass sign halves ride a path and lock into one. */
+  /* hero-converge lives in ./hero.ts — the promise dissolves, bare
+     chevrons meet as </>, then the loading line hands off to Lenis. */
   {
-    id: "recognize",
-    note: "Tuesday rises with the wheel — each row a step, not a pop.",
+    id: "proof-rail",
+    note: "The code mark docks, the rail constructs, then four promises land.",
     page: "/",
-    trigger: "#you",
-    start: "top 92%",
-    end: "top 18%",
-    scrub: 1.05,
+    trigger: "#after-hero",
+    start: "top 96%",
+    end: "bottom 46%",
+    scrub: 0.72,
     tweens: [
       {
-        target: "#you .sec-title",
-        from: { y: 40, opacity: 0.16 },
-        to: { y: 0, opacity: 1, ease: "none" },
-        duration: 0.55,
+        target: ".proof-rail-rule",
+        from: { scaleX: 0 },
+        to: { scaleX: 1 },
+        duration: 0.3,
+        stagger: 0.04,
       },
       {
-        target: "#you .lede",
-        from: { y: 28, opacity: 0.22 },
-        to: { y: 0, opacity: 1, ease: "none" },
-        at: 0.08,
-        duration: 0.5,
+        target: ".proof-rail-divider",
+        from: { scaleY: 0 },
+        to: { scaleY: 1 },
+        at: 0.2,
+        duration: 0.34,
+        stagger: 0.06,
+      },
+      {
+        target: ".proof-rail-mark",
+        from: { x: 22, y: -12, scale: 1.55, opacity: 0 },
+        to: { x: 0, y: 0, scale: 1, opacity: 1 },
+        at: 0.12,
+        duration: 0.32,
+      },
+      {
+        target: ".proof-rail-kicker",
+        from: { y: 8, opacity: 0 },
+        to: { y: 0, opacity: 1 },
+        at: 0.26,
+        duration: 0.26,
+      },
+      {
+        target: ".proof-rail-head h2",
+        from: { y: 22, opacity: 0, clipPath: "inset(100% 0 0 0)" },
+        to: { y: 0, opacity: 1, clipPath: "inset(0% 0 0 0)" },
+        at: 0.31,
+        duration: 0.34,
+      },
+      {
+        target: ".proof-rail-index",
+        from: { y: 12, opacity: 0 },
+        to: { y: 0, opacity: 1 },
+        at: 0.36,
+        duration: 0.3,
+        stagger: 0.06,
+      },
+      {
+        target: ".proof-rail-item h3",
+        from: { y: 14, opacity: 0 },
+        to: { y: 0, opacity: 1 },
+        at: 0.42,
+        duration: 0.32,
+        stagger: 0.06,
+      },
+      {
+        target: ".proof-rail-item p",
+        from: { y: 12, opacity: 0 },
+        to: { y: 0, opacity: 1 },
+        at: 0.5,
+        duration: 0.34,
+        stagger: 0.06,
       },
     ],
-    stagger: {
-      target: "#you .index-row",
-      from: { y: 32, opacity: 0.16 },
-      to: { y: 0, opacity: 1 },
-      each: 0.06,
-    },
   },
+  /* Section 01 diagnostic scan lives in ./recognize.ts. */
   /* exhibit-pin + typewriter live in ./exhibit.ts — painting stays,
      card and letters are the wheel. */
   /* plaque hang lives in ./plaques.ts — three circular

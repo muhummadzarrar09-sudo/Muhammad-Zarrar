@@ -5392,3 +5392,783 @@ html.has-motion .exhibit-stage {
     min-height: 180vh !important;
   }
 }
+
+/* ==========================================================================
+   HERO CONVERGENCE — isolated chevrons become </>, then hand off to the walk.
+   This final block intentionally owns the hero's authored opening scene.
+   ========================================================================== */
+.hero.hero-minimal {
+  height: calc(100svh - 68px) !important;
+  min-height: calc(100svh - 68px) !important;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-minimal .hero-stage {
+  overflow: hidden;
+}
+
+.hero-sign {
+  color: #111110;
+}
+
+.hero-sign-l { left: clamp(18px, 5vw, 80px); }
+.hero-sign-r { right: clamp(18px, 5vw, 80px); }
+
+.hero-sign-pane {
+  width: clamp(76px, 11vw, 150px);
+  aspect-ratio: 100 / 160;
+  transform: translateY(-50%);
+}
+
+.hero-code-glyph {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: none;
+}
+
+.hero-code-slash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 4;
+  width: clamp(42px, 6vw, 76px);
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  opacity: 0;
+  color: #111110;
+  font-family: var(--font-body);
+  font-size: clamp(7rem, 13vw, 11rem);
+  font-weight: 350;
+  line-height: 0.75;
+  text-align: center;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.hero-loader {
+  position: absolute;
+  top: calc(50% + clamp(84px, 11vw, 132px));
+  left: 50%;
+  z-index: 5;
+  width: clamp(150px, 18vw, 220px);
+  transform: translateX(-50%);
+  opacity: 0;
+  color: #111110;
+  font-family: var(--font-body);
+  pointer-events: none;
+}
+
+.hero-loader-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 9px;
+  font-size: 0.65rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero-loader-track {
+  display: block;
+  height: 1px;
+  background: rgba(17, 17, 16, 0.22);
+}
+
+.hero-loader-fill {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #111110;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+html.has-motion-reduced .hero-code-slash,
+html.has-motion-reduced .hero-loader {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .hero.hero-minimal {
+    height: calc(100svh - 68px) !important;
+    min-height: calc(100svh - 68px) !important;
+  }
+
+  .hero-minimal .hero-cluster {
+    padding-inline: 24vw !important;
+  }
+
+  .hero-sign-l { left: 8px; }
+  .hero-sign-r { right: 8px; }
+
+  .hero-sign-pane {
+    width: clamp(64px, 20vw, 92px);
+  }
+
+  .hero-code-slash {
+    width: 38px;
+    font-size: clamp(5.6rem, 26vw, 7rem);
+  }
+
+  .hero-loader {
+    top: calc(50% + 82px);
+    width: min(44vw, 180px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-code-slash,
+  .hero-loader { display: none !important; }
+}
+
+/* Exact edge pose: each SVG vertex—not its padded element box—is anchored to
+   a bottom corner. The arms face up and inward (└ … ┘), then peel away along
+   mirrored arcs and rotate into normal </> order at the centre. */
+.site-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+}
+
+.hero.hero-minimal {
+  --hero-chevron-size: clamp(76px, 11vw, 150px);
+  /* 14%/84% account for half of the 8-unit SVG stroke, keeping its outer
+     edge flush with the viewport without clipping the visible line. */
+  --hero-chevron-overlap: clamp(11px, 1.54vw, 21px);
+  --hero-chevron-lift: clamp(64px, 9.24vw, 126px);
+}
+
+/* The stage must include the toolbar/floor area. Otherwise its 100% boundary
+   ends above the CTA, making a "bottom-corner" mark appear mysteriously high. */
+.hero-minimal .hero-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-sign {
+  top: calc(100% - var(--hero-chevron-lift));
+}
+
+.hero-sign-pane {
+  width: var(--hero-chevron-size);
+  transform: none;
+}
+
+.hero-sign-l {
+  left: calc(-1 * var(--hero-chevron-overlap));
+  right: auto;
+  transform: rotate(-45deg);
+  transform-origin: 18% 50%;
+}
+
+.hero-sign-r {
+  right: calc(-1 * var(--hero-chevron-overlap));
+  left: auto;
+  transform: rotate(45deg);
+  transform-origin: 82% 50%;
+}
+
+@media (max-width: 760px) {
+  .hero.hero-minimal {
+    --hero-chevron-size: clamp(64px, 20vw, 92px);
+    --hero-chevron-overlap: clamp(9px, 2.8vw, 13px);
+    --hero-chevron-lift: clamp(54px, 16.8vw, 77px);
+    height: calc(100svh - 56px) !important;
+    min-height: calc(100svh - 56px) !important;
+  }
+
+  .hero-sign-l { left: calc(-1 * var(--hero-chevron-overlap)); }
+  .hero-sign-r { right: calc(-1 * var(--hero-chevron-overlap)); }
+}
+
+/* Final-state correction: keep the navigation independently fixed above the
+   GSAP pin, and tighten the three visible strokes into one readable </> mark. */
+.site-header {
+  position: fixed !important;
+  inset: 0 0 auto 0;
+  width: 100%;
+}
+
+main {
+  padding-top: 68px;
+}
+
+.hero-code-slash {
+  width: clamp(42px, 6vw, 76px);
+}
+
+@media (max-width: 760px) {
+  main { padding-top: 56px; }
+  .hero-code-slash { width: 38px; }
+}
+
+/* Hero type hierarchy + a flat header surface. The previous translucent
+   header read as a dark shadow once the pale pinned scene moved beneath it. */
+.site-header {
+  background: #c4c3b6 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.hero-minimal .hero-promise.hero-cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: none !important;
+  padding-inline: clamp(24px, 20vw, 320px) !important;
+  text-align: center;
+}
+
+.hero-promise-title {
+  margin: 0;
+  max-width: 10ch;
+  color: #111110;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6.4vw, 5.4rem);
+  font-weight: 460;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.hero-promise-subtitle {
+  margin: 0.28em 0 0;
+  max-width: 13ch;
+  color: #111110;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.4vw, 3.8rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.018em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+@media (max-width: 760px) {
+  .hero-minimal .hero-promise.hero-cluster {
+    padding-inline: 21vw !important;
+  }
+
+  .hero-promise-title {
+    max-width: 9ch;
+    font-size: clamp(2rem, 10vw, 2.85rem);
+    line-height: 1;
+  }
+
+  .hero-promise-subtitle {
+    max-width: 11ch;
+    font-size: clamp(1.55rem, 7.5vw, 2.2rem);
+  }
+}
+
+/* The header must win visually over ScrollTrigger's fixed pin layer. Keep the
+   spacing tied to the header's real authored height (52px desktop, 56px phone). */
+body > .site-header {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: 0 !important;
+  z-index: 10000 !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translate3d(0, 0, 0);
+  isolation: isolate;
+  will-change: transform;
+}
+
+body > .site-header .header-inner,
+body > .site-header .brand,
+body > .site-header .desktop-nav,
+body > .site-header .header-actions {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+main {
+  padding-top: 52px;
+}
+
+.hero.hero-minimal {
+  height: calc(100svh - 52px) !important;
+  min-height: calc(100svh - 52px) !important;
+}
+
+@media (max-width: 760px) {
+  main { padding-top: 56px; }
+  .hero.hero-minimal {
+    height: calc(100svh - 56px) !important;
+    min-height: calc(100svh - 56px) !important;
+  }
+}
+
+/* Proof rail — the completed code mark docks here before Section 01. This is
+   a compact handoff, not another hero and not a row of invented metrics. */
+.proof-strip.proof-rail-section {
+  position: relative;
+  z-index: 2;
+  padding: 0 !important;
+  background: #c4c3b6 !important;
+  border-top: 1px solid rgba(17, 17, 16, 0.18) !important;
+  border-bottom: 1px solid rgba(17, 17, 16, 0.18) !important;
+  overflow: hidden;
+}
+
+.proof-rail {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.82fr) minmax(0, 3.18fr);
+  min-height: 156px;
+}
+
+.proof-rail-head {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  padding: 26px 28px 26px 0;
+}
+
+.proof-rail-mark {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  color: #111110;
+  font-family: var(--font-body);
+  font-size: 2rem;
+  font-weight: 420;
+  line-height: 1;
+  letter-spacing: -0.2em;
+}
+
+.proof-rail-mark i {
+  margin-inline: 0.12em 0.04em;
+  font-style: normal;
+  font-weight: 300;
+}
+
+.proof-rail-kicker {
+  margin: 0 0 7px;
+  color: rgba(17, 17, 16, 0.58);
+  font-size: 0.61rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.proof-rail-head h2 {
+  margin: 0;
+  max-width: 9ch;
+  color: #111110;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 1.8vw, 1.75rem);
+  font-weight: 480;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+
+.proof-rail-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid rgba(17, 17, 16, 0.14);
+}
+
+.proof-rail-item {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 25px;
+  min-width: 0;
+  padding: 25px 18px 23px;
+}
+
+.proof-rail-item + .proof-rail-item {
+  border-left: 1px solid rgba(17, 17, 16, 0.14);
+}
+
+.proof-rail-item::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: #111110;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.proof-rail-item:hover::after {
+  transform: scaleX(1);
+}
+
+.proof-rail-index {
+  color: rgba(17, 17, 16, 0.46);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.proof-rail-item h3 {
+  margin: 0 0 8px;
+  color: #111110;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  font-weight: 680;
+  line-height: 1.25;
+}
+
+.proof-rail-item p {
+  margin: 0;
+  max-width: 24ch;
+  color: rgba(17, 17, 16, 0.6);
+  font-size: 0.68rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 1020px) {
+  .proof-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-rail-head {
+    padding: 22px 0;
+  }
+
+  .proof-rail-head h2 {
+    max-width: none;
+  }
+
+  .proof-rail-list {
+    border-top: 1px solid rgba(17, 17, 16, 0.14);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .proof-rail-head {
+    gap: 14px;
+  }
+
+  .proof-rail-mark {
+    font-size: 1.65rem;
+  }
+
+  .proof-rail-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .proof-rail-item {
+    gap: 15px;
+    min-height: 132px;
+    padding: 20px 14px 18px;
+  }
+
+  .proof-rail-item:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .proof-rail-item:nth-child(n + 3) {
+    border-top: 1px solid rgba(17, 17, 16, 0.14);
+  }
+}
+
+/* Completed loader mark: all three pieces now share one vector coordinate
+   system and the same 8-unit rounded stroke. No font-glyph sizing drift. */
+.hero-code-slash {
+  width: clamp(30px, 4.4vw, 60px);
+  height: auto;
+  aspect-ratio: 1 / 4;
+  overflow: visible;
+  font-size: 0;
+}
+
+@media (max-width: 760px) {
+  .hero-code-slash {
+    width: clamp(26px, 8vw, 37px);
+  }
+}
+
+/* Rail construction motion. Static borders remain the no-JS fallback; GSAP
+   takes over only after the motion engine is live. */
+.proof-rail-rule {
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  display: block;
+  height: 1px;
+  background: rgba(17, 17, 16, 0.22);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.proof-rail-rule-top { top: 0; }
+.proof-rail-rule-bottom { bottom: 0; }
+
+.proof-rail-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  display: block;
+  width: 1px;
+  background: rgba(17, 17, 16, 0.16);
+  transform-origin: top center;
+  pointer-events: none;
+}
+
+html.has-motion .proof-strip.proof-rail-section {
+  border-color: transparent !important;
+}
+
+html.has-motion .proof-rail-list,
+html.has-motion .proof-rail-item + .proof-rail-item {
+  border-color: transparent !important;
+}
+
+.proof-rail-head h2,
+.proof-rail-kicker,
+.proof-rail-mark,
+.proof-rail-index,
+.proof-rail-item h3,
+.proof-rail-item p {
+  will-change: transform, opacity;
+}
+
+@media (max-width: 760px) {
+  .proof-rail-item:nth-child(odd) .proof-rail-divider {
+    display: none;
+  }
+}
+
+/* Section 01 — sticky editorial diagnosis on desktop, six measured findings. */
+#you {
+  overflow: visible;
+}
+
+.recognize-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(56px, 8vw, 128px);
+  align-items: start;
+}
+
+/* LEFT COLUMN: intro text + scan rail, both sticky together */
+.recognize-intro {
+  position: sticky;
+  top: 52px;
+  z-index: 10;
+  align-self: start;
+}
+
+.recognize-intro .sec-head {
+  /* push the section header to the right of the scan rail */
+  padding-left: 52px;
+}
+
+.recognize-intro .sec-title {
+  padding-left: 52px;
+  max-width: 10ch;
+}
+
+.recognize-intro .sec-lede {
+  padding-left: 52px;
+  max-width: 38ch;
+  margin-bottom: 0;
+}
+
+/* The scan rail — sticky in the left column, below the intro text */
+.recognize-scan {
+  position: sticky;
+  top: 52px;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  width: 52px;
+  height: fit-content;
+  padding-block: 4px;
+  color: rgba(17, 17, 16, 0.5);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  /* sit at the left edge of the intro column */
+  margin-top: 28px;
+}
+
+.recognize-scan-start,
+.recognize-scan-end {
+  display: block;
+  text-align: center;
+}
+
+.recognize-scan-track {
+  position: relative;
+  display: flex;
+  width: 12px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: min(340px, 56vh);
+  flex-shrink: 0;
+}
+
+.recognize-scan-track::before,
+.recognize-scan-progress {
+  content: "";
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+.recognize-scan-track::before {
+  background: rgba(17, 17, 16, 0.16);
+}
+
+.recognize-scan-progress {
+  z-index: 1;
+  background: #111110;
+}
+
+.recognize-scan-track i {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 5px;
+  height: 5px;
+  border: 1px solid rgba(17, 17, 16, 0.48);
+  border-radius: 50%;
+  background: #c4c3b6;
+}
+
+.recognize-scan-active {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 3;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: #111110;
+  box-shadow: 0 0 0 4px #c4c3b6;
+}
+
+/* RIGHT COLUMN: rows scroll */
+.recognize-diagnostic {
+  min-width: 0;
+}
+
+.recognize-list {
+  min-width: 0;
+}
+
+.recognize-row {
+  min-height: 156px;
+  grid-template-columns: 48px minmax(0, 1fr) !important;
+  align-items: start !important;
+  padding-block: 34px !important;
+  transition: opacity 260ms ease, padding-left 220ms var(--ease-standard) !important;
+}
+
+.recognize-row-rule {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: block;
+  height: 1px;
+  background: rgba(17, 17, 16, 0.18);
+}
+
+html.has-motion .recognize-row {
+  border-top-color: transparent !important;
+  opacity: 0.38;
+}
+
+html.has-motion .recognize-row.is-active,
+html.has-motion .recognize-diagnostic.is-complete .recognize-row {
+  opacity: 1;
+}
+
+.recognize-row .idx-title {
+  font-size: clamp(1.2rem, 1.7vw, 1.55rem);
+  line-height: 1.15;
+  letter-spacing: -0.018em;
+}
+
+.recognize-row .idx-sub {
+  max-width: 48ch;
+  color: rgba(17, 17, 16, 0.64);
+}
+
+@media (max-width: 1020px) {
+  .recognize-layout {
+    grid-template-columns: 1fr;
+    gap: 58px;
+  }
+
+  .recognize-intro {
+    position: sticky;
+    top: 52px;
+    z-index: 10;
+  }
+
+  .recognize-intro .sec-head,
+  .recognize-intro .sec-title,
+  .recognize-intro .sec-lede {
+    padding-left: 0;
+  }
+
+  .recognize-intro .sec-title {
+    max-width: 12ch;
+  }
+
+  .recognize-scan {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .recognize-layout {
+    gap: 40px;
+  }
+
+  .recognize-scan {
+    display: none;
+  }
+
+  .recognize-row {
+    min-height: 0;
+    grid-template-columns: 36px minmax(0, 1fr) !important;
+    gap: 18px !important;
+    padding-block: 26px !important;
+  }
+
+  .recognize-row .idx-title {
+    font-size: 1.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recognize-row {
+    opacity: 1 !important;
+  }
+}

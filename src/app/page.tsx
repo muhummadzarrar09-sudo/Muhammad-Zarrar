@@ -10,25 +10,8 @@ import { PinnedManifesto } from "@/components/pinned-manifesto";
 import { Marquee } from "@/components/marquee";
 import { ProofStrip } from "@/components/proof-strip";
 import { WhatsAppIcon } from "@/components/icons";
+import { CodeChevron } from "@/components/code-mark";
 import { waLink } from "@/lib/site";
-
-function CodeGlyph({ side }: { side: "left" | "right" }) {
-  return (
-    <svg
-      className="hero-code-glyph"
-      viewBox="0 0 200 260"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <rect x="0.75" y="0.75" width="198.5" height="258.5" rx="6" fill="#C4C3B6" stroke="#111110" strokeOpacity="0.22" strokeWidth="1.5" />
-      <path d={side === "left" ? "M133 60L58 130L133 200" : "M68 60L143 130L68 200"} stroke="#111110" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={side === "left" ? "M186 48L142 212" : "M58 48L14 212"} stroke="#111110" strokeWidth="8" strokeLinecap="round" />
-      <circle cx={side === "left" ? "24" : "176"} cy="24" r="4" fill="#111110" fillOpacity="0.4" />
-    </svg>
-  );
-}
 
 export const metadata = pageMeta({
   title:
@@ -45,17 +28,41 @@ export default function HomePage() {
         <div className="hero-stage">
           <div className="hero-sign hero-sign-l" aria-hidden="true">
             <div className="hero-sign-pane">
-              <CodeGlyph side="left" />
+              <CodeChevron side="left" />
             </div>
           </div>
-          <h1 className="hero-promise hero-cluster">
-            <span className="hero-line">You leave understood</span>
-            <span className="hero-line hero-line-em">— not pitched.</span>
-          </h1>
+          <div className="hero-promise hero-cluster">
+            <h1 className="hero-promise-title">You leave understood</h1>
+            <h3 className="hero-promise-subtitle">— not pitched.</h3>
+          </div>
+          <svg
+            className="hero-code-slash"
+            viewBox="0 0 40 160"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M28 18L12 142"
+              stroke="currentColor"
+              strokeWidth="8"
+              strokeLinecap="round"
+            />
+          </svg>
           <div className="hero-sign hero-sign-r" aria-hidden="true">
             <div className="hero-sign-pane">
-              <CodeGlyph side="right" />
+              <CodeChevron side="right" />
             </div>
+          </div>
+          <div className="hero-loader" role="status" aria-label="Preparing the next section">
+            <div className="hero-loader-meta">
+              <span>Loading</span>
+              <span><span className="hero-loader-value">0</span>%</span>
+            </div>
+            <span className="hero-loader-track" aria-hidden="true">
+              <span className="hero-loader-fill" />
+            </span>
           </div>
         </div>
         <div className="hero-toolbar">
@@ -79,30 +86,50 @@ export default function HomePage() {
         data-motion
         aria-labelledby="you-heading"
       >
-        <div className="container">
-          <div className="sec-head">
-            <span className="sec-index">01</span>
-            <span className="sec-label">If this is your Tuesday</span>
-            <span className="sec-rule" />
+        <div className="container recognize-layout">
+          <div className="recognize-intro">
+            <div className="sec-head">
+              <span className="sec-index">01</span>
+              <span className="sec-label">If this is your Tuesday</span>
+              <span className="sec-rule" />
+            </div>
+            <h2 className="sec-title" id="you-heading">
+              You&apos;re not behind. <em>You&apos;re undiagnosed.</em>
+            </h2>
+            <p className="lede sec-lede">
+              Most owners we meet already know something&apos;s off. They just
+              haven&apos;t had anyone name it without trying to sell a rebuild
+              first.
+            </p>
+
+            <div className="recognize-scan" aria-hidden="true">
+              <span className="recognize-scan-start">01</span>
+              <span className="recognize-scan-track">
+                <span className="recognize-scan-progress" />
+                <span className="recognize-scan-active" />
+                {RECOGNITIONS.map((item) => (
+                  <i key={item.title} />
+                ))}
+              </span>
+              <span className="recognize-scan-end">
+                {String(RECOGNITIONS.length).padStart(2, "0")}
+              </span>
+            </div>
           </div>
-          <h2 className="sec-title" id="you-heading">
-            You&apos;re not behind. <em>You&apos;re undiagnosed.</em>
-          </h2>
-          <p className="lede sec-lede">
-            Most owners we meet already know something&apos;s off. They just
-            haven&apos;t had anyone name it without trying to sell a rebuild
-            first.
-          </p>
-          <div className="index-list recognize-list">
-            {RECOGNITIONS.map((item, i) => (
-              <article className="index-row" key={item.title}>
-                <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
-                <div>
-                  <h3 className="idx-title">{item.title}</h3>
-                  <p className="idx-sub">{item.body}</p>
-                </div>
-              </article>
-            ))}
+
+          <div className="recognize-diagnostic">
+            <div className="index-list recognize-list">
+              {RECOGNITIONS.map((item, i) => (
+                <article className="index-row recognize-row" key={item.title}>
+                  <span className="recognize-row-rule" aria-hidden="true" />
+                  <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h3 className="idx-title">{item.title}</h3>
+                    <p className="idx-sub">{item.body}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>

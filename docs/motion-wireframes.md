@@ -14,7 +14,7 @@ The homepage is a gallery walk. Motion is tied to the wheel (`scrub`, ease none)
 | Soft rooms | Canvas dissolves behind **opaque** walls. Rooms never fade as a layer |
 | Doorway | ~160vh corridor — old room still readable at ~40% |
 | Rewind | Scroll up unwrites type, eases the card out, releases the pin |
-| Hero | Glass sign split left/right. Type swooshes back; halves lock into one |
+| Hero | A bare `<` and `>` frame the promise. The type dissolves, the marks meet as `</>`, a minimal loading line completes, and Lenis carries the visitor into the next room |
 | Pause | Pin ~280vh (shorter on the phone). Type with the scroll |
 | Manifesto | Still a long pin. Lines write and unwrite |
 | Phone | Same walk, shorter pins, slightly faster scrub |

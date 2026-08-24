@@ -1,18 +1,60 @@
+const PROOF_POINTS = [
+  {
+    label: "Builder, not a handoff",
+    detail: "You speak to the person doing the work.",
+  },
+  {
+    label: "A reply within 24 hours",
+    detail: "A considered answer, not an auto-response.",
+  },
+  {
+    label: "Zero trackers",
+    detail: "No analytics following this conversation.",
+  },
+  {
+    label: "Nothing stored",
+    detail: "This page keeps none of your answers.",
+  },
+];
+
 export function ProofStrip() {
   return (
     <section
-      className="proof-strip"
+      className="proof-strip proof-rail-section"
+      id="after-hero"
       data-motion
-      aria-label="How this conversation works"
+      aria-labelledby="proof-rail-title"
     >
+      <span className="proof-rail-rule proof-rail-rule-top" aria-hidden="true" />
       <div className="container">
-        <p className="proof-caption">
-          <span>You talk to the builder</span>
-          <span>Reply in 24 hours</span>
-          <span>0 trackers</span>
-          <span>Nothing stored on this page</span>
-        </p>
+        <div className="proof-rail">
+          <header className="proof-rail-head">
+            <span className="proof-rail-mark" aria-hidden="true">
+              <span>&lt;</span><i>/</i><span>&gt;</span>
+            </span>
+            <div>
+              <p className="proof-rail-kicker">What happens next</p>
+              <h2 id="proof-rail-title">A straight conversation.</h2>
+            </div>
+          </header>
+
+          <ol className="proof-rail-list">
+            {PROOF_POINTS.map((point, index) => (
+              <li className="proof-rail-item" key={point.label}>
+                <span className="proof-rail-divider" aria-hidden="true" />
+                <span className="proof-rail-index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3>{point.label}</h3>
+                  <p>{point.detail}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
+      <span className="proof-rail-rule proof-rail-rule-bottom" aria-hidden="true" />
     </section>
   );
 }

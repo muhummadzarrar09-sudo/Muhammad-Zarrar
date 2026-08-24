@@ -4,28 +4,71 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-function meetX(el: HTMLElement, side: "l" | "r", stage: HTMLElement) {
-  const current = Number(gsap.getProperty(el, "x")) || 0;
-  const sr = stage.getBoundingClientRect();
-  const er = el.getBoundingClientRect();
-  const mid = sr.left + sr.width / 2;
-  const left = er.left - current;
-  if (side === "l") return mid - (left + er.width);
-  return mid - left;
+/** Return the horizontal translation that puts a chevron beside the centre slash. */
+function convergeX(
+  el: HTMLElement,
+  side: "left" | "right",
+  stage: HTMLElement,
+  slash: HTMLElement
+) {
+  const stageRect = stage.getBoundingClientRect();
+  const slashWidth = slash.getBoundingClientRect().width;
+  const centre = stageRect.width / 2;
+  // Keep a small optical gutter around the slash. The strokes still read as
+  // one </> mark, but no longer collide as the chevrons finish converging.
+  const gap = Math.max(7, slashWidth * 0.12);
+  // The slash path occupies x=8…32 (including its round stroke) inside a
+  // 40-unit viewBox, so its visible half-width is 30% of the SVG box.
+  const slashInkHalf = slashWidth * 0.3;
+  // offsetLeft/offsetWidth describe the untransformed box. That matters here:
+  // the opening pose is rotated, while the completed mark must resolve upright.
+  const naturalLeft = el.offsetLeft;
+  // The SVG path occupies x=18…78 for `<` and x=22…82 for `>`.
+  // Meet those visible strokes—not the transparent viewBox padding.
+  const visibleInnerEdge = side === "left"
+    ? naturalLeft + el.offsetWidth * 0.78
+    : naturalLeft + el.offsetWidth * 0.22;
+
+  return side === "left"
+    ? centre - slashInkHalf - gap - visibleInnerEdge
+    : centre + slashInkHalf + gap - visibleInnerEdge;
 }
 
-function arc(el: HTMLElement, side: "l" | "r", stage: HTMLElement, dip: number) {
-  const end = meetX(el, side, stage);
+/** Lift a chevron from its lower corner until its visual centre meets the stage centre. */
+function convergeY(el: HTMLElement, stage: HTMLElement) {
+  const pane = el.querySelector<HTMLElement>(".hero-sign-pane");
+  const paneTop = pane?.offsetTop ?? 0;
+  const paneHeight = pane?.offsetHeight ?? el.offsetHeight;
+  // Use the untransformed layout box: the opening corner is rotated around
+  // its vertex, but the completed upright glyph must be centred precisely.
+  const naturalCentre = el.offsetTop + paneTop + paneHeight / 2;
+  return stage.clientHeight / 2 - naturalCentre;
+}
+
+/** A mirrored, rising inward arc from either lower screen edge. */
+function risePath(
+  el: HTMLElement,
+  side: "left" | "right",
+  stage: HTMLElement,
+  slash: HTMLElement
+) {
+  const x = convergeX(el, side, stage, slash);
+  const y = convergeY(el, stage);
   return [
     { x: 0, y: 0 },
-    { x: end * 0.48, y: dip },
-    { x: end, y: 0 },
+    { x: x * 0.16, y: y * 0.08 },
+    { x: x * 0.4, y: y * 0.55 },
+    { x: x * 0.72, y: y * 0.88 },
+    { x, y },
   ];
 }
 
 /**
- * Hero leave — the promise swooshes back. The two halves of the
- * glass sign ride an arc and lock into one mark.
+ * A wheel-led opening scene:
+ * 1. the promise dissolves;
+ * 2. the isolated < and > converge;
+ * 3. the slash resolves them into </>;
+ * 4. a restrained loading line completes before Lenis carries the visitor on.
  */
 export function playHero() {
   const root = document.querySelector<HTMLElement>(".hero-minimal");
@@ -34,28 +77,42 @@ export function playHero() {
   const stage = root.querySelector<HTMLElement>(".hero-stage");
   const left = root.querySelector<HTMLElement>(".hero-sign-l");
   const right = root.querySelector<HTMLElement>(".hero-sign-r");
+  const slash = root.querySelector<HTMLElement>(".hero-code-slash");
   const type = root.querySelector<HTMLElement>(".hero-cluster");
   const bar = root.querySelector<HTMLElement>(".hero-toolbar");
   const floor = root.querySelector<HTMLElement>(".hero-floor");
-  if (!stage || !left || !right) return;
+  const loader = root.querySelector<HTMLElement>(".hero-loader");
+  const loaderFill = root.querySelector<HTMLElement>(".hero-loader-fill");
+  const loaderValue = root.querySelector<HTMLElement>(".hero-loader-value");
+  if (!stage || !left || !right || !slash || !loader || !loaderFill) return;
 
-  const mobile = window.matchMedia("(max-width: 760px)").matches;
-  const pinEnd = mobile ? "+=100%" : "+=160%";
-  const scrub = mobile ? 0.45 : 0.95;
-  const dip = mobile ? 36 : 72;
+  let handedOff = false;
+  const progress = { value: 0 };
+
+  const handOff = () => {
+    if (handedOff) return;
+    handedOff = true;
+    window.dispatchEvent(
+      new CustomEvent("motion:scrollTo", { detail: "#after-hero" })
+    );
+  };
 
   const tl = gsap.timeline({
     defaults: { ease: "none" },
     scrollTrigger: {
       id: "hero-converge",
       trigger: root,
-      start: "top top",
-      end: pinEnd,
-      // Do not let ScrollTrigger physically re-parent a React-owned section.
-      // CSS owns the visual hold; the timeline remains fully scrubbed.
-      pin: false,
-      scrub,
+      start: () => {
+        const header = document.querySelector<HTMLElement>(".site-header");
+        return `top ${header?.offsetHeight ?? 68}px`;
+      },
+      end: window.matchMedia("(max-width: 760px)").matches ? "+=150%" : "+=220%",
+      pin: true,
+      pinSpacing: true,
+      anticipatePin: 1,
+      scrub: window.matchMedia("(max-width: 760px)").matches ? 0.5 : 0.9,
       invalidateOnRefresh: true,
+      onLeave: handOff,
     },
   });
 
@@ -63,40 +120,67 @@ export function playHero() {
     tl.fromTo(
       type,
       { y: 0, scale: 1, opacity: 1, filter: "blur(0px)" },
-      { y: -90, scale: 0.42, opacity: 0, filter: "blur(10px)", duration: 0.55 },
+      { y: -64, scale: 0.72, opacity: 0, filter: "blur(12px)", duration: 0.34 },
       0
     );
   }
-  if (bar) {
-    tl.fromTo(bar, { opacity: 1, y: 0 }, { opacity: 0, y: 16, duration: 0.22 }, 0);
-  }
-  if (floor) {
-    tl.fromTo(floor, { opacity: 1 }, { opacity: 0, duration: 0.18 }, 0);
-  }
+  if (bar) tl.to(bar, { opacity: 0, y: 14, duration: 0.18 }, 0);
+  if (floor) tl.to(floor, { opacity: 0, duration: 0.16 }, 0);
 
   tl.to(
     left,
     {
-      duration: 1,
+      rotation: 0,
+      duration: 0.48,
       motionPath: {
-        path: arc(left, "l", stage, dip),
-        curviness: 1.25,
+        path: risePath(left, "left", stage, slash),
+        curviness: 1.35,
         autoRotate: false,
       },
     },
-    0.08
-  );
-
-  tl.to(
-    right,
-    {
-      duration: 1,
-      motionPath: {
-        path: arc(right, "r", stage, dip),
-        curviness: 1.25,
-        autoRotate: false,
+    0.2
+  )
+    .to(
+      right,
+      {
+        rotation: 0,
+        duration: 0.48,
+        motionPath: {
+          path: risePath(right, "right", stage, slash),
+          curviness: 1.35,
+          autoRotate: false,
+        },
       },
-    },
-    0.08
-  );
+      0.2
+    )
+    .fromTo(
+      slash,
+      { opacity: 0, scaleY: 0.2, rotate: 14 },
+      { opacity: 1, scaleY: 1, rotate: 0, duration: 0.16 },
+      0.66
+    )
+    .fromTo(
+      loader,
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.1 },
+      0.76
+    )
+    .fromTo(
+      loaderFill,
+      { scaleX: 0 },
+      { scaleX: 1, duration: 0.2 },
+      0.8
+    )
+    .to(
+      progress,
+      {
+        value: 100,
+        duration: 0.2,
+        onUpdate: () => {
+          if (loaderValue) loaderValue.textContent = `${Math.round(progress.value)}`;
+        },
+      },
+      0.8
+    )
+    .call(handOff, [], 1);
 }
