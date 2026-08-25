@@ -35,7 +35,11 @@ export function playExhibit() {
   if (!card) return;
 
   const mobile = window.matchMedia("(max-width: 760px)").matches;
-  const pinEnd = mobile ? "+=180%" : "+=280%";
+  /* The section is 280vh tall (180vh phone) with a 100svh sticky stage —
+   * the room HOLDS for 180vh (80vh phone). The scrub end now matches the
+   * hold exactly: the whole story types out while pinned, not after the
+   * room has already let go and scrolled away. */
+  const pinEnd = mobile ? "+=80%" : "+=180%";
   const scrub = mobile ? 0.4 : 0.75;
 
   if (titleOut) titleOut.textContent = "";
@@ -45,21 +49,21 @@ export function playExhibit() {
   const body = { n: 0 };
 
   if (canvas) {
-    gsap.fromTo(
-      canvas,
-      { scale: 1.14 },
-      {
-        scale: 1,
-        ease: "none",
-        scrollTrigger: {
-          id: "exhibit-kenburns",
-          trigger: root,
-          start: "top top",
-          end: pinEnd,
-          scrub: mobile ? 0.5 : 0.9,
-        },
-      }
-    );
+    /* One breath per pin: zoom IN through the first half, OUT through the
+     * second. Wheel-tied — pause and the painting rests. */
+    const breathe = gsap.timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: {
+        id: "exhibit-breathe",
+        trigger: root,
+        start: "top top",
+        end: pinEnd,
+        scrub: mobile ? 0.5 : 0.9,
+      },
+    });
+    breathe
+      .fromTo(canvas, { scale: 1.08 }, { scale: 1.18, duration: 0.5 })
+      .to(canvas, { scale: 1.06, duration: 0.5 });
   }
 
   const tl = gsap.timeline({
@@ -84,6 +88,10 @@ export function playExhibit() {
     { y: 0, opacity: 1, scale: 1, duration: 0.12 },
     0.02
   );
+
+  /* While the room holds, the card drifts gently upward — a heartbeat of
+   * counter-motion against the breathing painting. */
+  tl.to(card, { y: -14, duration: 0.8 }, 0.15);
 
   if (kicker) {
     tl.fromTo(kicker, { opacity: 0 }, { opacity: 1, duration: 0.05 }, 0.08);

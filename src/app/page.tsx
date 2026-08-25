@@ -80,27 +80,34 @@ export default function HomePage() {
       <ProofStrip />
 
       <section
-        className="section"
+        className="section recognize"
         id="you"
         data-tl="You"
         data-motion
         aria-labelledby="you-heading"
       >
-        <div className="container recognize-layout">
-          <div className="recognize-intro">
-            <div className="sec-head">
-              <span className="sec-index">01</span>
-              <span className="sec-label">If this is your Tuesday</span>
-              <span className="sec-rule" />
+        <div className="recognize-stage">
+          <div className="container recognize-layout">
+            <div className="recognize-intro">
+              <div className="sec-head">
+                <span className="sec-index">01</span>
+                <span className="sec-label">If this is your Tuesday</span>
+                <span className="sec-rule" />
+              </div>
+              <h2 className="sec-title" id="you-heading">
+                You&apos;re not behind.
+                <br />{" "}
+                <em>
+                  — You&apos;re undiagnosed.
+                  <i className="recognize-underline" aria-hidden="true" />
+                </em>
+              </h2>
+              <p className="lede sec-lede">
+                Most owners we meet already know something&apos;s off. They just
+                haven&apos;t had anyone name it without trying to sell a rebuild
+                first.
+              </p>
             </div>
-            <h2 className="sec-title" id="you-heading">
-              You&apos;re not behind. <em>You&apos;re undiagnosed.</em>
-            </h2>
-            <p className="lede sec-lede">
-              Most owners we meet already know something&apos;s off. They just
-              haven&apos;t had anyone name it without trying to sell a rebuild
-              first.
-            </p>
 
             <div className="recognize-scan" aria-hidden="true">
               <span className="recognize-scan-start">01</span>
@@ -115,20 +122,23 @@ export default function HomePage() {
                 {String(RECOGNITIONS.length).padStart(2, "0")}
               </span>
             </div>
-          </div>
 
-          <div className="recognize-diagnostic">
-            <div className="index-list recognize-list">
-              {RECOGNITIONS.map((item, i) => (
-                <article className="index-row recognize-row" key={item.title}>
-                  <span className="recognize-row-rule" aria-hidden="true" />
-                  <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
-                  <div>
-                    <h3 className="idx-title">{item.title}</h3>
-                    <p className="idx-sub">{item.body}</p>
-                  </div>
-                </article>
-              ))}
+            <div className="recognize-diagnostic">
+              <div className="index-list recognize-list">
+                {RECOGNITIONS.map((item, i) => (
+                  <article className="index-row recognize-row" key={item.title}>
+                    <span className="recognize-row-rule" aria-hidden="true" />
+                    <span className="recognize-row-beam" aria-hidden="true" />
+                    <span className="idx-no">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <h3 className="idx-title">{item.title}</h3>
+                      <p className="idx-sub">{item.body}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
           </div>
         </div>

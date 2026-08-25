@@ -1,45 +1,164 @@
 /**
- * Generates the branded OG image set (home + per-page variants, 1200x630)
- * using ImageMagick + @resvg/resvg-js.
- * Run: node scripts/generate-assets.mjs   (or: npm run assets)
+ * Generates the branded OG image set (home + per-page variants, 1200x630).
  *
- * The brand mark is rendered from the canonical vector
- * (public/images/logo-mark.svg) — the same source every icon uses.
- * Icons are owned by scripts/build-logo-assets.mjs, NOT this script.
+ * Pure Node — each card is composed as SVG and rasterised with @resvg/resvg-js
+ * using the site's REAL self-hosted fonts (Fraunces display + Inter utility),
+ * so a share card is typeset like the site, not like a system fallback.
+ *
+ * Palette mirrors src/app/globals.css tokens. If a token changes there,
+ * change it here and re-run:  node scripts/generate-assets.mjs
  */
-import { execFile } from "node:child_process";
-import { promisify } from "node:util";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import fs from "node:fs";
+import { execFileSync } from "node:child_process";
 import path from "node:path";
-import os from "node:os";
 import { Resvg } from "@resvg/resvg-js";
 
-const run = promisify(execFile);
 const ROOT = process.cwd();
 
-const INK = "#C4C3B6";
-const TEAL_DIM = "#111110";
-const MID_TEAL = "#111110";
-const MUTED_ON_INK = "#3F3E3B";
-const HATCH_INK = "#B8B7AA";
+/* ---- Palette (mirror of globals.css) ---- */
+const PUTTY = "#C4C3B6"; // --ground-700 · the canvas
+const INK = "#111110"; // --ember-500   · headline
+const GRAPHITE = "#3F3E3B"; // --ember-400   · support text
+const FRAME = "rgba(17,17,16,0.30)"; // museum plate edge
+const HATCH = "rgba(17,17,16,0.14)"; // corner hatch motif
 
+/* ---- Brand assets & fonts ---- */
 const LOGO_SVG = path.join(ROOT, "public/images/logo-mark.svg");
-/* Supersampled (2x) size of the mark on the OG canvas, and its placement. */
-const MARK_SIZE = 640;
-const MARK_X = 10;
-const MARK_Y = 300;
+const FRAUNCES = await readFile(
+  path.join(ROOT, "src/fonts/fraunces-latin-wght-normal.woff2"),
+);
+const FRAUNCES_ITALIC = await readFile(
+  path.join(ROOT, "src/fonts/fraunces-latin-wght-italic.woff2"),
+);
+const INTER = await readFile(
+  path.join(ROOT, "src/fonts/inter-latin-wght-normal.woff2"),
+);
 
-async function convert(args) {
-  await run("convert", args);
+/* Supersampled canvas: 2400x1260, rendered to 1200x630. */
+const W = 2400;
+const H = 1260;
+const MARK = 560; // clay ZS monogram, square
+const TX = 820; // text column origin
+
+const esc = (t) =>
+  t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/* ---- Auto-fit: no line may cross the plate frame ----
+ * Frame right edge sits at x=2344 on the 2400 canvas; text must stop ~100px
+ * short of it. Every line is measured with the real fonts at its base size
+ * and scaled down if it would overflow — set once, safe forever. */
+const TEXT_MAX_X = 2240;
+const TEXT_MAX_W = TEXT_MAX_X - TX;
+
+const fontFiles = [FRAUNCES, FRAUNCES_ITALIC, INTER];
+
+const measureCache = new Map();
+
+/** Rendered width (px, 2400-canvas scale) of one text run at `size`. */
+function measureText(text, { family, weight, italic, size, ls }) {
+  const key = `${text}|${family}|${weight}|${italic}|${size}|${ls}`;
+  if (measureCache.has(key)) return measureCache.get(key);
+  const h = Math.ceil(size * 2.2);
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="3600" height="${h}" viewBox="0 0 3600 ${h}">` +
+    `<rect width="3600" height="${h}" fill="#ffffff"/>` +
+    `<text x="10" y="${Math.ceil(h * 0.72)}" font-family="${family}" font-weight="${weight}"` +
+    `${italic ? ` font-style="italic"` : ""} font-size="${size}" letter-spacing="${ls}" fill="#000000">${esc(text)}</text></svg>`;
+  const png = new Resvg(svg, { fontFiles }).render().asPng();
+  const tmp = path.join("/tmp", `og-measure-${Math.abs(hash(key))}.png`);
+  fs.writeFileSync(tmp, png);
+  execFileSync("convert", [tmp, "-colorspace", "gray", "-threshold", "50%", "-negate", tmp]);
+  const geom = execFileSync("identify", ["-format", "%@", tmp]).toString();
+  const w = parseInt(geom.split("x")[0], 10) || 0;
+  measureCache.set(key, w);
+  return w;
 }
 
-/** Rasterize the canonical ZS monogram (transparent ground) for compositing. */
-async function renderMark() {
-  const svg = await readFile(LOGO_SVG, "utf8");
-  const out = path.join(os.tmpdir(), "og-mark.png");
-  const r = new Resvg(svg, { fitTo: { mode: "width", value: MARK_SIZE } });
-  await writeFile(out, r.render().asPng());
-  return out;
+function hash(s) {
+  let h = 0;
+  for (const c of s) h = (h * 31 + c.charCodeAt(0)) | 0;
+  return h;
+}
+
+/** Largest size ≤ base that keeps every line inside TEXT_MAX_W. */
+function fitSize(lines, spec, base) {
+  let size = base;
+  for (const line of lines) {
+    const w = measureText(line, { ...spec, size });
+    if (w > TEXT_MAX_W) size = Math.min(size, Math.floor((base * TEXT_MAX_W) / w));
+  }
+  return size;
+}
+
+/** Canonical mark's inner markup (defs + paths), lifted out of its <svg>. */
+async function markInner() {
+  const raw = await readFile(LOGO_SVG, "utf8");
+  return raw
+    .replace(/<\?xml[^>]*\?>/, "")
+    .replace(/<svg[^>]*>/, "")
+    .replace(/<\/svg>\s*$/, "");
+}
+
+/** Branded OG card: putty gallery wall, framed, clay mark, Fraunces headline.
+ * Root carries width/height at FINAL size with a 2x viewBox — the supersample
+ * is native SVG scaling (resvg ignores fitTo when fontFiles is set). */
+function ogSvg({ eyebrow, lines, sub }, mark) {
+  const parts = [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 ${W} ${H}">`,
+    `<rect width="${W}" height="${H}" fill="${PUTTY}"/>`,
+    /* museum plate frame */
+    `<rect x="56" y="56" width="${W - 112}" height="${H - 112}" fill="none" stroke="${FRAME}" stroke-width="3"/>`,
+    /* corner hatch — the site's scrim motif, clipped inside the frame */
+    `<clipPath id="in-frame"><rect x="58" y="58" width="${W - 116}" height="${H - 116}"/></clipPath>`,
+    `<g clip-path="url(#in-frame)" stroke="${HATCH}" stroke-width="4">`,
+  ];
+  for (let x = 1620; x <= W + 90; x += 36) {
+    parts.push(`<line x1="${x}" y1="${H}" x2="${x + 90}" y2="${H - 90}"/>`);
+  }
+  parts.push(`</g>`);
+  /* clay ZS monogram — the only colour on the card */
+  parts.push(
+    `<g transform="translate(110 ${(H - MARK) / 2})" width="${MARK}" height="${MARK}">` +
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="${MARK}" height="${MARK}">${mark}</svg>` +
+      `</g>`,
+  );
+  /* fitted sizes — measured with the real fonts, never allowed to cross the frame */
+  const eyebrowSize = fitSize([eyebrow], { family: "Inter", weight: 600, ls: 10 }, 34);
+  const headlineSize = fitSize(lines, { family: "Fraunces", weight: 620, ls: -1 }, 118);
+  const subSize = fitSize(sub, { family: "Fraunces", weight: 400, italic: true, ls: 0 }, 54);
+
+  /* eyebrow — Inter caps label */
+  parts.push(
+    `<text x="${TX}" y="262" font-family="Inter" font-weight="600" font-size="${eyebrowSize}" letter-spacing="10" fill="${GRAPHITE}">${esc(eyebrow)}</text>`,
+  );
+  /* headline — Fraunces display, ink */
+  let y = 424;
+  for (const line of lines) {
+    parts.push(
+      `<text x="${TX}" y="${y}" font-family="Fraunces" font-weight="620" font-size="${headlineSize}" letter-spacing="-1" fill="${INK}">${esc(line)}</text>`,
+    );
+    y += 152;
+  }
+  /* support — Fraunces italic, graphite */
+  y += 54;
+  for (const line of sub) {
+    parts.push(
+      `<text x="${TX}" y="${y}" font-family="Fraunces" font-weight="400" font-style="italic" font-size="${subSize}" fill="${GRAPHITE}">${esc(line)}</text>`,
+    );
+    y += 84;
+  }
+  /* rule + colophon */
+  y += 46;
+  parts.push(`<rect x="${TX}" y="${y}" width="260" height="6" fill="${INK}"/>`);
+  y += 104;
+  const COLOPHON = "AUDIT-LED DIGITAL SYSTEMS · ISLAMABAD & RAWALPINDI · PAKISTAN-WIDE";
+  const colophonSize = fitSize([COLOPHON], { family: "Inter", weight: 400, ls: 4 }, 28);
+  parts.push(
+    `<text x="${TX}" y="${y}" font-family="Inter" font-weight="400" font-size="${colophonSize}" letter-spacing="4" fill="${GRAPHITE}">${esc(COLOPHON)}</text>`,
+  );
+  parts.push(`</svg>`);
+  return parts.join("\n");
 }
 
 /** OG card set — one branded variant per key page. */
@@ -124,70 +243,17 @@ const OG_PAGES = [
   },
 ];
 
-/** Branded OG image: ink background, ZS monogram, serif headline, teal details. */
-async function ogImage(outPath, { eyebrow, lines, sub }, markPng) {
-  const W = 2400, H = 1260; // 2x supersample
-  const args = ["-size", `${W}x${H}`, `xc:${INK}`];
-
-  /* ZS monogram (canonical mark), left side */
-  args.push(markPng, "-geometry", `+${MARK_X}+${MARK_Y}`, "-composite");
-
-  /* Diagonal hatch texture, bottom-right corner */
-  for (let x = 1460; x <= W; x += 36) {
-    args.push(
-      "-stroke", HATCH_INK, "-strokewidth", "4",
-      "-draw", `line ${x},${H} ${x + 90},${H - 90}`
-    );
-  }
-  args.push("-stroke", "none");
-
-  const tx = 620;
-  args.push(
-    "-font", "DejaVu-Sans-Bold", "-pointsize", "38", "-kerning", "12",
-    "-fill", TEAL_DIM, "-gravity", "NorthWest",
-    "-annotate", `+${tx}+300`, eyebrow
-  );
-
-  let y = 430;
-  for (const line of lines) {
-    args.push(
-      "-font", "DejaVu-Serif-Bold", "-pointsize", "102", "-kerning", "1",
-      "-fill", "#FFD5A9", "-gravity", "NorthWest",
-      "-annotate", `+${tx}+${y}`, line
-    );
-    y += 132;
-  }
-
-  y += 30;
-  for (const line of sub) {
-    args.push(
-      "-font", "DejaVu-Serif", "-pointsize", "58",
-      "-fill", MUTED_ON_INK, "-gravity", "NorthWest",
-      "-annotate", `+${tx}+${y}`, line
-    );
-    y += 88;
-  }
-
-  y += 50;
-  args.push("-fill", MID_TEAL, "-draw", `rectangle ${tx},${y} ${tx + 240},${y + 6}`);
-  y += 100;
-  args.push(
-    "-font", "DejaVu-Sans", "-pointsize", "32", "-kerning", "5",
-    "-fill", MUTED_ON_INK, "-gravity", "NorthWest",
-    "-annotate", `+${tx}+${y}`,
-    "AUDIT-LED DIGITAL SYSTEMS · ISLAMABAD & RAWALPINDI · PAKISTAN-WIDE"
-  );
-
-  args.push("-filter", "Lanczos", "-resize", "1200x630", outPath);
-  await convert(args);
-  console.log("✓", path.relative(ROOT, outPath));
-}
-
 await mkdir(path.join(ROOT, "public"), { recursive: true });
 
-const markPng = await renderMark();
+const mark = await markInner();
+
 for (const page of OG_PAGES) {
-  await ogImage(path.join(ROOT, "public", page.out), page, markPng);
+  const resvg = new Resvg(ogSvg(page, mark), { fontFiles });
+  await writeFile(
+    path.join(ROOT, "public", page.out),
+    resvg.render().asPng(),
+  );
+  console.log("✓", `public/${page.out}`);
 }
 
 console.log("\nAll assets generated.");

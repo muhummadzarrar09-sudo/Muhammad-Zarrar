@@ -26,7 +26,7 @@ The homepage is a gallery walk. Motion is tied to the wheel (`scrub`, ease none)
 | --- | --- |
 | `hero-leave` | The sentence thins as the walk begins |
 | `walk-*` | Whole frame dissolves room to room |
-| `recognize` | Tuesday rises with the wheel |
+| `recognize` | The room pins (CSS-sticky stage, 360vh). Intro on the left, rail between, findings cycle one-by-one on the right. Each card crossfades in and is scanned by the clay beam; ticks fill, the counter counts, the rail settles to clay when the scan completes. Scroll back unwrites the whole diagnosis |
 | `exhibit-pin` | Painting holds. Card, then letters, on the wheel |
 | `plaque-*` | Three circular plaques hang from the nails |
 | `contrast` | Usual vs here |
