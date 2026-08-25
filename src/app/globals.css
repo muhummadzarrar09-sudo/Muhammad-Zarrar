@@ -4912,7 +4912,12 @@ html.has-motion-reduced .qualify-card {
   height: 100svh;
   display: grid;
   place-items: center;
+  /* overflow:hidden here made .exhibit a scroll container — the sticky
+     stage inside could NEVER engage, so nothing in this room pinned.
+     clip keeps the ken-burns art inside the frame without creating a
+     scroll container. Same cure as html/body. */
   overflow: hidden;
+  overflow: clip;
   background: var(--ember-700);
 }
 
