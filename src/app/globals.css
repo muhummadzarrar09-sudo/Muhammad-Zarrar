@@ -6016,9 +6016,11 @@ html.has-motion .proof-rail-item + .proof-rail-item {
      construction at every viewport; 2.75rem caps desktop, 8.6vw guards
      narrow phones where the single column is wide but the screen is not. */
   max-width: none;
-  font-size: clamp(1.8rem, 3.1vw, 2.75rem); /* fallback: no container queries */
-  font-size: min(2.75rem, 9.8cqi, 8.6vw);
-  line-height: 1.06;
+  font-size: clamp(1.6rem, 2.6vw, 2.35rem); /* fallback: no container queries */
+  /* MARGINS BY DESIGN: 8.4cqi × 9.52em ≈ 80% of the column — worst case
+     still clears by ~80px. Never tuned to the edge again. */
+  font-size: min(2.35rem, 8.4cqi, 7.6vw);
+  line-height: 1.08;
 }
 
 .recognize-intro .sec-lede {
