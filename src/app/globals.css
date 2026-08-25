@@ -5411,6 +5411,12 @@ html.has-motion-reduced .type-out {
 html.has-motion .exhibit {
   height: 280vh !important;
   min-height: 280vh !important;
+  /* overflow:clip here (not on base .exhibit — the minifier folds duplicate
+     shorthands and the cascade strata hide it) so the sticky stage inside
+     can actually engage. Same pattern as .manifesto below. Without this,
+     .exhibit inherits overflow:hidden from the base block, becomes a scroll
+     container, and NOTHING in this room can pin. */
+  overflow: clip !important;
 }
 
 html.has-motion .exhibit-stage {
