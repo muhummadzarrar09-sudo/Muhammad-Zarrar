@@ -6005,16 +6005,9 @@ html.has-motion .proof-rail-item + .proof-rail-item {
 
 .recognize-intro {
   align-self: start;
-  /* the title sizes against its TRUE column width (measured, not guessed) */
-  container-type: inline-size;
 }
 
 .recognize-intro .sec-title {
-  /* "You're undiagnosed." measures 9.52em wide in Fraunces italic (rendered
-     + trimmed with the real font, not estimated). So the size is:
-     9.8cqi × 9.52em ≈ 93% of this column's true width — fits by
-     construction at every viewport; 2.75rem caps desktop, 8.6vw guards
-     narrow phones where the single column is wide but the screen is not. */
   max-width: none;
   line-height: 1.08;
 }
@@ -6222,37 +6215,24 @@ html.has-motion .recognize-row {
   background: var(--gold);
 }
 
-/* The diagnosis word carries the page's one clay underline.
-   inline-block so the wipe (clip-path) and the underline anchor both
-   apply — inline boxes ignore both. GSAP draws it; it never ships
-   visible without motion.
-
-   MARGIN LAW, STRUCTURALLY ENFORCED: the em can wrap and can never
-   exceed its box (max-width:100%). At every width we can compute it
-   renders on ONE line with ~80px of air; in any case we failed to
-   predict — a wider fallback font, an exotic viewport, a zoom level —
-   it WRAPS INSIDE ITS BOX instead of overflowing. Overflow is now
-   impossible by construction, not by measurement. */
+/* The diagnosis line — the hero's "— not pitched." pattern: a smaller
+   italic second tier under the statement. At 0.76× the title size the
+   longest line ("— You're undiagnosed." ≈ 10.5em) clears even the
+   narrowest column by >100px, and a 20%-wider fallback font too.
+   One line everywhere, margins everywhere, no clever units. */
 .recognize-intro .sec-title em {
   position: relative;
   display: inline-block;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.76em;
+  line-height: 1.15;
   max-width: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: anywhere; /* absolute failsafe — never expected to fire */
 }
 
-/* Sizing: base clamp for every browser; container-relative only where
-   container queries exist. Split across @supports so the minifier
-   can't fold the fallback away (it did last build — and one dead
-   font-size declaration was all it took). */
 .recognize-intro .sec-title {
   font-size: clamp(1.6rem, 2.6vw, 2.35rem);
-}
-
-@supports (font-size: 1cqi) {
-  .recognize-intro .sec-title {
-    font-size: min(2.35rem, 8.4cqi, 7.6vw);
-  }
 }
 
 .recognize-underline {

@@ -98,7 +98,7 @@ export default function HomePage() {
                 You&apos;re not behind.
                 <br />{" "}
                 <em>
-                  You&apos;re undiagnosed.
+                  — You&apos;re undiagnosed.
                   <i className="recognize-underline" aria-hidden="true" />
                 </em>
               </h2>
