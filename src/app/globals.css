@@ -6005,13 +6005,19 @@ html.has-motion .proof-rail-item + .proof-rail-item {
 
 .recognize-intro {
   align-self: start;
+  /* the title sizes against its TRUE column width (measured, not guessed) */
+  container-type: inline-size;
 }
 
 .recognize-intro .sec-title {
-  /* Sized so "You're undiagnosed." — the longest line — fits its column
-     with air on every breakpoint. It can never overflow or clip. */
+  /* "You're undiagnosed." measures 9.52em wide in Fraunces italic (rendered
+     + trimmed with the real font, not estimated). So the size is:
+     9.8cqi × 9.52em ≈ 93% of this column's true width — fits by
+     construction at every viewport; 2.75rem caps desktop, 8.6vw guards
+     narrow phones where the single column is wide but the screen is not. */
   max-width: none;
-  font-size: clamp(1.8rem, 3.1vw, 2.75rem);
+  font-size: clamp(1.8rem, 3.1vw, 2.75rem); /* fallback: no container queries */
+  font-size: min(2.75rem, 9.8cqi, 8.6vw);
   line-height: 1.06;
 }
 
