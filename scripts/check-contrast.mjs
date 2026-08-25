@@ -34,14 +34,15 @@ const T = {
   chalk: hex("#ebebeb"),
   ink: hex("#111110"),
   text: hex("#111110"),
-  text2: hex("#3f3e3b"),
-  text3: hex("#4a4944"),
-  e400: hex("#3f3e3b"),
+  text2: hex("#2a2926"),
+  text3: hex("#33322e"),
+  e400: hex("#3f3e3b"), // graphite ramp — big display numerals (large text tier)
   e500: hex("#111110"),
   e550: hex("#000000"),
   e600: hex("#000000"),
   onAccent: hex("#ffffff"),
   gold: hex("#7a2e18"),
+  goldDeep: hex("#571f0c"),
   rust: hex("#a84424"),
   danger: hex("#8b1e1e"),
   success: hex("#14532d"),
@@ -49,35 +50,37 @@ const T = {
   info: hex("#1e3a8a"),
 };
 
-const AA = 4.5;   // body text
-const LG = 3;     // large text (>=24px or >=18.66px bold) + UI components
+const AAA = 7;    // body/reading text — WCAG AAA
+const AA = 4.5;   // LARGE text (>=24px or >=18.66px bold) — this IS AAA for large
+const LG = 3;     // UI components / non-text — 3:1 (unchanged by AAA)
 const DEC = 1.2;  // purely decorative rules — no minimum, sanity floor only
 
 const CASES = [
-  ["--text on --canvas", T.text, T.canvas, AA],
-  ["--text-2 on --canvas", T.text2, T.canvas, AA],
-  ["--text-3 (placeholder) on --canvas", T.text3, T.canvas, AA],
-  ["--accent on --canvas", T.e500, T.canvas, AA],
+  ["--text on --canvas", T.text, T.canvas, AAA],
+  ["--text-2 on --canvas", T.text2, T.canvas, AAA],
+  ["--text-3 (placeholder) on --canvas", T.text3, T.canvas, AAA],
+  ["--accent on --canvas", T.e500, T.canvas, AAA],
   ["--accent-2 on --canvas", T.e400, T.canvas, AA],
   [".idx-no graphite on --canvas", T.e400, T.canvas, AA],
   [".ph-no graphite on --canvas", T.e400, T.canvas, AA],
-  [".finding-line --text-2 on --canvas", T.text2, T.canvas, AA],
-  ["--gold (logo rust) on --canvas", T.gold, T.canvas, AA],
+  [".finding-line --text-2 on --canvas", T.text2, T.canvas, AAA],
+  ["--gold rust on --canvas (logo graphic, scan ticks/needle — UI/large tier)", T.gold, T.canvas, AA],
+  ["--gold-deep ACTIVE ordinal on --canvas (16.8px italic TEXT — AAA)", T.goldDeep, T.canvas, AAA],
 
-  ["--text on --aura (vellum)", T.text, T.aura, AA],
-  ["--text-2 on --aura", T.text2, T.aura, AA],
-  ["--accent on --aura", T.e500, T.aura, AA],
-  ["--text on --bone room", T.text, T.bone, AA],
-  ["--text-2 on --bone room", T.text2, T.bone, AA],
+  ["--text on --aura (vellum)", T.text, T.aura, AAA],
+  ["--text-2 on --aura", T.text2, T.aura, AAA],
+  ["--accent on --aura", T.e500, T.aura, AAA],
+  ["--text on --bone room", T.text, T.bone, AAA],
+  ["--text-2 on --bone room", T.text2, T.bone, AAA],
   [".idx-mark --danger on --bone", T.danger, T.bone, AA],
 
-  ["--text on footer --ground-900", T.text, T.ground900, AA],
-  ["--text-2 on footer --ground-900", T.text2, T.ground900, AA],
-  ["--text-2 footer-bottom-note on --ground-900", T.text2, T.ground900, AA],
-  ["--text on mobile panel --ground-850", T.text, T.ground850, AA],
-  ["--text-2 on mobile panel --ground-850", T.text2, T.ground850, AA],
-  ["--text on chalk footer", T.text, T.chalk, AA],
-  ["--text-2 on chalk footer", T.text2, T.chalk, AA],
+  ["--text on footer --ground-900", T.text, T.ground900, AAA],
+  ["--text-2 on footer --ground-900", T.text2, T.ground900, AAA],
+  ["--text-2 footer-bottom-note on --ground-900", T.text2, T.ground900, AAA],
+  ["--text on mobile panel --ground-850", T.text, T.ground850, AAA],
+  ["--text-2 on mobile panel --ground-850", T.text2, T.ground850, AAA],
+  ["--text on chalk footer", T.text, T.chalk, AAA],
+  ["--text-2 on chalk footer", T.text2, T.chalk, AAA],
 
   ["--danger on --canvas", T.danger, T.canvas, AA],
   ["--success on --canvas", T.success, T.canvas, AA],

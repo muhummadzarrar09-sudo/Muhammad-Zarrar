@@ -45,9 +45,10 @@
   --accent-on-ink: #e7e5e4;
   --on-accent: #ffffff;
   --gold: #7a2e18;                    /* clay rust — brand mark + live diagnostic signal, 5.30:1 */
+  --gold-deep: #571f0c;              /*  7.36:1 AAA — active ordinal (16.8px text) on canvas */
   --text: #111110;                    /* 10.64:1 ink */
-  --text-2: #3f3e3b;                  /*  6.02:1 graphite */
-  --text-3: #4a4944;                  /*  5.08:1 placeholders */
+  --text-2: #2a2926;                  /*  8.19:1 graphite — AAA on canvas AND footer */
+  --text-3: #33322e;                  /*  7.23:1 tertiary — AAA on canvas */
   --text-on-aura: #111110;
   --text-2-on-aura: #3f3e3b;
 
@@ -5423,6 +5424,12 @@ html.has-motion .exhibit-stage {
   position: sticky;
   top: 0;
   height: 100svh;
+  /* .exhibit is a grid with place-items:center — once the stage became an
+     in-flow item (sticky engaged), that shrank it to a centered COLUMN the
+     width of the card, painting the image as a strip. Stretch overrides the
+     parent's justify-items and restores the full-bleed COMPLETE PICTURE. */
+  justify-self: stretch;
+  width: 100%;
 }
 
 @media (max-width: 760px) {
@@ -5797,7 +5804,7 @@ main {
 
 .proof-rail-kicker {
   margin: 0 0 7px;
-  color: rgba(17, 17, 16, 0.58);
+  color: var(--text-2);
   font-size: 0.61rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -5874,7 +5881,7 @@ main {
 .proof-rail-item p {
   margin: 0;
   max-width: 24ch;
-  color: rgba(17, 17, 16, 0.6);
+  color: var(--text-2);
   font-size: 0.68rem;
   line-height: 1.45;
 }
@@ -6036,7 +6043,7 @@ html.has-motion .proof-rail-item + .proof-rail-item {
   gap: 11px;
   width: 52px;
   padding-block: 4px;
-  color: rgba(17, 17, 16, 0.5);
+  color: var(--text-2);
   font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -6217,7 +6224,7 @@ html.has-motion .recognize-row {
 }
 
 .recognize-row.is-active .idx-no {
-  color: var(--gold);
+  color: var(--gold-deep); /* 16.8px text — needs 7:1, brand rust is only 5.30 */
 }
 
 /* Complete — the whole rail settles to clay. Diagnosis finished. */
@@ -6270,7 +6277,7 @@ html.has-motion .recognize-underline {
 
 .recognize-row .idx-sub {
   max-width: 48ch;
-  color: rgba(17, 17, 16, 0.64);
+  color: var(--text-2);
 }
 
 /* ——— Responsive ——— */
