@@ -6016,10 +6016,6 @@ html.has-motion .proof-rail-item + .proof-rail-item {
      construction at every viewport; 2.75rem caps desktop, 8.6vw guards
      narrow phones where the single column is wide but the screen is not. */
   max-width: none;
-  font-size: clamp(1.6rem, 2.6vw, 2.35rem); /* fallback: no container queries */
-  /* MARGINS BY DESIGN: 8.4cqi × 9.52em ≈ 80% of the column — worst case
-     still clears by ~80px. Never tuned to the edge again. */
-  font-size: min(2.35rem, 8.4cqi, 7.6vw);
   line-height: 1.08;
 }
 
@@ -6229,11 +6225,34 @@ html.has-motion .recognize-row {
 /* The diagnosis word carries the page's one clay underline.
    inline-block so the wipe (clip-path) and the underline anchor both
    apply — inline boxes ignore both. GSAP draws it; it never ships
-   visible without motion. */
+   visible without motion.
+
+   MARGIN LAW, STRUCTURALLY ENFORCED: the em can wrap and can never
+   exceed its box (max-width:100%). At every width we can compute it
+   renders on ONE line with ~80px of air; in any case we failed to
+   predict — a wider fallback font, an exotic viewport, a zoom level —
+   it WRAPS INSIDE ITS BOX instead of overflowing. Overflow is now
+   impossible by construction, not by measurement. */
 .recognize-intro .sec-title em {
   position: relative;
   display: inline-block;
-  white-space: nowrap;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Sizing: base clamp for every browser; container-relative only where
+   container queries exist. Split across @supports so the minifier
+   can't fold the fallback away (it did last build — and one dead
+   font-size declaration was all it took). */
+.recognize-intro .sec-title {
+  font-size: clamp(1.6rem, 2.6vw, 2.35rem);
+}
+
+@supports (font-size: 1cqi) {
+  .recognize-intro .sec-title {
+    font-size: min(2.35rem, 8.4cqi, 7.6vw);
+  }
 }
 
 .recognize-underline {
