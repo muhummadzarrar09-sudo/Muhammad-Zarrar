@@ -77,8 +77,11 @@ export function playRecognize() {
     )
     .fromTo(
       root.querySelector(".sec-title"),
-      { opacity: 0, y: 34, clipPath: "inset(100% 0 0 0)" },
-      { opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)", duration: 0.05 },
+      { opacity: 0, y: 34 },
+      // No clip-path on the h2 — a clip-path cuts at the element's box edge,
+      // which sheared the nowrap em mid-word when it overhung. The em keeps
+      // its own wipe (an element's clip always fits its own box exactly).
+      { opacity: 1, y: 0, duration: 0.05 },
       0.02
     );
 

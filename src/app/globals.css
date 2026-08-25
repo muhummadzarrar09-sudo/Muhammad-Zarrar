@@ -6120,6 +6120,12 @@ html.has-motion .recognize-layout {
   height: 100%;
 }
 
+/* the intro's base align-self:start overrides the centered layout —
+   under motion, the left column's CENTRE meets the cards' CENTRE */
+html.has-motion .recognize-intro {
+  align-self: center;
+}
+
 html.has-motion .recognize-scan {
   align-self: center;
 }
@@ -6257,8 +6263,10 @@ html.has-motion .recognize-underline {
     gap: 48px;
   }
 
+  /* NO ch clamps at any width — the font clamp already scales the title,
+     and a ch clamp on a nowrap inline-block is what sheared 'undiagnosed'. */
   .recognize-intro .sec-title {
-    max-width: 12ch;
+    max-width: none;
   }
 
   .recognize-scan {
