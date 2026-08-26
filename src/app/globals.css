@@ -282,7 +282,7 @@ button {
 .skip-link {
   position: absolute;
   left: -9999px;
-  top: 12px;
+  top: var(--sp-3);
   z-index: 200;
   background: var(--text);
   color: var(--canvas);
@@ -291,7 +291,7 @@ button {
 }
 
 .skip-link:focus {
-  left: 12px;
+  left: var(--sp-3);
 }
 
 /* Animated underline link */
@@ -2538,9 +2538,10 @@ button {
     position: static;
   }
 
-  .form-card {
-    padding: 26px;
-  }
+    .form-card {
+      /* --sp-7: match the 28px card gutter instead of a 26px one-off. */
+      padding: var(--sp-7);
+    }
 
   .btn {
     white-space: normal;
@@ -2988,7 +2989,10 @@ textarea:-webkit-autofill {
   margin-bottom: var(--sp-5);
 }
 
-.subsection-title:first-child {
+/* Flush top only where the heading really opens a two-column detail page.
+   The blanket :first-child rule also ate the gap above "Audit + Redesign
+   tiers" on /pricing (it follows a price grid, so it keeps its margin). */
+.service-detail-grid .subsection-title:first-child {
   margin-top: 0;
 }
 
@@ -3750,7 +3754,11 @@ main,
 .cta-full::before { display: none !important; }
 
 .cta-full .container {
-  padding: 0;
+  /* The room's own padding owns the vertical rhythm; the container keeps the
+     site's horizontal gutter (36px desktop / 22px mobile). A blanket
+     `padding: 0` here put every CTA headline, body and button flush against
+     the viewport edge on mobile. */
+  padding-block: 0;
   border-radius: 0;
   background: transparent;
   backdrop-filter: none;
@@ -3860,7 +3868,7 @@ main,
 .tier-card .tier-price { color: var(--text) !important; }
 
 @media (max-width: 760px) {
-  .section { padding: 72px 0 !important; }
+  /* Mobile section rhythm is owned once, by the BREATHE block (80px). */
   .hero { padding: var(--sp-14) 0 var(--sp-18) !important; }
   .site-header {
     background: rgba(196, 195, 182, 0.88) !important;
@@ -3868,10 +3876,10 @@ main,
     -webkit-backdrop-filter: blur(14px) saturate(1.05) !important;
     padding: 0;
   }
-  .header-inner { height: 56px; }
-  .cta-full .container { padding: 0; }
-  .section-ink .container { padding: 0; }
-  .hero-emblem { width: 40px; height: 40px; }
+    .header-inner { height: 56px; }
+    /* Horizontal gutter stays on the site grid (22px) — vertical is already
+       zeroed by .section-ink .container's padding-block rules. */
+    .hero-emblem { width: 40px; height: 40px; }
   .hero-emblem img { width: 26px; height: 26px; }
   .proof-metric {
     border-left: 0 !important;
@@ -4029,7 +4037,15 @@ main,
   min-height: 36px;
 }
 
-.header-inner { height: 52px; }
+/* 52px is the desktop height only — this rule used to sit outside any media
+   query and silently override the mobile 56px header, leaving main's
+   padding-top (56px) 3–4px taller than the actual header. */
+@media (min-width: 761px) {
+  .header-inner {
+    height: 52px;
+  }
+}
+
 .desktop-nav {
   gap: 22px;
 }
@@ -4470,10 +4486,6 @@ html.has-motion-reduced .hero-floor {
   margin-bottom: 40px;
 }
 
-#why .sec-title {
-  margin-bottom: 24px;
-}
-
 .cta-plate {
   font-size: 11px;
   letter-spacing: 0.22em;
@@ -4523,9 +4535,10 @@ html.has-motion-reduced .hero-floor {
     margin-top: 28px;
     gap: 18px;
   }
-  .hero-floor {
-    padding: 22px 20px 18px;
-  }
+    .hero-floor {
+      /* 22px — match the mobile container gutter instead of the old 20px. */
+      padding: 22px 22px 18px;
+    }
   .proof-caption {
     gap: 8px 0;
   }
@@ -6339,5 +6352,84 @@ html.has-motion .recognize-underline {
 @media (prefers-reduced-motion: reduce) {
   .recognize-row {
     opacity: 1 !important;
+  }
+}
+
+/* ==========================================================================
+   MOBILE MARGIN CORRECTIONS — one block, every fix traceable
+   Each rule undoes a desktop/tablet spacing value that won the cascade on
+   phones, or one that had no phone value at all. Sits last so it wins.
+   ========================================================================== */
+
+@media (max-width: 760px) {
+  /* Header fit at 320px: brand 34→28px mark, name 1rem→0.875rem, and an
+     ellipsis failsafe. Previously the fixed-content row (~338px) overflowed
+     the 320px viewport and the clipped hamburger was unreachable. */
+  .brand svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .brand-name {
+    font-size: 0.875rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+
+  /* The black room: 140px was the desktop close; on the 80px mobile section
+     rhythm it swallowed the phone screen. */
+  .cta-full {
+    padding: var(--sp-24) 0 !important;
+  }
+
+  /* Form card: 26px was a one-off; --sp-7 matches the 28px card gutter. */
+  .form-card {
+    padding: var(--sp-7);
+  }
+
+  /* Manifesto: fixed 28px gutters vs the 22px site grid everywhere else. */
+  .manifesto-inner {
+    padding: 0 22px;
+  }
+
+  /* Pause room: 72px under the title left a tall gap before the plaques. */
+  .room-title {
+    margin-bottom: var(--sp-12);
+  }
+
+  /* Pricing tiers / free-audit headings: 56px was desktop spacing. */
+  .subsection-title {
+    margin-top: var(--sp-10);
+  }
+
+  /* Process phases + two-column card grids: inline 56px gap stayed after
+     stacking to one column. 32px keeps the hierarchy without the canyon. */
+  .grid-2 {
+    gap: 32px !important;
+  }
+
+  /* Sub-page detail splits (/about story, /contact, /free-audit,
+     /services/[slug], /pricing terms): 48px was the tablet gap; match the
+     home page's 40px mobile rhythm. */
+  .service-detail-grid {
+    gap: 40px !important;
+  }
+
+  /* 404: 130/140px vertical padding was desktop scale — a whole screen of
+     empty canvas on a phone. */
+  .notfound {
+    padding: 96px 24px 104px;
+  }
+}
+
+/* Index rows: the museum block pins a 32px gutter at every width, which
+   fought the tighter ≤1020px grid (20px). Restore it on tablets/phones —
+   except the home "recognize" rows, which intentionally keep their own 18px. */
+@media (max-width: 1020px) {
+  .index-row:not(.recognize-row) {
+    gap: 20px !important;
   }
 }
