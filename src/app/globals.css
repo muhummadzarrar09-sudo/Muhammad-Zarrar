@@ -2989,7 +2989,10 @@ textarea:-webkit-autofill {
   margin-bottom: var(--sp-5);
 }
 
-.subsection-title:first-child {
+/* Flush top only where the heading really opens a two-column detail page.
+   The blanket :first-child rule also ate the gap above "Audit + Redesign
+   tiers" on /pricing (it follows a price grid, so it keeps its margin). */
+.service-detail-grid .subsection-title:first-child {
   margin-top: 0;
 }
 
@@ -6406,6 +6409,19 @@ html.has-motion .recognize-underline {
      stacking to one column. 32px keeps the hierarchy without the canyon. */
   .grid-2 {
     gap: 32px !important;
+  }
+
+  /* Sub-page detail splits (/about story, /contact, /free-audit,
+     /services/[slug], /pricing terms): 48px was the tablet gap; match the
+     home page's 40px mobile rhythm. */
+  .service-detail-grid {
+    gap: 40px !important;
+  }
+
+  /* 404: 130/140px vertical padding was desktop scale — a whole screen of
+     empty canvas on a phone. */
+  .notfound {
+    padding: 96px 24px 104px;
   }
 }
 
