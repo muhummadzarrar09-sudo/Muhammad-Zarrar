@@ -6462,6 +6462,13 @@ html.has-motion .recognize-underline {
     padding-block: var(--sp-6);
   }
 
+  /* The stacked service entries need an inner gutter on phones. The outer
+     border still follows the section grid, while the copy gets breathing
+     room instead of sitting directly on the rule. */
+  .pricing-rates-section .price-row {
+    padding-inline: var(--sp-4);
+  }
+
   .pricing-rates-section .subsection-title {
     margin-top: var(--sp-8);
     margin-bottom: var(--sp-4);
