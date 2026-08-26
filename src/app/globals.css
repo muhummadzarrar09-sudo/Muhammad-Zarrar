@@ -6433,3 +6433,55 @@ html.has-motion .recognize-underline {
     gap: 20px !important;
   }
 }
+
+/* Pricing detail headings use the same panel rank on every inner breakpoint. */
+.pricing-panel-title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-medium);
+  margin-bottom: var(--sp-4);
+}
+
+.pricing-faq-block {
+  margin-top: var(--sp-10);
+}
+
+/* ==========================================================================
+   PRICING MOBILE RHYTHM — keep the long rates page readable without a
+   sequence of stacked desktop-sized gaps. The page-specific hooks keep this
+   from changing spacing on the other inner pages.
+   ========================================================================== */
+
+@media (max-width: 760px) {
+  .pricing-rates-section .section-head,
+  .pricing-addons-section .section-head {
+    margin-bottom: var(--sp-6);
+  }
+
+  .pricing-rates-section .price-row,
+  .pricing-addons-section .price-row {
+    padding-block: var(--sp-6);
+  }
+
+  .pricing-rates-section .subsection-title {
+    margin-top: var(--sp-8);
+    margin-bottom: var(--sp-4);
+  }
+
+  /* Add-ons already close the rates room, so the next section should not
+     reopen a full 80px room on top of the existing tight-section close. */
+  .pricing-addons-section {
+    padding-bottom: var(--sp-12);
+  }
+
+  .pricing-terms-section {
+    padding-top: var(--sp-12) !important;
+  }
+
+  .pricing-panel-title {
+    margin-bottom: var(--sp-4) !important;
+  }
+
+  .pricing-faq-block {
+    margin-top: var(--sp-8) !important;
+  }
+}
