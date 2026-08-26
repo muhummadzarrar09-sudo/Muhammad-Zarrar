@@ -60,6 +60,7 @@
   --info: #1e3a8a;        /* 5.83:1 */
   --danger-quiet: rgba(139, 30, 30, 0.12);
   --success-quiet: rgba(20, 83, 45, 0.12);
+  --tap-highlight: rgba(17, 17, 16, 0.14); /* custom mobile pressed state */
 
   /* ---- Surfaces & lines (frosted glass on a light ground) ---- */
   --surface: rgba(255, 255, 255, 0.42);
@@ -6505,5 +6506,30 @@ html.has-motion .recognize-underline {
 
   .pricing-faq-block {
     margin-top: var(--sp-8) !important;
+  }
+}
+
+/* ==========================================================================
+   MOBILE PRESS FEEDBACK — replace the browser's default blue flash with the
+   same quiet ink wash used by the rest of the interface. Focus-visible
+   outlines remain intact for keyboard accessibility.
+   ========================================================================== */
+
+a,
+button,
+[role="button"],
+input,
+textarea,
+select,
+summary {
+  -webkit-tap-highlight-color: var(--tap-highlight);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .price-row:active,
+  .card-hover:active,
+  .faq-q button:active,
+  .mobile-nav a:active {
+    background-color: var(--tap-highlight);
   }
 }
