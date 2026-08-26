@@ -7,7 +7,8 @@ const TILT = [-11, 7, -6];
 
 /**
  * Three circular plaques hang into the black room — gallery nails,
- * not a fade. Wheel-tied. Scroll back and they lift off again.
+ * not a fade. They drop into place in sequence as the room arrives, then
+ * lift off again when the visitor scrolls back above it.
  */
 export function playPlaques() {
   const root = document.querySelector<HTMLElement>(".room-ink");
@@ -60,25 +61,40 @@ export function playPlaques() {
     );
   }
 
+  /*
+   * This is intentionally a play/reverse entrance rather than a scrubbed
+   * transform. Each plaque falls from above, catches with a small overshoot,
+   * and settles before the next one drops — the champion-card feeling.
+   */
+  const drop = gsap.timeline({
+    scrollTrigger: {
+      id: "plaque-cards",
+      trigger: root,
+      start: "top 76%",
+      toggleActions: "play none none reverse",
+      invalidateOnRefresh: true,
+    },
+  });
+
   plaques.forEach((el, i) => {
     const tilt = TILT[i] ?? (i % 2 === 0 ? -8 : 8);
-    gsap.fromTo(
+    drop.fromTo(
       el,
-      { y: mobile ? 64 : 110, rotate: tilt, scale: 0.72, opacity: 0.15 },
+      {
+        y: mobile ? -84 : -120,
+        rotate: tilt,
+        scale: 0.82,
+        opacity: 0,
+      },
       {
         y: 0,
         rotate: 0,
         scale: 1,
         opacity: 1,
-        ease: "none",
-        scrollTrigger: {
-          id: `plaque-${i}`,
-          trigger: root,
-          start: `top ${78 - i * 8}%`,
-          end: `top ${28 - i * 4}%`,
-          scrub,
-        },
-      }
+        duration: 0.72,
+        ease: "back.out(1.18)",
+      },
+      i * (mobile ? 0.16 : 0.12)
     );
   });
 }
