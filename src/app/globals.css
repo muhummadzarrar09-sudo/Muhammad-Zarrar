@@ -6466,7 +6466,22 @@ html.has-motion .recognize-underline {
      border still follows the section grid, while the copy gets breathing
      room instead of sitting directly on the rule. */
   .pricing-rates-section .price-row {
+    grid-template-columns: minmax(0, 1fr);
     padding-inline: var(--sp-4);
+  }
+
+  .pricing-addons-section .price-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The desktop price keeps one line, but that unbreakable grid item makes a
+     mobile 1fr track wider than the viewport. Let prices wrap at the phone
+     gutter instead of being clipped on the right edge. */
+  .pricing-rates-section .row-price,
+  .pricing-addons-section .row-price {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: break-word;
   }
 
   .pricing-rates-section .subsection-title {
