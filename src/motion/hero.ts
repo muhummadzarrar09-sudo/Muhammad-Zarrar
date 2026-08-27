@@ -14,9 +14,9 @@ function convergeX(
   const stageRect = stage.getBoundingClientRect();
   const slashWidth = slash.getBoundingClientRect().width;
   const centre = stageRect.width / 2;
-  // Keep a small optical gutter around the slash. The strokes still read as
-  // one </> mark, but no longer collide as the chevrons finish converging.
-  const gap = Math.max(7, slashWidth * 0.12);
+  // Give the slash a deliberate optical gutter. The old 7px minimum was
+  // swallowed by the heavy strokes, making the final </> lockup feel cramped.
+  const gap = Math.max(14, slashWidth * 0.22);
   // The slash path occupies x=8…32 (including its round stroke) inside a
   // 40-unit viewBox, so its visible half-width is 30% of the SVG box.
   const slashInkHalf = slashWidth * 0.3;

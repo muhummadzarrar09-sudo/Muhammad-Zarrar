@@ -5648,7 +5648,7 @@ html.has-motion-reduced .hero-loader {
 }
 
 /* Final-state correction: keep the navigation independently fixed above the
-   GSAP pin, and tighten the three visible strokes into one readable </> mark. */
+   GSAP pin, with an intentional optical gutter around the readable </> mark. */
 .site-header {
   position: fixed !important;
   inset: 0 0 auto 0;

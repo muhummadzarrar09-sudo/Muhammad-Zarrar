@@ -20,7 +20,7 @@ export function CodeChevron({
       <path
         d={side === "left" ? "M78 18L18 80L78 142" : "M22 18L82 80L22 142"}
         stroke="currentColor"
-        strokeWidth="8"
+        strokeWidth="6.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

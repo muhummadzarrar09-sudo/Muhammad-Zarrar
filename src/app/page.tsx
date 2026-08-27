@@ -46,7 +46,7 @@ export default function HomePage() {
             <path
               d="M28 18L12 142"
               stroke="currentColor"
-              strokeWidth="8"
+              strokeWidth="6.5"
               strokeLinecap="round"
             />
           </svg>
