@@ -63,16 +63,7 @@ export function playPlaques() {
    * larger screens, then left / right / left on phones. No rotation — the
    * direction and the board reveal do the work.
    */
-  const drop = gsap.timeline({
-    scrollTrigger: {
-      id: "plaque-cards",
-      trigger: root,
-      start: "top 82%",
-      toggleActions: "play none none reverse",
-      invalidateOnRefresh: true,
-    },
-  });
-
+  const drop = gsap.timeline({ paused: true });
   const mobileX = [-132, 132, -132];
 
   plaques.forEach((el, i) => {
@@ -97,5 +88,19 @@ export function playPlaques() {
       },
       i * (mobile ? 0.28 : 0.2)
     );
+  });
+
+  /* Drive the paused timeline explicitly. This keeps the entrance reliable
+     with Lenis touch scrolling instead of relying on timeline toggle actions
+     to infer the first mobile enter. */
+  drop.pause(0);
+  ScrollTrigger.create({
+    id: "plaque-cards",
+    trigger: root,
+    start: "top 82%",
+    invalidateOnRefresh: true,
+    onEnter: () => drop.play(),
+    onEnterBack: () => drop.play(),
+    onLeaveBack: () => drop.reverse(),
   });
 }
