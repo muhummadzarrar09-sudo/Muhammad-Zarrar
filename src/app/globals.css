@@ -5596,10 +5596,10 @@ html.has-motion-reduced .hero-loader {
 
 .hero.hero-minimal {
   --hero-chevron-size: clamp(76px, 11vw, 150px);
-  /* 14%/84% account for half of the 8-unit SVG stroke, keeping its outer
-     edge flush with the viewport without clipping the visible line. */
-  --hero-chevron-overlap: clamp(11px, 1.54vw, 21px);
-  --hero-chevron-lift: clamp(64px, 9.24vw, 126px);
+  /* These values account for the visible edge of the lighter 6.5-unit stroke,
+     keeping the original corner pose flush without clipping the line. */
+  --hero-chevron-overlap: clamp(12px, 1.62vw, 22px);
+  --hero-chevron-lift: clamp(63px, 9.17vw, 125px);
 }
 
 /* The stage must include the toolbar/floor area. Otherwise its 100% boundary
@@ -5637,8 +5637,9 @@ html.has-motion-reduced .hero-loader {
 @media (max-width: 760px) {
   .hero.hero-minimal {
     --hero-chevron-size: clamp(64px, 20vw, 92px);
-    --hero-chevron-overlap: clamp(9px, 2.8vw, 13px);
-    --hero-chevron-lift: clamp(54px, 16.8vw, 77px);
+    /* Same edge calibration as desktop, tuned to the 6.5-unit stroke. */
+    --hero-chevron-overlap: clamp(10px, 3vw, 14px);
+    --hero-chevron-lift: clamp(53px, 16.5vw, 76px);
     height: calc(100svh - 56px) !important;
     min-height: calc(100svh - 56px) !important;
   }
@@ -5648,7 +5649,7 @@ html.has-motion-reduced .hero-loader {
 }
 
 /* Final-state correction: keep the navigation independently fixed above the
-   GSAP pin, and tighten the three visible strokes into one readable </> mark. */
+   GSAP pin, with an intentional optical gutter around the readable </> mark. */
 .site-header {
   position: fixed !important;
   inset: 0 0 auto 0;
@@ -6535,34 +6536,89 @@ summary {
 }
 
 /* ==========================================================================
-   OUTCOME BOARDS — opaque ink cards for the three picture plaques. The board
-   is deliberately flat; the entrance supplies the movement, not glass.
+   OUTCOME PLAQUES — the circular artwork is the object on the wall. The
+   caption is a quiet label beneath it; the nail and cord establish the
+   pivot so motion can feel physical without becoming theatrical.
    ========================================================================== */
 
 .room-ink .vignette {
   position: relative;
   width: min(100%, 320px);
-  min-height: 360px;
-  padding: var(--sp-7) var(--sp-6) var(--sp-6);
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: var(--r-sm);
-  background: var(--ember-800);
+  min-height: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
-.room-ink .vignette img {
-  margin-top: var(--sp-1);
+.room-ink .vignette-plaque {
+  --plaque-hang: var(--sp-6);
+  position: relative;
+  width: min(220px, 58vw);
+  aspect-ratio: 1;
+  margin: var(--plaque-hang) auto 0;
+  overflow: visible;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  background: var(--ember-800);
+  box-shadow: 0 14px 32px -12px rgba(17, 17, 16, 0.42);
+  transform-origin: 50% calc(-1 * var(--plaque-hang) - var(--sp-1));
+  will-change: transform, opacity;
+}
+
+/* A small nail and cord make the pivot legible without adding decoration to
+   the artwork itself. Both travel with the plaque as it gently settles. */
+.room-ink .vignette-plaque::before,
+.room-ink .vignette-plaque::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  pointer-events: none;
+}
+
+.room-ink .vignette-plaque::before {
+  top: calc(-1 * var(--plaque-hang) - var(--sp-2));
+  z-index: 2;
+  width: var(--sp-2);
+  height: var(--sp-2);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 50%;
+  background: var(--gold);
+  transform: translateX(-50%);
+}
+
+.room-ink .vignette-plaque::after {
+  top: calc(-1 * var(--plaque-hang));
+  z-index: 1;
+  width: 1px;
+  height: var(--plaque-hang);
+  background: rgba(255, 255, 255, 0.42);
+  transform: translateX(-50%);
+}
+
+.room-ink .vignette-plaque img {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+  border: var(--sp-1) solid var(--ember-800);
+  border-radius: 50%;
+  outline: 1px solid rgba(255, 255, 255, 0.16);
+  outline-offset: -5px;
+  filter: saturate(0.85) contrast(1.05);
 }
 
 .room-ink .vignette figcaption {
   width: 100%;
+  margin-top: var(--sp-6);
 }
 
 .room-ink .vignette .hex {
-  align-self: flex-end;
-  margin-top: auto;
+  display: none;
 }
 
-html.has-motion .room-ink .vignette {
-  will-change: transform, opacity, clip-path;
+html.has-motion .room-ink .vignette,
+html.has-motion .room-ink .vignette-plaque {
+  will-change: transform, opacity;
 }

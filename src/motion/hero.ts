@@ -4,6 +4,25 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
+type Point = { x: number; y: number };
+
+/** Read an untransformed offset all the way back to the stage. */
+function layoutOffset(
+  el: HTMLElement,
+  ancestor: HTMLElement,
+  axis: "x" | "y"
+) {
+  let value = 0;
+  let current: HTMLElement | null = el;
+
+  while (current && current !== ancestor) {
+    value += axis === "x" ? current.offsetLeft : current.offsetTop;
+    current = current.offsetParent as HTMLElement | null;
+  }
+
+  return value;
+}
+
 /** Return the horizontal translation that puts a chevron beside the centre slash. */
 function convergeX(
   el: HTMLElement,
@@ -12,17 +31,21 @@ function convergeX(
   slash: HTMLElement
 ) {
   const stageRect = stage.getBoundingClientRect();
-  const slashWidth = slash.getBoundingClientRect().width;
-  const centre = stageRect.width / 2;
-  // Keep a small optical gutter around the slash. The strokes still read as
-  // one </> mark, but no longer collide as the chevrons finish converging.
-  const gap = Math.max(7, slashWidth * 0.12);
+  const slashRect = slash.getBoundingClientRect();
+  const slashWidth = slashRect.width;
+  // Use the slash's actual rendered centre rather than assuming the stage
+  // starts at x=0. This survives fullscreen, mobile browser chrome and any
+  // future change to the hero's horizontal inset.
+  const centre = slashRect.left + slashWidth / 2;
+  // Give the slash a deliberate optical gutter. The old 7px minimum was
+  // swallowed by the heavy strokes, making the final </> lockup feel cramped.
+  const gap = Math.max(14, slashWidth * 0.22);
   // The slash path occupies x=8…32 (including its round stroke) inside a
   // 40-unit viewBox, so its visible half-width is 30% of the SVG box.
   const slashInkHalf = slashWidth * 0.3;
-  // offsetLeft/offsetWidth describe the untransformed box. That matters here:
-  // the opening pose is rotated, while the completed mark must resolve upright.
-  const naturalLeft = el.offsetLeft;
+  // Layout offsets describe the untransformed box. That matters here: the
+  // opening pose is rotated, while the completed mark must resolve upright.
+  const naturalLeft = stageRect.left + layoutOffset(el, stage, "x");
   // The SVG path occupies x=18…78 for `<` and x=22…82 for `>`.
   // Meet those visible strokes—not the transparent viewBox padding.
   const visibleInnerEdge = side === "left"
@@ -34,15 +57,20 @@ function convergeX(
     : centre + slashInkHalf + gap - visibleInnerEdge;
 }
 
-/** Lift a chevron from its lower corner until its visual centre meets the stage centre. */
-function convergeY(el: HTMLElement, stage: HTMLElement) {
+/** Lift a chevron from its lower corner until its visual centre meets the slash. */
+function convergeY(el: HTMLElement, stage: HTMLElement, slash: HTMLElement) {
+  const stageRect = stage.getBoundingClientRect();
+  const slashRect = slash.getBoundingClientRect();
   const pane = el.querySelector<HTMLElement>(".hero-sign-pane");
-  const paneTop = pane?.offsetTop ?? 0;
+  const paneTop = pane ? layoutOffset(pane, el, "y") : 0;
   const paneHeight = pane?.offsetHeight ?? el.offsetHeight;
-  // Use the untransformed layout box: the opening corner is rotated around
-  // its vertex, but the completed upright glyph must be centred precisely.
-  const naturalCentre = el.offsetTop + paneTop + paneHeight / 2;
-  return stage.clientHeight / 2 - naturalCentre;
+  // Use the untransformed layout box for the current centre, but the slash's
+  // actual rendered centre for the target. That keeps the two marks aligned
+  // when fullscreen changes the viewport height or the header inset.
+  const naturalCentre =
+    stageRect.top + layoutOffset(el, stage, "y") + paneTop + paneHeight / 2;
+  const targetCentre = slashRect.top + slashRect.height / 2;
+  return targetCentre - naturalCentre;
 }
 
 /** A mirrored, rising inward arc from either lower screen edge. */
@@ -53,7 +81,7 @@ function risePath(
   slash: HTMLElement
 ) {
   const x = convergeX(el, side, stage, slash);
-  const y = convergeY(el, stage);
+  const y = convergeY(el, stage, slash);
   return [
     { x: 0, y: 0 },
     { x: x * 0.16, y: y * 0.08 },
@@ -61,6 +89,42 @@ function risePath(
     { x: x * 0.72, y: y * 0.88 },
     { x, y },
   ];
+}
+
+function refreshHeroPaths(
+  timeline: gsap.core.Timeline,
+  stage: HTMLElement,
+  slash: HTMLElement,
+  left: HTMLElement,
+  right: HTMLElement
+) {
+  const children = timeline.getChildren(false, true, false);
+  const paths: Array<[string, "left" | "right", HTMLElement]> = [
+    ["hero-left-converge", "left", left],
+    ["hero-right-converge", "right", right],
+  ];
+
+  for (const [id, side, target] of paths) {
+    const tween = children.find((child) => child.vars.id === id) as
+      | gsap.core.Tween
+      | undefined;
+    const motionPath = tween?.vars.motionPath;
+
+    if (
+      !motionPath ||
+      typeof motionPath !== "object" ||
+      Array.isArray(motionPath)
+    ) {
+      continue;
+    }
+
+    (motionPath as { path: Point[] }).path = risePath(
+      target,
+      side,
+      stage,
+      slash
+    );
+  }
 }
 
 /**
@@ -112,6 +176,13 @@ export function playHero() {
       anticipatePin: 1,
       scrub: window.matchMedia("(max-width: 760px)").matches ? 0.5 : 0.9,
       invalidateOnRefresh: true,
+      // F11 and mobile browser chrome can change both dimensions after the
+      // scene is built. Recalculate the motion path before GSAP invalidates
+      // the timeline so the final chevrons still land on the slash centre.
+      onRefreshInit: (self) => {
+        const animation = self.animation as gsap.core.Timeline | undefined;
+        if (animation) refreshHeroPaths(animation, stage, slash, left, right);
+      },
       onLeave: handOff,
     },
   });
@@ -130,6 +201,7 @@ export function playHero() {
   tl.to(
     left,
     {
+      id: "hero-left-converge",
       rotation: 0,
       duration: 0.48,
       motionPath: {
@@ -143,6 +215,7 @@ export function playHero() {
     .to(
       right,
       {
+        id: "hero-right-converge",
         rotation: 0,
         duration: 0.48,
         motionPath: {

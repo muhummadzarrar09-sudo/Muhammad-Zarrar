@@ -121,8 +121,8 @@ export const WIREFRAMES: WireframeScene[] = [
   /* Section 01 diagnostic scan lives in ./recognize.ts. */
   /* exhibit-pin + typewriter live in ./exhibit.ts — painting stays,
      card and letters are the wheel. */
-  /* plaque hang lives in ./plaques.ts — three circular
-     paintings drop from the nails, Design.md crop. */
+  /* plaque hang lives in ./plaques.ts — three circular paintings settle
+     from visible nails and rewind with the wheel. */
   {
     id: "contrast",
     note: "Usual vs here — pairs dissolve in, left then right.",
