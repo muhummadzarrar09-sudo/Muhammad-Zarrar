@@ -62,15 +62,16 @@ export function playPlaques() {
   }
 
   /*
-   * This is intentionally a play/reverse entrance rather than a scrubbed
-   * transform. Each plaque falls from above, catches with a small overshoot,
-   * and settles before the next one drops — the champion-card feeling.
+   * This is intentionally a pronounced play/reverse entrance rather than a
+   * barely-there fade. Each plaque falls from above, reveals through its own
+   * frame, catches with a small overshoot, and settles before the next one
+   * drops — the champion-card feeling.
    */
   const drop = gsap.timeline({
     scrollTrigger: {
       id: "plaque-cards",
       trigger: root,
-      start: "top 76%",
+      start: "top 82%",
       toggleActions: "play none none reverse",
       invalidateOnRefresh: true,
     },
@@ -81,20 +82,22 @@ export function playPlaques() {
     drop.fromTo(
       el,
       {
-        y: mobile ? -84 : -120,
+        y: mobile ? -156 : -220,
         rotate: tilt,
-        scale: 0.82,
+        scale: 0.68,
         opacity: 0,
+        clipPath: "inset(0% 0% 100% 0%)",
       },
       {
         y: 0,
         rotate: 0,
         scale: 1,
         opacity: 1,
-        duration: 0.72,
-        ease: "back.out(1.18)",
+        clipPath: "inset(0% 0% 0% 0%)",
+        duration: mobile ? 0.86 : 0.96,
+        ease: "back.out(1.55)",
       },
-      i * (mobile ? 0.16 : 0.12)
+      i * (mobile ? 0.28 : 0.2)
     );
   });
 }
