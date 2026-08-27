@@ -3,12 +3,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TILT = [-11, 7, -6];
-
 /**
- * Three circular plaques hang into the black room — gallery nails,
- * not a fade. They drop into place in sequence as the room arrives, then
- * lift off again when the visitor scrolls back above it.
+ * Three boards hang into the black room — gallery pieces, not a fade. They
+ * enter in sequence as the room arrives, then lift off again on scroll back.
  */
 export function playPlaques() {
   const root = document.querySelector<HTMLElement>(".room-ink");
@@ -62,10 +59,9 @@ export function playPlaques() {
   }
 
   /*
-   * This is intentionally a pronounced play/reverse entrance rather than a
-   * barely-there fade. Each plaque falls from above, reveals through its own
-   * frame, catches with a small overshoot, and settles before the next one
-   * drops — the champion-card feeling.
+   * The boards now use a clean, unmistakable entrance: top-to-bottom on
+   * larger screens, then left / right / left on phones. No rotation — the
+   * direction and the board reveal do the work.
    */
   const drop = gsap.timeline({
     scrollTrigger: {
@@ -77,25 +73,27 @@ export function playPlaques() {
     },
   });
 
+  const mobileX = [-132, 132, -132];
+
   plaques.forEach((el, i) => {
-    const tilt = TILT[i] ?? (i % 2 === 0 ? -8 : 8);
+    const x = mobile ? (mobileX[i] ?? (i % 2 === 0 ? -132 : 132)) : 0;
     drop.fromTo(
       el,
       {
-        y: mobile ? -156 : -220,
-        rotate: tilt,
-        scale: 0.68,
+        x,
+        y: mobile ? -24 : -168,
+        scale: mobile ? 0.94 : 0.86,
         opacity: 0,
         clipPath: "inset(0% 0% 100% 0%)",
       },
       {
+        x: 0,
         y: 0,
-        rotate: 0,
         scale: 1,
         opacity: 1,
         clipPath: "inset(0% 0% 0% 0%)",
-        duration: mobile ? 0.86 : 0.96,
-        ease: "back.out(1.55)",
+        duration: mobile ? 0.72 : 0.86,
+        ease: "power3.out",
       },
       i * (mobile ? 0.28 : 0.2)
     );

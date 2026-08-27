@@ -6533,3 +6533,59 @@ summary {
     background-color: var(--tap-highlight);
   }
 }
+
+/* ==========================================================================
+   OUTCOME BOARDS — the three picture plaques are cards in their own right,
+   so the entrance has a board to reveal instead of only moving an image.
+   ========================================================================== */
+
+.room-ink .vignette {
+  position: relative;
+  width: min(100%, 320px);
+  min-height: 360px;
+  padding: var(--sp-7) var(--sp-6) var(--sp-6);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--r-sm);
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.035)
+  );
+  box-shadow: var(--e-2);
+}
+
+.room-ink .vignette::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--sp-6);
+  right: var(--sp-6);
+  height: 2px;
+  background: var(--vignette-mark, var(--ember-300));
+}
+
+.room-ink .vignette:nth-child(2) {
+  --vignette-mark: var(--ember-200);
+}
+
+.room-ink .vignette:nth-child(3) {
+  --vignette-mark: var(--ember-400);
+}
+
+.room-ink .vignette img {
+  margin-top: var(--sp-1);
+}
+
+.room-ink .vignette figcaption {
+  width: 100%;
+}
+
+.room-ink .vignette .hex {
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+html.has-motion .room-ink .vignette {
+  will-change: transform, opacity, clip-path;
+}
