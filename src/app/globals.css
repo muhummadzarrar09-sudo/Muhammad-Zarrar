@@ -5596,10 +5596,10 @@ html.has-motion-reduced .hero-loader {
 
 .hero.hero-minimal {
   --hero-chevron-size: clamp(76px, 11vw, 150px);
-  /* 14%/84% account for half of the 8-unit SVG stroke, keeping its outer
-     edge flush with the viewport without clipping the visible line. */
-  --hero-chevron-overlap: clamp(11px, 1.54vw, 21px);
-  --hero-chevron-lift: clamp(64px, 9.24vw, 126px);
+  /* These values account for the visible edge of the lighter 6.5-unit stroke,
+     keeping the original corner pose flush without clipping the line. */
+  --hero-chevron-overlap: clamp(12px, 1.62vw, 22px);
+  --hero-chevron-lift: clamp(63px, 9.17vw, 125px);
 }
 
 /* The stage must include the toolbar/floor area. Otherwise its 100% boundary
@@ -5637,8 +5637,9 @@ html.has-motion-reduced .hero-loader {
 @media (max-width: 760px) {
   .hero.hero-minimal {
     --hero-chevron-size: clamp(64px, 20vw, 92px);
-    --hero-chevron-overlap: clamp(9px, 2.8vw, 13px);
-    --hero-chevron-lift: clamp(54px, 16.8vw, 77px);
+    /* Same edge calibration as desktop, tuned to the 6.5-unit stroke. */
+    --hero-chevron-overlap: clamp(10px, 3vw, 14px);
+    --hero-chevron-lift: clamp(53px, 16.5vw, 76px);
     height: calc(100svh - 56px) !important;
     min-height: calc(100svh - 56px) !important;
   }
