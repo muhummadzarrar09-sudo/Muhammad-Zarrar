@@ -198,12 +198,13 @@ export default function HomePage() {
           <div className="vignette-grid">
             {OUTCOMES.map((item) => (
               <figure className="vignette" key={item.title}>
-                <img src={item.src} alt="" width={400} height={400} />
+                <div className="vignette-plaque">
+                  <img src={item.src} alt="" width={400} height={400} />
+                </div>
                 <figcaption>
                   <span className="vignette-cap">{item.title}</span>
                   <span className="vignette-note">{item.body}</span>
                 </figcaption>
-                <span className="hex" aria-hidden="true" />
               </figure>
             ))}
           </div>
