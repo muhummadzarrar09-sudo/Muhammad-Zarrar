@@ -6617,6 +6617,7 @@ summary {
   display: none;
 }
 
+html.has-motion .room-ink .vignette,
 html.has-motion .room-ink .vignette-plaque {
   will-change: transform, opacity;
 }

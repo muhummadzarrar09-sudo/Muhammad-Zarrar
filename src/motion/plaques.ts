@@ -60,6 +60,18 @@ export function playPlaques() {
     const angle = HANG_ANGLES[i % HANG_ANGLES.length];
     const at = 0.22 + i * (mobile ? 0.2 : 0.17);
     const settleAngle = angle > 0 ? -0.8 : 0.8;
+    const figure = el.closest<HTMLElement>(".vignette");
+
+    /* Keep the wall label from floating under an invisible plaque while the
+       room assembles. The label itself does not rotate with the artwork. */
+    if (figure) {
+      room.fromTo(
+        figure,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.28 },
+        at
+      );
+    }
 
     /* A short vertical arrival gives the cord a believable pivot. The tiny
        opposite tilt is the settle; there is no sideways fly-in or guillotine
