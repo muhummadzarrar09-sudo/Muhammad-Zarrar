@@ -71,7 +71,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="section" id="rates" data-tl="Rates" aria-labelledby="services-pricing-heading">
+      <section className="section pricing-rates-section" id="rates" data-tl="Rates" aria-labelledby="services-pricing-heading">
         <div className="container">
           <Reveal className="section-head">
             <h2 id="services-pricing-heading">
@@ -109,7 +109,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="section-tight" aria-labelledby="addons-heading" style={{ paddingTop: 0 }}>
+      <section className="section-tight pricing-addons-section" aria-labelledby="addons-heading" style={{ paddingTop: 0 }}>
         <div className="container">
           <Reveal className="section-head">
             <h2 id="addons-heading">
@@ -136,11 +136,11 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="section" id="terms" data-tl="Terms" aria-labelledby="terms-heading">
+      <section className="section pricing-terms-section" id="terms" data-tl="Terms" aria-labelledby="terms-heading">
         <div className="container">
           <div className="service-detail-grid">
             <Reveal className="card">
-              <h2 id="terms-heading" style={{ fontSize: "1.7rem", marginBottom: 18 }}>
+              <h2 id="terms-heading" className="pricing-panel-title">
                 Payment terms
               </h2>
               <ul className="checklist">
@@ -171,7 +171,7 @@ export default function PricingPage() {
             </Reveal>
             <Reveal>
               <div className="prose">
-                <h2 style={{ fontSize: "1.7rem", marginBottom: 18 }}>
+                <h2 className="pricing-panel-title">
                   No &ldquo;contact us for pricing&rdquo; games
                 </h2>
                 <p className="muted">
@@ -187,8 +187,8 @@ export default function PricingPage() {
                   doesn&rsquo;t grow unless the scope does, in writing.
                 </p>
               </div>
-              <div className="prose" style={{ marginTop: 40 }}>
-                <h2 style={{ fontSize: "1.7rem", marginBottom: 18 }}>
+              <div className="prose pricing-faq-block">
+                <h2 className="pricing-panel-title">
                   Pricing questions
                 </h2>
                 <FaqAccordion items={PRICING_FAQ} />

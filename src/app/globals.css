@@ -60,6 +60,7 @@
   --info: #1e3a8a;        /* 5.83:1 */
   --danger-quiet: rgba(139, 30, 30, 0.12);
   --success-quiet: rgba(20, 83, 45, 0.12);
+  --tap-highlight: rgba(17, 17, 16, 0.14); /* custom mobile pressed state */
 
   /* ---- Surfaces & lines (frosted glass on a light ground) ---- */
   --surface: rgba(255, 255, 255, 0.42);
@@ -6432,4 +6433,136 @@ html.has-motion .recognize-underline {
   .index-row:not(.recognize-row) {
     gap: 20px !important;
   }
+}
+
+/* Pricing detail headings use the same panel rank on every inner breakpoint. */
+.pricing-panel-title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-medium);
+  margin-bottom: var(--sp-4);
+}
+
+.pricing-faq-block {
+  margin-top: var(--sp-10);
+}
+
+/* ==========================================================================
+   PRICING MOBILE RHYTHM — keep the long rates page readable without a
+   sequence of stacked desktop-sized gaps. The page-specific hooks keep this
+   from changing spacing on the other inner pages.
+   ========================================================================== */
+
+@media (max-width: 760px) {
+  .pricing-rates-section .section-head,
+  .pricing-addons-section .section-head {
+    margin-bottom: var(--sp-6);
+  }
+
+  .pricing-rates-section .price-row,
+  .pricing-addons-section .price-row {
+    padding-block: var(--sp-6);
+  }
+
+  /* The stacked service entries need an inner gutter on phones. The outer
+     border still follows the section grid, while the copy gets breathing
+     room instead of sitting directly on the rule. */
+  .pricing-rates-section .price-row {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: var(--sp-4);
+  }
+
+  .pricing-addons-section .price-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The desktop price keeps one line, but that unbreakable grid item makes a
+     mobile 1fr track wider than the viewport. Let prices wrap at the phone
+     gutter instead of being clipped on the right edge. */
+  .pricing-rates-section .row-price,
+  .pricing-addons-section .row-price {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+  .pricing-rates-section .subsection-title {
+    margin-top: var(--sp-8);
+    margin-bottom: var(--sp-4);
+  }
+
+  /* Add-ons already close the rates room, so the next section should not
+     reopen a full 80px room on top of the existing tight-section close. */
+  .pricing-addons-section {
+    padding-bottom: var(--sp-12);
+  }
+
+  .pricing-terms-section {
+    padding-top: var(--sp-12) !important;
+  }
+
+  .pricing-panel-title {
+    margin-bottom: var(--sp-4) !important;
+  }
+
+  .pricing-faq-block {
+    margin-top: var(--sp-8) !important;
+  }
+}
+
+/* ==========================================================================
+   MOBILE PRESS FEEDBACK — replace the browser's default blue flash with the
+   same quiet ink wash used by the rest of the interface. Focus-visible
+   outlines remain intact for keyboard accessibility.
+   ========================================================================== */
+
+a,
+button,
+[role="button"],
+input,
+textarea,
+select,
+summary {
+  -webkit-tap-highlight-color: var(--tap-highlight);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .price-row:active,
+  .card-hover:active,
+  .faq-q button:active,
+  .mobile-nav a:active {
+    background-color: var(--tap-highlight);
+  }
+}
+
+/* ==========================================================================
+   OUTCOME BOARDS — opaque ink cards for the three picture plaques. The board
+   is deliberately flat; the entrance supplies the movement, not glass.
+   ========================================================================== */
+
+.room-ink .vignette {
+  position: relative;
+  width: min(100%, 320px);
+  min-height: 360px;
+  padding: var(--sp-7) var(--sp-6) var(--sp-6);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--r-sm);
+  background: var(--ember-800);
+}
+
+.room-ink .vignette img {
+  margin-top: var(--sp-1);
+}
+
+.room-ink .vignette figcaption {
+  width: 100%;
+}
+
+.room-ink .vignette .hex {
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+html.has-motion .room-ink .vignette {
+  will-change: transform, opacity, clip-path;
 }

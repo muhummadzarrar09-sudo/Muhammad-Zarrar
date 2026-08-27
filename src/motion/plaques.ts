@@ -3,11 +3,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TILT = [-11, 7, -6];
-
 /**
- * Three circular plaques hang into the black room — gallery nails,
- * not a fade. Wheel-tied. Scroll back and they lift off again.
+ * Three boards hang into the black room — gallery pieces, not a fade. They
+ * enter in sequence as the room arrives, then lift off again on scroll back.
  */
 export function playPlaques() {
   const root = document.querySelector<HTMLElement>(".room-ink");
@@ -60,25 +58,49 @@ export function playPlaques() {
     );
   }
 
+  /*
+   * The boards now use a clean, unmistakable entrance: top-to-bottom on
+   * larger screens, then left / right / left on phones. No rotation — the
+   * direction and the board reveal do the work.
+   */
+  const drop = gsap.timeline({ paused: true });
+  const mobileX = [-132, 132, -132];
+
   plaques.forEach((el, i) => {
-    const tilt = TILT[i] ?? (i % 2 === 0 ? -8 : 8);
-    gsap.fromTo(
+    const x = mobile ? (mobileX[i] ?? (i % 2 === 0 ? -132 : 132)) : 0;
+    drop.fromTo(
       el,
-      { y: mobile ? 64 : 110, rotate: tilt, scale: 0.72, opacity: 0.15 },
       {
+        x,
+        y: mobile ? -24 : -168,
+        scale: mobile ? 0.94 : 0.86,
+        opacity: 0,
+        clipPath: "inset(0% 0% 100% 0%)",
+      },
+      {
+        x: 0,
         y: 0,
-        rotate: 0,
         scale: 1,
         opacity: 1,
-        ease: "none",
-        scrollTrigger: {
-          id: `plaque-${i}`,
-          trigger: root,
-          start: `top ${78 - i * 8}%`,
-          end: `top ${28 - i * 4}%`,
-          scrub,
-        },
-      }
+        clipPath: "inset(0% 0% 0% 0%)",
+        duration: mobile ? 0.72 : 0.86,
+        ease: "power3.out",
+      },
+      i * (mobile ? 0.28 : 0.2)
     );
+  });
+
+  /* Drive the paused timeline explicitly. This keeps the entrance reliable
+     with Lenis touch scrolling instead of relying on timeline toggle actions
+     to infer the first mobile enter. */
+  drop.pause(0);
+  ScrollTrigger.create({
+    id: "plaque-cards",
+    trigger: root,
+    start: "top 82%",
+    invalidateOnRefresh: true,
+    onEnter: () => drop.play(),
+    onEnterBack: () => drop.play(),
+    onLeaveBack: () => drop.reverse(),
   });
 }
