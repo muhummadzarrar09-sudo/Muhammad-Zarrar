@@ -6535,8 +6535,8 @@ summary {
 }
 
 /* ==========================================================================
-   OUTCOME BOARDS — the three picture plaques are cards in their own right,
-   so the entrance has a board to reveal instead of only moving an image.
+   OUTCOME BOARDS — opaque ink cards for the three picture plaques. The board
+   is deliberately flat; the entrance supplies the movement, not glass.
    ========================================================================== */
 
 .room-ink .vignette {
@@ -6547,30 +6547,7 @@ summary {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--r-sm);
-  background: linear-gradient(
-    155deg,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.035)
-  );
-  box-shadow: var(--e-2);
-}
-
-.room-ink .vignette::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: var(--sp-6);
-  right: var(--sp-6);
-  height: 2px;
-  background: var(--vignette-mark, var(--ember-300));
-}
-
-.room-ink .vignette:nth-child(2) {
-  --vignette-mark: var(--ember-200);
-}
-
-.room-ink .vignette:nth-child(3) {
-  --vignette-mark: var(--ember-400);
+  background: var(--ember-800);
 }
 
 .room-ink .vignette img {
