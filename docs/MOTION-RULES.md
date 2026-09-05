@@ -39,7 +39,23 @@ cursor always wins.**
 | BorderGlow cards (React Bits, tailored) | `components/border-glow.tsx` + globals | Pointer-driven only — no timers except the optional ~1.5s intro sweep (vs 4s upstream); fades on `--dur-2`/`--dur-4` tokens | Coarse pointers: never attached; `prefers-reduced-motion`: sweep skipped, fades collapsed; `:focus-within` keyboard parity; transform/opacity/mask only |
 | ParticleText 404 headline (React Bits, tailored) | `components/particle-text.tsx` | One-shot gather 800ms + 260ms stagger (hero-moment tier, once per visit); loop **parks at rest** — restarts only on pointer/resize input | `prefers-reduced-motion`: static single draw, loop never starts; decorative canvas, real h1 stays; no-JS fallback copy; touch scroll preserved (`pan-y`) |
 
-## 3 · Deliberate omissions (the rules *against* them)
+## 3 · The ambient quota (v2 amendment)
+
+The walk is wheel-tied, with **one sanctioned exception per viewport**: a
+single ambient room, allowed to move on a clock, because a gallery needs
+exactly one breathing wall. Current holder: **the ink close** (`.cta-full`,
+7 page groups) — "ember dunes" via `GradientWaves` (React Bits, tailored:
+ogl dynamic-imported, detail low, DPR ≤1.5, pauses off-screen/hidden tab,
+reduced motion = one still frame, bottom-masked so text never sits on
+moving luminance). Rules for the quota:
+
+- **One** ambient element per viewport, site-wide — the quota is spent.
+- speed ≤ 0.2, opacity ≤ 0.55 — a whisper, not an ocean.
+- Never behind body/display text without a mask; never on reading rooms,
+  the hero, or form cards.
+- Reduced-motion renders a still frame, never a loop.
+
+## 4 · Deliberate omissions (the rules *against* them)
 
 - **Hiding the native cursor** — HIG/NN/g: pointer affordance is not decoration.
 - **Cursor label bubbles / "view" pills** — redundant with our museum-label captions; adds reading load (NN/g).

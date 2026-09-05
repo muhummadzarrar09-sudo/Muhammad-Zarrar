@@ -77,6 +77,12 @@ storyboarded as data in `src/motion/wireframes.ts`.
   (CSS-sticky, 320vh) with a clay beam sweeping each finding; the pause room
   breathes behind a typewriter card; three plaques hang from nails; "A note"
   types across its hold and signs off with a clay rule.
+- **The ink close** (`CtaBand`, 7 page groups): "ember dunes" — a WebGL
+  clay-rust wave field (`ogl`, dynamically imported) rising from the bottom
+  edge. The site's one sanctioned ambient room: pauses off-screen, still
+  frame under reduced motion, masked away from the text.
+- **The 404 room**: the headline scatters as particles and gathers once
+  (canvas, decorative — the real `h1` stays for crawlers and screen readers).
 - **Pointer layer** (`src/motion/pointer.ts`, desktop only): cursor aura
   (difference-blended, native cursor never hidden), magnetic CTAs
   (`[data-magnetic]`), marquee velocity skew, plaque pan. Scoped to

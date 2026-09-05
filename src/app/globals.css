@@ -7152,3 +7152,37 @@ html.has-motion .room-ink .vignette-plaque {
     height: clamp(180px, 34vw, 230px);
   }
 }
+
+/* ==========================================================================
+   GRADIENT WAVES — React Bits WebGL wave field, PUTTY GALLERY tailoring.
+   ("EMBER DUNES" — component: src/components/gradient-waves.tsx)
+   --------------------------------------------------------------------------
+   The site's ONE sanctioned ambient room (docs/MOTION-RULES.md → Ambient
+   quota): the ink close (.cta-full) breathes clay-rust dunes with copper
+   crests at the bottom edge. WebGL2 only; ogl is dynamically imported;
+   pauses off-screen + hidden tabs; reduced motion renders a single still
+   frame. The layer is bottom-anchored and masked so display text never
+   sits on moving luminance (WCAG 1.4.3).
+   ========================================================================== */
+
+.gradient-waves-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cta-waves {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: min(58%, 460px);
+  z-index: 0;
+  pointer-events: none;
+  mask-image: linear-gradient(to top, black 58%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 58%, transparent 100%);
+}
+
+.cta-full > .container {
+  position: relative;
+  z-index: 1;
+}
