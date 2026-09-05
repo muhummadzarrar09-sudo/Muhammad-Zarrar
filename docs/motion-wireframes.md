@@ -1,6 +1,9 @@
 # Motion wireframes
 
-Source of truth: `src/motion/wireframes.ts`, `src/motion/walk.ts`, `src/motion/exhibit.ts`, `src/motion/plaques.ts`.
+Source of truth: `src/motion/` — `wireframes.ts` (the storyboard data),
+`play.ts` (the player), `engine.ts` (Lenis + boot + cleanup),
+`hero.ts`, `recognize.ts`, `exhibit.ts`, `plaques.ts`, `manifesto.ts`
+(the bespoke rooms), `pointer.ts` (the mouse-reactive layer).
 
 The homepage is a gallery walk. Motion is tied to the wheel (`scrub`, ease none). If you stop, it stops. Scroll back and the room undoes.
 
