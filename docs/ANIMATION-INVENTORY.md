@@ -57,6 +57,7 @@ Audited: `src/motion/*`, `src/components/*`, `src/app/globals.css`.
 
 ### `manifesto-write` — the note (`motion/manifesto.ts`)
 - CSS sticky holds the folio; each line **typewrites sequentially** on the wheel (durations derived from text length), un-writes on scroll-back.
+- The write **owns the hold**: starts as the room settles into the pin, ends with a clay **sign-off rule** drawing under *"We'll meet you there."* — the closing beat — with ~25vh of settled hold left as a breath before release (v2 retiming; previously ~150vh of the hold was dead air).
 
 ### `brief-last` — the last room
 - Intro + qualify card rise in (`y 32/40`, opacity fade).

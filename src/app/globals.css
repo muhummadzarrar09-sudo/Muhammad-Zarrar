@@ -2234,6 +2234,19 @@ button {
   transition-delay: 0.08s;
 }
 
+/* The sign-off rule — the note's closing beat. Under motion, playManifesto()
+   draws it from scaleX(0) once the final line types out; without JS it
+   simply reads as a quiet rule under the letter (already signed). */
+.manifesto-sign {
+  display: block;
+  width: clamp(64px, 9vw, 108px);
+  height: 2px;
+  margin: clamp(20px, 3.5vw, 34px) 0 0;
+  background: var(--gold);
+  border-radius: 1px;
+  transform-origin: left center;
+}
+
 .manifesto-kicker {
   display: inline-flex;
   align-items: center;
@@ -5108,6 +5121,13 @@ html.has-motion .manifesto-sticky {
 
 html.has-motion .manifesto-kicker {
   opacity: 0;
+}
+
+/* Pre-boot guard: with motion on, the sign-off starts undrawn and GSAP
+   owns it (mirrors the kicker). Without JS or with reduced motion the
+   rule shows statically. */
+html.has-motion .manifesto-sign {
+  transform: scaleX(0);
 }
 
 html.has-motion .manifesto-line {
