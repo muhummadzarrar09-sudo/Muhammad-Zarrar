@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ParticleText from "@/components/particle-text";
 
 export const metadata = {
   title: "404 — This Page Failed Its Audit",
@@ -17,7 +18,23 @@ export default function NotFound() {
         height={96}
       />
       <span className="status-code">Audit finding · 404</span>
-      <h1 className="serif-display">This page failed its audit.</h1>
+      <div className="nf-stage">
+        {/* The real heading — the particle canvas below is decorative. */}
+        <h1 className="sr-only">This page failed its audit.</h1>
+        <ParticleText
+          text="This page failed its audit."
+          decorative
+          particleSize={1.8}
+          density={3}
+          scatter={160}
+          gatherDuration={800}
+          stagger={260}
+          pointerRepel={34}
+          repelRadius={110}
+          trigger="mount"
+          className="nf-particles"
+        />
+      </div>
       <p>
         Either the link is broken, or the page never existed. Both are
         fixable — that&rsquo;s literally our job.

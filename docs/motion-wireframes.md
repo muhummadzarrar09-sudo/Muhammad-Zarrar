@@ -1,6 +1,9 @@
 # Motion wireframes
 
-Source of truth: `src/motion/wireframes.ts`, `src/motion/walk.ts`, `src/motion/exhibit.ts`, `src/motion/plaques.ts`.
+Source of truth: `src/motion/` — `wireframes.ts` (the storyboard data),
+`play.ts` (the player), `engine.ts` (Lenis + boot + cleanup),
+`hero.ts`, `recognize.ts`, `exhibit.ts`, `plaques.ts`, `manifesto.ts`
+(the bespoke rooms), `pointer.ts` (the mouse-reactive layer).
 
 The homepage is a gallery walk. Motion is tied to the wheel (`scrub`, ease none). If you stop, it stops. Scroll back and the room undoes.
 
@@ -31,7 +34,7 @@ The homepage is a gallery walk. Motion is tied to the wheel (`scrub`, ease none)
 | `plaque-room` | Three circular plaques settle from visible nails and rewind with the wheel |
 | `contrast` | Usual vs here |
 | `next-steps` | After you send it |
-| `manifesto-write` | Folio holds. Letters write only after this room hits the top |
+| `manifesto-write` | Folio holds (280vh / 200vh phone). The write starts as the room settles into the pin and spans the hold at a readable pace; after the final line, a clay sign-off rule draws beneath it — the note's definitive DONE — leaving ~25vh of settled hold as a breath before release |
 | `brief-last` | The last room |
 
 ## Every route

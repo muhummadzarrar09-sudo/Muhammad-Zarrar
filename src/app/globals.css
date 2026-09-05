@@ -2234,6 +2234,19 @@ button {
   transition-delay: 0.08s;
 }
 
+/* The sign-off rule — the note's closing beat. Under motion, playManifesto()
+   draws it from scaleX(0) once the final line types out; without JS it
+   simply reads as a quiet rule under the letter (already signed). */
+.manifesto-sign {
+  display: block;
+  width: clamp(64px, 9vw, 108px);
+  height: 2px;
+  margin: clamp(20px, 3.5vw, 34px) 0 0;
+  background: var(--gold);
+  border-radius: 1px;
+  transform-origin: left center;
+}
+
 .manifesto-kicker {
   display: inline-flex;
   align-items: center;
@@ -5110,6 +5123,13 @@ html.has-motion .manifesto-kicker {
   opacity: 0;
 }
 
+/* Pre-boot guard: with motion on, the sign-off starts undrawn and GSAP
+   owns it (mirrors the kicker). Without JS or with reduced motion the
+   rule shows statically. */
+html.has-motion .manifesto-sign {
+  transform: scaleX(0);
+}
+
 html.has-motion .manifesto-line {
   position: relative;
   animation: none !important;
@@ -6621,4 +6641,557 @@ summary {
 html.has-motion .room-ink .vignette,
 html.has-motion .room-ink .vignette-plaque {
   will-change: transform, opacity;
+}
+
+/* ==========================================================================
+   POINTER REACTIVE LAYER — v2 motion (see src/motion/pointer.ts)
+   Cursor aura · magnetic CTAs · marquee velocity skew · plaque pan.
+   --------------------------------------------------------------------------
+   Rules honored (docs/MOTION-RULES.md):
+   - Apple HIG / WCAG: the NATIVE cursor is never hidden — the aura follows it.
+   - WCAG 2.2.2: the marquee pauses on hover/focus (auto-moving content).
+   - NN/g: settle motions stay inside the 100–500ms window.
+   - Material 3: transform/opacity only; no layout properties animate.
+   - Everything is (hover)+(fine-pointer) scoped and reduced-motion safe:
+     JS never boots the layer unless both media queries pass; the blocks
+     below double-guard it in CSS.
+   ========================================================================== */
+
+/* ---- Cursor aura (difference-blended: reads on putty AND ink) ---------- */
+@media (hover: hover) and (pointer: fine) {
+  .cursor-aura {
+    position: fixed;
+    inset: 0;
+    z-index: 9990; /* below the skip-link (10000), above all chrome */
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur-3) var(--ease-standard);
+  }
+
+  .cursor-aura.is-live {
+    opacity: 1;
+  }
+
+  .cursor-aura span {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 50%;
+    background: var(--ember-100);
+    mix-blend-mode: difference;
+    opacity: 0;
+  }
+
+  .cursor-aura.is-live span {
+    opacity: 1;
+  }
+
+  .cursor-aura-dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .cursor-aura-ring {
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: 1px solid var(--ember-100);
+    opacity: 0.55;
+  }
+
+  .cursor-aura.is-live .cursor-aura-ring {
+    opacity: 0.55;
+  }
+}
+
+/* ---- Marquee: WCAG 2.2.2 pause affordance ------------------------------
+   Auto-moving content must be pausable. Hover or keyboard focus inside
+   the band stops it; reduced-motion already ships it static. ------------ */
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ---- Plaque pan: artwork drifts toward the cursor ----------------------
+   JS feeds --pan-x/--pan-y in [-1, 1]; transform-origin follows the
+   pointer so the drift reads as parallax inside the circular frame. ----- */
+@media (hover: hover) and (pointer: fine) {
+  .vignette-plaque img {
+    transform-origin: calc(50% + var(--pan-x, 0) * 18%)
+      calc(50% + var(--pan-y, 0) * 18%);
+    transition: transform 0.5s var(--ease-entrance);
+    will-change: transform;
+  }
+
+  .vignette-plaque:hover img {
+    transform: scale(1.045)
+      translate(calc(var(--pan-x, 0) * 2.2%), calc(var(--pan-y, 0) * 2.2%));
+  }
+}
+
+/* ==========================================================================
+   PAGE-HERO ENTRANCE — inner routes (services, about, pricing, process…)
+   One-shot masked-style rise, staggered, on the emphatic ease. `from`-only
+   keyframes + backwards fill: the animation NEVER fills forward, so the
+   GSAP `page-leave` scrub owns h1/lede transforms the moment it ends.
+   Gated on html.has-motion (JS present) — no-JS and crawlers see static
+   HTML with zero hidden content.
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  html.has-motion .page-hero .breadcrumb,
+  html.has-motion .page-hero .eyebrow,
+  html.has-motion .page-hero h1,
+  html.has-motion .page-hero .lede {
+    animation: pageHeroIn 0.64s var(--ease-emphatic) backwards;
+  }
+
+  html.has-motion .page-hero .breadcrumb {
+    animation-duration: 0.5s;
+  }
+
+  html.has-motion .page-hero .eyebrow {
+    animation-delay: 0.06s;
+  }
+
+  html.has-motion .page-hero h1 {
+    animation-delay: 0.12s;
+  }
+
+  html.has-motion .page-hero .lede {
+    animation-delay: 0.2s;
+  }
+}
+
+@keyframes pageHeroIn {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+}
+
+/* ==========================================================================
+   LOGO DRAW — one-shot S stroke draw + Z fade on first paint of a load.
+   pathLength=1 normalizes the strokes, so dasharray math is fixed forever.
+   `from`-only keyframes: after the draw, GSAP or CSS is free to move on.
+   Header only — the footer mark stays still (it enters once, quietly).
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  html.has-motion .site-header .logo-s-path {
+    stroke-dasharray: 1;
+    animation: logoDraw 0.8s var(--ease-emphatic) 0.25s backwards;
+  }
+
+  /* The copper over-stroke trails the putty under-stroke by a beat. */
+  html.has-motion .site-header .logo-s-path + .logo-s-path {
+    animation-delay: 0.42s;
+  }
+
+  html.has-motion .site-header .logo-z-path {
+    animation: logoFadeIn 0.5s var(--ease-standard) 0.12s backwards;
+  }
+}
+
+@keyframes logoDraw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+@keyframes logoFadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---- Reduced-motion neutralizer (double-guard; JS already self-gates) -- */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-aura {
+    display: none !important;
+  }
+
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: running;
+  }
+
+  .vignette-plaque img {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .page-hero .breadcrumb,
+  .page-hero .eyebrow,
+  .page-hero h1,
+  .page-hero .lede,
+  .site-header .logo-s-path,
+  .site-header .logo-z-path {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   BORDER GLOW — React Bits' pointer-reactive card border, PUTTY GALLERY
+   tailoring (component: src/components/border-glow.tsx).
+   --------------------------------------------------------------------------
+   Tailoring vs upstream:
+   - Clay ramp defaults (copper/rust/clay-deep) come from the component;
+     this block carries the structural styles + the two house surfaces:
+     --glass (putty glass cards) and --ink (dark rooms).
+   - Radius defaults to the house token (--radius), NOT a hardcoded 28px.
+   - Reveal/collapse use the motion tokens: --dur-2 in, --dur-4 out.
+   - Keyboard parity: :focus-within reveals the glow (upstream has none).
+   - Reduced motion: the global neutralizer collapses the fades; the JS
+     never attaches on touch and skips the intro sweep.
+   ========================================================================== */
+
+.border-glow-card {
+  --edge-proximity: 0;
+  --cursor-angle: 45deg;
+  --edge-sensitivity: 30;
+  --color-sensitivity: calc(var(--edge-sensitivity) + 20);
+  --border-radius: var(--radius); /* house token, not upstream's 28px */
+  --glow-padding: 28px;
+  --cone-spread: 25;
+
+  position: relative;
+  border-radius: var(--border-radius);
+  isolation: isolate;
+  transform: translate3d(0, 0, 0.01px);
+  display: grid;
+  overflow: visible;
+}
+
+.border-glow-inner {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+  min-width: 0;
+}
+
+/* ---- Surfaces ---------------------------------------------------------- */
+
+.border-glow-card--glass {
+  background: var(--surface-2);
+  border: 1px solid var(--hairline);
+  --card-fill: #e6e6e0; /* surface-2 over the putty canvas — solid mask fill */
+}
+
+.border-glow-card--glass.border-glow-card--form {
+  padding: var(--sp-9);
+  box-shadow: var(--e-3);
+}
+
+.border-glow-card--ink {
+  background: var(--card-bg, #111110);
+  border: 1px solid rgba(231, 229, 228, 0.14);
+  box-shadow:
+    rgba(0, 0, 0, 0.22) 0 1px 2px,
+    rgba(0, 0, 0, 0.18) 0 8px 24px,
+    rgba(0, 0, 0, 0.14) 0 24px 64px;
+}
+
+.border-glow-card--ink > .edge-light {
+  mix-blend-mode: plus-lighter;
+}
+
+/* ---- Glow layers (shared skeleton) ------------------------------------- */
+
+.border-glow-card::before,
+.border-glow-card::after,
+.border-glow-card > .edge-light {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transition: opacity var(--dur-2) var(--ease-standard);
+  z-index: -1;
+  pointer-events: none;
+  /* PERF: promote each glow layer to its own compositor layer. Per-frame
+     proximity updates then become opacity-only compositor work instead of
+     main-thread paints of the whole card. */
+  will-change: opacity;
+  transform: translateZ(0);
+}
+
+.border-glow-card > .edge-light {
+  z-index: 1;
+}
+
+.border-glow-card:not(:hover):not(.sweep-active)::before,
+.border-glow-card:not(:hover):not(.sweep-active)::after,
+.border-glow-card:not(:hover):not(.sweep-active) > .edge-light {
+  opacity: 0;
+  transition: opacity var(--dur-4) var(--ease-standard);
+}
+
+/* Clay mesh border ring — a conic window that follows the cursor angle. */
+.border-glow-card::before {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--card-fill, var(--card-bg, #111110)) 0 100%) padding-box,
+    linear-gradient(rgb(255 255 255 / 0%) 0% 100%) border-box,
+    var(--gradient-one) border-box,
+    var(--gradient-two) border-box,
+    var(--gradient-three) border-box,
+    var(--gradient-four) border-box,
+    var(--gradient-five) border-box,
+    var(--gradient-six) border-box,
+    var(--gradient-seven) border-box,
+    var(--gradient-base) border-box;
+
+  opacity: calc(
+    (var(--edge-proximity) - var(--color-sensitivity)) /
+      (100 - var(--color-sensitivity))
+  );
+
+  mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    black calc(var(--cone-spread) * 1%),
+    transparent calc((var(--cone-spread) + 15) * 1%),
+    transparent calc((100 - var(--cone-spread) - 15) * 1%),
+    black calc((100 - var(--cone-spread)) * 1%)
+  );
+  -webkit-mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    black calc(var(--cone-spread) * 1%),
+    transparent calc((var(--cone-spread) + 15) * 1%),
+    transparent calc((100 - var(--cone-spread) - 15) * 1%),
+    black calc((100 - var(--cone-spread)) * 1%)
+  );
+}
+
+/* Soft-light interior fill near the edges.
+   PERF (v2 fix — the lag): on GLASS cards this layer is display:none.
+   Its 7-layer mask-composite + soft-light blend was re-rastered on every
+   angle step over a ~900px-tall form card — by heaviest layer, least
+   missed. The ink tone keeps it (small, rare cards). */
+.border-glow-card--glass::after {
+  display: none;
+}
+
+.border-glow-card--ink::after {
+  border: 1px solid transparent;
+  background:
+    var(--gradient-one) padding-box,
+    var(--gradient-two) padding-box,
+    var(--gradient-three) padding-box,
+    var(--gradient-four) padding-box,
+    var(--gradient-five) padding-box,
+    var(--gradient-six) padding-box,
+    var(--gradient-seven) padding-box,
+    var(--gradient-base) padding-box;
+
+  mask-image:
+    linear-gradient(to bottom, black, black),
+    radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%),
+    radial-gradient(ellipse at 66% 66%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 33% 33%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 66% 33%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 33% 66%, black 5%, transparent 40%),
+    conic-gradient(
+      from var(--cursor-angle) at center,
+      transparent 5%,
+      black 15%,
+      black 85%,
+      transparent 95%
+    );
+  mask-composite: subtract, add, add, add, add, add;
+
+  opacity: calc(
+    var(--fill-opacity, 0.5) *
+      (var(--edge-proximity) - var(--color-sensitivity)) /
+      (100 - var(--color-sensitivity))
+  );
+  mix-blend-mode: soft-light;
+}
+
+/* Copper edge light just outside the border. */
+.border-glow-card > .edge-light {
+  inset: calc(var(--glow-padding) * -1);
+  pointer-events: none;
+
+  mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    black 2.5%,
+    transparent 10%,
+    transparent 90%,
+    black 97.5%
+  );
+  -webkit-mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    black 2.5%,
+    transparent 10%,
+    transparent 90%,
+    black 97.5%
+  );
+
+  opacity: calc(
+    (var(--edge-proximity) - var(--edge-sensitivity)) /
+      (100 - var(--edge-sensitivity))
+  );
+  mix-blend-mode: normal; /* glass default; --ink upgrades to plus-lighter */
+}
+
+.border-glow-card > .edge-light::before {
+  content: "";
+  position: absolute;
+  inset: var(--glow-padding);
+  border-radius: inherit;
+  /* PERF: 6 shadows (was 14 upstream). The 4 middle blur steps of each
+     family were invisible at this scale but multiplied the raster cost
+     of every angle change. Falloff reads the same. */
+  box-shadow:
+    inset 0 0 0 1px var(--glow-color),
+    inset 0 0 6px 0 var(--glow-color-40),
+    inset 0 0 24px 2px var(--glow-color-20),
+    0 0 1px 0 var(--glow-color-60),
+    0 0 8px 0 var(--glow-color-30),
+    0 0 36px 2px var(--glow-color-10);
+}
+
+/* ---- Keyboard parity ----------------------------------------------------
+   Upstream reveals only via pointer proximity. Here, any focused control
+   inside the card lights the same layers, so keyboard users get the same
+   "this card is live" signal. Doubled class wins the tie against the
+   :not(:hover) collapse rule above. ------------------------------------- */
+.border-glow-card.border-glow-card:focus-within::before {
+  opacity: 1;
+}
+
+.border-glow-card.border-glow-card:focus-within::after {
+  opacity: var(--fill-opacity, 0.5);
+}
+
+.border-glow-card.border-glow-card:focus-within > .edge-light {
+  opacity: 1;
+}
+
+/* ---- Mobile: match the .form-card mobile padding fix -------------------- */
+@media (max-width: 760px) {
+  .border-glow-card--glass.border-glow-card--form {
+    padding: var(--sp-7);
+  }
+}
+
+/* ==========================================================================
+   PARTICLE TEXT — React Bits scatter-and-gather headline, PUTTY GALLERY
+   tailoring (component: src/components/particle-text.tsx).
+   House amendments: the rAF loop PARKS at rest (no ambient simmer),
+   one-shot ~800ms gather, glow off, touch-action keeps vertical scroll,
+   and the fallback copy stays in the DOM for no-JS visitors and crawlers.
+   Currently used: the 404 room (the page that fails to resolve).
+   ========================================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.particle-text {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-y; /* phones keep native vertical scroll */
+  isolation: isolate;
+  font-family: var(--font-fraunces), Georgia, serif;
+}
+
+.particle-text__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* No-JS / pre-sample state: the honest headline. */
+.particle-text__fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  font-size: clamp(2.4rem, 8vw, 5.2rem);
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--text);
+}
+
+/* Once the canvas is live, the fallback steps aside (kept for AT/SEO
+   parity the wrapper no longer provides when decorative). */
+.particle-text.is-live .particle-text__fallback {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.nf-stage {
+  width: min(880px, 100%);
+  height: clamp(150px, 24vw, 250px);
+  margin: 10px auto 18px;
+}
+
+@media (max-width: 760px) {
+  .nf-stage {
+    height: clamp(180px, 34vw, 230px);
+  }
+}
+
+/* ==========================================================================
+   GRADIENT WAVES — React Bits WebGL wave field, PUTTY GALLERY tailoring.
+   ("EMBER DUNES" — component: src/components/gradient-waves.tsx)
+   --------------------------------------------------------------------------
+   The site's ONE sanctioned ambient room (docs/MOTION-RULES.md → Ambient
+   quota): the ink close (.cta-full) breathes clay-rust dunes with copper
+   crests at the bottom edge. WebGL2 only; ogl is dynamically imported;
+   pauses off-screen + hidden tabs; reduced motion renders a single still
+   frame. The layer is bottom-anchored and masked so display text never
+   sits on moving luminance (WCAG 1.4.3).
+   ========================================================================== */
+
+.gradient-waves-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cta-waves {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: min(58%, 460px);
+  z-index: 0;
+  pointer-events: none;
+  mask-image: linear-gradient(to top, black 58%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 58%, transparent 100%);
+}
+
+/* No-WebGL2 fallback: the same dune silhouette, painted in pure CSS.
+   Static by definition — the room never goes quietly empty. */
+.cta-waves.is-fallback {
+  background:
+    radial-gradient(120% 90% at 18% 108%, rgba(226, 138, 72, 0.34) 0%, transparent 46%),
+    radial-gradient(140% 110% at 74% 112%, rgba(143, 62, 30, 0.5) 0%, transparent 58%),
+    radial-gradient(180% 130% at 50% 128%, rgba(106, 86, 74, 0.55) 0%, transparent 70%);
+}
+
+.cta-full > .container {
+  position: relative;
+  z-index: 1;
 }

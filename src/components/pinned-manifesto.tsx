@@ -73,6 +73,10 @@ export function PinnedManifesto() {
             <span className="type-src">{FINAL_LINE}</span>
             <span className="type-out" aria-hidden="true" />
           </p>
+          {/* The sign-off rule — drawn by playManifesto() as the closing
+              beat. Static (visible) without JS; the letter simply reads
+              as already signed. */}
+          <span className="manifesto-sign" aria-hidden="true" />
         </div>
       </div>
     </section>
