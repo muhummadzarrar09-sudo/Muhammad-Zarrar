@@ -146,6 +146,7 @@ export default function BorderGlow({
   const pending = useRef<{ x: number; y: number } | null>(null);
   const rectRef = useRef<DOMRect | null>(null);
   const fine = useRef(false);
+  const lastAngle = useRef("");
 
   /* Coarse/touch pointers never get listeners; scroll invalidates the
      cached rect so the glow stays honest while the page moves. */
@@ -184,15 +185,24 @@ export default function BorderGlow({
     const ky = dy !== 0 ? cy / Math.abs(dy) : Infinity;
     const edge = Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
 
-    /* Cursor angle around the centre, 0° at top, clockwise. */
+    /* Cursor angle around the centre, 0° at top, clockwise.
+       PERF: both custom props feed conic-gradient masks — every distinct
+       value forces a re-raster of the masked layers. Proximity moves at
+       0.1% steps (opacity-only → compositor), the angle snaps to 3° and
+       is written only when the stepped value actually changes, so slow
+       mouse drift near the centre costs nothing. The glow is soft; nobody
+       can see a 3° quantisation. */
     let angle = 0;
     if (!(dx === 0 && dy === 0)) {
       angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
       if (angle < 0) angle += 360;
     }
-
-    card.style.setProperty("--edge-proximity", `${(edge * 100).toFixed(3)}`);
-    card.style.setProperty("--cursor-angle", `${angle.toFixed(3)}deg`);
+    const stepped = `${Math.round(angle / 3) * 3}deg`;
+    if (stepped !== lastAngle.current) {
+      lastAngle.current = stepped;
+      card.style.setProperty("--cursor-angle", stepped);
+    }
+    card.style.setProperty("--edge-proximity", `${(edge * 100).toFixed(1)}`);
   }, []);
 
   const onPointerMove = useCallback(

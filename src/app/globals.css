@@ -6909,6 +6909,11 @@ html.has-motion .room-ink .vignette-plaque {
   transition: opacity var(--dur-2) var(--ease-standard);
   z-index: -1;
   pointer-events: none;
+  /* PERF: promote each glow layer to its own compositor layer. Per-frame
+     proximity updates then become opacity-only compositor work instead of
+     main-thread paints of the whole card. */
+  will-change: opacity;
+  transform: translateZ(0);
 }
 
 .border-glow-card > .edge-light {
@@ -6958,8 +6963,16 @@ html.has-motion .room-ink .vignette-plaque {
   );
 }
 
-/* Soft-light interior fill near the edges. */
-.border-glow-card::after {
+/* Soft-light interior fill near the edges.
+   PERF (v2 fix — the lag): on GLASS cards this layer is display:none.
+   Its 7-layer mask-composite + soft-light blend was re-rastered on every
+   angle step over a ~900px-tall form card — by heaviest layer, least
+   missed. The ink tone keeps it (small, rare cards). */
+.border-glow-card--glass::after {
+  display: none;
+}
+
+.border-glow-card--ink::after {
   border: 1px solid transparent;
   background:
     var(--gradient-one) padding-box,
@@ -7027,20 +7040,16 @@ html.has-motion .room-ink .vignette-plaque {
   position: absolute;
   inset: var(--glow-padding);
   border-radius: inherit;
+  /* PERF: 6 shadows (was 14 upstream). The 4 middle blur steps of each
+     family were invisible at this scale but multiplied the raster cost
+     of every angle change. Falloff reads the same. */
   box-shadow:
     inset 0 0 0 1px var(--glow-color),
-    inset 0 0 1px 0 var(--glow-color-60),
-    inset 0 0 3px 0 var(--glow-color-50),
     inset 0 0 6px 0 var(--glow-color-40),
-    inset 0 0 15px 0 var(--glow-color-30),
-    inset 0 0 25px 2px var(--glow-color-20),
-    inset 0 0 50px 2px var(--glow-color-10),
+    inset 0 0 24px 2px var(--glow-color-20),
     0 0 1px 0 var(--glow-color-60),
-    0 0 3px 0 var(--glow-color-50),
-    0 0 6px 0 var(--glow-color-40),
-    0 0 15px 0 var(--glow-color-30),
-    0 0 25px 2px var(--glow-color-20),
-    0 0 50px 2px var(--glow-color-10);
+    0 0 8px 0 var(--glow-color-30),
+    0 0 36px 2px var(--glow-color-10);
 }
 
 /* ---- Keyboard parity ----------------------------------------------------
