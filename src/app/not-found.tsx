@@ -10,7 +10,7 @@ export default function NotFound() {
   return (
     <section className="notfound">
       <img
-        src="/images/logo-mark.svg"
+        src="/images/logo-mark-transparent-original.png"
         alt=""
         aria-hidden="true"
         className="notfound-mark"
