@@ -67,7 +67,7 @@ export default function HomePage() {
         </div>
         <div className="hero-toolbar">
           <div className="hero-ctas">
-            <a href="#brief" className="btn btn-primary">
+            <a href="#brief" className="btn btn-primary" data-magnetic>
               Write your brief
             </a>
           </div>

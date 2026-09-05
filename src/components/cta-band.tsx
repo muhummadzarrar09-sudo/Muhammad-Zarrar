@@ -25,7 +25,7 @@ export function CtaBand({
           <h2>{headline}</h2>
           <p className="cta-body">{body}</p>
           <div className="cta-actions">
-            <Link href={primaryHref} className="btn btn-light">
+            <Link href={primaryHref} className="btn btn-light" data-magnetic>
               {primaryLabel}
             </Link>
             <a
@@ -33,6 +33,7 @@ export function CtaBand({
               target="_blank"
               rel="noopener"
               className="btn btn-ghost-on-ink"
+              data-magnetic
             >
               <WhatsAppIcon size={16} /> WhatsApp us
             </a>

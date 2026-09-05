@@ -37,7 +37,11 @@ export function SiteHeader() {
         </nav>
 
         <div className="header-actions">
-          <Link href="/#brief" className="btn btn-primary btn-sm header-cta">
+          <Link
+            href="/#brief"
+            className="btn btn-primary btn-sm header-cta"
+            data-magnetic
+          >
             Write your brief
           </Link>
           <MobileMenu />

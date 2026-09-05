@@ -6622,3 +6622,190 @@ html.has-motion .room-ink .vignette,
 html.has-motion .room-ink .vignette-plaque {
   will-change: transform, opacity;
 }
+
+/* ==========================================================================
+   POINTER REACTIVE LAYER — v2 motion (see src/motion/pointer.ts)
+   Cursor aura · magnetic CTAs · marquee velocity skew · plaque pan.
+   --------------------------------------------------------------------------
+   Rules honored (docs/MOTION-RULES.md):
+   - Apple HIG / WCAG: the NATIVE cursor is never hidden — the aura follows it.
+   - WCAG 2.2.2: the marquee pauses on hover/focus (auto-moving content).
+   - NN/g: settle motions stay inside the 100–500ms window.
+   - Material 3: transform/opacity only; no layout properties animate.
+   - Everything is (hover)+(fine-pointer) scoped and reduced-motion safe:
+     JS never boots the layer unless both media queries pass; the blocks
+     below double-guard it in CSS.
+   ========================================================================== */
+
+/* ---- Cursor aura (difference-blended: reads on putty AND ink) ---------- */
+@media (hover: hover) and (pointer: fine) {
+  .cursor-aura {
+    position: fixed;
+    inset: 0;
+    z-index: 9990; /* below the skip-link (10000), above all chrome */
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur-3) var(--ease-standard);
+  }
+
+  .cursor-aura.is-live {
+    opacity: 1;
+  }
+
+  .cursor-aura span {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 50%;
+    background: var(--ember-100);
+    mix-blend-mode: difference;
+    opacity: 0;
+  }
+
+  .cursor-aura.is-live span {
+    opacity: 1;
+  }
+
+  .cursor-aura-dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .cursor-aura-ring {
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: 1px solid var(--ember-100);
+    opacity: 0.55;
+  }
+
+  .cursor-aura.is-live .cursor-aura-ring {
+    opacity: 0.55;
+  }
+}
+
+/* ---- Marquee: WCAG 2.2.2 pause affordance ------------------------------
+   Auto-moving content must be pausable. Hover or keyboard focus inside
+   the band stops it; reduced-motion already ships it static. ------------ */
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ---- Plaque pan: artwork drifts toward the cursor ----------------------
+   JS feeds --pan-x/--pan-y in [-1, 1]; transform-origin follows the
+   pointer so the drift reads as parallax inside the circular frame. ----- */
+@media (hover: hover) and (pointer: fine) {
+  .vignette-plaque img {
+    transform-origin: calc(50% + var(--pan-x, 0) * 18%)
+      calc(50% + var(--pan-y, 0) * 18%);
+    transition: transform 0.5s var(--ease-entrance);
+    will-change: transform;
+  }
+
+  .vignette-plaque:hover img {
+    transform: scale(1.045)
+      translate(calc(var(--pan-x, 0) * 2.2%), calc(var(--pan-y, 0) * 2.2%));
+  }
+}
+
+/* ==========================================================================
+   PAGE-HERO ENTRANCE — inner routes (services, about, pricing, process…)
+   One-shot masked-style rise, staggered, on the emphatic ease. `from`-only
+   keyframes + backwards fill: the animation NEVER fills forward, so the
+   GSAP `page-leave` scrub owns h1/lede transforms the moment it ends.
+   Gated on html.has-motion (JS present) — no-JS and crawlers see static
+   HTML with zero hidden content.
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  html.has-motion .page-hero .breadcrumb,
+  html.has-motion .page-hero .eyebrow,
+  html.has-motion .page-hero h1,
+  html.has-motion .page-hero .lede {
+    animation: pageHeroIn 0.64s var(--ease-emphatic) backwards;
+  }
+
+  html.has-motion .page-hero .breadcrumb {
+    animation-duration: 0.5s;
+  }
+
+  html.has-motion .page-hero .eyebrow {
+    animation-delay: 0.06s;
+  }
+
+  html.has-motion .page-hero h1 {
+    animation-delay: 0.12s;
+  }
+
+  html.has-motion .page-hero .lede {
+    animation-delay: 0.2s;
+  }
+}
+
+@keyframes pageHeroIn {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+}
+
+/* ==========================================================================
+   LOGO DRAW — one-shot S stroke draw + Z fade on first paint of a load.
+   pathLength=1 normalizes the strokes, so dasharray math is fixed forever.
+   `from`-only keyframes: after the draw, GSAP or CSS is free to move on.
+   Header only — the footer mark stays still (it enters once, quietly).
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  html.has-motion .site-header .logo-s-path {
+    stroke-dasharray: 1;
+    animation: logoDraw 0.8s var(--ease-emphatic) 0.25s backwards;
+  }
+
+  /* The copper over-stroke trails the putty under-stroke by a beat. */
+  html.has-motion .site-header .logo-s-path + .logo-s-path {
+    animation-delay: 0.42s;
+  }
+
+  html.has-motion .site-header .logo-z-path {
+    animation: logoFadeIn 0.5s var(--ease-standard) 0.12s backwards;
+  }
+}
+
+@keyframes logoDraw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+@keyframes logoFadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---- Reduced-motion neutralizer (double-guard; JS already self-gates) -- */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-aura {
+    display: none !important;
+  }
+
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: running;
+  }
+
+  .vignette-plaque img {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .page-hero .breadcrumb,
+  .page-hero .eyebrow,
+  .page-hero h1,
+  .page-hero .lede,
+  .site-header .logo-s-path,
+  .site-header .logo-z-path {
+    animation: none !important;
+  }
+}
