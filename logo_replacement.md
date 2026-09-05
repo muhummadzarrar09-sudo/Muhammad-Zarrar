@@ -7,17 +7,29 @@ rebuild** of the clay ZS logo, drawn against the reference artwork the client
 supplied in chat.
 
 > **The source PNG has still never reached the workspace.** It has been
-> attached three times; each time the chat attachment delivered no file bytes
+> attached four times; each time the chat attachment delivered no file bytes
 > to the sandbox (the last attempt reported a save path of
 > `/home/user/uploads/` — a directory that does not exist). The rebuild was
 > therefore drawn by eye from the rendered reference, **not** traced from
 > pixels. It matches the reference's geometry, layer structure and palette,
 > but it is not a pixel-perfect trace.
 
-To get a pixel-perfect trace, land the original file at
-`public/images/source-logo.png` — the most reliable route is to drag it into
-the repo through GitHub's web UI and commit it, which bypasses the chat
-attachment path entirely. Then run the swap procedure at the bottom of this
+### Transparent cut (social / anywhere use)
+
+`public/images/logo-mark-transparent-1024.png` — the vector rebuild rendered
+to 1024×1024 on **true transparency** (no ground). Verified legible on putty,
+black and white (`/home/user/social/zs-proof-3-grounds.png` in the session
+workspace). Regenerate at any size:
+
+```bash
+node scripts/render_svg.mjs public/images/logo-mark.svg out.png 2048
+```
+
+The fourth chat attachment attempt (2026-09-05) also failed to land bytes.
+To get a pixel-perfect trace of the original black-ground artwork, land the
+file at `public/images/source-logo.png` — the most reliable route is to drag
+it into the repo through GitHub's web UI and commit it, which bypasses the
+chat attachment path entirely. Then run the swap procedure at the bottom of
 file and every surface regenerates.
 
 ## The two-mark problem — resolved
