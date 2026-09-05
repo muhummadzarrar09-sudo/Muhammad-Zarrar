@@ -66,15 +66,33 @@ and runs on a monotonic 4-rung scale.
 
 ### Motion
 
-- **Pinned manifesto** (home): full-screen section pinned with GSAP
-  ScrollTrigger; lines land on scroll, then release. GSAP is dynamically
-  imported so only the home page loads it; skipped entirely under
-  `prefers-reduced-motion`.
+The homepage is a **gallery walk**: scenes are tied to the wheel (scrub, ease
+none) — stop scrolling and the motion stops; scroll back and it unwrites.
+Lenis carries the scroll; GSAP ScrollTrigger drives the rooms. Motion is
+storyboarded as data in `src/motion/wireframes.ts`.
+
+- **Hero converge** (home): the promise dissolves, `<` and `>` fly in along
+  mirrored arcs and lock into `</>`, a loading line counts, Lenis takes over.
+- **Rooms**: ground color walks room to room; the diagnostic scan pins
+  (CSS-sticky, 320vh) with a clay beam sweeping each finding; the pause room
+  breathes behind a typewriter card; three plaques hang from nails; "A note"
+  types across its hold and signs off with a clay rule.
+- **Pointer layer** (`src/motion/pointer.ts`, desktop only): cursor aura
+  (difference-blended, native cursor never hidden), magnetic CTAs
+  (`[data-magnetic]`), marquee velocity skew, plaque pan. Scoped to
+  `(hover) + (pointer: fine)`; skipped under reduced motion.
 - **Scroll timeline**: the native scrollbar is hidden and replaced by a
   right-edge rail — progress fill plus diamond markers per section
   (`section[data-tl]`), keyboard-focusable, click-to-jump.
-- Route changes: 2px sunbeam top progress bar.
-- Section entry: IntersectionObserver fade/slide; reduced-motion respected.
+- Route changes: 2px teal progress bar; inner-page heroes rise in staggered.
+- Section entry: IntersectionObserver fade/slide (reversible).
+- **Accessibility**: `prefers-reduced-motion` skips Lenis, every scene and
+  the whole pointer layer; the marquee pauses on hover/focus (WCAG 2.2.2).
+- **Docs**: `docs/ANIMATION-INVENTORY.md` (every animation, audited) ·
+  `docs/MOTION-RULES.md` (NN/g / Material 3 / WCAG / HIG compliance ledger) ·
+  `docs/motion-wireframes.md` (the storyboard).
+- GSAP + Lenis are dynamically imported so only pages that need them load
+  them.
 
 ### SEO
 
