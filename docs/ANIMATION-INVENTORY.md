@@ -114,6 +114,8 @@ Audited: `src/motion/*`, `src/components/*`, `src/app/globals.css`.
 
 ### Shipped (v2 — this branch)
 
+6.75. **ParticleText (React Bits, tailored) — the 404 room** — the page that "failed its audit" literally fails to resolve: ink particles scatter, gather into *"This page failed its audit."* over ~800ms once per visit, then the rAF loop **parks itself** (the house amendment — upstream ran forever). Cursor repel is input-driven; reduced motion draws one static frame; no-JS/crawlers get the real `<h1>`; `touch-action: pan-y` keeps phone scroll native. Canvas is `aria-hidden` decorative — semantics stay in the page.
+
 6.5. **BorderGlow (React Bits, tailored)** — pointer-reactive clay border on the three fillable cards (contact form, free-audit form, the brief). Copper glow `"22 66 58"` + copper→rust→clay mesh ramp replace the neon defaults; radius from the house `--radius` token; reveal/collapse on `--dur-2/--dur-4`; rAF-throttled pointer work, never attached on touch; intro sweep compressed to ~1.5s and skipped under reduced motion; **`:focus-within` keyboard parity** added (upstream has none). Styles in `globals.css` ("BORDER GLOW" section).
 
 1. **Cursor aura** — difference-blended dot + trailing ring (`motion/pointer.ts`). Native cursor never hidden; `(hover)+(fine)` + reduced-motion gated; grows on interactive elements, presses on click.

@@ -7075,3 +7075,80 @@ html.has-motion .room-ink .vignette-plaque {
     padding: var(--sp-7);
   }
 }
+
+/* ==========================================================================
+   PARTICLE TEXT — React Bits scatter-and-gather headline, PUTTY GALLERY
+   tailoring (component: src/components/particle-text.tsx).
+   House amendments: the rAF loop PARKS at rest (no ambient simmer),
+   one-shot ~800ms gather, glow off, touch-action keeps vertical scroll,
+   and the fallback copy stays in the DOM for no-JS visitors and crawlers.
+   Currently used: the 404 room (the page that fails to resolve).
+   ========================================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.particle-text {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-y; /* phones keep native vertical scroll */
+  isolation: isolate;
+  font-family: var(--font-fraunces), Georgia, serif;
+}
+
+.particle-text__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* No-JS / pre-sample state: the honest headline. */
+.particle-text__fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  font-size: clamp(2.4rem, 8vw, 5.2rem);
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--text);
+}
+
+/* Once the canvas is live, the fallback steps aside (kept for AT/SEO
+   parity the wrapper no longer provides when decorative). */
+.particle-text.is-live .particle-text__fallback {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.nf-stage {
+  width: min(880px, 100%);
+  height: clamp(150px, 24vw, 250px);
+  margin: 10px auto 18px;
+}
+
+@media (max-width: 760px) {
+  .nf-stage {
+    height: clamp(180px, 34vw, 230px);
+  }
+}
