@@ -168,9 +168,9 @@ const ctxMap = new WeakMap<
 >();
 
 export default function GradientWaves({
-  horizonColor = "#7a2e18",
-  waveColor = "#3f3e3b",
-  crestColor = "#da7134",
+  horizonColor = "#8f3e1e",
+  waveColor = "#6a564a",
+  crestColor = "#e28a48",
   speed = 0.16,
   amplitude = 2.2,
   waveScale = 0.55,
@@ -178,12 +178,12 @@ export default function GradientWaves({
   swell = 30,
   turbulence = 16,
   tilt = 1.11,
-  zoom = 1.0,
+  zoom = 1.35,
   height = 5.5,
-  fogDepth = 12,
+  fogDepth = 60,
   detail = "low",
-  brightness = 0.9,
-  opacity = 0.55,
+  brightness = 1.05,
+  opacity = 0.75,
   mouseInteraction = true,
   parallaxStrength = 0.35,
   grain = true,
@@ -297,7 +297,10 @@ export default function GradientWaves({
           dpr: Math.min(window.devicePixelRatio || 1, 1.5), // house cap
         });
       } catch {
-        return; // no WebGL2 — silent bail, room keeps its surface
+        // No WebGL2 — hand the room a still, CSS-painted dune silhouette
+        // so the ambient layer never just vanishes.
+        container.classList.add("is-fallback");
+        return;
       }
       if (cancelled) {
         renderer.gl
@@ -328,12 +331,12 @@ export default function GradientWaves({
           uSwell: { value: 30 },
           uTurbulence: { value: 16 },
           uTilt: { value: 1.11 },
-          uZoom: { value: 1.0 },
+          uZoom: { value: 1.35 },
           uHeight: { value: 5.5 },
-          uFogDepth: { value: 12 },
+          uFogDepth: { value: 60 },
           uSteps: { value: 40.0 },
-          uBrightness: { value: 0.9 },
-          uOpacity: { value: 0.55 },
+          uBrightness: { value: 1.05 },
+          uOpacity: { value: 0.75 },
           uGrain: { value: 1.0 },
           uGrainIntensity: { value: 0.05 },
           uMouse: { value: new Float32Array([0.5, 0.5]) },

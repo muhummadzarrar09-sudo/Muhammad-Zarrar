@@ -50,10 +50,14 @@ reduced motion = one still frame, bottom-masked so text never sits on
 moving luminance). Rules for the quota:
 
 - **One** ambient element per viewport, site-wide — the quota is spent.
-- speed ≤ 0.2, opacity ≤ 0.55 — a whisper, not an ocean.
+- Whisper, not ocean — measured, not guessed: average luminance of the
+  layer over the room color stays ≈ 0.15–0.25 (verified numerically
+  against the shader math before shipping; a first pass at opacity 0.55
+  produced 0.018 — literally invisible — and was retuned).
 - Never behind body/display text without a mask; never on reading rooms,
   the hero, or form cards.
-- Reduced-motion renders a still frame, never a loop.
+- Reduced-motion renders a still frame, never a loop; no WebGL2 gets a
+  static CSS dune silhouette (`.is-fallback`), never an empty room.
 
 ## 4 · Deliberate omissions (the rules *against* them)
 

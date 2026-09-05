@@ -7182,6 +7182,15 @@ html.has-motion .room-ink .vignette-plaque {
   -webkit-mask-image: linear-gradient(to top, black 58%, transparent 100%);
 }
 
+/* No-WebGL2 fallback: the same dune silhouette, painted in pure CSS.
+   Static by definition — the room never goes quietly empty. */
+.cta-waves.is-fallback {
+  background:
+    radial-gradient(120% 90% at 18% 108%, rgba(226, 138, 72, 0.34) 0%, transparent 46%),
+    radial-gradient(140% 110% at 74% 112%, rgba(143, 62, 30, 0.5) 0%, transparent 58%),
+    radial-gradient(180% 130% at 50% 128%, rgba(106, 86, 74, 0.55) 0%, transparent 70%);
+}
+
 .cta-full > .container {
   position: relative;
   z-index: 1;
