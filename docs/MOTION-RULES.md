@@ -36,6 +36,7 @@ cursor always wins.**
 | Plaque pan (±2.2% drift, scale 1.045) | `motion/pointer.ts` + CSS | 500ms `--ease-entrance` transition | `(hover) + (pointer: fine)`; CSS-only fallback (plain hover scale) if JS dies |
 | Page-hero entrance (staggered rise, 640ms) | `globals.css` | 500–640ms, 60–200ms staggers — Material "expressive" tier reserved for hero moments | `html.has-motion` (no-JS safe) + `no-preference`; `from`-only keyframes + `backwards` fill so the GSAP `page-leave` scrub is never blocked by a forwards fill |
 | Logo S draw (0.8s) + Z fade (0.5s) | `globals.css` + `logo.tsx` | Hero/brand moment tier (≤1s, once per load); copper trails putty by 170ms for legibility | `html.has-motion` + `no-preference`; header only; `pathLength=1` keeps math fixed |
+| BorderGlow cards (React Bits, tailored) | `components/border-glow.tsx` + globals | Pointer-driven only — no timers except the optional ~1.5s intro sweep (vs 4s upstream); fades on `--dur-2`/`--dur-4` tokens | Coarse pointers: never attached; `prefers-reduced-motion`: sweep skipped, fades collapsed; `:focus-within` keyboard parity; transform/opacity/mask only |
 
 ## 3 · Deliberate omissions (the rules *against* them)
 

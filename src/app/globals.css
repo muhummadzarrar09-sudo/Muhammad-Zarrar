@@ -6829,3 +6829,240 @@ html.has-motion .room-ink .vignette-plaque {
     animation: none !important;
   }
 }
+
+/* ==========================================================================
+   BORDER GLOW — React Bits' pointer-reactive card border, PUTTY GALLERY
+   tailoring (component: src/components/border-glow.tsx).
+   --------------------------------------------------------------------------
+   Tailoring vs upstream:
+   - Clay ramp defaults (copper/rust/clay-deep) come from the component;
+     this block carries the structural styles + the two house surfaces:
+     --glass (putty glass cards) and --ink (dark rooms).
+   - Radius defaults to the house token (--radius), NOT a hardcoded 28px.
+   - Reveal/collapse use the motion tokens: --dur-2 in, --dur-4 out.
+   - Keyboard parity: :focus-within reveals the glow (upstream has none).
+   - Reduced motion: the global neutralizer collapses the fades; the JS
+     never attaches on touch and skips the intro sweep.
+   ========================================================================== */
+
+.border-glow-card {
+  --edge-proximity: 0;
+  --cursor-angle: 45deg;
+  --edge-sensitivity: 30;
+  --color-sensitivity: calc(var(--edge-sensitivity) + 20);
+  --border-radius: var(--radius); /* house token, not upstream's 28px */
+  --glow-padding: 28px;
+  --cone-spread: 25;
+
+  position: relative;
+  border-radius: var(--border-radius);
+  isolation: isolate;
+  transform: translate3d(0, 0, 0.01px);
+  display: grid;
+  overflow: visible;
+}
+
+.border-glow-inner {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+  min-width: 0;
+}
+
+/* ---- Surfaces ---------------------------------------------------------- */
+
+.border-glow-card--glass {
+  background: var(--surface-2);
+  border: 1px solid var(--hairline);
+  --card-fill: #e6e6e0; /* surface-2 over the putty canvas — solid mask fill */
+}
+
+.border-glow-card--glass.border-glow-card--form {
+  padding: var(--sp-9);
+  box-shadow: var(--e-3);
+}
+
+.border-glow-card--ink {
+  background: var(--card-bg, #111110);
+  border: 1px solid rgba(231, 229, 228, 0.14);
+  box-shadow:
+    rgba(0, 0, 0, 0.22) 0 1px 2px,
+    rgba(0, 0, 0, 0.18) 0 8px 24px,
+    rgba(0, 0, 0, 0.14) 0 24px 64px;
+}
+
+.border-glow-card--ink > .edge-light {
+  mix-blend-mode: plus-lighter;
+}
+
+/* ---- Glow layers (shared skeleton) ------------------------------------- */
+
+.border-glow-card::before,
+.border-glow-card::after,
+.border-glow-card > .edge-light {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transition: opacity var(--dur-2) var(--ease-standard);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.border-glow-card > .edge-light {
+  z-index: 1;
+}
+
+.border-glow-card:not(:hover):not(.sweep-active)::before,
+.border-glow-card:not(:hover):not(.sweep-active)::after,
+.border-glow-card:not(:hover):not(.sweep-active) > .edge-light {
+  opacity: 0;
+  transition: opacity var(--dur-4) var(--ease-standard);
+}
+
+/* Clay mesh border ring — a conic window that follows the cursor angle. */
+.border-glow-card::before {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--card-fill, var(--card-bg, #111110)) 0 100%) padding-box,
+    linear-gradient(rgb(255 255 255 / 0%) 0% 100%) border-box,
+    var(--gradient-one) border-box,
+    var(--gradient-two) border-box,
+    var(--gradient-three) border-box,
+    var(--gradient-four) border-box,
+    var(--gradient-five) border-box,
+    var(--gradient-six) border-box,
+    var(--gradient-seven) border-box,
+    var(--gradient-base) border-box;
+
+  opacity: calc(
+    (var(--edge-proximity) - var(--color-sensitivity)) /
+      (100 - var(--color-sensitivity))
+  );
+
+  mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    black calc(var(--cone-spread) * 1%),
+    transparent calc((var(--cone-spread) + 15) * 1%),
+    transparent calc((100 - var(--cone-spread) - 15) * 1%),
+    black calc((100 - var(--cone-spread)) * 1%)
+  );
+  -webkit-mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    black calc(var(--cone-spread) * 1%),
+    transparent calc((var(--cone-spread) + 15) * 1%),
+    transparent calc((100 - var(--cone-spread) - 15) * 1%),
+    black calc((100 - var(--cone-spread)) * 1%)
+  );
+}
+
+/* Soft-light interior fill near the edges. */
+.border-glow-card::after {
+  border: 1px solid transparent;
+  background:
+    var(--gradient-one) padding-box,
+    var(--gradient-two) padding-box,
+    var(--gradient-three) padding-box,
+    var(--gradient-four) padding-box,
+    var(--gradient-five) padding-box,
+    var(--gradient-six) padding-box,
+    var(--gradient-seven) padding-box,
+    var(--gradient-base) padding-box;
+
+  mask-image:
+    linear-gradient(to bottom, black, black),
+    radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%),
+    radial-gradient(ellipse at 66% 66%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 33% 33%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 66% 33%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 33% 66%, black 5%, transparent 40%),
+    conic-gradient(
+      from var(--cursor-angle) at center,
+      transparent 5%,
+      black 15%,
+      black 85%,
+      transparent 95%
+    );
+  mask-composite: subtract, add, add, add, add, add;
+
+  opacity: calc(
+    var(--fill-opacity, 0.5) *
+      (var(--edge-proximity) - var(--color-sensitivity)) /
+      (100 - var(--color-sensitivity))
+  );
+  mix-blend-mode: soft-light;
+}
+
+/* Copper edge light just outside the border. */
+.border-glow-card > .edge-light {
+  inset: calc(var(--glow-padding) * -1);
+  pointer-events: none;
+
+  mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    black 2.5%,
+    transparent 10%,
+    transparent 90%,
+    black 97.5%
+  );
+  -webkit-mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    black 2.5%,
+    transparent 10%,
+    transparent 90%,
+    black 97.5%
+  );
+
+  opacity: calc(
+    (var(--edge-proximity) - var(--edge-sensitivity)) /
+      (100 - var(--edge-sensitivity))
+  );
+  mix-blend-mode: normal; /* glass default; --ink upgrades to plus-lighter */
+}
+
+.border-glow-card > .edge-light::before {
+  content: "";
+  position: absolute;
+  inset: var(--glow-padding);
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px var(--glow-color),
+    inset 0 0 1px 0 var(--glow-color-60),
+    inset 0 0 3px 0 var(--glow-color-50),
+    inset 0 0 6px 0 var(--glow-color-40),
+    inset 0 0 15px 0 var(--glow-color-30),
+    inset 0 0 25px 2px var(--glow-color-20),
+    inset 0 0 50px 2px var(--glow-color-10),
+    0 0 1px 0 var(--glow-color-60),
+    0 0 3px 0 var(--glow-color-50),
+    0 0 6px 0 var(--glow-color-40),
+    0 0 15px 0 var(--glow-color-30),
+    0 0 25px 2px var(--glow-color-20),
+    0 0 50px 2px var(--glow-color-10);
+}
+
+/* ---- Keyboard parity ----------------------------------------------------
+   Upstream reveals only via pointer proximity. Here, any focused control
+   inside the card lights the same layers, so keyboard users get the same
+   "this card is live" signal. Doubled class wins the tie against the
+   :not(:hover) collapse rule above. ------------------------------------- */
+.border-glow-card.border-glow-card:focus-within::before {
+  opacity: 1;
+}
+
+.border-glow-card.border-glow-card:focus-within::after {
+  opacity: var(--fill-opacity, 0.5);
+}
+
+.border-glow-card.border-glow-card:focus-within > .edge-light {
+  opacity: 1;
+}
+
+/* ---- Mobile: match the .form-card mobile padding fix -------------------- */
+@media (max-width: 760px) {
+  .border-glow-card--glass.border-glow-card--form {
+    padding: var(--sp-7);
+  }
+}

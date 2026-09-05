@@ -112,7 +112,9 @@ Audited: `src/motion/*`, `src/components/*`, `src/app/globals.css`.
 
 ## 7 · Level-up recommendations
 
-### ✅ Shipped (v2 — this branch)
+### Shipped (v2 — this branch)
+
+6.5. **BorderGlow (React Bits, tailored)** — pointer-reactive clay border on the three fillable cards (contact form, free-audit form, the brief). Copper glow `"22 66 58"` + copper→rust→clay mesh ramp replace the neon defaults; radius from the house `--radius` token; reveal/collapse on `--dur-2/--dur-4`; rAF-throttled pointer work, never attached on touch; intro sweep compressed to ~1.5s and skipped under reduced motion; **`:focus-within` keyboard parity** added (upstream has none). Styles in `globals.css` ("BORDER GLOW" section).
 
 1. **Cursor aura** — difference-blended dot + trailing ring (`motion/pointer.ts`). Native cursor never hidden; `(hover)+(fine)` + reduced-motion gated; grows on interactive elements, presses on click.
 2. **Magnetic CTAs** — `[data-magnetic]` on the header CTA, hero CTA and CTA-band actions; ≤12px pull, `gsap.quickTo`, elastic release.
