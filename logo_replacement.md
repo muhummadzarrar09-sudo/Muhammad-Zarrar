@@ -6,13 +6,10 @@ The mark shipping today (`public/images/logo-mark.svg`) is an **observational
 rebuild** of the clay ZS logo, drawn against the reference artwork the client
 supplied in chat.
 
-> **The source PNG has still never reached the workspace.** It has been
-> attached four times; each time the chat attachment delivered no file bytes
-> to the sandbox (the last attempt reported a save path of
-> `/home/user/uploads/` — a directory that does not exist). The rebuild was
-> therefore drawn by eye from the rendered reference, **not** traced from
-> pixels. It matches the reference's geometry, layer structure and palette,
-> but it is not a pixel-perfect trace.
+> **RESOLVED 2026-09-05:** after four failed chat-attachment attempts, the
+> original was landed via GitHub web upload as **`public/images/source-logo.png`**
+> (500×500, black ground). The rebuild above remains the small-size vector
+> cut; the pixel original is now the reference master.
 
 ### Transparent cut (social / anywhere use)
 
