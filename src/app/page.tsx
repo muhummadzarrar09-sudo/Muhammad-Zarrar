@@ -6,7 +6,6 @@ import {
   RECOGNITIONS,
 } from "@/content/qualify";
 import { QualifyForm } from "@/components/qualify-form";
-import BorderGlow from "@/components/border-glow";
 import { PinnedManifesto } from "@/components/pinned-manifesto";
 import { Marquee } from "@/components/marquee";
 import { ProofStrip } from "@/components/proof-strip";
@@ -68,7 +67,7 @@ export default function HomePage() {
         </div>
         <div className="hero-toolbar">
           <div className="hero-ctas">
-            <a href="#brief" className="btn btn-primary" data-magnetic>
+            <a href="#brief" className="btn btn-primary">
               Write your brief
             </a>
           </div>
@@ -316,16 +315,13 @@ export default function HomePage() {
               <WhatsAppIcon size={16} /> Or just say hello
             </a>
           </div>
-          <BorderGlow
-            tone="glass"
-            className="qualify-card border-glow-card--form"
-          >
+          <div className="form-card qualify-card">
             <h3 className="form-title">The brief</h3>
             <p className="form-sub">
               Two minutes. Lands with the builder. Nothing is stored here.
             </p>
             <QualifyForm />
-          </BorderGlow>
+          </div>
         </div>
       </section>
     </>

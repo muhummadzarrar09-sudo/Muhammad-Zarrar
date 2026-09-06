@@ -3,7 +3,6 @@ import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { waLink, EMAIL, WHATSAPP_DISPLAY, DEFAULT_WA_MESSAGE } from "@/lib/site";
 import { ContactForm } from "@/components/contact-form";
 import { Reveal } from "@/components/reveal";
-import BorderGlow from "@/components/border-glow";
 import { JsonLd } from "@/components/jsonld";
 import { WhatsAppIcon } from "@/components/icons";
 
@@ -92,16 +91,14 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <Reveal>
-            <BorderGlow tone="glass" className="border-glow-card--form">
-              <h2 className="form-title">
-                Send a quick message
-              </h2>
-              <p className="form-sub">
-                Opens WhatsApp with your message pre-filled — nothing is stored.
-              </p>
-              <ContactForm />
-            </BorderGlow>
+          <Reveal className="form-card">
+            <h2 className="form-title">
+              Send a quick message
+            </h2>
+            <p className="form-sub">
+              Opens WhatsApp with your message pre-filled — nothing is stored.
+            </p>
+            <ContactForm />
           </Reveal>
         </div>
       </section>

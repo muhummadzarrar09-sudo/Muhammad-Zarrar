@@ -88,7 +88,7 @@ export default function AboutPage() {
               />
             ) : (
               <img
-                src="/images/logo-mark-transparent-original.png"
+                src="/images/logo-mark.svg"
                 alt=""
                 aria-hidden="true"
                 className="monogram-mark"
