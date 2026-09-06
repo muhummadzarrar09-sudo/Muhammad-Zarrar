@@ -91,13 +91,11 @@ function fitSize(lines, spec, base) {
   return size;
 }
 
-/** Canonical mark's inner markup (defs + paths), lifted out of its <svg>. */
+/** The mark on the card: the PIXEL ORIGINAL (transparent cut), inlined as
+ * a data URI — the flat SVG rebuild stays reserved for tiny sizes. */
 async function markInner() {
-  const raw = await readFile(LOGO_SVG, "utf8");
-  return raw
-    .replace(/<\?xml[^>]*\?>/, "")
-    .replace(/<svg[^>]*>/, "")
-    .replace(/<\/svg>\s*$/, "");
+  const png = await readFile(path.join(ROOT, "public/images/logo-mark-transparent-original.png"));
+  return "data:image/png;base64," + png.toString("base64");
 }
 
 /** Branded OG card: putty gallery wall, framed, clay mark, Fraunces headline.
@@ -119,8 +117,8 @@ function ogSvg({ eyebrow, lines, sub }, mark) {
   parts.push(`</g>`);
   /* clay ZS monogram — the only colour on the card */
   parts.push(
-    `<g transform="translate(110 ${(H - MARK) / 2})" width="${MARK}" height="${MARK}">` +
-      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="${MARK}" height="${MARK}">${mark}</svg>` +
+    `<g transform="translate(110 ${(H - MARK) / 2})">` +
+      `<image href="${mark}" x="0" y="0" width="${MARK}" height="${MARK}"/>` +
       `</g>`,
   );
   /* fitted sizes — measured with the real fonts, never allowed to cross the frame */

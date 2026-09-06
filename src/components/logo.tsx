@@ -17,13 +17,19 @@ export function LogoMark({ size = 34 }: { size?: number }) {
       aria-hidden="true"
       focusable="false"
     >
-      {/* Z — rust slab, the actual logo body colour */}
+      {/* Z — rust slab, the actual logo body colour.
+          logo-z-path + logo-s-path carry the one-shot load-in draw
+          (CSS only, has-motion gated — see globals.css). pathLength=1
+          normalizes the stroke so dasharray math is length-agnostic. */}
       <path
+        className="logo-z-path"
         d="M150,152 H320 V192 L232,314 H320 V356 H150 V314 L240,192 H150 Z"
         fill="#a84424"
       />
       {/* S — copper, double-stroke, knocked out with putty */}
       <path
+        className="logo-s-path"
+        pathLength={1}
         d="M368,214 C366,184 338,160 310,166 C284,172 268,195 276,217 C284,240 316,252 337,266 C359,281 371,305 359,329 C346,354 311,362 285,348 C269,339 261,323 260,310"
         fill="none"
         stroke="#c4c3b6"
@@ -32,6 +38,8 @@ export function LogoMark({ size = 34 }: { size?: number }) {
         strokeLinejoin="round"
       />
       <path
+        className="logo-s-path"
+        pathLength={1}
         d="M368,214 C366,184 338,160 310,166 C284,172 268,195 276,217 C284,240 316,252 337,266 C359,281 371,305 359,329 C346,354 311,362 285,348 C269,339 261,323 260,310"
         fill="none"
         stroke="#da7134"
