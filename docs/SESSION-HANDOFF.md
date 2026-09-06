@@ -141,3 +141,24 @@ motion system (12+ commits) — `git log` is the changelog.
 
 *The walk is wheel-tied. The ledger is honest. The clay mark is everywhere.
 Carry it forward.* 🏺
+
+## 9 · POST-MORTEM: the hollow-merge incident (2026-09-05/06)
+
+The snapshot rollback gremlin struck between turns and rolled the git index
+back to base while HEAD *claimed* the full history. Committing the handoff
+on that state produced a branch tip that **silently reverted the entire
+PR** (13 commits → 2-file diff). The PR "merged" green and main lost the
+whole session. Detected only because the file count of the merge was
+actually checked (compare base→merge = 2 files = impossible).
+
+**Rule for every merge, no exceptions:**
+1. After the final commit before a PR merge, run
+   `git diff --stat <base>..HEAD | tail -1` and sanity-check the number.
+2. After merging, verify via API that NEW files actually exist on main
+   (`gh api repos/<owner>/<repo>/contents/<path>?ref=main`) — not locally.
+3. If a rollback is suspected: `git reset --hard <last-known-good>` (the
+   object survives in local git even when refs roll back), re-stage
+   deliberately, and re-verify trees with `git ls-tree`, never trust
+   commit messages.
+4. `gh pr merge` DELETES the head branch by default — the session branch
+   must be re-pushed (`git push -u origin <branch>`) to keep working.
