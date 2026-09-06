@@ -2,7 +2,6 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { killWireframes, playWireframes } from "./play";
-import { destroyPointer, initPointer } from "./pointer";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -107,12 +106,6 @@ function bootMotion(pathname: string): MotionHandle {
 
   playWireframes(pathname);
 
-  /* Mouse-reactive layer (cursor aura, magnetic CTAs, marquee skew,
-     plaque pan). Subscribes to Lenis itself for velocity. Self-guards:
-     fine pointer + hover capable only, and never on the reduced-motion
-     boot (we're below that branch already). */
-  initPointer(lenis);
-
   const onRefresh = () => {
     if (!html.classList.contains("has-motion")) return;
     ScrollTrigger.refresh();
@@ -151,7 +144,6 @@ function bootMotion(pathname: string): MotionHandle {
       window.removeEventListener("load", onRefresh);
       window.removeEventListener("motion:scrollTo", onScrollTo);
       document.removeEventListener("click", onBeforeNavigate, true);
-      destroyPointer();
       killWireframes();
       gsap.ticker.remove(ticker);
       lenis.destroy();
