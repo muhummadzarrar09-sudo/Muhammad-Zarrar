@@ -4,6 +4,7 @@ import { waLink, WHATSAPP_DISPLAY } from "@/lib/site";
 import { FREE_AUDIT_POINTS } from "@/content/site-content";
 import { AuditForm } from "@/components/audit-form";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import BorderGlow from "@/components/border-glow";
 import { JsonLd } from "@/components/jsonld";
 import { WhatsAppIcon } from "@/components/icons";
@@ -34,7 +35,7 @@ export default function FreeAuditPage() {
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">Free 5-Point Audit</span>
             </nav>
-            <span className="eyebrow">Free · replies within 24 hours</span>
+            <ScrambleText className="eyebrow" text="Free · replies within 24 hours" />
             <h1>Free 5-Point <em>Mini-Audit.</em></h1>
             <p className="lede">
               Send us your website link — or tell us you don&rsquo;t have one

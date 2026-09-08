@@ -2,6 +2,7 @@ import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { PROCESS_STEPS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { CheckIcon } from "@/components/icons";
@@ -32,7 +33,7 @@ export default function ProcessPage() {
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">Process</span>
             </nav>
-            <span className="eyebrow">Process</span>
+            <ScrambleText className="eyebrow" text="Process" />
             <h1>
               Four phases. <em>Honest timelines.</em>
             </h1>
@@ -48,7 +49,7 @@ export default function ProcessPage() {
         <div className="container">
           <div className="grid grid-2" style={{ gap: 56 }}>
             {PROCESS_STEPS.map((step, i) => (
-              <Reveal key={step.name} className="phase" as="article">
+              <Reveal key={step.name} className="phase" as="article" spotlight>
                 <span className="ph-no" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </span>

@@ -3,6 +3,7 @@ import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { SERVICES } from "@/content/services";
 import { ADDONS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { ArrowRightIcon } from "@/components/icons";
@@ -33,7 +34,7 @@ export default function ServicesPage() {
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">Services</span>
             </nav>
-            <span className="eyebrow">Services</span>
+            <ScrambleText className="eyebrow" text="Services" />
             <h1>
               Five services. One starting point: <em>evidence.</em>
             </h1>
@@ -51,7 +52,11 @@ export default function ServicesPage() {
           <div className="index-list">
             {SERVICES.map((service, i) => (
               <Reveal key={service.slug}>
-                <Link href={`/services/${service.slug}`} className="index-row">
+                <Link
+                  href={`/services/${service.slug}`}
+                  className="index-row"
+                  data-spotlight
+                >
                   <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
                   <div>
                     <h3 className="idx-title">{service.name}</h3>

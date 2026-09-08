@@ -2,6 +2,7 @@ import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { NOTES } from "@/content/notes";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { ArrowRightIcon } from "@/components/icons";
@@ -51,7 +52,7 @@ export default function NotesIndexPage() {
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">Field Notes</span>
             </nav>
-            <span className="eyebrow">Field Notes</span>
+            <ScrambleText className="eyebrow" text="Field Notes" />
             <h1>Evidence, <em>written down.</em></h1>
             <p className="lede">
               Short notes from real audits and real builds. No growth-hacking,
@@ -67,7 +68,11 @@ export default function NotesIndexPage() {
           <div className="index-list">
             {NOTES.map((note, i) => (
               <Reveal key={note.slug}>
-                <Link href={`/notes/${note.slug}`} className="index-row">
+                <Link
+                  href={`/notes/${note.slug}`}
+                  className="index-row"
+                  data-spotlight
+                >
                   <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
                   <div>
                     <h3 className="idx-title">{note.title}</h3>

@@ -3,6 +3,8 @@ import { WhatsAppIcon } from "./icons";
 import GradientWaves from "./gradient-waves";
 import { waLink, DEFAULT_WA_MESSAGE } from "@/lib/site";
 import { Reveal } from "./reveal";
+import { ScrambleText } from "./scramble-text";
+import { ShinyText } from "./shiny-text";
 
 /** Full-bleed ink room. Serif statement + actions.
  *  The close of the walk carries the site's ONE sanctioned ambient room:
@@ -25,12 +27,19 @@ export function CtaBand({
     <section className="cta-full" data-motion>
       <GradientWaves className="cta-waves" />
       <div className="container">
-        <p className="cta-plate">The close</p>
+        <ScrambleText as="p" className="cta-plate" text="The close" />
         <Reveal>
-          <h2>{headline}</h2>
+          <h2>
+            <ShinyText text={headline} />
+          </h2>
           <p className="cta-body">{body}</p>
           <div className="cta-actions">
-            <Link href={primaryHref} className="btn btn-light" data-magnetic>
+            <Link
+              href={primaryHref}
+              className="btn btn-light btn-star"
+              data-magnetic
+            >
+              <span className="btn-star-ring" aria-hidden="true" />
               {primaryLabel}
             </Link>
             <a

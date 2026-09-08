@@ -129,6 +129,19 @@ Audited: `src/motion/*`, `src/components/*`, `src/app/globals.css`.
 
 Rules ledger for all of the above: `docs/MOTION-RULES.md` (NN/g durations, Material 3 tokens/easing, WCAG 2.2.2/2.3.3, Apple HIG, Refactoring UI transform-only).
 
+### Shipped (v3 — React Bits, this branch)
+
+Zero new dependencies; zero new ambient loops. Every addition is input-driven (wheel/pointer/focus) or one-shot.
+
+7. **ScrambleText (React Bits, tailored)** — eyebrows, home section labels and the CTA plate decode like a diagnostic readout: code-glyphs churn, the real text settles left-to-right, once per entry. SSR renders final text (SEO/no-JS safe); rAF loop with no dep (upstream uses gsap); skipped under reduced motion. Closes Tier 2 item 10 in adapted form — one-shot on entry rather than scrubbed, since churned text-content can't reversibly scrub.
+8. **ShinyText (React Bits, tailored)** — the CTA-band headline carries a copper sheen sweep, one sweep per viewport entry (reversible, like Reveal). CSS-only (`background-clip: text`, no motion dep); `.is-live` is added client-side only, so no-JS and reduced-motion readers keep plain bone text.
+9. **SpotlightCard (React Bits, tailored)** — a clay spotlight follows the cursor across `[data-spotlight]` rows and cards (service + note index rows, contrast rows, phases, pricing tiers, about cards). One delegated pointermove feeds element-relative % coords; the fade rides `--spot-o`, so `:hover`, `:focus-within` and `:focus-visible` share one path; no-JS still gets a centred hover wash.
+10. **CircularText (React Bits, tailored)** — the hero floor becomes a museum seal (*"This way · Scroll ·"*) whose ring is **cranked by the wheel**: hero-converge scrubs it 0→300°, then it bows out before the handoff. A reel, not a spinner — costs nothing from the ambient quota.
+11. **StarBorder (React Bits, tailored)** — a molten copper star orbits the primary CTA edge on hover/focus only (`@property --star-angle`, 2.6s orbit, masked 1.5px hairline). Rest state is the untouched house button; no idle loop; hidden under reduced motion.
+12. **TiltedCard + GlareHover (React Bits, tailored)** — the about portrait/monogram eases ±5° toward the cursor (upstream tilts ±15°) with a warm travelling glare. JS writes custom properties only; the settle rides the token `--dur-2` transition.
+
+Rules ledger for v3: `docs/MOTION-RULES.md` §2 (v3 rows) + §4 (rejected-bits rationale).
+
 ### ⏳ Waiting on case studies (deliberately not built yet)
 
 - **Case-study deck** — pinned horizontal gallery room (the fake-pin pattern is ready for it the moment the first study lands).

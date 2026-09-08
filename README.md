@@ -85,8 +85,13 @@ storyboarded as data in `src/motion/wireframes.ts`.
   (canvas, decorative — the real `h1` stays for crawlers and screen readers).
 - **Pointer layer** (`src/motion/pointer.ts`, desktop only): cursor aura
   (difference-blended, native cursor never hidden), magnetic CTAs
-  (`[data-magnetic]`), marquee velocity skew, plaque pan. Scoped to
-  `(hover) + (pointer: fine)`; skipped under reduced motion.
+  (`[data-magnetic]`), marquee velocity skew, plaque pan, clay spotlight
+  (`[data-spotlight]` rows/cards), portrait tilt + glare (`[data-tilt]`).
+  Scoped to `(hover) + (pointer: fine)`; skipped under reduced motion.
+- **React Bits v3** (all tailored, zero new deps, no new ambient loops):
+  eyebrows/labels decode once (`ScrambleText`), CTA headlines sweep copper
+  (`ShinyText`), the hero floor is a wheel-cranked seal (ring scrubs 0→300°
+  across the pin), primary CTAs orbit a molten star on hover/focus only.
 - **Scroll timeline**: the native scrollbar is hidden and replaced by a
   right-edge rail — progress fill plus diamond markers per section
   (`section[data-tl]`), keyboard-focusable, click-to-jump.

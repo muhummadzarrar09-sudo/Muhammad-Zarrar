@@ -3,12 +3,16 @@ import type Lenis from "lenis";
 
 /**
  * POINTER REACTIVE LAYER — mouse-only flourishes that sit on top of the
- * wheel-tied walk. Four effects, one shared gsap.ticker loop:
+ * wheel-tied walk. Six effects, one shared gsap.ticker loop:
  *
  *   1. cursor aura      — a bone dot + trailing ring that track the pointer
  *   2. magnetic CTAs    — [data-magnetic] links lean toward the cursor
  *   3. marquee skew     — the proof band bends with Lenis scroll velocity
  *   4. plaque pan       — plaque artworks drift a few px under the cursor
+ *   5. spotlight        — React Bits SpotlightCard, tailored: a clay wash
+ *                         follows the cursor across [data-spotlight] rows
+ *   6. tilt             — React Bits TiltedCard + GlareHover, tailored: the
+ *                         about portrait eases ±5° with a travelling glare
  *
  * RULES THIS FILE IS BOUND TO (see docs/MOTION-RULES.md):
  * - WCAG 2.2.2 / 2.3.3 + Apple HIG — the native cursor is NEVER hidden
@@ -309,6 +313,117 @@ function buildPan(): { teardown: () => void } {
 }
 
 /* ------------------------------------------------------------------ */
+/* 5 · Spotlight (React Bits SpotlightCard, tailored)                  */
+/* ------------------------------------------------------------------ */
+
+/**
+ * One delegated pointermove feeds --spot-x/--spot-y (element-relative %)
+ * to whatever [data-spotlight] row or card sits under the cursor. The glow
+ * itself is a CSS radial-gradient pseudo that fades on --spot-o, so hover,
+ * :focus-within and :focus-visible all get it — keyboard parity for free —
+ * and no-JS readers still get a centred wash on hover. Percentage coords
+ * keep the light glued through scroll and resize. Upstream uses per-card
+ * listeners + a motion dep; delegation + tokens do the same work here.
+ */
+function buildSpotlight(): { teardown: () => void } {
+  let current: HTMLElement | null = null;
+  let raf = 0;
+  let pending: PointerEvent | null = null;
+
+  const apply = () => {
+    raf = 0;
+    const event = pending;
+    pending = null;
+    if (!event) return;
+    const hit = (event.target as HTMLElement | null)?.closest?.(
+      "[data-spotlight]"
+    ) as HTMLElement | null;
+    if (hit !== current) current = hit;
+    if (!current) return;
+    const rect = current.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+    const x = clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100);
+    const y = clamp(((event.clientY - rect.top) / rect.height) * 100, 0, 100);
+    current.style.setProperty("--spot-x", `${x.toFixed(2)}%`);
+    current.style.setProperty("--spot-y", `${y.toFixed(2)}%`);
+  };
+
+  const onMove = (event: PointerEvent) => {
+    pending = event;
+    if (!raf) raf = requestAnimationFrame(apply);
+  };
+
+  document.addEventListener("pointermove", onMove, { passive: true });
+
+  return {
+    teardown: () => {
+      document.removeEventListener("pointermove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+      document
+        .querySelectorAll<HTMLElement>("[data-spotlight]")
+        .forEach((el) => {
+          el.style.removeProperty("--spot-x");
+          el.style.removeProperty("--spot-y");
+        });
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* 6 · Tilt + glare (React Bits TiltedCard + GlareHover, tailored)     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * [data-tilt] eases toward the cursor (±5° — a jewel turning, not a card
+ * trick) while --tilt-gx/--tilt-gy drag a warm glare across it. JS only
+ * writes custom properties; the transition lives in CSS on the token
+ * --dur-2, so the settle honours the same easing as every other control.
+ * Upstream tilts to ±15° with a white glare; both are halved and warmed
+ * here to stay inside the gallery's light.
+ */
+function buildTilt(): { teardown: () => void } {
+  const els = Array.from(document.querySelectorAll<HTMLElement>("[data-tilt]"));
+  const bindings: PanBinding[] = [];
+
+  for (const el of els) {
+    const onMove = (event: PointerEvent) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      const px = clamp(((event.clientX - rect.left) / rect.width) * 2 - 1, -1, 1);
+      const py = clamp(((event.clientY - rect.top) / rect.height) * 2 - 1, -1, 1);
+      el.style.setProperty("--tilt-ry", `${(px * 5).toFixed(2)}deg`);
+      el.style.setProperty("--tilt-rx", `${(-py * 5).toFixed(2)}deg`);
+      el.style.setProperty("--tilt-gx", `${(((px + 1) / 2) * 100).toFixed(1)}%`);
+      el.style.setProperty("--tilt-gy", `${(((py + 1) / 2) * 100).toFixed(1)}%`);
+    };
+
+    const onLeave = () => {
+      el.style.setProperty("--tilt-rx", "0deg");
+      el.style.setProperty("--tilt-ry", "0deg");
+      el.style.setProperty("--tilt-gx", "50%");
+      el.style.setProperty("--tilt-gy", "50%");
+    };
+
+    el.addEventListener("pointermove", onMove, { passive: true });
+    el.addEventListener("pointerleave", onLeave);
+    bindings.push({ el, onMove, onLeave });
+  }
+
+  return {
+    teardown: () => {
+      for (const { el, onMove, onLeave } of bindings) {
+        el.removeEventListener("pointermove", onMove);
+        el.removeEventListener("pointerleave", onLeave);
+        el.style.removeProperty("--tilt-rx");
+        el.style.removeProperty("--tilt-ry");
+        el.style.removeProperty("--tilt-gx");
+        el.style.removeProperty("--tilt-gy");
+      }
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* Boot                                                                */
 /* ------------------------------------------------------------------ */
 
@@ -321,12 +436,16 @@ export function initPointer(lenis: Lenis) {
   const magnetics = buildMagnetics();
   const skew = buildSkew(lenis);
   const pan = buildPan();
+  const spotlight = buildSpotlight();
+  const tilt = buildTilt();
 
   dispose = () => {
     aura.teardown();
     magnetics.teardown();
     skew.teardown();
     pan.teardown();
+    spotlight.teardown();
+    tilt.teardown();
   };
 }
 

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { NOTES, getNote } from "@/content/notes";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { SITE_URL } from "@/lib/site";
@@ -75,7 +76,10 @@ export default async function NotePage({
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">{note.title}</span>
             </nav>
-            <span className="eyebrow">{note.date} · Muhammad Zarrar</span>
+            <ScrambleText
+              className="eyebrow"
+              text={`${note.date} · Muhammad Zarrar`}
+            />
             <h1>{note.title}</h1>
             <p className="lede">{note.excerpt}</p>
           </Reveal>

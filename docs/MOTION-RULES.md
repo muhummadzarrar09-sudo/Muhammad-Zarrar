@@ -38,6 +38,12 @@ cursor always wins.**
 | Logo S draw (0.8s) + Z fade (0.5s) | `globals.css` + `logo.tsx` | Hero/brand moment tier (≤1s, once per load); copper trails putty by 170ms for legibility | `html.has-motion` + `no-preference`; header only; `pathLength=1` keeps math fixed |
 | BorderGlow cards (React Bits, tailored) | `components/border-glow.tsx` + globals | Pointer-driven only — no timers except the optional ~1.5s intro sweep (vs 4s upstream); fades on `--dur-2`/`--dur-4` tokens | Coarse pointers: never attached; `prefers-reduced-motion`: sweep skipped, fades collapsed; `:focus-within` keyboard parity; transform/opacity/mask only |
 | ParticleText 404 headline (React Bits, tailored) | `components/particle-text.tsx` | One-shot gather 800ms + 260ms stagger (hero-moment tier, once per visit); loop **parks at rest** — restarts only on pointer/resize input | `prefers-reduced-motion`: static single draw, loop never starts; decorative canvas, real h1 stays; no-JS fallback copy; touch scroll preserved (`pan-y`) |
+| ScrambleText decode (eyebrows/labels, one-shot ≤1200ms) | `components/scramble-text.tsx` | 420ms + 22ms/char, hero-label tier, once per entry | SSR renders final text; reduced motion = no-op; no live-region churn; layout-stable (1:1 glyph swap) |
+| ShinyText sheen (CTA headline, one sweep per entry) | `components/shiny-text.tsx` + globals | 1.9s sweep, expressive tier, entrance-gated | `.is-live` added client-side only; no-JS = plain bone text; `has-motion` gate; `background-clip: text` (composited, no layout) |
+| Spotlight rows/cards (`[data-spotlight]`) | `motion/pointer.ts` §5 + globals | Input-driven — no duration; fade on `--dur-2` | Fine pointer only; reduced-motion CSS gate; `:focus-within`/`:focus-visible` parity; no-JS centred hover wash |
+| Scroll crank (hero seal, scrubbed 0→300°) | `app/page.tsx` + `motion/hero.ts` | Wheel-scrubbed — no duration; dies with the pin (fades 0.9→1) | Static under reduced motion (scene skipped); `sr-only` label, artwork `aria-hidden` |
+| StarBorder CTA orbit (hover/focus only) | globals (`@property --star-angle`) | 2.6s linear orbit, only while hovered/focused | No idle loop (quota-safe); `display: none` under reduced motion; edge-only hairline inside `overflow: hidden` |
+| Tilt + glare (`[data-tilt]`, ±5°) | `motion/pointer.ts` §6 + globals | Input-driven; settle on the `--dur-2` token transition | Fine pointer only; vars-only JS; static card on touch, reduced motion and no-JS |
 
 ## 3 · The ambient quota (v2 amendment)
 
@@ -66,6 +72,11 @@ moving luminance). Rules for the quota:
 - **Timer-based entrances sitewide (AOS-style)** — fights the wheel-tied identity; timed motion is reserved for one-shot hero moments only.
 - **Animating layout props / large blur radii on scroll** — jank budget; blur is used exactly twice (hero dissolve) and never in a hover path.
 - **Sound** — HIG: unsolicited audio; also off-brand for a "quiet gallery."
+- **Ambient React Bits (Aurora, Particles, Beams, Silk, Dither…)** — the ambient quota is spent (ink close). v3 ships six React Bits without adding a single new loop.
+- **ScrollFloat / TextPressure** — parallax-on-text and pointer-warped glyphs break the typography-baseline rule: the type is the product.
+- **CountUp / Counter** — still waiting on honest numbers (real case-study metrics), per the inventory's standing rule.
+- **Dock / GooeyNav / FlowingMenu** — navigation patterns for app-chrome brands, not a quiet gallery.
+- **ClickSpark** — click-burst particles read playful against the museum register; the magnetic settle is already the click delight.
 
 ## 4 · Sources
 

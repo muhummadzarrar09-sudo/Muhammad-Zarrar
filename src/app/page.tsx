@@ -6,6 +6,7 @@ import {
   RECOGNITIONS,
 } from "@/content/qualify";
 import { QualifyForm } from "@/components/qualify-form";
+import { ScrambleText } from "@/components/scramble-text";
 import BorderGlow from "@/components/border-glow";
 import { PinnedManifesto } from "@/components/pinned-manifesto";
 import { Marquee } from "@/components/marquee";
@@ -68,13 +69,33 @@ export default function HomePage() {
         </div>
         <div className="hero-toolbar">
           <div className="hero-ctas">
-            <a href="#brief" className="btn btn-primary" data-magnetic>
+            <a href="#brief" className="btn btn-primary btn-star" data-magnetic>
+              <span className="btn-star-ring" aria-hidden="true" />
               Write your brief
             </a>
           </div>
         </div>
         <p className="hero-floor">
-          <span>This way</span>
+          <span className="sr-only">Scroll to continue</span>
+          <span className="crank" aria-hidden="true">
+            <svg className="crank-ring" viewBox="0 0 100 100" focusable="false">
+              <defs>
+                <path
+                  id="crank-orbit"
+                  d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"
+                  fill="none"
+                />
+              </defs>
+              <text className="crank-text">
+                <textPath href="#crank-orbit" textLength="231" lengthAdjust="spacingAndGlyphs">
+                  This way · Scroll · This way · Scroll ·
+                </textPath>
+              </text>
+            </svg>
+            <span className="crank-core">
+              <span className="crank-arrow">↓</span>
+            </span>
+          </span>
         </p>
       </section>
 
@@ -92,7 +113,7 @@ export default function HomePage() {
             <div className="recognize-intro">
               <div className="sec-head">
                 <span className="sec-index">01</span>
-                <span className="sec-label">If this is your Tuesday</span>
+                <ScrambleText className="sec-label" text="If this is your Tuesday" />
                 <span className="sec-rule" />
               </div>
               <h2 className="sec-title" id="you-heading">
@@ -192,7 +213,7 @@ export default function HomePage() {
         aria-labelledby="get-heading"
       >
         <div className="container">
-          <p className="room-label">What you walk away with</p>
+          <ScrambleText as="p" className="room-label" text="What you walk away with" />
           <h2 className="room-title" id="get-heading">
             Not a pitch. A result.
           </h2>
@@ -222,7 +243,7 @@ export default function HomePage() {
         <div className="container">
           <div className="sec-head">
             <span className="sec-index">02</span>
-            <span className="sec-label">Why this feels different</span>
+            <ScrambleText className="sec-label" text="Why this feels different" />
             <span className="sec-rule" />
           </div>
           <h2 className="sec-title" id="different-heading">
@@ -230,7 +251,7 @@ export default function HomePage() {
           </h2>
           <div className="contrast-list">
             {CONTRAST.map((row) => (
-              <article className="contrast-row" key={row.here}>
+              <article className="contrast-row" data-spotlight key={row.here}>
                 <p className="contrast-usual">
                   <span>Usual</span>
                   {row.usual}
@@ -255,7 +276,7 @@ export default function HomePage() {
         <div className="container">
           <div className="sec-head">
             <span className="sec-index">03</span>
-            <span className="sec-label">Then what happens</span>
+            <ScrambleText className="sec-label" text="Then what happens" />
             <span className="sec-rule" />
           </div>
           <h2 className="sec-title" id="next-heading">
@@ -263,7 +284,7 @@ export default function HomePage() {
           </h2>
           <div className="phase-grid next-grid">
             {NEXT_STEPS.map((step) => (
-              <article className="phase" key={step.no}>
+              <article className="phase" data-spotlight key={step.no}>
                 <span className="ph-no" aria-hidden="true">
                   {step.no}
                 </span>
@@ -288,7 +309,7 @@ export default function HomePage() {
           <div className="qualify-intro">
             <div className="sec-head">
               <span className="sec-index">04</span>
-              <span className="sec-label">Your brief</span>
+              <ScrambleText className="sec-label" text="Your brief" />
               <span className="sec-rule" />
             </div>
             <h2 className="sec-title" id="brief-heading">

@@ -46,6 +46,9 @@
   --on-accent: #ffffff;
   --gold: #7a2e18;                    /* clay rust — brand mark + live diagnostic signal, 5.30:1 */
   --gold-deep: #571f0c;              /*  7.36:1 AAA — active ordinal (16.8px text) on canvas */
+  --copper: #da7134;                 /* molten accent — star borders, sheen tips (decorative only) */
+  --copper-soft: #e09a68;            /* sheen mid — on-ink display text only */
+  --spot-core: rgba(122, 46, 24, 0.14); /* spotlight wash core (React Bits SpotlightCard) */
   --text: #111110;                    /* 10.64:1 ink */
   --text-2: #2a2926;                  /*  8.19:1 graphite — AAA on canvas AND footer */
   --text-3: #33322e;                  /*  7.23:1 tertiary — AAA on canvas */
@@ -7194,4 +7197,236 @@ html.has-motion .room-ink .vignette-plaque {
 .cta-full > .container {
   position: relative;
   z-index: 1;
+}
+
+/* ==========================================================================
+   REACT BITS v3 — ShinyText · SpotlightCard · CircularText · StarBorder ·
+   TiltedCard/GlareHover. All tailored: input-driven or one-shot, never an
+   idle loop. Rules ledger: docs/MOTION-RULES.md §2 (v3 rows).
+   ========================================================================== */
+
+/* ---------- SHINY TEXT (React Bits ShinyText, tailored) --------------------
+   Copper sheen across on-ink display text. `.is-live` is added client-side
+   only (no-JS = plain bone text); `.is-shine` toggles per viewport entry so
+   each arrival replays exactly one sweep. transform/opacity only — the sweep
+   is a background-position keyframe on clipped text, never a layout prop. */
+.shiny-text {
+  color: inherit;
+}
+
+html.has-motion .shiny-text.is-live {
+  color: transparent;
+  background-image: linear-gradient(
+    105deg,
+    var(--accent-on-ink) 42%,
+    var(--copper-soft) 50%,
+    var(--accent-on-ink) 58%
+  );
+  background-size: 240% 100%;
+  background-position: 115% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+html.has-motion .shiny-text.is-live.is-shine {
+  animation: sheen-sweep 1.9s var(--ease-entrance) 1;
+}
+
+@keyframes sheen-sweep {
+  from { background-position: 115% 0; }
+  to { background-position: -115% 0; }
+}
+
+/* ---------- SPOTLIGHT (React Bits SpotlightCard, tailored) -----------------
+   A clay wash follows the cursor across [data-spotlight] rows and cards.
+   JS (motion/pointer.ts §5) only feeds --spot-x/--spot-y; the fade runs on
+   --spot-o so :hover, :focus-within and :focus-visible share one path.
+   Each class uses its free pseudo (index-row::after, card::before,
+   phase/contrast ::after) — no markup changes, no extra elements. */
+[data-spotlight] {
+  position: relative;
+}
+
+.index-row[data-spotlight]::after,
+.card[data-spotlight]::before,
+.phase[data-spotlight]::after,
+.contrast-row[data-spotlight]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    240px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    var(--spot-core),
+    transparent 70%
+  );
+  opacity: var(--spot-o, 0);
+  transition: opacity var(--dur-2) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  [data-spotlight]:hover {
+    --spot-o: 1;
+  }
+}
+
+[data-spotlight]:focus-visible,
+[data-spotlight]:focus-within {
+  --spot-o: 1;
+}
+
+/* ---------- SCROLL CRANK (React Bits CircularText, tailored) ---------------
+   The hero floor's "This way" becomes a museum seal: circular text on an
+   SVG orbit with a clay arrow at the core. Upstream rotates on a timer;
+   this ring is cranked BY the wheel (hero-converge scrubs it 0→300°), so it
+   costs nothing from the ambient quota. Static and legible with no-JS. */
+.hero-minimal .hero-floor {
+  gap: 0;
+}
+
+.crank {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+}
+
+.crank-ring {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  will-change: transform;
+}
+
+.crank-text {
+  font-family: var(--font-body);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  fill: var(--text-2);
+}
+
+.crank-core {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.crank-arrow {
+  font-size: 18px;
+  line-height: 1;
+  color: var(--gold);
+}
+
+@media (max-width: 760px) {
+  .crank {
+    width: 76px;
+    height: 76px;
+  }
+}
+
+/* ---------- STAR BORDER (React Bits StarBorder, tailored) ------------------
+   A molten copper star orbits the CTA edge — but ONLY while hovered or
+   keyboard-focused. Rest state is the untouched house button; there is no
+   idle loop to spend quota on. The ring lives at inset 1px (inside the
+   button's overflow:hidden) and is masked to a 1.5px hairline. */
+@property --star-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.btn-star-ring {
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(var(--radius) - 1px);
+  padding: 1.5px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-standard);
+  background: conic-gradient(
+    from var(--star-angle),
+    transparent 0deg,
+    transparent 262deg,
+    var(--copper) 305deg,
+    var(--white) 322deg,
+    var(--copper) 335deg,
+    transparent 350deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.btn-star:hover .btn-star-ring,
+.btn-star:focus-visible .btn-star-ring {
+  opacity: 1;
+  animation: star-orbit 2.6s linear infinite;
+}
+
+@keyframes star-orbit {
+  to { --star-angle: 360deg; }
+}
+
+/* ---------- TILT CARD (React Bits TiltedCard + GlareHover, tailored) -------
+   The about portrait/monogram turns ±5° toward the cursor with a warm glare
+   travelling across it. JS writes vars only; the settle rides the token
+   --dur-2 transition, and the glare fades on --dur-3 like any panel. */
+.monogram-tilt {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  position: relative;
+  border-radius: var(--radius);
+  transform: perspective(1000px) rotateX(var(--tilt-rx, 0deg))
+    rotateY(var(--tilt-ry, 0deg));
+  transition: transform var(--dur-2) var(--ease-standard);
+}
+
+.monogram-tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    320px circle at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+    rgba(255, 240, 222, 0.2),
+    transparent 65%
+  );
+  opacity: var(--tilt-o, 0);
+  transition: opacity var(--dur-3) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  [data-tilt]:hover {
+    --tilt-o: 1;
+  }
+}
+
+/* ---------- v3 reduced-motion gates ----------------------------------------
+   Scramble/Shiny never boot (component-level matchMedia) and spotlight/
+   tilt/crank/star never attach (engine + pointer gates), so these rules are
+   belt-and-braces: even a forced class can only render the static design. */
+@media (prefers-reduced-motion: reduce) {
+  .shiny-text.is-live.is-shine {
+    animation: none;
+  }
+  .index-row[data-spotlight]::after,
+  .card[data-spotlight]::before,
+  .phase[data-spotlight]::after,
+  .contrast-row[data-spotlight]::after,
+  .monogram-tilt::after,
+  .btn-star-ring {
+    display: none;
+  }
+  .monogram-tilt {
+    transform: none;
+  }
 }

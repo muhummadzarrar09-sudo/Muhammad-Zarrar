@@ -4,6 +4,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { CrossIcon } from "@/components/icons";
@@ -62,7 +63,7 @@ export default function AboutPage() {
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">About</span>
             </nav>
-            <span className="eyebrow">About</span>
+            <ScrambleText className="eyebrow" text="About" />
             <h1>One builder. <em>A system that ships.</em></h1>
             <p className="lede">
               Zarrar.Solutions is Muhammad Zarrar — a senior full-stack builder
@@ -77,7 +78,8 @@ export default function AboutPage() {
       <section className="section" id="story" data-tl="Story" aria-labelledby="story-heading">
         <div className="container service-detail-grid">
           <Reveal className="monogram-card">
-            {hasPortrait ? (
+            <div className="monogram-tilt" data-tilt>
+              {hasPortrait ? (
               <Image
                 src="/images/portrait.jpg"
                 alt="Muhammad Zarrar — founder of Zarrar.Solutions, Rawalpindi"
@@ -95,7 +97,8 @@ export default function AboutPage() {
                 width={240}
                 height={240}
               />
-            )}
+              )}
+            </div>
           </Reveal>
           <div className="prose">
             <h2 id="story-heading">Why audit-first</h2>
@@ -126,14 +129,14 @@ export default function AboutPage() {
       <section className="section-tight" aria-labelledby="values-heading" style={{ paddingTop: 0 }}>
         <div className="container">
           <Reveal className="section-head">
-            <span className="eyebrow">Values</span>
+            <ScrambleText className="eyebrow" text="Values" />
             <h2 id="values-heading">
               Three rules, kept in writing
             </h2>
           </Reveal>
           <div className="grid grid-3">
             {VALUES.map((value) => (
-              <Reveal key={value.title} className="card card-hover value-card">
+              <Reveal key={value.title} className="card card-hover value-card" spotlight>
                 <h3>{value.title}</h3>
                 <p>{value.body}</p>
               </Reveal>
@@ -145,14 +148,14 @@ export default function AboutPage() {
       <section className="section" aria-labelledby="not-doing-heading">
         <div className="container">
           <Reveal className="section-head">
-            <span className="eyebrow">Equally important</span>
+            <ScrambleText className="eyebrow" text="Equally important" />
             <h2 id="not-doing-heading">
               What you won&rsquo;t get here
             </h2>
           </Reveal>
           <div className="grid grid-2">
             {NOT_DOING.map((item) => (
-              <Reveal key={item} className="card why-card">
+              <Reveal key={item} className="card why-card" spotlight>
                 <span className="why-check" aria-hidden="true">
                   <CrossIcon size={16} />
                 </span>

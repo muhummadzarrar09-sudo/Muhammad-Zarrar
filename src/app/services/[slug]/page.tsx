@@ -6,6 +6,7 @@ import { SERVICES, getService } from "@/content/services";
 import { FaqAccordion } from "@/components/faq";
 import { JsonLd } from "@/components/jsonld";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { CtaBand } from "@/components/cta-band";
 import { CheckIcon, ArrowRightIcon } from "@/components/icons";
 import { SITE_URL } from "@/lib/site";
@@ -101,7 +102,7 @@ export default async function ServiceDetailPage({
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">{service.name}</span>
             </nav>
-            <span className="eyebrow">Service</span>
+            <ScrambleText className="eyebrow" text="Service" />
             <h1>{service.name}</h1>
             <p className="lede">{service.lead}</p>
           </Reveal>

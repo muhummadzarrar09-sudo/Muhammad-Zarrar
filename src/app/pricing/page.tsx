@@ -3,6 +3,7 @@ import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { SERVICES } from "@/content/services";
 import { ADDONS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { CheckIcon } from "@/components/icons";
@@ -60,7 +61,7 @@ export default function PricingPage() {
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">Pricing</span>
             </nav>
-            <span className="eyebrow">Pricing</span>
+            <ScrambleText className="eyebrow" text="Pricing" />
             <h1>In PKR, <em>in writing.</em></h1>
             <p className="lede">
               Prices are ranges because scope varies — you get an exact written
@@ -98,7 +99,7 @@ export default function PricingPage() {
             </h2>
             <div className="grid grid-3">
               {SERVICES.find((s) => s.slug === "redesign")?.tiers?.map((tier) => (
-                <div className="card card-hover tier-card" key={tier.label}>
+                <div className="card card-hover tier-card" data-spotlight key={tier.label}>
                   <span className="tier-label">{tier.label}</span>
                   <span className="tier-price">{tier.price}</span>
                   <p>{tier.desc}</p>
