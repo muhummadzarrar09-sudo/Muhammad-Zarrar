@@ -7702,6 +7702,131 @@ html.has-motion .rv-in [data-stagger] > li {
   }
 }
 
+/* ---------- BUDGET SLIDER (React Bits ElasticSlider, tailored) -------------
+   The brief's budget chips graduate to a spring-fill PKR slider with five
+   stops; "I don't know yet" stays a plain chip beside it (it is not a
+   magnitude, so it never joins the track). Native range input: keyboard,
+   touch and screen readers all work; the spring only ever moves --fill. */
+.q-budget {
+  display: grid;
+  gap: 14px;
+  justify-items: stretch;
+}
+
+.q-budget-read {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-heading);
+  color: var(--text);
+  min-height: 2.2em;
+}
+
+.q-budget.is-unsure .q-budget-read {
+  font-style: italic;
+  color: var(--text-2);
+}
+
+.q-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+  --fill: 50%;
+}
+
+.q-slider::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(
+    to right,
+    var(--gold) var(--fill),
+    var(--hairline) var(--fill)
+  );
+}
+
+.q-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -11px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 3px solid var(--ground-750);
+  box-shadow: var(--e-2);
+}
+
+.q-slider::-moz-range-track {
+  height: 4px;
+  border-radius: 4px;
+  background: var(--hairline);
+}
+
+.q-slider::-moz-range-progress {
+  height: 4px;
+  border-radius: 4px;
+  background: var(--gold);
+}
+
+.q-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 3px solid var(--ground-750);
+  box-shadow: var(--e-2);
+}
+
+.q-slider:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 6px;
+  border-radius: var(--r-sm);
+}
+
+.q-budget.is-unsure .q-slider {
+  opacity: 0.45;
+}
+
+.q-slider-scale {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 13px;
+}
+
+.q-tick {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hairline-strong);
+  opacity: 0.5;
+  transition: background-color var(--dur-2) var(--ease-standard),
+    opacity var(--dur-2) var(--ease-standard),
+    transform var(--dur-2) var(--ease-standard);
+}
+
+.q-tick.is-on {
+  background: var(--gold);
+  opacity: 1;
+  transform: scale(1.25);
+}
+
+.q-slider-ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.q-budget .q-chip {
+  justify-self: start;
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */
