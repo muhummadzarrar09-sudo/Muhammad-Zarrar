@@ -39,9 +39,10 @@ export function SiteHeader() {
         <div className="header-actions">
           <Link
             href="/#brief"
-            className="btn btn-primary btn-sm header-cta"
+            className="btn btn-primary btn-sm btn-star header-cta"
             data-magnetic
           >
+            <span className="btn-star-ring" aria-hidden="true" />
             Write your brief
           </Link>
           <MobileMenu />
