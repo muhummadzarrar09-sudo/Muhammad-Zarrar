@@ -15,6 +15,8 @@ import type Lenis from "lenis";
  *                         about portrait eases ±5° with a travelling glare
  *   7. enter nudge        — React Bits DirectionalHover, tailored: plaque
  *                         captions flinch away from the arriving cursor
+ *   8. marquee pace       — React Bits ScrollVelocity, tailored: the band
+ *                         sprints with wheel velocity (Lenis-fed, not motion)
  *
  * RULES THIS FILE IS BOUND TO (see docs/MOTION-RULES.md):
  * - WCAG 2.2.2 / 2.3.3 + Apple HIG — the native cursor is NEVER hidden
@@ -473,6 +475,77 @@ function buildEnter(): { teardown: () => void } {
 }
 
 /* ------------------------------------------------------------------ */
+/* 8 · Marquee pace (React Bits ScrollVelocity, tailored)              */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The CSS keyframes stay the no-JS path; once this layer boots, each band
+ * goes .is-driven and a ticker carries the loop instead — base pace matches
+ * the 42s CSS loop, then Lenis velocity multiplies it up to ~4x and decays.
+ * Pace lives on the TRACK, skew on the BAND: the two never fight. Hover or
+ * keyboard focus inside the band parks the advance (WCAG 2.2.2), and the
+ * whole thing never exists on touch, reduced motion or no-JS.
+ */
+function buildPace(lenis: Lenis): { teardown: () => void } {
+  const bands = Array.from(document.querySelectorAll<HTMLElement>(".marquee"));
+  if (!bands.length) return { teardown: () => {} };
+  for (const band of bands) band.classList.add("is-driven");
+
+  let half = 0; // half the track = one full loop (two identical spans)
+  let frames = 0;
+  const measure = () => {
+    const track = bands[0].querySelector<HTMLElement>(".marquee-track");
+    half = track ? track.offsetWidth / 2 : 0;
+  };
+  measure();
+
+  let pos = 0;
+  let boost = 0;
+  let smooth = 0;
+  let last = performance.now();
+
+  const onScroll = (instance: Lenis) => {
+    boost = clamp(Math.abs(instance.velocity ?? 0) * 0.35, 0, 3);
+  };
+
+  const tick = () => {
+    const now = performance.now();
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    frames += 1;
+    if (frames % 120 === 0 || !half) measure(); // fonts/resize drift
+    if (!half) return;
+    boost *= 0.92;
+    smooth += (boost - smooth) * 0.08;
+    const parked = bands.some((band) => band.matches(":hover, :focus-within"));
+    if (!parked) {
+      pos -= ((half / 42) * (1 + smooth)) * dt;
+      pos = ((pos % half) + half) % half;
+      const value = `translate3d(${pos.toFixed(1)}px, 0, 0)`;
+      for (const band of bands) {
+        const track = band.querySelector<HTMLElement>(".marquee-track");
+        if (track) track.style.transform = value;
+      }
+    }
+  };
+
+  lenis.on("scroll", onScroll);
+  gsap.ticker.add(tick);
+
+  return {
+    teardown: () => {
+      lenis.off("scroll", onScroll);
+      gsap.ticker.remove(tick);
+      for (const band of bands) {
+        band.classList.remove("is-driven");
+        const track = band.querySelector<HTMLElement>(".marquee-track");
+        if (track) track.style.transform = "";
+      }
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* Boot                                                                */
 /* ------------------------------------------------------------------ */
 
@@ -488,6 +561,7 @@ export function initPointer(lenis: Lenis) {
   const spotlight = buildSpotlight();
   const tilt = buildTilt();
   const enter = buildEnter();
+  const pace = buildPace(lenis);
 
   dispose = () => {
     aura.teardown();
@@ -497,6 +571,7 @@ export function initPointer(lenis: Lenis) {
     spotlight.teardown();
     tilt.teardown();
     enter.teardown();
+    pace.teardown();
   };
 }
 

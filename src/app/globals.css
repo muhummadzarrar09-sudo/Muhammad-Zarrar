@@ -7484,6 +7484,15 @@ html.has-motion .rv-in [data-stagger] > li {
   z-index: 1;
 }
 
+/* ---------- MARQUEE PACE (React Bits ScrollVelocity, tailored) --------------
+   .is-driven hands the loop from CSS keyframes to the Lenis-fed ticker.
+   The keyframes remain the no-JS path AND the touch path (this layer never
+   boots there), and the existing reduced-motion gate still parks them. */
+.marquee.is-driven .marquee-track {
+  animation: none;
+  will-change: transform;
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */
