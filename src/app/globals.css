@@ -7559,6 +7559,41 @@ html.has-motion .rv-in [data-stagger] > li {
   background: var(--crosshair);
 }
 
+/* ---------- FOCUS VEILS (React Bits GradualBlur, stilled) -------------------
+   A camera-focus vignette: soft blur pooled at the viewport edges. No loop,
+   no JS — pure progressive enhancement, desktop fine-pointer only, and never
+   under reduced motion. (backdrop-filter can no-op under overflow: clip on
+   some engines; then the veils simply don't render. Nothing breaks.) */
+.focus-veil {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 13vh;
+  z-index: 40;
+  pointer-events: none;
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+}
+
+.focus-veil-top {
+  top: 0;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+}
+
+.focus-veil-bottom {
+  bottom: 0;
+  mask-image: linear-gradient(to top, black 0%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 861px) and (prefers-reduced-motion: no-preference) {
+  .focus-veil {
+    display: block;
+  }
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */

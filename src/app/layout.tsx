@@ -108,6 +108,8 @@ export default function RootLayout({
         <ScrollTimeline />
         <MotionRoot />
         <div className="gallery-ground" aria-hidden="true" />
+        <div className="focus-veil focus-veil-top" aria-hidden="true" />
+        <div className="focus-veil focus-veil-bottom" aria-hidden="true" />
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />
