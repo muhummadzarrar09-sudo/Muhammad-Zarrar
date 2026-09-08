@@ -4,6 +4,7 @@ import { SERVICES } from "@/content/services";
 import { ADDONS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
 import { ScrambleText } from "@/components/scramble-text";
+import { RotatingText } from "@/components/rotating-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { ArrowRightIcon } from "@/components/icons";
@@ -36,7 +37,7 @@ export default function ServicesPage() {
             </nav>
             <ScrambleText className="eyebrow" text="Services" />
             <h1>
-              Five services. One starting point: <em>evidence.</em>
+              Five services. One starting point: <RotatingText words={["hunches.", "vibes.", "evidence."]} />
             </h1>
             <p className="lede">
               Every engagement starts with an audit, because fixing the wrong

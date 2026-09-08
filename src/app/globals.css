@@ -7594,6 +7594,34 @@ html.has-motion .rv-in [data-stagger] > li {
   }
 }
 
+/* ---------- ROTATING TEXT (React Bits RotatingText, landed) --------------
+   One pop per swap; the word rests on the final. Inline-block so the rise
+   has a box; the keyframe never fills forward, so scrubs stay boss. */
+.rot {
+  display: inline-block;
+}
+
+.rot.is-swap {
+  animation: rot-swap 0.45s var(--ease-entrance) 1;
+}
+
+@keyframes rot-swap {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rot.is-swap {
+    animation: none;
+  }
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */
