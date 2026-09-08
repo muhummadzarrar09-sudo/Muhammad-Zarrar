@@ -49,6 +49,7 @@
   --copper: #da7134;                 /* molten accent — star borders, sheen tips (decorative only) */
   --copper-soft: #e09a68;            /* sheen mid — on-ink display text only */
   --spot-core: rgba(122, 46, 24, 0.14); /* spotlight wash core (React Bits SpotlightCard) */
+  --crosshair: rgba(122, 46, 24, 0.3);   /* diagnostic crosshair lines */
   --text: #111110;                    /* 10.64:1 ink */
   --text-2: #2a2926;                  /*  8.19:1 graphite — AAA on canvas AND footer */
   --text-3: #33322e;                  /*  7.23:1 tertiary — AAA on canvas */
@@ -7531,6 +7532,32 @@ html.has-motion .rv-in [data-stagger] > li {
 .target-cursor .tc-tr { right: 0; top: 0; border-right-width: 1.5px; border-top-width: 1.5px; }
 .target-cursor .tc-bl { left: 0; bottom: 0; border-left-width: 1.5px; border-bottom-width: 1.5px; }
 .target-cursor .tc-br { right: 0; bottom: 0; border-right-width: 1.5px; border-bottom-width: 1.5px; }
+
+/* ---------- CROSSHAIR (scoped diagnostic) ----------------------------------
+   Full-viewport 1px lines under the header; opacity is the only state. */
+.crosshair {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-standard);
+}
+
+.crosshair-x {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: var(--crosshair);
+}
+
+.crosshair-y {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--crosshair);
+}
 
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the

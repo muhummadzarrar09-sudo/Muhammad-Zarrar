@@ -21,6 +21,7 @@ import type Lenis from "lenis";
  *                         tick bursts on CTA press (220ms, then parked)
  *  10. target brackets    — React Bits TargetCursor, tailored: clay corner
  *                         brackets snap around controls (never huge rows)
+ *  11. crosshair           — diagnostic crosshair, armed only over heroes
  *
  * RULES THIS FILE IS BOUND TO (see docs/MOTION-RULES.md):
  * - WCAG 2.2.2 / 2.3.3 + Apple HIG — the native cursor is NEVER hidden
@@ -723,6 +724,75 @@ function buildTarget(): { teardown: () => void } {
 }
 
 /* ------------------------------------------------------------------ */
+/* 11 · Crosshair (scoped diagnostic)                                  */
+/* ------------------------------------------------------------------ */
+
+/**
+ * A clay crosshair trails the cursor — but ONLY while it is over a hero
+ * (.hero-minimal or any .page-hero). Anywhere else the lines bow out.
+ * Lerped follow on the shared ticker, transform-only, and below the
+ * header so chrome never gets crossed. Pointer-layer gates apply.
+ */
+function buildCrosshair(): { teardown: () => void } {
+  const lineX = document.createElement("div");
+  lineX.className = "crosshair crosshair-x";
+  lineX.setAttribute("aria-hidden", "true");
+  const lineY = document.createElement("div");
+  lineY.className = "crosshair crosshair-y";
+  lineY.setAttribute("aria-hidden", "true");
+  document.body.append(lineX, lineY);
+
+  const target = { x: -100, y: -100 };
+  const pos = { x: -100, y: -100 };
+  let armed = false;
+  let live = false;
+
+  const tick = () => {
+    pos.x += (target.x - pos.x) * 0.35;
+    pos.y += (target.y - pos.y) * 0.35;
+    lineX.style.transform = `translate3d(0, ${pos.y.toFixed(1)}px, 0)`;
+    lineY.style.transform = `translate3d(${pos.x.toFixed(1)}px, 0, 0)`;
+    const next = armed ? "1" : "0";
+    if (lineX.style.opacity !== next) {
+      lineX.style.opacity = next;
+      lineY.style.opacity = next;
+    }
+  };
+
+  const onMove = (event: PointerEvent) => {
+    target.x = event.clientX;
+    target.y = event.clientY;
+    armed = Boolean(
+      (event.target as HTMLElement | null)?.closest?.(
+        ".hero-minimal, .page-hero"
+      )
+    );
+    if (!live) {
+      live = true;
+      pos.x = target.x;
+      pos.y = target.y;
+      gsap.ticker.add(tick);
+    }
+  };
+  const onLeave = () => {
+    armed = false;
+  };
+
+  window.addEventListener("pointermove", onMove, { passive: true });
+  document.documentElement.addEventListener("pointerleave", onLeave);
+
+  return {
+    teardown: () => {
+      window.removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
+      gsap.ticker.remove(tick);
+      lineX.remove();
+      lineY.remove();
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* Boot                                                                */
 /* ------------------------------------------------------------------ */
 
@@ -741,6 +811,7 @@ export function initPointer(lenis: Lenis) {
   const pace = buildPace(lenis);
   const sparks = buildSparks();
   const target = buildTarget();
+  const crosshair = buildCrosshair();
 
   dispose = () => {
     aura.teardown();
@@ -753,6 +824,7 @@ export function initPointer(lenis: Lenis) {
     pace.teardown();
     sparks.teardown();
     target.teardown();
+    crosshair.teardown();
   };
 }
 
