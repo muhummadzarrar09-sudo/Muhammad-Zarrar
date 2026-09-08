@@ -7453,6 +7453,21 @@ html.has-motion .rv-in [data-stagger] > li {
 [data-stagger] > li:nth-child(7) { --i: 6; }
 [data-stagger] > li:nth-child(8) { --i: 7; }
 
+/* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
+   The note's return journey rides the panel token; .no-anim exists for the
+   single committed frame JS needs (see buildEnter). */
+.vignette-note {
+  transition: transform var(--dur-3) var(--ease-entrance);
+}
+
+.vignette-note.is-pushed {
+  transform: translate(var(--enter-x, 0px), var(--enter-y, 0px));
+}
+
+.vignette-note.no-anim {
+  transition: none;
+}
+
 /* ---------- v3 reduced-motion gates ----------------------------------------
    Scramble/Shiny never boot (component-level matchMedia) and spotlight/
    tilt/crank/star never attach (engine + pointer gates), so these rules are

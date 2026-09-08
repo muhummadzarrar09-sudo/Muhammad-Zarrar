@@ -13,6 +13,8 @@ import type Lenis from "lenis";
  *                         follows the cursor across [data-spotlight] rows
  *   6. tilt             — React Bits TiltedCard + GlareHover, tailored: the
  *                         about portrait eases ±5° with a travelling glare
+ *   7. enter nudge        — React Bits DirectionalHover, tailored: plaque
+ *                         captions flinch away from the arriving cursor
  *
  * RULES THIS FILE IS BOUND TO (see docs/MOTION-RULES.md):
  * - WCAG 2.2.2 / 2.3.3 + Apple HIG — the native cursor is NEVER hidden
@@ -424,6 +426,53 @@ function buildTilt(): { teardown: () => void } {
 }
 
 /* ------------------------------------------------------------------ */
+/* 7 · DirectionalHover (React Bits DirectionalHover, tailored)        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Plaque captions flinch away from the arriving cursor, then ease home.
+ * Entry vector → --enter-x/--enter-y; a committed .is-pushed frame is
+ * released on the next frame so the CSS transition only ever plays the
+ * return journey. Upstream slides full overlays; the gallery keeps its
+ * caption below the frame and just nudges the note. Fine-pointer only,
+ * and the pointer layer never boots under reduced motion.
+ */
+function buildEnter(): { teardown: () => void } {
+  const plaques = Array.from(
+    document.querySelectorAll<HTMLElement>(".vignette-plaque")
+  );
+  const cleanups: Array<() => void> = [];
+
+  for (const el of plaques) {
+    const note = el
+      .closest(".vignette")
+      ?.querySelector<HTMLElement>(".vignette-note");
+    if (!note) continue;
+
+    const onEnter = (event: PointerEvent) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      const px = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      const py = ((event.clientY - rect.top) / rect.height) * 2 - 1;
+      note.style.setProperty("--enter-x", `${-Math.sign(px) * 10}px`);
+      note.style.setProperty("--enter-y", `${-Math.sign(py) * 6}px`);
+      note.classList.add("no-anim", "is-pushed");
+      void note.offsetWidth; // commit the offset before releasing it
+      note.classList.remove("no-anim", "is-pushed");
+    };
+
+    el.addEventListener("pointerenter", onEnter);
+    cleanups.push(() => el.removeEventListener("pointerenter", onEnter));
+  }
+
+  return {
+    teardown: () => {
+      for (const fn of cleanups) fn();
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* Boot                                                                */
 /* ------------------------------------------------------------------ */
 
@@ -438,6 +487,7 @@ export function initPointer(lenis: Lenis) {
   const pan = buildPan();
   const spotlight = buildSpotlight();
   const tilt = buildTilt();
+  const enter = buildEnter();
 
   dispose = () => {
     aura.teardown();
@@ -446,6 +496,7 @@ export function initPointer(lenis: Lenis) {
     pan.teardown();
     spotlight.teardown();
     tilt.teardown();
+    enter.teardown();
   };
 }
 
