@@ -27,7 +27,7 @@ export default function FreeAuditPage() {
         ])}
       />
 
-      <section className="page-hero" id="top" data-tl="Top">
+      <section className="page-hero hero-blueprint" id="top" data-tl="Top">
         <div className="container">
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">

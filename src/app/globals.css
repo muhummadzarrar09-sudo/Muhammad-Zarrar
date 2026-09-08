@@ -7457,6 +7457,33 @@ html.has-motion .rv-in [data-stagger] > li {
 [data-stagger] > li:nth-child(7) { --i: 6; }
 [data-stagger] > li:nth-child(8) { --i: 7; }
 
+/* ---------- BLUEPRINT HERO (frozen DotGrid — texture, not motion) -----------
+   A static hairline graph behind the audit heroes. Zero keyframes, zero JS,
+   zero quota: it is paper, like the grain. Masked so it never touches text. */
+.hero-blueprint {
+  position: relative;
+}
+
+.hero-blueprint::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    linear-gradient(var(--hairline-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hairline-soft) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(78% 92% at 50% 18%, black 26%, transparent 74%);
+  -webkit-mask-image: radial-gradient(78% 92% at 50% 18%, black 26%, transparent 74%);
+}
+
+.hero-blueprint > .container {
+  position: relative;
+  z-index: 1;
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */

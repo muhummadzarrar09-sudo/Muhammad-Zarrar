@@ -92,7 +92,7 @@ export default async function ServiceDetailPage({
         ])}
       />
 
-      <section className="page-hero">
+      <section className={slug === "website-audit" ? "page-hero hero-blueprint" : "page-hero"}>
         <div className="container">
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
