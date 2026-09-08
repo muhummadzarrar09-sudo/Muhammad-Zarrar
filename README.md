@@ -92,6 +92,12 @@ storyboarded as data in `src/motion/wireframes.ts`.
   eyebrows/labels decode once (`ScrambleText`), CTA headlines sweep copper
   (`ShinyText`), the hero floor is a wheel-cranked seal (ring scrubs 0→300°
   across the pin), primary CTAs orbit a molten star on hover/focus only.
+- **React Bits v4** (17 bits, one commit each, same contract): focus-blur
+  Reveals, staggered checklists, color-wake + flinching plaque captions,
+  word-scrubbed prose, blueprint audit heroes, velocity-fed marquee, clay
+  click-ticks, target brackets, hero crosshair, focus veils, pressure
+  headlines, a landed RotatingText, the process stepper, the audit card
+  deck, and a spring-fill PKR budget slider.
 - **Scroll timeline**: the native scrollbar is hidden and replaced by a
   right-edge rail — progress fill plus diamond markers per section
   (`section[data-tl]`), keyboard-focusable, click-to-jump.
