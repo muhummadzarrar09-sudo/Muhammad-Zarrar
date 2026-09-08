@@ -7502,6 +7502,36 @@ html.has-motion .rv-in [data-stagger] > li {
   pointer-events: none;
 }
 
+/* ---------- TARGET BRACKETS (React Bits TargetCursor, tailored) ------------
+   Fixed frame below sparks/aura; corners only, clay 1.5px hairlines. */
+.target-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: 9988;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-standard);
+}
+
+.target-cursor.is-on {
+  opacity: 1;
+}
+
+.target-cursor span {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border: 0 solid var(--gold);
+}
+
+.target-cursor .tc-tl { left: 0; top: 0; border-left-width: 1.5px; border-top-width: 1.5px; }
+.target-cursor .tc-tr { right: 0; top: 0; border-right-width: 1.5px; border-top-width: 1.5px; }
+.target-cursor .tc-bl { left: 0; bottom: 0; border-left-width: 1.5px; border-bottom-width: 1.5px; }
+.target-cursor .tc-br { right: 0; bottom: 0; border-right-width: 1.5px; border-bottom-width: 1.5px; }
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */

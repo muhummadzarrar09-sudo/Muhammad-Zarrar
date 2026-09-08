@@ -19,6 +19,8 @@ import type Lenis from "lenis";
  *                         sprints with wheel velocity (Lenis-fed, not motion)
  *   9. clay tick          — React Bits ClickSpark, rehabilitated: one clay
  *                         tick bursts on CTA press (220ms, then parked)
+ *  10. target brackets    — React Bits TargetCursor, tailored: clay corner
+ *                         brackets snap around controls (never huge rows)
  *
  * RULES THIS FILE IS BOUND TO (see docs/MOTION-RULES.md):
  * - WCAG 2.2.2 / 2.3.3 + Apple HIG — the native cursor is NEVER hidden
@@ -642,6 +644,85 @@ function buildSparks(): { teardown: () => void } {
 }
 
 /* ------------------------------------------------------------------ */
+/* 10 · Target brackets (React Bits TargetCursor, tailored)            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Clay corner-brackets snap around the control under the cursor — the
+ * audit's measuring frame. Same delegated INTERACTIVE selector as the
+ * aura, but full-width rows and regions are skipped (brackets suit
+ * controls, not landscapes). Native cursor untouched; brackets park on
+ * scroll and re-acquire on the next hover, so drifting rects never lie.
+ */
+function buildTarget(): { teardown: () => void } {
+  const root = document.createElement("div");
+  root.className = "target-cursor";
+  root.setAttribute("aria-hidden", "true");
+  for (const corner of ["tc-tl", "tc-tr", "tc-bl", "tc-br"]) {
+    const span = document.createElement("span");
+    span.className = corner;
+    root.appendChild(span);
+  }
+  document.body.appendChild(root);
+
+  const INTERACTIVE =
+    'a, button, [role="button"], input, select, textarea, label, summary, [data-cursor]';
+  let shown = false;
+
+  const show = (rect: DOMRect) => {
+    const pad = 7;
+    gsap.to(root, {
+      x: rect.left - pad,
+      y: rect.top - pad,
+      width: rect.width + pad * 2,
+      height: rect.height + pad * 2,
+      duration: 0.24,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+    if (!shown) {
+      shown = true;
+      root.classList.add("is-on");
+    }
+  };
+  const hide = () => {
+    if (!shown) return;
+    shown = false;
+    root.classList.remove("is-on");
+  };
+
+  const onOver = (event: PointerEvent) => {
+    const hit = (event.target as HTMLElement | null)?.closest?.(
+      INTERACTIVE
+    ) as HTMLElement | null;
+    if (!hit) {
+      hide();
+      return;
+    }
+    const rect = hit.getBoundingClientRect();
+    if (rect.width > 560 || rect.height > 160 || rect.width < 8) {
+      hide();
+      return;
+    }
+    show(rect);
+  };
+
+  document.addEventListener("pointerover", onOver, { passive: true });
+  window.addEventListener("scroll", hide, { passive: true, capture: true });
+  document.documentElement.addEventListener("pointerleave", hide);
+
+  return {
+    teardown: () => {
+      document.removeEventListener("pointerover", onOver);
+      window.removeEventListener("scroll", hide, { capture: true } as never);
+      document.documentElement.removeEventListener("pointerleave", hide);
+      gsap.killTweensOf(root);
+      root.remove();
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* Boot                                                                */
 /* ------------------------------------------------------------------ */
 
@@ -659,6 +740,7 @@ export function initPointer(lenis: Lenis) {
   const enter = buildEnter();
   const pace = buildPace(lenis);
   const sparks = buildSparks();
+  const target = buildTarget();
 
   dispose = () => {
     aura.teardown();
@@ -670,6 +752,7 @@ export function initPointer(lenis: Lenis) {
     enter.teardown();
     pace.teardown();
     sparks.teardown();
+    target.teardown();
   };
 }
 
