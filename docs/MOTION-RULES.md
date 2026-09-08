@@ -45,6 +45,24 @@ cursor always wins.**
 | StarBorder CTA orbit (hover/focus only) | globals (`@property --star-angle`) | 2.6s linear orbit, only while hovered/focused | No idle loop (quota-safe); `display: none` under reduced motion; edge-only hairline inside `overflow: hidden` |
 | Tilt + glare (`[data-tilt]`, ±5°) | `motion/pointer.ts` §6 + globals | Input-driven; settle on the `--dur-2` token transition | Fine pointer only; vars-only JS; static card on touch, reduced motion and no-JS |
 
+| BlurText Reveal (blur 6px→0 on every rise) | globals (`.rv`) | 560ms `--dur-4`, entrance tier | Class added client-side only — no-JS/reduced never meet a blurred pixel |
+| StarBorder header CTA | `components/site-header.tsx` + globals | Hover/focus orbit only (v3 pattern) | Same v3 gates |
+| AnimatedList stagger (70ms/item, max 8) | globals (`[data-stagger]`) + Reveal | 320ms `--dur-3` per item | Hidden state under `has-motion` only; no-JS/reduced get the plain list |
+| ChromaGrid plaques (saturate .6→1) | globals | 500ms hover transition | Reduced motion pins the classic .85 grade; color is decoration, caption reads static |
+| DirectionalHover caption nudge (±10px) | `motion/pointer.ts` §7 + globals | Input-driven; return on `--dur-3` | Fine pointer; layer never boots under reduced motion; no-JS static |
+| ScrollReveal prose (word opacity scrub) | `motion/prose.ts` | Wheel-scrubbed, per paragraph | Full-motion boot only; legal/pricing prose excluded by policy; no-JS plain text |
+| Blueprint hero (static DotGrid) | globals (`.hero-blueprint`) | None — texture, zero motion | Quota-free by definition; masked off text |
+| ScrollVelocity pace (1→4x, 42s base) | `motion/pointer.ts` §8 + globals | Input-driven; decay lerp | CSS keyframes stay the no-JS/touch path; parks on hover/focus (2.2.2) |
+| ClickSpark clay tick (10 sparks, ~220ms) | `motion/pointer.ts` §9 + globals | One burst per press; loop parks | Canvas below aura; keyboard loses nothing; touch/reduced off |
+| TargetCursor brackets (240ms snap) | `motion/pointer.ts` §10 + globals | 240ms `power3.out` chase | Native cursor untouched; rows/regions skipped; parks on scroll |
+| Crosshair (hero-scoped, lerped) | `motion/pointer.ts` §11 + globals | Input-driven, 0.35 lerp | Armed over heroes only; below header; layer gates apply |
+| GradualBlur veils (13vh, 9px) | `app/layout.tsx` + globals | None — static overlay | Desktop fine-pointer only; never under reduced motion; backdrop-filter may no-op (graceful) |
+| TextPressure (wght 400→720, 170px) | `motion/pointer.ts` §12 | Input-driven; 20-step quantization | Weight-only, kerning kept; IO gate + cheap-reject; teardown unwraps chars |
+| RotatingText landed (3 words, 450ms) | `components/rotating-text.tsx` + globals | One cycle per entry, rests on final | SSR final word; reduced = static; keyframe never fills forward |
+| Stepper rail (derived progress) | `motion/stepper.ts` + process page | Scroll-derived, both directions | Rail aria-hidden; steps semantic; mobile hides rail, keeps steps |
+| ScrollStack deck (8 cards, 0.93 settle) | `motion/stack.ts` + services/[slug] | Wheel-scrubbed settle | Pure-CSS sticky = no-JS/reduced get the deck; JS scale desktop-only |
+| ElasticSlider budget (spring fill) | `components/qualify-form.tsx` + globals | Spring 170/13, one overshoot; 280ms readout pop | Native range (keyboard/touch/SR); unsure stays a chip; reduced = dead-set fill, no pop |
+
 ## 3 · The ambient quota (v2 amendment)
 
 The walk is wheel-tied, with **one sanctioned exception per viewport**: a

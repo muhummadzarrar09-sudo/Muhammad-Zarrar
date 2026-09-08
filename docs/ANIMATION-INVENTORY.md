@@ -142,6 +142,30 @@ Zero new dependencies; zero new ambient loops. Every addition is input-driven (w
 
 Rules ledger for v3: `docs/MOTION-RULES.md` §2 (v3 rows) + §4 (rejected-bits rationale).
 
+### Shipped (v4 — React Bits: the full menu, this branch)
+
+Seventeen more bits, one commit each (see history `v4: *`). Same v3 contract: zero new dependencies, zero new ambient loops — input-driven or one-shot, every addition reduced-motion safe.
+
+13. **BlurText (React Bits, tailored)** — every Reveal rise now lands focus with it (blur 6px→0 on `--dur-4`). The class is only added client-side, so no-JS/reduced readers never meet a blurred pixel.
+14. **StarBorder on the header CTA** — the v3 molten orbit, extended to the one button that was missing it.
+15. **AnimatedList (React Bits, tailored)** — `[data-stagger]` checklists/point-lists land in reading order, 70ms apart (process deliverables, service `included`, free-audit points). nth-child delays + the existing Reveal observer; no motion dep.
+16. **ChromaGrid (React Bits, tailored)** — plaque artwork rests at saturate(.6) and wakes to full color on hover; reduced motion pins the classic grade.
+17. **DirectionalHover (React Bits, tailored)** — plaque captions flinch away from the arriving cursor (±10px by entry vector) and ease home on `--dur-3`. No overlay redesign — the caption keeps its seat below the frame.
+18. **ScrollReveal (React Bits, tailored)** — storytelling prose (service + note details, about) resolves word-by-word up the viewport, scrubbed per paragraph. Legal/pricing prose excluded by policy.
+19. **Frozen DotGrid (React Bits, tailored)** — a static hairline graph behind the website-audit and free-audit heroes. Zero motion, zero quota: paper, like the grain.
+20. **ScrollVelocity (React Bits, tailored)** — the marquee abandons CSS keyframes for a Lenis-fed ticker once the pointer layer boots: 42s base pace, up to ~4x with wheel velocity, decayed. Keyframes stay the no-JS/touch path; hover/focus parks it (2.2.2).
+21. **ClickSpark, rehabilitated (React Bits, tailored)** — one clay tick (ten sparks, ~220ms, slight gravity) on CTA/chip/slider press. Canvas below the aura; the rAF loop parks when the last spark dies.
+22. **TargetCursor (React Bits, tailored)** — clay corner-brackets snap around the control under the cursor (240ms chase), skipping full-width rows and regions. Parks on scroll, re-acquires on hover; native cursor untouched.
+23. **Crosshair (scoped diagnostic)** — clay crosshair trails the cursor, armed ONLY over heroes (`.hero-minimal`, `.page-hero`), bowed out everywhere else. Lerped, transform-only, under the header.
+24. **GradualBlur, stilled (React Bits, tailored)** — soft blur pooled at the viewport edges (13vh, 9px). No loop, no JS: desktop fine-pointer only, never under reduced motion, graceful where backdrop-filter no-ops.
+25. **TextPressure (React Bits, tailored)** — home display headings swell toward the pointer on the Fraunces variable wght axis (400→720, 170px radius, 20-step quantization). Weight-only (kerning preserved), IO-gated, teardown unwraps the chars.
+26. **RotatingText, landed (React Bits, tailored)** — the services hero corrects itself once per entry (*hunches. → vibes. → evidence.*) and rests on the final. SSR/SEO see `evidence.`; reduced motion sees it statically.
+27. **Stepper (React Bits, tailored)** — the process page walks a sticky rail: fill + lit ticks derived from scroll progress (recognize-room pattern), past numbers clayed. Rail hides on mobile; steps never do.
+28. **ScrollStack (React Bits, tailored)** — the eight website-audit checks fan into sticky cards (30px seats, pure CSS so no-JS/reduced get the deck); covered cards settle to 0.93, scrubbed, desktop only.
+29. **ElasticSlider (React Bits, tailored)** — the brief's budget chips graduate to a five-stop PKR slider: spring fill (one overshoot), readout pop, tick scale. Native range (keyboard/touch/SR intact); `unsure` stays a chip because it is not a magnitude.
+
+Rules ledger for v4: `docs/MOTION-RULES.md` §2 (v4 rows). Still waiting on content: case-study galleries, honest metrics, the portrait, client logos (#18–21 in the v4 proposal).
+
 ### ⏳ Waiting on case studies (deliberately not built yet)
 
 - **Case-study deck** — pinned horizontal gallery room (the fake-pin pattern is ready for it the moment the first study lands).
