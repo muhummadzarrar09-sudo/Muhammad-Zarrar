@@ -47,27 +47,41 @@ export default function ProcessPage() {
 
       <section className="section" id="phases" data-tl="Phases" aria-label="Process phases">
         <div className="container">
-          <div className="grid grid-2" style={{ gap: 56 }}>
-            {PROCESS_STEPS.map((step, i) => (
-              <Reveal key={step.name} className="phase" as="article" spotlight>
-                <span className="ph-no" aria-hidden="true">
+          <div className="stepper">
+            <div className="stepper-rail" aria-hidden="true">
+              <span className="stepper-track">
+                <span className="stepper-fill" />
+              </span>
+              {PROCESS_STEPS.map((step, i) => (
+                <span className="stepper-tick" key={step.name}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3>{step.name}</h3>
-                <span className="ph-time">{step.timeline}</span>
-                <p>{step.detail}</p>
-                <ul className="checklist" data-stagger style={{ marginTop: 20 }}>
-                  {step.deliverables.map((d) => (
-                    <li key={d}>
-                      <CheckIcon size={16} />
-                      <span>
-                        {d}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            ))}
+              ))}
+            </div>
+            <ol className="stepper-list">
+              {PROCESS_STEPS.map((step, i) => (
+                <li className="stepper-step" key={step.name}>
+                  <Reveal className="phase" as="article" spotlight>
+                    <span className="ph-no" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3>{step.name}</h3>
+                    <span className="ph-time">{step.timeline}</span>
+                    <p>{step.detail}</p>
+                    <ul className="checklist" data-stagger style={{ marginTop: 20 }}>
+                      {step.deliverables.map((d) => (
+                        <li key={d}>
+                          <CheckIcon size={16} />
+                          <span>
+                            {d}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </Reveal>
+                </li>
+              ))}
+            </ol>
           </div>
 
           <Reveal className="inset-panel process-after">

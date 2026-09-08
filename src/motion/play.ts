@@ -5,6 +5,7 @@ import { playHero } from "./hero";
 import { playManifesto } from "./manifesto";
 import { playPlaques } from "./plaques";
 import { playProse } from "./prose";
+import { playStepper } from "./stepper";
 import { playRecognize } from "./recognize";
 import { playWalk } from "./walk";
 import { EASE, WIREFRAMES, type MotionVars, type WireframeScene } from "./wireframes";
@@ -120,6 +121,7 @@ export function playWireframes(pathname: string) {
     const home = pathname === "/";
     playWalk();
     playProse();
+    playStepper();
     for (const scene of WIREFRAMES) {
       if (scene.page === "/" && !home) continue;
       playScene(scene);

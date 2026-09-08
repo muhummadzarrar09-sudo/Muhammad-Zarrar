@@ -7622,6 +7622,86 @@ html.has-motion .rv-in [data-stagger] > li {
   }
 }
 
+/* ---------- STEPPER (React Bits Stepper, tailored) -------------------------
+   The process phases walk a sticky rail: fill + lit ticks are derived from
+   scroll progress (see stepper.ts), exact in both directions. Rail ticks
+   are evenly metered — a progress instrument, not step pointers. */
+.stepper {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 44px;
+  align-items: start;
+}
+
+.stepper-rail {
+  position: sticky;
+  top: 120px;
+  height: 340px;
+  display: grid;
+}
+
+.stepper-track {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: var(--hairline);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.stepper-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--gold);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.stepper-tick {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--fs-lg);
+  color: var(--text-3);
+  transition: color var(--dur-2) var(--ease-standard);
+}
+
+.stepper-tick.is-on {
+  color: var(--gold-deep);
+}
+
+.stepper-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 72px;
+}
+
+.stepper-step.is-past .ph-no {
+  color: var(--gold);
+}
+
+@media (max-width: 760px) {
+  .stepper {
+    grid-template-columns: 1fr;
+  }
+  .stepper-rail {
+    display: none;
+  }
+  .stepper-list {
+    gap: 56px;
+  }
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */
