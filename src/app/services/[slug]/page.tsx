@@ -121,7 +121,7 @@ export default async function ServiceDetailPage({
 
             <Reveal>
               <h2 className="prose-h2-spaced">What&rsquo;s included</h2>
-              <ul className="checklist checklist-2col">
+              <ul className="checklist checklist-2col" data-stagger>
                 {service.included.map((item) => (
                   <li key={item}>
                     <CheckIcon size={16} />

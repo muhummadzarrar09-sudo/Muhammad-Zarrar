@@ -56,7 +56,7 @@ export default function ProcessPage() {
                 <h3>{step.name}</h3>
                 <span className="ph-time">{step.timeline}</span>
                 <p>{step.detail}</p>
-                <ul className="checklist" style={{ marginTop: 20 }}>
+                <ul className="checklist" data-stagger style={{ marginTop: 20 }}>
                   {step.deliverables.map((d) => (
                     <li key={d}>
                       <CheckIcon size={16} />

@@ -54,7 +54,7 @@ export default function FreeAuditPage() {
               <h2 className="subsection-title">
                 What we check
               </h2>
-              <ol className="point-list">
+              <ol className="point-list" data-stagger>
                 {FREE_AUDIT_POINTS.map((point) => (
                   <li key={point.name}>
                     <div>

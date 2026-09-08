@@ -7417,6 +7417,42 @@ html.has-motion .shiny-text.is-live.is-shine {
   }
 }
 
+/* ==========================================================================
+   REACT BITS v4 — AnimatedList · ChromaGrid · DirectionalHover · ScrollReveal
+   ScrollVelocity · TextPressure · TargetCursor · Crosshair · GradualBlur
+   RotatingText · Stepper · ScrollStack · ElasticSlider · ClickSpark.
+   Same house rules as v3: input-driven or one-shot, never an idle loop.
+   Rules ledger: docs/MOTION-RULES.md (v4 rows).
+   ========================================================================== */
+
+/* ---------- ANIMATED LIST (React Bits AnimatedList, tailored) --------------
+   Checklist/point items land in reading order, 70ms apart. The hidden state
+   only exists under html.has-motion (full-motion boot): no-JS, crawlers
+   and reduced-motion readers get the plain list. Upstream leans on the
+   motion dep; nth-child delays + the existing Reveal observer do it here. */
+html.has-motion [data-stagger] > li {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--dur-3) var(--ease-entrance),
+    transform var(--dur-3) var(--ease-entrance);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+
+html.has-motion .rv-in[data-stagger] > li,
+html.has-motion .rv-in [data-stagger] > li {
+  opacity: 1;
+  transform: none;
+}
+
+[data-stagger] > li:nth-child(1) { --i: 0; }
+[data-stagger] > li:nth-child(2) { --i: 1; }
+[data-stagger] > li:nth-child(3) { --i: 2; }
+[data-stagger] > li:nth-child(4) { --i: 3; }
+[data-stagger] > li:nth-child(5) { --i: 4; }
+[data-stagger] > li:nth-child(6) { --i: 5; }
+[data-stagger] > li:nth-child(7) { --i: 6; }
+[data-stagger] > li:nth-child(8) { --i: 7; }
+
 /* ---------- v3 reduced-motion gates ----------------------------------------
    Scramble/Shiny never boot (component-level matchMedia) and spotlight/
    tilt/crank/star never attach (engine + pointer gates), so these rules are
