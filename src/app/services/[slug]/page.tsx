@@ -111,7 +111,7 @@ export default async function ServiceDetailPage({
 
       <section className="section">
         <div className="container service-detail-grid">
-          <div className="prose">
+          <div className="prose prose-reveal">
             <Reveal>
               <h2>The problem it solves</h2>
               {service.problem.map((paragraph) => (

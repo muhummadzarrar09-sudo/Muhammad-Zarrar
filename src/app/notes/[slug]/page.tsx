@@ -88,7 +88,7 @@ export default async function NotePage({
 
       <section className="section">
         <div className="container">
-          <div className="prose">
+          <div className="prose prose-reveal">
             {note.sections.map((section) => (
               <Reveal key={section.heading}>
                 <h2>{section.heading}</h2>

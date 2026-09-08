@@ -100,7 +100,7 @@ export default function AboutPage() {
               )}
             </div>
           </Reveal>
-          <div className="prose">
+          <div className="prose prose-reveal">
             <h2 id="story-heading">Why audit-first</h2>
             <p>
               Most agencies sell rebuilds without diagnosis. A client arrives
