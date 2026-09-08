@@ -17,6 +17,8 @@ import type Lenis from "lenis";
  *                         captions flinch away from the arriving cursor
  *   8. marquee pace       — React Bits ScrollVelocity, tailored: the band
  *                         sprints with wheel velocity (Lenis-fed, not motion)
+ *   9. clay tick          — React Bits ClickSpark, rehabilitated: one clay
+ *                         tick bursts on CTA press (220ms, then parked)
  *
  * RULES THIS FILE IS BOUND TO (see docs/MOTION-RULES.md):
  * - WCAG 2.2.2 / 2.3.3 + Apple HIG — the native cursor is NEVER hidden
@@ -546,6 +548,100 @@ function buildPace(lenis: Lenis): { teardown: () => void } {
 }
 
 /* ------------------------------------------------------------------ */
+/* 9 · Clay tick (React Bits ClickSpark, rehabilitated)                */
+/* ------------------------------------------------------------------ */
+
+/**
+ * A single clay tick — ten sparks, ~220ms of life, slight gravity — on
+ * pointer press over buttons, budget chips and the budget slider. The rAF
+ * loop parks itself the moment the last spark dies (the house pattern),
+ * the canvas sits below the aura, and keyboard users lose nothing: focus
+ * rings and press states already speak for them. The pointer layer's own
+ * gates keep this off touch and reduced motion.
+ */
+function buildSparks(): { teardown: () => void } {
+  const canvas = document.createElement("canvas");
+  canvas.className = "click-sparks";
+  canvas.setAttribute("aria-hidden", "true");
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return { teardown: () => canvas.remove() };
+
+  const SHADES = ["#7a2e18", "#da7134", "#e09a68", "#571f0c"];
+  type Spark = {
+    x: number; y: number; vx: number; vy: number;
+    life: number; ttl: number; size: number; shade: string;
+  };
+  let parts: Spark[] = [];
+  let raf = 0;
+  let dpr = 1;
+
+  const resize = () => {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = Math.round(window.innerWidth * dpr);
+    canvas.height = Math.round(window.innerHeight * dpr);
+  };
+  resize();
+
+  const step = () => {
+    raf = 0;
+    const dt = 1 / 60;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    parts = parts.filter((p) => (p.life += dt) < p.ttl);
+    for (const p of parts) {
+      p.vy += 900 * dt;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      const k = 1 - p.life / p.ttl;
+      ctx.globalAlpha = Math.max(0, k);
+      ctx.fillStyle = p.shade;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * k + 0.4, 0, 7);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    if (parts.length) raf = requestAnimationFrame(step);
+  };
+
+  const onDown = (event: PointerEvent) => {
+    const hit = (event.target as HTMLElement | null)?.closest?.(
+      ".btn, .q-chip, input[type=\"range\"]"
+    );
+    if (!hit) return;
+    for (let i = 0; i < 10; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 90 + Math.random() * 160;
+      parts.push({
+        x: event.clientX,
+        y: event.clientY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 60,
+        life: 0,
+        ttl: 0.22 + Math.random() * 0.14,
+        size: 1.6 + Math.random() * 2.2,
+        shade: SHADES[(Math.random() * SHADES.length) | 0],
+      });
+    }
+    if (parts.length > 120) parts.splice(0, parts.length - 120);
+    if (!raf) raf = requestAnimationFrame(step);
+  };
+
+  document.addEventListener("pointerdown", onDown, { passive: true });
+  window.addEventListener("resize", resize);
+
+  return {
+    teardown: () => {
+      document.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("resize", resize);
+      if (raf) cancelAnimationFrame(raf);
+      canvas.remove();
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* Boot                                                                */
 /* ------------------------------------------------------------------ */
 
@@ -562,6 +658,7 @@ export function initPointer(lenis: Lenis) {
   const tilt = buildTilt();
   const enter = buildEnter();
   const pace = buildPace(lenis);
+  const sparks = buildSparks();
 
   dispose = () => {
     aura.teardown();
@@ -572,6 +669,7 @@ export function initPointer(lenis: Lenis) {
     tilt.teardown();
     enter.teardown();
     pace.teardown();
+    sparks.teardown();
   };
 }
 

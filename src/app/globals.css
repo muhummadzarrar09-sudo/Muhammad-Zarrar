@@ -7493,6 +7493,15 @@ html.has-motion .rv-in [data-stagger] > li {
   will-change: transform;
 }
 
+/* ---------- CLAY TICK (React Bits ClickSpark, rehabilitated) --------------
+   Fixed spark canvas below the aura; invisible until a CTA is pressed. */
+.click-sparks {
+  position: fixed;
+  inset: 0;
+  z-index: 9989;
+  pointer-events: none;
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */
