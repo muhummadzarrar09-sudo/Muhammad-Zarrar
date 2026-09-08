@@ -22,6 +22,8 @@ import type Lenis from "lenis";
  *  10. target brackets    — React Bits TargetCursor, tailored: clay corner
  *                         brackets snap around controls (never huge rows)
  *  11. crosshair           — diagnostic crosshair, armed only over heroes
+ *  12. pressure            — React Bits TextPressure, tailored: display
+ *                         weight swells near the pointer (variable wght)
  *
  * RULES THIS FILE IS BOUND TO (see docs/MOTION-RULES.md):
  * - WCAG 2.2.2 / 2.3.3 + Apple HIG — the native cursor is NEVER hidden
@@ -793,6 +795,127 @@ function buildCrosshair(): { teardown: () => void } {
 }
 
 /* ------------------------------------------------------------------ */
+/* 12 · Pressure (React Bits TextPressure, tailored)                  */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Display type swells toward the pointer: each char of [data-pressure]
+ * rides the Fraunces variable wght axis by proximity (400 → 720 across
+ * 170px), quantized to 20-weight steps so settled chars stop repainting.
+ * Chars stay inline (kerning preserved — this is weight-only, no warp),
+ * inner elements (em, underlines) survive the split, and an IO gate plus
+ * a per-heading cheap-reject keep idle frames at zero cost. Teardown
+ * unwraps the chars, restoring pristine DOM for route swaps.
+ */
+function buildPressure(): { teardown: () => void } {
+  const targets = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-pressure]")
+  );
+  if (!targets.length) return { teardown: () => {} };
+
+  const charsOf = new Map<HTMLElement, HTMLElement[]>();
+  for (const t of targets) {
+    const walker = document.createTreeWalker(t, NodeFilter.SHOW_TEXT);
+    const nodes: Text[] = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+    const chars: HTMLElement[] = [];
+    for (const node of nodes) {
+      const frag = document.createDocumentFragment();
+      for (const ch of node.textContent ?? "") {
+        if (ch === " ") {
+          frag.appendChild(document.createTextNode(" "));
+          continue;
+        }
+        const s = document.createElement("span");
+        s.className = "pchar";
+        s.textContent = ch;
+        frag.appendChild(s);
+        chars.push(s);
+      }
+      node.parentNode?.replaceChild(frag, node);
+    }
+    charsOf.set(t, chars);
+  }
+
+  const reset = (t: HTMLElement) => {
+    for (const ch of charsOf.get(t) ?? []) {
+      if (ch.style.fontWeight) ch.style.fontWeight = "";
+    }
+  };
+
+  const visible = new Set<HTMLElement>();
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const t = entry.target as HTMLElement;
+        if (entry.isIntersecting) visible.add(t);
+        else {
+          visible.delete(t);
+          reset(t);
+        }
+      }
+    },
+    { threshold: 0.1 }
+  );
+  for (const t of targets) io.observe(t);
+
+  const RADIUS = 170;
+  let raf = 0;
+  let px = -9999;
+  let py = -9999;
+
+  const apply = () => {
+    raf = 0;
+    for (const t of visible) {
+      const rect = t.getBoundingClientRect();
+      if (
+        Math.abs(px - (rect.left + rect.width / 2)) >
+          rect.width / 2 + RADIUS ||
+        Math.abs(py - (rect.top + rect.height / 2)) >
+          rect.height / 2 + RADIUS
+      ) {
+        reset(t);
+        continue;
+      }
+      for (const ch of charsOf.get(t) ?? []) {
+        const r = ch.getBoundingClientRect();
+        const d = Math.hypot(
+          px - (r.left + r.width / 2),
+          py - (r.top + r.height / 2)
+        );
+        if (d > RADIUS) {
+          if (ch.style.fontWeight) ch.style.fontWeight = "";
+          continue;
+        }
+        const next = String(Math.round((400 + 320 * (1 - d / RADIUS)) / 20) * 20);
+        if (ch.style.fontWeight !== next) ch.style.fontWeight = next;
+      }
+    }
+  };
+
+  const onMove = (event: PointerEvent) => {
+    px = event.clientX;
+    py = event.clientY;
+    if (!raf) raf = requestAnimationFrame(apply);
+  };
+  document.addEventListener("pointermove", onMove, { passive: true });
+
+  return {
+    teardown: () => {
+      document.removeEventListener("pointermove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+      io.disconnect();
+      for (const [t, chars] of charsOf) {
+        for (const ch of chars) {
+          ch.replaceWith(document.createTextNode(ch.textContent ?? ""));
+        }
+        t.normalize();
+      }
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* Boot                                                                */
 /* ------------------------------------------------------------------ */
 
@@ -812,6 +935,7 @@ export function initPointer(lenis: Lenis) {
   const sparks = buildSparks();
   const target = buildTarget();
   const crosshair = buildCrosshair();
+  const pressure = buildPressure();
 
   dispose = () => {
     aura.teardown();
@@ -825,6 +949,7 @@ export function initPointer(lenis: Lenis) {
     sparks.teardown();
     target.teardown();
     crosshair.teardown();
+    pressure.teardown();
   };
 }
 

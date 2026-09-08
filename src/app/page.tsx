@@ -116,7 +116,7 @@ export default function HomePage() {
                 <ScrambleText className="sec-label" text="If this is your Tuesday" />
                 <span className="sec-rule" />
               </div>
-              <h2 className="sec-title" id="you-heading">
+              <h2 className="sec-title" id="you-heading" data-pressure>
                 You&apos;re not behind.
                 <br />{" "}
                 <em>
@@ -214,7 +214,7 @@ export default function HomePage() {
       >
         <div className="container">
           <ScrambleText as="p" className="room-label" text="What you walk away with" />
-          <h2 className="room-title" id="get-heading">
+          <h2 className="room-title" id="get-heading" data-pressure>
             Not a pitch. A result.
           </h2>
           <div className="vignette-grid">
@@ -246,7 +246,7 @@ export default function HomePage() {
             <ScrambleText className="sec-label" text="Why this feels different" />
             <span className="sec-rule" />
           </div>
-          <h2 className="sec-title" id="different-heading">
+          <h2 className="sec-title" id="different-heading" data-pressure>
             The usual way, <em>and then this.</em>
           </h2>
           <div className="contrast-list">
@@ -279,7 +279,7 @@ export default function HomePage() {
             <ScrambleText className="sec-label" text="Then what happens" />
             <span className="sec-rule" />
           </div>
-          <h2 className="sec-title" id="next-heading">
+          <h2 className="sec-title" id="next-heading" data-pressure>
             After you send it.
           </h2>
           <div className="phase-grid next-grid">
@@ -312,7 +312,7 @@ export default function HomePage() {
               <ScrambleText className="sec-label" text="Your brief" />
               <span className="sec-rule" />
             </div>
-            <h2 className="sec-title" id="brief-heading">
+            <h2 className="sec-title" id="brief-heading" data-pressure>
               What you need. What you hoped to pay.{" "}
               <em>Then the honest quote.</em>
             </h2>
