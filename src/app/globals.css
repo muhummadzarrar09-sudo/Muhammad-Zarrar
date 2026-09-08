@@ -2376,13 +2376,19 @@ button {
 .rv {
   opacity: 0;
   transform: translateY(16px);
+  /* React Bits BlurText, tailored: focus lands WITH the rise. The class is
+     only ever added client-side (see Reveal), so no-JS/reduced readers
+     never meet a blurred pixel. */
+  filter: blur(6px);
   transition: opacity 0.55s cubic-bezier(0.21, 0.6, 0.35, 1),
-    transform 0.55s cubic-bezier(0.21, 0.6, 0.35, 1);
+    transform 0.55s cubic-bezier(0.21, 0.6, 0.35, 1),
+    filter 0.55s cubic-bezier(0.21, 0.6, 0.35, 1);
 }
 
 .rv-in {
   opacity: 1;
   transform: none;
+  filter: blur(0);
 }
 
 /* ---------- Route progress ---------- */
@@ -2908,7 +2914,8 @@ button {
 
 .rv {
   transition: opacity var(--dur-4) var(--ease-entrance),
-    transform var(--dur-4) var(--ease-entrance);
+    transform var(--dur-4) var(--ease-entrance),
+    filter var(--dur-4) var(--ease-entrance);
 }
 
 .mask-in {
