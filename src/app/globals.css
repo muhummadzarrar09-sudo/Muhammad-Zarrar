@@ -4213,7 +4213,7 @@ main,
   height: min(200px, 56vw);
   object-fit: cover;
   border-radius: 50%;
-  filter: saturate(0.85) contrast(1.05);
+  filter: saturate(0.6) contrast(1.05);
 }
 
 .vignette-cap {
@@ -6636,7 +6636,9 @@ summary {
   border-radius: 50%;
   outline: 1px solid rgba(255, 255, 255, 0.16);
   outline-offset: -5px;
-  filter: saturate(0.85) contrast(1.05);
+  /* React Bits ChromaGrid, tailored: the artwork rests dim and wakes in
+     full color on hover — museum lighting. (Reduced-motion pins it.) */
+  filter: saturate(0.6) contrast(1.05);
 }
 
 .room-ink .vignette figcaption {
@@ -6730,13 +6732,15 @@ html.has-motion .room-ink .vignette-plaque {
   .vignette-plaque img {
     transform-origin: calc(50% + var(--pan-x, 0) * 18%)
       calc(50% + var(--pan-y, 0) * 18%);
-    transition: transform 0.5s var(--ease-entrance);
+    transition: transform 0.5s var(--ease-entrance),
+      filter 0.5s var(--ease-entrance);
     will-change: transform;
   }
 
   .vignette-plaque:hover img {
     transform: scale(1.045)
       translate(calc(var(--pan-x, 0) * 2.2%), calc(var(--pan-y, 0) * 2.2%));
+    filter: saturate(1) contrast(1.05);
   }
 }
 
@@ -7466,6 +7470,16 @@ html.has-motion .rv-in [data-stagger] > li {
 
 .vignette-note.no-anim {
   transition: none;
+}
+
+/* ---------- CHROMAGRID reduced pin -----------------------------------------
+   Under reduced motion the wake is off: plaques hold the classic grade. */
+@media (prefers-reduced-motion: reduce) {
+  .vignette img,
+  .room-ink .vignette-plaque img,
+  .vignette-plaque:hover img {
+    filter: saturate(0.85) contrast(1.05);
+  }
 }
 
 /* ---------- v3 reduced-motion gates ----------------------------------------
