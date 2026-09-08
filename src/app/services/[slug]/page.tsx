@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { SERVICES, getService } from "@/content/services";
 import { FaqAccordion } from "@/components/faq";
@@ -183,6 +184,38 @@ export default async function ServiceDetailPage({
           </aside>
         </div>
       </section>
+
+      {slug === "website-audit" && (
+        <section
+          className="section-tight stack-section"
+          aria-labelledby="deck-heading"
+        >
+          <div className="container">
+            <Reveal className="section-head">
+              <ScrambleText className="eyebrow" text="The full deck" />
+              <h2 id="deck-heading">What we check, in order.</h2>
+              <p className="lede">
+                Every audit walks the same deck, in the same order — so
+                nothing hides behind a summary paragraph.
+              </p>
+            </Reveal>
+            <div className="stack-deck">
+              {service.included.map((item, i) => (
+                <article
+                  className="stack-card"
+                  key={item}
+                  style={{ "--stack-i": i } as CSSProperties}
+                >
+                  <span className="stack-no" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p>{item}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <CtaBand
         headline="Start with evidence, not a guess."
