@@ -8,6 +8,7 @@ import {
 import { QualifyForm } from "@/components/qualify-form";
 import { ScrambleText } from "@/components/scramble-text";
 import { Placard } from "@/components/placard";
+import { CrossIcon, SealCheckIcon } from "@/components/icons";
 import { Scribble } from "@/components/scribble";
 import BorderGlow from "@/components/border-glow";
 import { PinnedManifesto } from "@/components/pinned-manifesto";
@@ -261,11 +262,17 @@ export default function HomePage() {
             {CONTRAST.map((row) => (
               <article className="contrast-row" data-spotlight key={row.here}>
                 <p className="contrast-usual">
-                  <span>Usual</span>
+                  <span className="contrast-kicker">
+                    <CrossIcon size={12} />
+                    Usual
+                  </span>
                   {row.usual}
                 </p>
                 <p className="contrast-here">
-                  <span>Here</span>
+                  <span className="contrast-kicker">
+                    <SealCheckIcon size={14} />
+                    Here
+                  </span>
                   {row.here}
                 </p>
               </article>

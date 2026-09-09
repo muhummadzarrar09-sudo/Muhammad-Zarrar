@@ -8606,6 +8606,27 @@ a:focus-visible > .icon-nudge svg,
   }
 }
 
+/* ---------- VERDICT MARKS ----------------------------------------------------
+   The Usual-vs-Here rows carry their verdicts up front: a muted strike for
+   the old way, the wax seal for this house. */
+.contrast-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.contrast-usual .contrast-kicker {
+  color: var(--text-3);
+}
+
+.contrast-here .contrast-kicker {
+  color: var(--gold);
+}
+
 /* ---------- THEME TOGGLE ----------------------------------------------------
    Icon-only night switch in the header. A control, not a toy: full-size hit
    area, pressed state announced, motion-still safe. */
