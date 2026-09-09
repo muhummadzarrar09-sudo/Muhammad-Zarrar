@@ -57,6 +57,8 @@ type ParticleTextProps = {
   particleSize?: number;
   density?: number;
   color?: string;
+  /** Particle color after hours — used when html carries data-theme="night". */
+  nightColor?: string;
   highlightColor?: string;
   scatter?: number;
   gatherDuration?: number;
@@ -82,6 +84,7 @@ export default function ParticleText({
   particleSize = 2,
   density = 3,
   color = "#111110",
+  nightColor = "#ede9de",
   highlightColor = "#da7134",
   scatter = 150,
   gatherDuration = 800,
@@ -99,6 +102,18 @@ export default function ParticleText({
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [live, setLive] = useState(false);
+  const [night, setNight] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const sync = () => setNight(root.dataset.theme === "night");
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const resolvedColor = night ? nightColor : color;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -416,7 +431,7 @@ export default function ParticleText({
         Math.min(5200, Math.floor((width * height) / 90))
       );
       const stride = Math.max(1, Math.ceil(targets.length / maxParticles));
-      const baseRgb = hexToRgb(color);
+      const baseRgb = hexToRgb(resolvedColor);
       const highlightRgb = hexToRgb(highlightColor);
       const selected = targets.filter((_, index) => index % stride === 0);
 
@@ -434,7 +449,7 @@ export default function ParticleText({
         const particleColor =
           baseRgb && highlightRgb
             ? rgbToCss(mixRgb(baseRgb, highlightRgb, blend))
-            : color;
+            : resolvedColor;
         const angle = seed * Math.PI * 2;
         const distance = (reducedMotion ? 0 : scatter) * (0.35 + depth * 0.75);
         const startX =
@@ -555,7 +570,7 @@ export default function ParticleText({
     text,
     particleSize,
     density,
-    color,
+    resolvedColor,
     highlightColor,
     scatter,
     gatherDuration,

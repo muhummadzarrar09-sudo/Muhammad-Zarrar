@@ -8230,7 +8230,7 @@ html.has-motion .rv-in [data-stagger] > li {
 
 /* ---------- HOUSE GRADE ------------------------------------------------------
    The film grade every photograph joins: warm, quiet, putty-native.
-   (Plaques keep their own ChromaGrid rest state; everything else wears this.) */
+   (Dark-room imagery keeps its own treatment; everything else wears this.) */
 .grade {
   filter: saturate(0.92) contrast(1.04);
 }
@@ -8409,7 +8409,7 @@ html.has-motion .rv-in [data-stagger] > li {
 /* ==========================================================================
 /* ---------- THEME TOGGLE ----------------------------------------------------
    Icon-only night switch in the header. A control, not a toy: full-size hit
-   area, pressed state announced, still gate. */
+   area, pressed state announced, motion-still safe. */
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -8599,4 +8599,14 @@ html[data-theme="night"] .hero-loader-track {
 /* Chips go bone when on — ink text keeps them honest. */
 html[data-theme="night"] .q-chip.is-on {
   color: #1b1914;
+}
+
+/* Museum buttons pin white text; at night the fills go bone, so the text
+   goes ink. Hover states stay black-with-white and need no override. */
+html[data-theme="night"] .btn-primary {
+  color: #1b1914 !important;
+}
+
+html[data-theme="night"] .btn-light {
+  color: #1b1914 !important;
 }
