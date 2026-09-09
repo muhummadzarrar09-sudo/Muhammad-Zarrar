@@ -8287,6 +8287,40 @@ html.has-motion .rv-in [data-stagger] > li {
   }
 }
 
+/* ---------- RAIL JEWEL -------------------------------------------------------
+   The timeline rail earns its keep on screen: section numerals above,
+   percent below, and a clay diamond for the room you're in. */
+.tl-readout {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+}
+
+.tl-index {
+  transform: translateY(-150%);
+}
+
+.tl-pct {
+  transform: translateY(150%);
+}
+
+.tl-marker.active::before {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */
