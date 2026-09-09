@@ -268,7 +268,7 @@ button {
 }
 
 ::selection {
-  background: rgba(17, 17, 16, 0.16);
+  background: rgba(122, 46, 24, 0.25);
   color: var(--text);
 }
 
@@ -7974,12 +7974,20 @@ html.has-motion .rv-in [data-stagger] > li {
   .footer-col,
   .footer-word,
   .footer-top,
-  .tl-readout {
+  .tl-readout,
+  .reading-progress,
+  .route-wipe {
     display: none !important;
   }
 
   body {
     background: var(--white);
+  }
+
+  /* The scribble's stroke is set directly (not currentColor), so it needs
+     its own march into monochrome. Everything else inherits the ink. */
+  .scribble path {
+    stroke: var(--ember-550) !important;
   }
 
   body,
@@ -8646,6 +8654,12 @@ a:focus-visible > .icon-nudge svg,
 .phase h3 svg {
   color: var(--gold);
   flex: none;
+}
+
+/* ---------- INK DETAILS ------------------------------------------------------
+   The loading percent counts in tabular numerals so the digits never jitter. */
+.hero-loader-value {
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---------- THEME TOGGLE ----------------------------------------------------
