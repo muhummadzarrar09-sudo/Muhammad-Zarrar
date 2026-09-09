@@ -8031,6 +8031,50 @@ html.has-motion .rv-in [data-stagger] > li {
   }
 }
 
+/* ---------- PLACARDS ---------------------------------------------------------
+   Museum wall labels. Hairline frame, clay ordinal, quiet caps. */
+.placard {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0 0 20px;
+  padding: 8px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.placard-no {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-display);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+}
+
+.placard-medium {
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+.placard-dark {
+  border-color: rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.placard-dark .placard-no {
+  color: var(--copper-soft);
+}
+
+.placard-dark .placard-medium {
+  color: rgba(255, 255, 255, 0.5);
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */

@@ -7,6 +7,7 @@ import {
 } from "@/content/qualify";
 import { QualifyForm } from "@/components/qualify-form";
 import { ScrambleText } from "@/components/scramble-text";
+import { Placard } from "@/components/placard";
 import BorderGlow from "@/components/border-glow";
 import { PinnedManifesto } from "@/components/pinned-manifesto";
 import { Marquee } from "@/components/marquee";
@@ -111,6 +112,7 @@ export default function HomePage() {
         <div className="recognize-stage">
           <div className="container recognize-layout">
             <div className="recognize-intro">
+              <Placard no="01" title="The Diagnostic" medium="Putty on ink" />
               <div className="sec-head">
                 <span className="sec-index">01</span>
                 <ScrambleText className="sec-label" text="If this is your Tuesday" />
@@ -174,6 +176,7 @@ export default function HomePage() {
         aria-label="A pause"
       >
         <div className="exhibit-stage">
+          <Placard no="02" title="A Pause" medium="Breath on canvas" tone="dark" />
           <img
             src="/images/gallery/arch.jpg"
             alt=""
@@ -213,6 +216,7 @@ export default function HomePage() {
         aria-labelledby="get-heading"
       >
         <div className="container">
+          <Placard no="03" title="The Results" medium="Plaques on nails" tone="dark" />
           <ScrambleText as="p" className="room-label" text="What you walk away with" />
           <h2 className="room-title" id="get-heading" data-pressure>
             Not a pitch. A result.
