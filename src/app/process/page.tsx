@@ -7,6 +7,7 @@ import { Placard } from "@/components/placard";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { SealCheckIcon } from "@/components/icons";
+import { PhaseGlyph } from "@/components/phase-glyph";
 
 export const metadata = pageMeta({
   title: "Our Process — Audit, Findings, Build, Launch",
@@ -68,7 +69,10 @@ export default function ProcessPage() {
                     <span className="ph-no" aria-hidden="true">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <h3>{step.name}</h3>
+                    <h3>
+                      <PhaseGlyph index={i} />
+                      {step.name}
+                    </h3>
                     <span className="ph-time">{step.timeline}</span>
                     <p>{step.detail}</p>
                     <ul className="checklist" data-stagger style={{ marginTop: 20 }}>

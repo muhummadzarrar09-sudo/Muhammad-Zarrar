@@ -8634,6 +8634,20 @@ a:focus-visible > .icon-nudge svg,
   position: relative;
 }
 
+/* ---------- PHASE GLYPHS -----------------------------------------------------
+   Each pipeline phase leads with its tool, struck in clay beside the name.
+   The numeral keeps its seat — glyph and ordinal, side by side. */
+.phase h3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.phase h3 svg {
+  color: var(--gold);
+  flex: none;
+}
+
 /* ---------- THEME TOGGLE ----------------------------------------------------
    Icon-only night switch in the header. A control, not a toy: full-size hit
    area, pressed state announced, motion-still safe. */
