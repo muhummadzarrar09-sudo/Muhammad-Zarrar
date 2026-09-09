@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoMark } from "./logo";
 import { MobileMenu } from "./mobile-menu";
+import { ThemeToggle } from "./theme-toggle";
 import { NAV_LINKS } from "@/content/site-content";
 
 export function SiteHeader() {
@@ -45,6 +46,7 @@ export function SiteHeader() {
             <span className="btn-star-ring" aria-hidden="true" />
             Write your brief
           </Link>
+          <ThemeToggle />
           <MobileMenu />
         </div>
         </div>

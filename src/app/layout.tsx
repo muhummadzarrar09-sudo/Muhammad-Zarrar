@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { RouteProgress } from "@/components/route-progress";
 import { RouteWipe } from "@/components/route-wipe";
+import Script from "next/script";
 import { ScrollTimeline } from "@/components/scroll-timeline";
 import { MotionRoot } from "@/components/motion-root";
 import { RegisterSw } from "@/components/register-sw";
@@ -106,6 +107,9 @@ export default function RootLayout({
           Skip to content
         </a>
         <RouteProgress />
+        <Script id="zs-theme-guard" strategy="beforeInteractive">
+          {`(function(){try{var t=localStorage.getItem("zs-theme");if(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches){t="night";}if(t==="night"){document.documentElement.dataset.theme="night";var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content","#1b1914");}}catch(e){}})();`}
+        </Script>
         <RouteWipe />
         <ScrollTimeline />
         <MotionRoot />

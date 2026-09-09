@@ -8407,6 +8407,52 @@ html.has-motion .rv-in [data-stagger] > li {
 }
 
 /* ==========================================================================
+/* ---------- THEME TOGGLE ----------------------------------------------------
+   Icon-only night switch in the header. A control, not a toy: full-size hit
+   area, pressed state announced, still gate. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    border-color 0.18s var(--ease-out),
+    color 0.18s var(--ease-out),
+    transform 0.18s var(--ease-out);
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-toggle:active {
+  transform: scale(0.94);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle {
+    transition: none;
+  }
+
+  .theme-toggle:active {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
    NIGHT AT THE MUSEUM — html[data-theme="night"] remaps the leaf tokens and
    every role that references them follows. Dark rooms stay dark, light rooms
    go bronze-dark, clay lifts to stay readable. Lives last in the file so it
