@@ -8208,6 +8208,27 @@ html.has-motion .rv-in [data-stagger] > li {
   color: var(--text-2);
 }
 
+/* ---------- SERVICE MOTIFS ---------------------------------------------------
+   Blueprint diagrams floating in the service heroes. Hairline clay on the
+   paper (and on the audit's blueprint grid); hidden where space is tight. */
+.service-motif {
+  position: absolute;
+  right: clamp(22px, 7vw, 120px);
+  top: 50%;
+  width: 178px;
+  height: auto;
+  color: var(--gold);
+  opacity: 0.85;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+@media (max-width: 1020px) {
+  .service-motif {
+    display: none;
+  }
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */

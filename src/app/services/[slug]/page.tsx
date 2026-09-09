@@ -10,6 +10,7 @@ import { Reveal } from "@/components/reveal";
 import { ScrambleText } from "@/components/scramble-text";
 import { CtaBand } from "@/components/cta-band";
 import { CheckIcon, ArrowRightIcon } from "@/components/icons";
+import { ServiceMotif } from "@/components/service-motif";
 import { SITE_URL } from "@/lib/site";
 
 type RouteParams = { slug: string };
@@ -107,6 +108,7 @@ export default async function ServiceDetailPage({
             <h1>{service.name}</h1>
             <p className="lede">{service.lead}</p>
           </Reveal>
+          <ServiceMotif slug={slug} />
         </div>
       </section>
 
