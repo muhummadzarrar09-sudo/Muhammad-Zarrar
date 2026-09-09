@@ -8407,6 +8407,45 @@ html.has-motion .rv-in [data-stagger] > li {
 }
 
 /* ==========================================================================
+/* ---------- ICON NUDGE ------------------------------------------------------
+   Wayfinding icons lean into the journey on hover and focus. The `translate`
+   property (not `transform`) so it never fights a parent's transform. */
+.icon-nudge {
+  display: inline-flex;
+}
+
+.icon-nudge svg,
+.keep-link svg {
+  transition: translate 0.18s var(--ease-out);
+}
+
+a:hover > .icon-nudge svg,
+a:focus-visible > .icon-nudge svg,
+.keep-link:hover svg,
+.keep-link:focus-visible svg {
+  translate: 2px -2px;
+}
+
+.keep-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-nudge svg,
+  .keep-link svg {
+    transition: none;
+  }
+
+  a:hover > .icon-nudge svg,
+  a:focus-visible > .icon-nudge svg,
+  .keep-link:hover svg,
+  .keep-link:focus-visible svg {
+    translate: none;
+  }
+}
+
 /* ---------- THEME TOGGLE ----------------------------------------------------
    Icon-only night switch in the header. A control, not a toy: full-size hit
    area, pressed state announced, motion-still safe. */

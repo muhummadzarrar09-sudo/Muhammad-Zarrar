@@ -5,6 +5,7 @@ import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { NOTES, getNote } from "@/content/notes";
 import { Reveal } from "@/components/reveal";
 import { ReadingProgress } from "@/components/reading-progress";
+import { ArrowUpRightIcon } from "@/components/icons";
 import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
@@ -119,7 +120,8 @@ export default async function NotePage({
                     href={`/notes/${next.slug}`}
                     className="keep-link"
                   >
-                    {next.title} &rarr;
+                    {next.title}{" "}
+                    <ArrowUpRightIcon size={18} className="keep-arrow" />
                   </Link>
                   <p className="idx-sub">{next.excerpt}</p>
                 </Reveal>

@@ -95,3 +95,47 @@ export function SpinnerIcon({ size = 16, className }: Omit<IconProps, "children"
     </Icon>
   );
 }
+
+/**
+ * Wayfinding suite — same 24-grid, same round voice as ArrowRight.
+ * UpRight marks every exit (external links, keep-reading); Up rides the
+ * back-to-top ring; Left walks 404s home.
+ */
+export function ArrowUpRightIcon({ size = 16, className }: Omit<IconProps, "children">) {
+  return (
+    <Icon size={size} className={className}>
+      <path
+        d="M7 17 17 7M8.5 7H17v8.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Icon>
+  );
+}
+
+export function ArrowUpIcon({ size = 16, className }: Omit<IconProps, "children">) {
+  return (
+    <Icon size={size} className={className}>
+      <path
+        d="M12 19.5v-15m-6.5 6.5L12 4.5l6.5 6.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Icon>
+  );
+}
+
+export function ArrowLeftIcon({ size = 16, className }: Omit<IconProps, "children">) {
+  return (
+    <Icon size={size} className={className}>
+      <path
+        d="M19.5 12h-15m6.5-6.5L4.5 12l6.5 6.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Icon>
+  );
+}

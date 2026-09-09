@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { LogoMark } from "./logo";
-import { WhatsAppIcon } from "./icons";
+import { WhatsAppIcon, ArrowUpRightIcon } from "./icons";
 import { StudioClock } from "./studio-clock";
 import { SERVICES } from "@/content/services";
 import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, EMAIL, POSITIONING, waLink, DEFAULT_WA_MESSAGE } from "@/lib/site";
@@ -50,9 +50,15 @@ export function SiteFooter() {
             <h3 className="footer-heading">Contact</h3>
             <a href={waLink(DEFAULT_WA_MESSAGE)} target="_blank" rel="noopener" className="footer-contact">
               <WhatsAppIcon size={16} /> WhatsApp: {WHATSAPP_DISPLAY}
+              <span className="icon-nudge">
+                <ArrowUpRightIcon size={14} />
+              </span>
             </a>
             <a href={`mailto:${EMAIL}`} className="footer-contact">
               {EMAIL}
+              <span className="icon-nudge">
+                <ArrowUpRightIcon size={14} />
+              </span>
             </a>
             <p className="footer-contact-static">Rawalpindi, Pakistan</p>
             <p className="footer-contact-static">
