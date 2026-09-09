@@ -170,6 +170,7 @@
 
   --font-body: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
 }
 
 /* ---------- Base ---------- */
@@ -8640,6 +8641,143 @@ a:focus-visible > .icon-nudge svg,
    The loading percent counts in tabular numerals so the digits never jitter. */
 .hero-loader-value {
   font-variant-numeric: tabular-nums;
+}
+
+/* ---------- DIAGRAMS ---------------------------------------------------------
+   Diagnostic editorial: blueprint panels, viewfinder ticks, mono plate
+   labels, severity tags. All figure art is inline SVG — sharp, themed,
+   printable. Static ink: nothing here moves, so nothing needs a gate. */
+.diagram {
+  margin: 40px 0 0;
+}
+
+.diagram-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.diagram-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--hairline-strong);
+}
+
+.diagram-panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  background-image:
+    linear-gradient(var(--hairline-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hairline-soft) 1px, transparent 1px);
+  background-size: 28px 28px;
+  padding: clamp(20px, 4vw, 36px);
+}
+
+.diagram-panel::before,
+.diagram-panel::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 0 solid var(--gold);
+}
+
+.diagram-panel::before {
+  top: 8px;
+  left: 8px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.diagram-panel::after {
+  bottom: 8px;
+  right: 8px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+.diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.diagram svg text {
+  font-family: var(--font-mono);
+}
+
+.diagram figcaption {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--text-2);
+  max-width: 62ch;
+}
+
+.dtag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.dtag-high {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: var(--danger-quiet);
+}
+
+.dtag-med {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
+.dtag-low {
+  color: var(--success);
+  border-color: var(--success);
+  background: var(--success-quiet);
+}
+
+.dtag-info {
+  color: var(--info);
+  border-color: var(--info);
+}
+
+.dtag-sample {
+  color: var(--gold);
+  border-color: var(--gold);
+  border-style: dashed;
+}
+
+.grade-ring text {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 560;
+  fill: var(--text);
+}
+
+/* Belt-and-braces: the presentation attributes already carry these, but CSS
+   wins anywhere var() in attributes is ever doubted. */
+.grade-ring circle:first-child {
+  stroke: var(--hairline-strong);
+}
+
+.grade-ring circle:last-of-type {
+  stroke: var(--gold);
 }
 
 /* ---------- THEME TOGGLE ----------------------------------------------------
