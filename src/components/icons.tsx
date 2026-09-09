@@ -158,6 +158,27 @@ export function PinIcon({ size = 16, className }: Omit<IconProps, "children">) {
   );
 }
 
+/**
+ * The wax seal — a check struck inside a double ring. Marks every promise
+ * the site makes in list form: pricing terms, service includes, phase
+ * deliverables. Form success states keep the plain CheckIcon: a receipt
+ * is not a promise.
+ */
+export function SealCheckIcon({ size = 16, className }: Omit<IconProps, "children">) {
+  return (
+    <Icon size={size} className={className}>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" />
+      <circle cx="12" cy="12" r="5.5" stroke="currentColor" strokeOpacity="0.45" />
+      <path
+        d="M9.2 12.2l2 2 3.6-3.8"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Icon>
+  );
+}
+
 export function ArrowLeftIcon({ size = 16, className }: Omit<IconProps, "children">) {
   return (
     <Icon size={size} className={className}>

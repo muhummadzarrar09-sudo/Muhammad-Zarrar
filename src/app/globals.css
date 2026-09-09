@@ -8488,6 +8488,14 @@ a:focus-visible > .icon-nudge svg,
   margin-right: 8px;
 }
 
+/* ---------- WAX SEAL ---------------------------------------------------------
+   Promise lists stamp every item in clay. Same 16-unit box as the plain
+   check, so the v4 stagger choreography doesn't move a pixel. */
+.checklist > li > svg {
+  color: var(--gold);
+  flex: none;
+}
+
 /* ---------- THEME TOGGLE ----------------------------------------------------
    Icon-only night switch in the header. A control, not a toy: full-size hit
    area, pressed state announced, motion-still safe. */

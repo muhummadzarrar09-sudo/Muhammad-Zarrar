@@ -6,7 +6,7 @@ import { Reveal } from "@/components/reveal";
 import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
-import { CheckIcon } from "@/components/icons";
+import { SealCheckIcon } from "@/components/icons";
 import { FaqAccordion } from "@/components/faq";
 
 export const metadata = pageMeta({
@@ -147,26 +147,26 @@ export default function PricingPage() {
               </h2>
               <ul className="checklist">
                 <li>
-                  <CheckIcon size={16} />
+                  <SealCheckIcon size={16} />
                   <span>40–50% deposit to start — nothing more up front.</span>
                 </li>
                 <li>
-                  <CheckIcon size={16} />
+                  <SealCheckIcon size={16} />
                   <span>Balance before go-live, once you&rsquo;ve approved the build.</span>
                 </li>
                 <li>
-                  <CheckIcon size={16} />
+                  <SealCheckIcon size={16} />
                   <span>
                     You own the code, design, and content on full payment —
                     completely.
                   </span>
                 </li>
                 <li>
-                  <CheckIcon size={16} />
+                  <SealCheckIcon size={16} />
                   <span>No lock-in, no forced retainers, no hostage hosting.</span>
                 </li>
                 <li>
-                  <CheckIcon size={16} />
+                  <SealCheckIcon size={16} />
                   <span>Payment by bank transfer — account details arrive with your written quote.</span>
                 </li>
               </ul>

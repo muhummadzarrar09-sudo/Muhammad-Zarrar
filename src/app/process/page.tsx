@@ -6,7 +6,7 @@ import { ScrambleText } from "@/components/scramble-text";
 import { Placard } from "@/components/placard";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
-import { CheckIcon } from "@/components/icons";
+import { SealCheckIcon } from "@/components/icons";
 
 export const metadata = pageMeta({
   title: "Our Process — Audit, Findings, Build, Launch",
@@ -74,7 +74,7 @@ export default function ProcessPage() {
                     <ul className="checklist" data-stagger style={{ marginTop: 20 }}>
                       {step.deliverables.map((d) => (
                         <li key={d}>
-                          <CheckIcon size={16} />
+                          <SealCheckIcon size={16} />
                           <span>
                             {d}
                           </span>

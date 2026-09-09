@@ -9,7 +9,7 @@ import { JsonLd } from "@/components/jsonld";
 import { Reveal } from "@/components/reveal";
 import { ScrambleText } from "@/components/scramble-text";
 import { CtaBand } from "@/components/cta-band";
-import { CheckIcon, ArrowRightIcon } from "@/components/icons";
+import { SealCheckIcon, ArrowRightIcon } from "@/components/icons";
 import { ServiceMotif } from "@/components/service-motif";
 import { SITE_URL } from "@/lib/site";
 
@@ -132,7 +132,7 @@ export default async function ServiceDetailPage({
               <ul className="checklist checklist-2col" data-stagger>
                 {service.included.map((item) => (
                   <li key={item}>
-                    <CheckIcon size={16} />
+                    <SealCheckIcon size={16} />
                     <span>{item}</span>
                   </li>
                 ))}
