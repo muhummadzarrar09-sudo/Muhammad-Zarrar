@@ -8,6 +8,9 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="container">
+        <p className="orn-asterism" aria-hidden="true">
+          &#10087;
+        </p>
         <div className="footer-grid">
           <div className="footer-brand">
             <Link href="/" className="brand brand-on-ink" aria-label="Zarrar.Solutions — home">

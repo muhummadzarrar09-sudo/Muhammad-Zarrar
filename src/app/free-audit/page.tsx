@@ -97,6 +97,12 @@ export default function FreeAuditPage() {
         </div>
       </section>
 
+      <section className="section-tight" style={{ paddingTop: 0 }} aria-hidden="true">
+        <div className="container">
+          <p className="orn-asterism">&#10087;</p>
+        </div>
+      </section>
+
       <section className="section-tight" style={{ paddingTop: 0 }} aria-label="Direct WhatsApp">
         <div className="container">
           <Reveal className="inset-panel" >

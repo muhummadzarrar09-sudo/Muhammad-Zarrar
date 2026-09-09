@@ -7921,6 +7921,30 @@ html.has-motion .rv-in [data-stagger] > li {
   widows: 3;
 }
 
+/* ---------- ORNAMENTS --------------------------------------------------------
+   Museum punctuation: the asterism divider. Rules grow from the hairline
+   token; the glyph is clay. Pure decoration — always aria-hidden. */
+.orn-asterism {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  max-width: 560px;
+  margin: 0 auto;
+  color: var(--gold);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.orn-asterism::before,
+.orn-asterism::after {
+  content: "";
+  flex: 1;
+  max-width: 180px;
+  height: 1px;
+  background: var(--hairline);
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */
