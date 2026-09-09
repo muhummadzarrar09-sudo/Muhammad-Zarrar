@@ -4,6 +4,7 @@ import { waLink, WHATSAPP_DISPLAY } from "@/lib/site";
 import { FREE_AUDIT_POINTS } from "@/content/site-content";
 import { AuditForm } from "@/components/audit-form";
 import { Reveal } from "@/components/reveal";
+import { SelfCheck } from "@/components/self-check";
 import { ScrambleText } from "@/components/scramble-text";
 import BorderGlow from "@/components/border-glow";
 import { JsonLd } from "@/components/jsonld";
@@ -84,7 +85,7 @@ export default function FreeAuditPage() {
             </Reveal>
           </div>
 
-          <Reveal>
+          <Reveal id="request">
             <BorderGlow tone="glass" className="border-glow-card--form">
               <h2 className="form-title">
                 Request your mini-audit
@@ -94,6 +95,23 @@ export default function FreeAuditPage() {
               </p>
               <AuditForm />
             </BorderGlow>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section-tight" style={{ paddingTop: 0 }} aria-labelledby="selfcheck-heading">
+        <div className="container">
+          <Reveal className="section-head">
+            <h2 id="selfcheck-heading">
+              The 10-second self-check
+            </h2>
+            <p className="lede">
+              Tap what sounds familiar. No email, no score theater — just a
+              straight read on whether the mini-audit is worth your link.
+            </p>
+          </Reveal>
+          <Reveal>
+            <SelfCheck />
           </Reveal>
         </div>
       </section>

@@ -8321,6 +8321,45 @@ html.has-motion .rv-in [data-stagger] > li {
   border-color: var(--gold);
 }
 
+/* ---------- SELF CHECK -------------------------------------------------------
+   Ten-second leak quiz: toggle chips, a live verdict, one honest CTA. */
+.selfcheck {
+  display: grid;
+  gap: 28px;
+  margin-top: 32px;
+}
+
+.selfcheck-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.selfcheck-chips .q-chip {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.selfcheck-verdict {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+
+.selfcheck-count {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--gold);
+}
+
+.selfcheck-words {
+  font-size: 1.05rem;
+  max-width: 52ch;
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */
