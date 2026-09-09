@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ParticleText from "@/components/particle-text";
+import { DTag, GradeRing } from "@/components/diagram";
 import { ArrowLeftIcon, ArrowRightIcon } from "@/components/icons";
 
 export const metadata = {
@@ -43,6 +44,10 @@ export default function NotFound() {
         Either the link is broken, or the page never existed. Both are
         fixable — that&rsquo;s literally our job.
       </p>
+      <div className="notfound-grade">
+        <GradeRing grade="F" size={56} />
+        <DTag tone="med">Severity: cosmetic</DTag>
+      </div>
       <p className="finding-line">
         finding: route not found · severity: cosmetic · fix: one click
       </p>

@@ -7975,6 +7975,11 @@ html.has-motion .rv-in [data-stagger] > li {
     stroke: var(--ember-550) !important;
   }
 
+  .diagram,
+  .sample-report {
+    break-inside: avoid;
+  }
+
   body,
   h1, h2, h3, h4, p, li, span, a, blockquote {
     color: var(--ember-550) !important;
@@ -8903,6 +8908,15 @@ a:focus-visible > .icon-nudge svg,
     grid-template-columns: 1fr;
     gap: 4px;
   }
+}
+
+/* ---------- NOTFOUND GRADE ---------------------------------------------------
+   The 404 files its own report: a failing grade, honestly tagged cosmetic. */
+.notfound-grade {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0 4px;
 }
 
 /* ---------- THEME TOGGLE ----------------------------------------------------
