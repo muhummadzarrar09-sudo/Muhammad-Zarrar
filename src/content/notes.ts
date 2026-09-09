@@ -48,6 +48,7 @@ export const NOTES: Note[] = [
   },
   {
     slug: "google-sees-a-blank-page",
+    figure: "render",
     title: "Google sees a blank page",
     date: "August 11, 2026",
     dateISO: "2026-08-11",

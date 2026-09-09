@@ -135,3 +135,156 @@ export function WaterfallFigure() {
     </svg>
   );
 }
+
+/**
+ * Two audiences, one URL: what Google fetched (the shell) against what
+ * visitors saw (the painted page). After the post's own test — view-source
+ * it — so the left frame is literally titled view-source.
+ */
+export function RenderFigure() {
+  const frame = (x: number, title: string) => (
+    <g key={title}>
+      <rect
+        x={x}
+        y={8}
+        width={288}
+        height={220}
+        rx={8}
+        style={{ fill: "var(--surface)", stroke: "var(--hairline-strong)" }}
+        strokeWidth={1}
+      />
+      {[0, 1, 2].map((i) => (
+        <circle
+          key={i}
+          cx={x + 20 + i * 14}
+          cy={26}
+          r={3}
+          style={{ fill: "var(--hairline-strong)" }}
+        />
+      ))}
+      <text
+        x={x + 66}
+        y={26}
+        dominantBaseline="central"
+        fontSize={10}
+        style={{ fill: "var(--text-2)" }}
+      >
+        {title}
+      </text>
+      <line
+        x1={x}
+        y1={40}
+        x2={x + 288}
+        y2={40}
+        style={{ stroke: "var(--hairline-strong)" }}
+        strokeWidth={1}
+      />
+    </g>
+  );
+
+  return (
+    <svg viewBox="0 0 640 280" aria-hidden="true" focusable="false">
+      {frame(8, "view-source")}
+      {frame(344, "viewport")}
+      {/* the shell */}
+      <text x={28} y={78} fontSize={12} style={{ fill: "var(--text-2)" }}>
+        {"<div id=\"root\">"}
+      </text>
+      <text x={28} y={100} fontSize={12} style={{ fill: "var(--text-2)" }}>
+        {"<!-- nothing here -->"}
+      </text>
+      <text x={28} y={122} fontSize={12} style={{ fill: "var(--text-2)" }}>
+        {"</div>"}
+      </text>
+      <text
+        x={152}
+        y={188}
+        textAnchor="middle"
+        fontSize={30}
+        style={{ fill: "var(--danger)" }}
+      >
+        0 words
+      </text>
+      {/* the painted page */}
+      <rect
+        x={360}
+        y={56}
+        width={256}
+        height={44}
+        rx={3}
+        style={{ fill: "var(--gold)" }}
+        fillOpacity={0.85}
+      />
+      {[
+        { y: 112, w: 200 },
+        { y: 128, w: 240 },
+        { y: 144, w: 170 },
+      ].map((line) => (
+        <rect
+          key={line.y}
+          x={360}
+          y={line.y}
+          width={line.w}
+          height={8}
+          rx={2}
+          style={{ fill: "var(--text)" }}
+          fillOpacity={0.65}
+        />
+      ))}
+      <rect
+        x={360}
+        y={164}
+        width={120}
+        height={48}
+        rx={3}
+        style={{ fill: "none", stroke: "var(--hairline-strong)" }}
+        strokeWidth={1}
+      />
+      <line
+        x1={360}
+        y1={164}
+        x2={480}
+        y2={212}
+        style={{ stroke: "var(--hairline-strong)" }}
+        strokeWidth={1}
+      />
+      <line
+        x1={480}
+        y1={164}
+        x2={360}
+        y2={212}
+        style={{ stroke: "var(--hairline-strong)" }}
+        strokeWidth={1}
+      />
+      {/* versus */}
+      <text
+        x={320}
+        y={118}
+        textAnchor="middle"
+        fontSize={13}
+        style={{ fill: "var(--gold)" }}
+      >
+        vs
+      </text>
+      {/* captions */}
+      <text
+        x={152}
+        y={252}
+        textAnchor="middle"
+        fontSize={11}
+        style={{ fill: "var(--text-2)" }}
+      >
+        what Google fetched
+      </text>
+      <text
+        x={488}
+        y={252}
+        textAnchor="middle"
+        fontSize={11}
+        style={{ fill: "var(--text-2)" }}
+      >
+        what visitors saw
+      </text>
+    </svg>
+  );
+}
