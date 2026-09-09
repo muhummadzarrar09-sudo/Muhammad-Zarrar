@@ -6,6 +6,8 @@ import { NOTES, getNote } from "@/content/notes";
 import { Reveal } from "@/components/reveal";
 import { ReadingProgress } from "@/components/reading-progress";
 import { ArrowUpRightIcon } from "@/components/icons";
+import { Diagram } from "@/components/diagram";
+import { WaterfallFigure } from "@/components/note-figures";
 import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
@@ -103,6 +105,15 @@ export default async function NotePage({
                     {paragraph}
                   </p>
                 ))}
+                {si === 0 && note.figure === "waterfall" && (
+                  <Diagram
+                    label="Fig. 01 — Waterfall"
+                    caption="Illustrative waterfall of the pattern above — theme, builder, fonts, slider, and chat, every bar something the visitor never asked for."
+                    artLabel="Illustrative waterfall chart: five request bars stack past nine seconds; visitors leave around second four; first paint lands near second ten."
+                  >
+                    <WaterfallFigure />
+                  </Diagram>
+                )}
               </Reveal>
             ))}
             <Reveal className="inset-panel" >

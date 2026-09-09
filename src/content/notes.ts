@@ -6,6 +6,7 @@ export type Note = {
   excerpt: string;
   sections: { heading: string; body: string[] }[];
   takeaway: string;
+  figure?: "waterfall" | "render";
 };
 
 /* Voice rules: English only. Short sentences. Evidence over adjectives.
@@ -14,6 +15,7 @@ export type Note = {
 export const NOTES: Note[] = [
   {
     slug: "homepage-weighs-70-files",
+    figure: "waterfall",
     title: "Your homepage weighs seventy files",
     date: "August 18, 2026",
     dateISO: "2026-08-18",
