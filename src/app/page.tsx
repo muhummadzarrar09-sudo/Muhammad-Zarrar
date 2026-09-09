@@ -295,7 +295,7 @@ export default function HomePage() {
             <ScrambleText className="sec-label" text="Then what happens" />
             <span className="sec-rule" />
           </div>
-          <h2 className="sec-title" id="next-heading" data-pressure>
+          <h2 className="sec-title" id="next-heading">
             After you send it.
           </h2>
           <div className="phase-grid next-grid">
