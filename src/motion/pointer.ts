@@ -911,12 +911,14 @@ function buildCrosshair(): { teardown: () => void } {
 
 /**
  * Display type swells toward the pointer: each char of [data-pressure]
- * rides the Fraunces variable wght axis by proximity (400 → 720 across
- * 170px), quantized to 20-weight steps so settled chars stop repainting.
- * Chars stay inline (kerning preserved — this is weight-only, no warp),
- * inner elements (em, underlines) survive the split, and an IO gate plus
- * a per-heading cheap-reject keep idle frames at zero cost. Teardown
- * unwraps the chars, restoring pristine DOM for route swaps.
+ * rides the Fraunces variable wght axis by proximity (base → 720 across
+ * 170px). Both the pointer and every weight are lerped per frame, so the
+ * swell glides instead of stepping; settled chars park (zero idle cost)
+ * and leaving the window eases the whole line home. Chars stay inline
+ * (kerning preserved — weight-only, no warp), inner elements (em,
+ * underlines) survive the split, and an IO gate plus a per-heading
+ * cheap-reject keep the loop asleep off-screen. Teardown unwraps the
+ * chars, restoring pristine DOM for route swaps.
  */
 function buildPressure(): { teardown: () => void } {
   const targets = Array.from(
@@ -925,6 +927,8 @@ function buildPressure(): { teardown: () => void } {
   if (!targets.length) return { teardown: () => {} };
 
   const charsOf = new Map<HTMLElement, HTMLElement[]>();
+  const baseOf = new Map<HTMLElement, number>();
+  const cur = new Map<HTMLElement, number>();
   for (const t of targets) {
     const walker = document.createTreeWalker(t, NodeFilter.SHOW_TEXT);
     const nodes: Text[] = [];
@@ -946,10 +950,17 @@ function buildPressure(): { teardown: () => void } {
       node.parentNode?.replaceChild(frag, node);
     }
     charsOf.set(t, chars);
+    // Numeric base per headline, so the swell starts exactly where the
+    // static ink sits — no step at the edge of the radius.
+    const b = parseFloat(getComputedStyle(t).fontWeight) || 400;
+    baseOf.set(t, b);
+    for (const ch of chars) cur.set(ch, b);
   }
 
-  const reset = (t: HTMLElement) => {
+  const hardReset = (t: HTMLElement) => {
+    const b = baseOf.get(t) ?? 400;
     for (const ch of charsOf.get(t) ?? []) {
+      cur.set(ch, b);
       if (ch.style.fontWeight) ch.style.fontWeight = "";
     }
   };
@@ -962,7 +973,7 @@ function buildPressure(): { teardown: () => void } {
         if (entry.isIntersecting) visible.add(t);
         else {
           visible.delete(t);
-          reset(t);
+          hardReset(t);
         }
       }
     },
@@ -971,49 +982,94 @@ function buildPressure(): { teardown: () => void } {
   for (const t of targets) io.observe(t);
 
   const RADIUS = 170;
+  const POINTER_EASE = 0.35;
+  const WEIGHT_EASE = 0.16;
+  const SNAP = 0.6;
+  const PEAK = 720;
   let raf = 0;
+  let running = false;
+  let tx = -9999;
+  let ty = -9999;
   let px = -9999;
   let py = -9999;
 
-  const apply = () => {
-    raf = 0;
+  const tick = () => {
+    // The pointer itself is smoothed first — that is what reads as fluid.
+    px += (tx - px) * POINTER_EASE;
+    py += (ty - py) * POINTER_EASE;
+    if (Math.abs(tx - px) < 0.05) px = tx;
+    if (Math.abs(ty - py) < 0.05) py = ty;
+    let settled = px === tx && py === ty;
     for (const t of visible) {
+      const b = baseOf.get(t) ?? 400;
       const rect = t.getBoundingClientRect();
-      if (
-        Math.abs(px - (rect.left + rect.width / 2)) >
-          rect.width / 2 + RADIUS ||
-        Math.abs(py - (rect.top + rect.height / 2)) >
-          rect.height / 2 + RADIUS
-      ) {
-        reset(t);
-        continue;
-      }
+      const near =
+        Math.abs(px - (rect.left + rect.width / 2)) <=
+          rect.width / 2 + RADIUS &&
+        Math.abs(py - (rect.top + rect.height / 2)) <=
+          rect.height / 2 + RADIUS;
       for (const ch of charsOf.get(t) ?? []) {
-        const r = ch.getBoundingClientRect();
-        const d = Math.hypot(
-          px - (r.left + r.width / 2),
-          py - (r.top + r.height / 2)
-        );
-        if (d > RADIUS) {
-          if (ch.style.fontWeight) ch.style.fontWeight = "";
+        let target = b;
+        if (near) {
+          const r = ch.getBoundingClientRect();
+          const d = Math.hypot(
+            px - (r.left + r.width / 2),
+            py - (r.top + r.height / 2)
+          );
+          // Continuous weights, no quantization steps — the variable font
+          // interpolates every fraction.
+          if (d <= RADIUS) target = b + (PEAK - b) * (1 - d / RADIUS);
+        }
+        const curW = cur.get(ch) ?? b;
+        const n = curW + (target - curW) * WEIGHT_EASE;
+        if (Math.abs(n - target) < SNAP && Math.abs(curW - target) < SNAP) {
+          if (curW !== target) {
+            cur.set(ch, target);
+            ch.style.fontWeight = target === b ? "" : target.toFixed(1);
+          }
           continue;
         }
-        const next = String(Math.round((400 + 320 * (1 - d / RADIUS)) / 20) * 20);
-        if (ch.style.fontWeight !== next) ch.style.fontWeight = next;
+        settled = false;
+        cur.set(ch, n);
+        ch.style.fontWeight = n.toFixed(1);
       }
+    }
+    if (settled) {
+      raf = 0;
+      running = false;
+      return;
+    }
+    raf = requestAnimationFrame(tick);
+  };
+
+  const kick = () => {
+    if (!running) {
+      running = true;
+      raf = requestAnimationFrame(tick);
     }
   };
 
   const onMove = (event: PointerEvent) => {
-    px = event.clientX;
-    py = event.clientY;
-    if (!raf) raf = requestAnimationFrame(apply);
+    tx = event.clientX;
+    ty = event.clientY;
+    kick();
   };
+  const onLeave = () => {
+    tx = -9999;
+    ty = -9999;
+    kick();
+  };
+  // Scroll moves the ink under a static pointer — recompute, eased.
+  const onScroll = () => kick();
   document.addEventListener("pointermove", onMove, { passive: true });
+  document.addEventListener("pointerleave", onLeave);
+  window.addEventListener("scroll", onScroll, { passive: true });
 
   return {
     teardown: () => {
       document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
       io.disconnect();
       for (const [t, chars] of charsOf) {
