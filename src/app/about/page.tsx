@@ -132,6 +132,39 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <section className="section-tight" style={{ paddingTop: 0 }} aria-labelledby="spec-heading">
+        <div className="container">
+          <Reveal className="section-head">
+            <ScrambleText className="eyebrow" text="Datasheet" />
+            <h2 id="spec-heading">Builder, specced</h2>
+          </Reveal>
+          <Reveal>
+            <dl className="spec-sheet">
+              <div>
+                <dt>Base</dt>
+                <dd>Rawalpindi, PKT (UTC+5)</dd>
+              </div>
+              <div>
+                <dt>Stack</dt>
+                <dd>Next.js · React · TypeScript</dd>
+              </div>
+              <div>
+                <dt>Replies</dt>
+                <dd>Within 24 hours</dd>
+              </div>
+              <div>
+                <dt>Builds</dt>
+                <dd>Solo — start to ship</dd>
+              </div>
+              <div>
+                <dt>Audits</dt>
+                <dd>In writing, with evidence</dd>
+              </div>
+            </dl>
+          </Reveal>
+        </div>
+      </section>
+
       <section className="section-tight" aria-labelledby="values-heading" style={{ paddingTop: 0 }}>
         <div className="container">
           <Reveal className="section-head">
