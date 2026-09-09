@@ -98,6 +98,12 @@ storyboarded as data in `src/motion/wireframes.ts`.
   click-ticks, target brackets, hero crosshair, focus veils, pressure
   headlines, a landed RotatingText, the process stepper, the audit card
   deck, and a spring-fill PKR budget slider.
+- **Beauty pass** (14 items, one commit each, same contract): editorial
+  type, asterism ornaments, exhibit placards, footer jewelry with a live
+  PKT clock, rubber stamps, a print stylesheet, reading-room notes,
+  blueprint service motifs, one house photo grade, a paper route wipe, a
+  jeweled timeline rail, a 10-second self-check quiz, a 46%-lighter
+  gallery, and Night at the Museum (persisted, OS-aware, zero-flash).
 - **Scroll timeline**: the native scrollbar is hidden and replaced by a
   right-edge rail — progress fill plus diamond markers per section
   (`section[data-tl]`), keyboard-focusable, click-to-jump.
