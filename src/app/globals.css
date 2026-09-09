@@ -48,7 +48,7 @@
   --gold-deep: #571f0c;              /*  7.36:1 AAA — active ordinal (16.8px text) on canvas */
   --copper: #da7134;                 /* molten accent — star borders, sheen tips (decorative only) */
   --copper-soft: #e09a68;            /* sheen mid — on-ink display text only */
-  --spot-core: rgba(122, 46, 24, 0.14); /* spotlight wash core (React Bits SpotlightCard) */
+  --spot-rgb: 122, 46, 24; /* unified spotlight clay — the canvas reads this */
   --crosshair: rgba(122, 46, 24, 0.3);   /* diagnostic crosshair lines */
   --text: #111110;                    /* 10.64:1 ink */
   --text-2: #2a2926;                  /*  8.19:1 graphite — AAA on canvas AND footer */
@@ -7251,43 +7251,26 @@ html.has-motion .shiny-text.is-live.is-shine {
   to { background-position: -115% 0; }
 }
 
-/* ---------- SPOTLIGHT (React Bits SpotlightCard, tailored) -----------------
-   A clay wash follows the cursor across [data-spotlight] rows and cards.
-   JS (motion/pointer.ts §5) only feeds --spot-x/--spot-y; the fade runs on
-   --spot-o so :hover, :focus-within and :focus-visible share one path.
-   Each class uses its free pseudo (index-row::after, card::before,
-   phase/contrast ::after) — no markup changes, no extra elements. */
+/* ---------- SPOTLIGHT (one confined canvas) ----------------------------------
+   A single fixed canvas paints one continuous clay glow for every
+   [data-spotlight] row and card — the light runs past the borders and dies
+   in open space instead of hard-clipping at each box. JS (motion/pointer.ts
+   §5) owns the paint; this rule only confines and blends it. Multiply burns
+   the clay into putty by day; screen lifts it over bronze by night. */
 [data-spotlight] {
   position: relative;
 }
 
-.index-row[data-spotlight]::after,
-.card[data-spotlight]::before,
-.phase[data-spotlight]::after,
-.contrast-row[data-spotlight]::after {
-  content: "";
-  position: absolute;
+.spot-unified {
+  position: fixed;
   inset: 0;
-  border-radius: inherit;
+  z-index: 60;
   pointer-events: none;
-  background: radial-gradient(
-    240px circle at var(--spot-x, 50%) var(--spot-y, 50%),
-    var(--spot-core),
-    transparent 70%
-  );
-  opacity: var(--spot-o, 0);
-  transition: opacity var(--dur-2) var(--ease-standard);
+  mix-blend-mode: multiply;
 }
 
-@media (hover: hover) {
-  [data-spotlight]:hover {
-    --spot-o: 1;
-  }
-}
-
-[data-spotlight]:focus-visible,
-[data-spotlight]:focus-within {
-  --spot-o: 1;
+html[data-theme="night"] .spot-unified {
+  mix-blend-mode: screen;
 }
 
 /* ---------- SCROLL CRANK (React Bits CircularText, tailored) ---------------
@@ -7976,7 +7959,8 @@ html.has-motion .rv-in [data-stagger] > li {
   .footer-top,
   .tl-readout,
   .reading-progress,
-  .route-wipe {
+  .route-wipe,
+  .spot-unified {
     display: none !important;
   }
 
@@ -8438,10 +8422,6 @@ html.has-motion .rv-in [data-stagger] > li {
   .shiny-text.is-live.is-shine {
     animation: none;
   }
-  .index-row[data-spotlight]::after,
-  .card[data-spotlight]::before,
-  .phase[data-spotlight]::after,
-  .contrast-row[data-spotlight]::after,
   .monogram-tilt::after,
   .btn-star-ring {
     display: none;
@@ -8743,7 +8723,7 @@ html[data-theme="night"] {
   /* Clay, lifted: day rust would drown on bronze. */
   --gold: #d98a52;
   --gold-deep: #eab183;
-  --spot-core: rgba(217, 138, 82, 0.18);
+  --spot-rgb: 217, 138, 82;
   --crosshair: rgba(217, 138, 82, 0.4);
 
   --text: #ede9de;

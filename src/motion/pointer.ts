@@ -324,58 +324,169 @@ function buildPan(): { teardown: () => void } {
 }
 
 /* ------------------------------------------------------------------ */
-/* 5 · Spotlight (React Bits SpotlightCard, tailored)                  */
+/* 5 · Spotlight — one confined canvas, zero boxes                    */
 /* ------------------------------------------------------------------ */
 
 /**
- * One delegated pointermove feeds --spot-x/--spot-y (element-relative %)
- * to whatever [data-spotlight] row or card sits under the cursor. The glow
- * itself is a CSS radial-gradient pseudo that fades on --spot-o, so hover,
- * :focus-within and :focus-visible all get it — keyboard parity for free —
- * and no-JS readers still get a centred wash on hover. Percentage coords
- * keep the light glued through scroll and resize. Upstream uses per-card
- * listeners + a motion dep; delegation + tokens do the same work here.
+ * A single fixed canvas paints one continuous clay glow for every
+ * [data-spotlight] row and card. The old build washed each card through its
+ * own pseudo-element, so the light hard-clipped at every box edge; here the
+ * falloff runs past the borders and dies in open space, the way light does.
+ * The glow tracks the pointer when it is around and falls back to the
+ * focused card's centre for keyboard users. Opacity eases toward its target
+ * every frame, rects refresh on scroll and resize, and the loop only runs
+ * while something is changing — zero idle cost. Gated with everything
+ * else in initPointer (fine pointer, motion OK).
  */
 function buildSpotlight(): { teardown: () => void } {
-  let current: HTMLElement | null = null;
-  let raf = 0;
-  let pending: PointerEvent | null = null;
+  const canvas = document.createElement("canvas");
+  canvas.className = "spot-unified";
+  canvas.setAttribute("aria-hidden", "true");
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return { teardown: () => canvas.remove() };
 
-  const apply = () => {
-    raf = 0;
-    const event = pending;
-    pending = null;
-    if (!event) return;
-    const hit = (event.target as HTMLElement | null)?.closest?.(
-      "[data-spotlight]"
-    ) as HTMLElement | null;
-    if (hit !== current) current = hit;
-    if (!current) return;
-    const rect = current.getBoundingClientRect();
-    if (rect.width === 0 || rect.height === 0) return;
-    const x = clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100);
-    const y = clamp(((event.clientY - rect.top) / rect.height) * 100, 0, 100);
-    current.style.setProperty("--spot-x", `${x.toFixed(2)}%`);
-    current.style.setProperty("--spot-y", `${y.toFixed(2)}%`);
+  const RADIUS = 240;
+  let targets: HTMLElement[] = [];
+  let rects: DOMRect[] = [];
+  let rgb = "122, 46, 24";
+
+  const readColor = () => {
+    const v = getComputedStyle(document.documentElement)
+      .getPropertyValue("--spot-rgb")
+      .trim();
+    if (v) rgb = v;
   };
+
+  const refresh = () => {
+    targets = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-spotlight]")
+    );
+    rects = targets.map((t) => t.getBoundingClientRect());
+    readColor();
+  };
+  refresh();
+
+  let w = 0;
+  let h = 0;
+  let dpr = 1;
+  let dirty = true;
+  let raf = 0;
+
+  const paint = () => {
+    raf = 0;
+    // Anchor: the live pointer wins; keyboard focus holds the light
+    // while the pointer is away.
+    const ax = pointerIn ? px : focusX;
+    const ay = pointerIn ? py : focusY;
+    let nearest = Infinity;
+    if (ax > -9999) {
+      for (const r of rects) {
+        if (r.width === 0 || r.height === 0) continue;
+        const cx = Math.min(Math.max(ax, r.left), r.right);
+        const cy = Math.min(Math.max(ay, r.top), r.bottom);
+        const d = Math.hypot(ax - cx, ay - cy);
+        if (d < nearest) nearest = d;
+      }
+    }
+    const target = nearest > RADIUS ? 0 : 1 - nearest / RADIUS;
+    opacity += (target - opacity) * 0.18;
+    if (Math.abs(target - opacity) < 0.01) opacity = target;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    if (opacity > 0.01 && ax > -9999) {
+      const a = (0.16 * opacity).toFixed(3);
+      const g = ctx.createRadialGradient(ax, ay, 0, ax, ay, RADIUS);
+      g.addColorStop(0, `rgba(${rgb},${a})`);
+      g.addColorStop(0.7, `rgba(${rgb},0)`);
+      g.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = g;
+      ctx.fillRect(ax - RADIUS, ay - RADIUS, RADIUS * 2, RADIUS * 2);
+    }
+
+    if (opacity !== target || dirty) {
+      dirty = false;
+      raf = requestAnimationFrame(paint);
+    }
+  };
+
+  const kick = () => {
+    if (!raf) raf = requestAnimationFrame(paint);
+  };
+
+  const resize = () => {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    refresh();
+    dirty = true;
+    kick();
+  };
+
+  let px = -9999;
+  let py = -9999;
+  let pointerIn = false;
+  let focusX = -9999;
+  let focusY = -9999;
+  let opacity = 0;
 
   const onMove = (event: PointerEvent) => {
-    pending = event;
-    if (!raf) raf = requestAnimationFrame(apply);
+    px = event.clientX;
+    py = event.clientY;
+    pointerIn = true;
+    kick();
   };
+  const onLeave = () => {
+    pointerIn = false;
+    kick();
+  };
+  const onScroll = () => {
+    refresh();
+    dirty = true;
+    kick();
+  };
+  const onFocus = () => {
+    const el = (document.activeElement as HTMLElement | null)?.closest?.(
+      "[data-spotlight]"
+    ) as HTMLElement | null;
+    if (el) {
+      const r = el.getBoundingClientRect();
+      focusX = r.left + r.width / 2;
+      focusY = r.top + r.height / 2;
+    } else {
+      focusX = -9999;
+      focusY = -9999;
+    }
+    kick();
+  };
+  const themeObserver = new MutationObserver(readColor);
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
 
   document.addEventListener("pointermove", onMove, { passive: true });
+  document.addEventListener("pointerleave", onLeave);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", resize);
+  document.addEventListener("focusin", onFocus);
+  document.addEventListener("focusout", onFocus);
+  resize();
 
   return {
     teardown: () => {
       document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", resize);
+      document.removeEventListener("focusin", onFocus);
+      document.removeEventListener("focusout", onFocus);
+      themeObserver.disconnect();
       if (raf) cancelAnimationFrame(raf);
-      document
-        .querySelectorAll<HTMLElement>("[data-spotlight]")
-        .forEach((el) => {
-          el.style.removeProperty("--spot-x");
-          el.style.removeProperty("--spot-y");
-        });
+      canvas.remove();
     },
   };
 }
