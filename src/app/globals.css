@@ -8142,7 +8142,41 @@ html.has-motion .rv-in [data-stagger] > li {
 }
 
 .footer-top {
-  font-size: 0.84rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 50%;
+  color: var(--text);
+  transition:
+    background-color 0.18s var(--ease-out),
+    color 0.18s var(--ease-out),
+    border-color 0.18s var(--ease-out),
+    translate 0.18s var(--ease-out);
+}
+
+.footer-bottom {
+  align-items: center;
+}
+
+.footer-top:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  translate: 0 -3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-top {
+    transition: none;
+  }
+
+  .footer-top:hover {
+    translate: none;
+  }
 }
 
 .studio-clock {

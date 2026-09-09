@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { LogoMark } from "./logo";
-import { WhatsAppIcon, ArrowUpRightIcon } from "./icons";
+import { WhatsAppIcon, ArrowUpRightIcon, ArrowUpIcon } from "./icons";
 import { StudioClock } from "./studio-clock";
 import { SERVICES } from "@/content/services";
 import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, EMAIL, POSITIONING, waLink, DEFAULT_WA_MESSAGE } from "@/lib/site";
@@ -76,8 +76,13 @@ export function SiteFooter() {
           <p className="footer-colophon">
             Set in Fraunces &amp; Inter · Self-hosted type · Zero trackers · Static HTML
           </p>
-          <a href="#top" className="footer-top u-link">
-            Back to top &uarr;
+          <a
+            href="#top"
+            className="footer-top"
+            aria-label="Back to top"
+            title="Back to top"
+          >
+            <ArrowUpIcon size={18} />
           </a>
         </div>
       </div>
