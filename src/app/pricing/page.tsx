@@ -7,6 +7,7 @@ import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { SealCheckIcon } from "@/components/icons";
+import { Scribble } from "@/components/scribble";
 import { FaqAccordion } from "@/components/faq";
 
 export const metadata = pageMeta({
@@ -63,7 +64,7 @@ export default function PricingPage() {
               <span aria-current="page">Pricing</span>
             </nav>
             <ScrambleText className="eyebrow" text="Pricing" />
-            <h1>In PKR, <em>in writing.</em></h1>
+            <h1>In PKR, <em><Scribble>in writing.</Scribble></em></h1>
             <p className="lede">
               Prices are ranges because scope varies — you get an exact written
               quote after the audit, and you can add or remove modules to fit

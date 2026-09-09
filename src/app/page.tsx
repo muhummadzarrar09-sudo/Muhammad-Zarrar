@@ -8,6 +8,7 @@ import {
 import { QualifyForm } from "@/components/qualify-form";
 import { ScrambleText } from "@/components/scramble-text";
 import { Placard } from "@/components/placard";
+import { Scribble } from "@/components/scribble";
 import BorderGlow from "@/components/border-glow";
 import { PinnedManifesto } from "@/components/pinned-manifesto";
 import { Marquee } from "@/components/marquee";
@@ -35,7 +36,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="hero-promise hero-cluster">
-            <h1 className="hero-promise-title">You leave understood</h1>
+            <h1 className="hero-promise-title">You leave <em><Scribble>understood</Scribble></em></h1>
             <h3 className="hero-promise-subtitle">— not pitched.</h3>
           </div>
           <svg

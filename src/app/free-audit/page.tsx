@@ -5,6 +5,7 @@ import { FREE_AUDIT_POINTS } from "@/content/site-content";
 import { AuditForm } from "@/components/audit-form";
 import { Reveal } from "@/components/reveal";
 import { SelfCheck } from "@/components/self-check";
+import { Scribble } from "@/components/scribble";
 import { ScrambleText } from "@/components/scramble-text";
 import BorderGlow from "@/components/border-glow";
 import { JsonLd } from "@/components/jsonld";
@@ -38,7 +39,7 @@ export default function FreeAuditPage() {
               <span aria-current="page">Free 5-Point Audit</span>
             </nav>
             <ScrambleText className="eyebrow" text="Free · replies within 24 hours" />
-            <h1>Free 5-Point <em>Mini-Audit.</em></h1>
+            <h1>Free 5-Point <em><Scribble>Mini-Audit.</Scribble></em></h1>
             <p className="lede">
               Send us your website link — or tell us you don&rsquo;t have one
               yet. Within 24 hours we reply with five findings about your

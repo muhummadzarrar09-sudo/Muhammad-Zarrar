@@ -8559,6 +8559,53 @@ a:focus-visible > .icon-nudge svg,
   }
 }
 
+/* ---------- SCRIBBLE -----------------------------------------------------------
+   Hand-drawn clay underlines for hero accent words. The path rests drawn;
+   motion browsers ink it once, 700ms, after the headline lands. */
+.hero-promise-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.scribble {
+  position: relative;
+}
+
+.scribble svg {
+  position: absolute;
+  left: -2%;
+  bottom: -0.1em;
+  width: 104%;
+  height: 0.16em;
+  overflow: visible;
+}
+
+.scribble path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: scribble-draw 0.7s var(--ease-out) 0.45s both;
+}
+
+@keyframes scribble-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scribble path {
+    animation: none;
+  }
+}
+
 /* ---------- THEME TOGGLE ----------------------------------------------------
    Icon-only night switch in the header. A control, not a toy: full-size hit
    area, pressed state announced, motion-still safe. */

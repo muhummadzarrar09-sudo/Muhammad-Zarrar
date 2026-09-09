@@ -8,6 +8,7 @@ import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { CrossIcon } from "@/components/icons";
+import { Scribble } from "@/components/scribble";
 
 export const metadata = pageMeta({
   title: "About — Muhammad Zarrar, Senior Full-Stack Builder",
@@ -65,7 +66,7 @@ export default function AboutPage() {
               <span aria-current="page">About</span>
             </nav>
             <ScrambleText className="eyebrow" text="About" />
-            <h1>One builder. <em>A system that ships.</em></h1>
+            <h1>One builder. <em><Scribble>A system that ships.</Scribble></em></h1>
             <p className="lede">
               Zarrar.Solutions is Muhammad Zarrar — a senior full-stack builder
               in Rawalpindi — plus a working system of audits, specs, and

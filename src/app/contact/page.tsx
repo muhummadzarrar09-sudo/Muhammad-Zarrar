@@ -7,6 +7,7 @@ import { ScrambleText } from "@/components/scramble-text";
 import BorderGlow from "@/components/border-glow";
 import { JsonLd } from "@/components/jsonld";
 import { WhatsAppIcon } from "@/components/icons";
+import { Scribble } from "@/components/scribble";
 
 export const metadata = pageMeta({
   title: "Contact — Talk to the Builder",
@@ -35,7 +36,7 @@ export default function ContactPage() {
               <span aria-current="page">Contact</span>
             </nav>
             <ScrambleText className="eyebrow" text="Contact" />
-            <h1>Talk to <em>the builder.</em></h1>
+            <h1>Talk to <em><Scribble>the builder.</Scribble></em></h1>
             <p className="lede">
               No support tickets, no account managers, no &ldquo;our team will
               reach out.&rdquo; Messages land with the person who writes the

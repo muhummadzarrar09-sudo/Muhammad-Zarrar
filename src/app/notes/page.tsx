@@ -6,6 +6,7 @@ import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { ArrowRightIcon } from "@/components/icons";
+import { Scribble } from "@/components/scribble";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 
 export const metadata = pageMeta({
@@ -53,7 +54,7 @@ export default function NotesIndexPage() {
               <span aria-current="page">Field Notes</span>
             </nav>
             <ScrambleText className="eyebrow" text="Field Notes" />
-            <h1>Evidence, <em>written down.</em></h1>
+            <h1>Evidence, <em><Scribble>written down.</Scribble></em></h1>
             <p className="lede">
               Short notes from real audits and real builds. No growth-hacking,
               no listicles — what we found, what it cost the business, and
