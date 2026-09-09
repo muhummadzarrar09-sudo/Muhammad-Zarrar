@@ -145,6 +145,7 @@ export function playHero() {
   const type = root.querySelector<HTMLElement>(".hero-cluster");
   const bar = root.querySelector<HTMLElement>(".hero-toolbar");
   const floor = root.querySelector<HTMLElement>(".hero-floor");
+  const crank = root.querySelector<HTMLElement>(".crank-ring");
   const loader = root.querySelector<HTMLElement>(".hero-loader");
   const loaderFill = root.querySelector<HTMLElement>(".hero-loader-fill");
   const loaderValue = root.querySelector<HTMLElement>(".hero-loader-value");
@@ -196,7 +197,17 @@ export function playHero() {
     );
   }
   if (bar) tl.to(bar, { opacity: 0, y: 14, duration: 0.18 }, 0);
-  if (floor) tl.to(floor, { opacity: 0, duration: 0.16 }, 0);
+  /* The scroll crank (React Bits CircularText, tailored) turns WITH the
+     wheel — a reel, not a spinner — then bows out as the line completes. */
+  if (crank) {
+    tl.fromTo(
+      crank,
+      { rotation: 0, transformOrigin: "50% 50%" },
+      { rotation: 300, duration: 0.88, ease: "none" },
+      0
+    );
+  }
+  if (floor) tl.to(floor, { opacity: 0, duration: 0.1, ease: "none" }, 0.9);
 
   tl.to(
     left,

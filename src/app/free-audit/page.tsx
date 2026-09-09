@@ -4,6 +4,10 @@ import { waLink, WHATSAPP_DISPLAY } from "@/lib/site";
 import { FREE_AUDIT_POINTS } from "@/content/site-content";
 import { AuditForm } from "@/components/audit-form";
 import { Reveal } from "@/components/reveal";
+import { SelfCheck } from "@/components/self-check";
+import { DTag, GradeRing } from "@/components/diagram";
+import { Scribble } from "@/components/scribble";
+import { ScrambleText } from "@/components/scramble-text";
 import BorderGlow from "@/components/border-glow";
 import { JsonLd } from "@/components/jsonld";
 import { WhatsAppIcon } from "@/components/icons";
@@ -26,16 +30,17 @@ export default function FreeAuditPage() {
         ])}
       />
 
-      <section className="page-hero" id="top" data-tl="Top">
+      <section className="page-hero hero-blueprint" id="top" data-tl="Top">
         <div className="container">
+          <p className="stamp" aria-hidden="true">24H REPLY</p>
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
               <Link href="/">Home</Link>
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">Free 5-Point Audit</span>
             </nav>
-            <span className="eyebrow">Free · replies within 24 hours</span>
-            <h1>Free 5-Point <em>Mini-Audit.</em></h1>
+            <ScrambleText className="eyebrow" text="Free · replies within 24 hours" />
+            <h1>Free 5-Point <em><Scribble>Mini-Audit.</Scribble></em></h1>
             <p className="lede">
               Send us your website link — or tell us you don&rsquo;t have one
               yet. Within 24 hours we reply with five findings about your
@@ -53,7 +58,7 @@ export default function FreeAuditPage() {
               <h2 className="subsection-title">
                 What we check
               </h2>
-              <ol className="point-list">
+              <ol className="point-list" data-stagger>
                 {FREE_AUDIT_POINTS.map((point) => (
                   <li key={point.name}>
                     <div>
@@ -82,8 +87,8 @@ export default function FreeAuditPage() {
             </Reveal>
           </div>
 
-          <Reveal>
-            <BorderGlow tone="glass" className="border-glow-card--form">
+          <Reveal id="request">
+            <BorderGlow tone="glass" className="border-glow-card--form" coneSpread={34} glowIntensity={0.85}>
               <h2 className="form-title">
                 Request your mini-audit
               </h2>
@@ -93,6 +98,78 @@ export default function FreeAuditPage() {
               <AuditForm />
             </BorderGlow>
           </Reveal>
+        </div>
+        <div className="container sample-wrap">
+          <Reveal className="card sample-report" spotlight>
+            <div className="sample-head">
+              <div>
+                <p className="sample-kicker">
+                  <DTag tone="sample">Sample report</DTag>
+                </p>
+                <h2 className="sample-title">What lands in your inbox</h2>
+              </div>
+              <GradeRing grade="C" />
+            </div>
+            <ol className="sample-findings">
+              <li>
+                <DTag tone="high">High</DTag>
+                <div>
+                  <p className="sample-finding">71 files block first paint</p>
+                  <p className="sample-evidence">
+                    theme.css · builder-runtime.js · 3 font CDNs · slider.js · chat-widget.js
+                  </p>
+                </div>
+              </li>
+              <li>
+                <DTag tone="high">High</DTag>
+                <div>
+                  <p className="sample-finding">
+                    Google receives an empty shell
+                  </p>
+                  <p className="sample-evidence">
+                    {"<div id=\"root\"></div> — 0 words in the raw HTML"}
+                  </p>
+                </div>
+              </li>
+              <li>
+                <DTag tone="med">Medium</DTag>
+                <div>
+                  <p className="sample-finding">No WhatsApp above the fold</p>
+                  <p className="sample-evidence">
+                    Contact link sits in the footer, three screens down
+                  </p>
+                </div>
+              </li>
+            </ol>
+            <p className="sample-foot">
+              Illustrative findings in the documented pattern — yours will
+              name your files, your seconds, your pages.{" "}
+              <Link href="#request">Request yours</Link>
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section-tight" style={{ paddingTop: 0 }} aria-labelledby="selfcheck-heading">
+        <div className="container">
+          <Reveal className="section-head">
+            <h2 id="selfcheck-heading">
+              The 10-second self-check
+            </h2>
+            <p className="lede">
+              Tap what sounds familiar. No email, no score theater — just a
+              straight read on whether the mini-audit is worth your link.
+            </p>
+          </Reveal>
+          <Reveal>
+            <SelfCheck />
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section-tight" style={{ paddingTop: 0 }} aria-hidden="true">
+        <div className="container">
+          <p className="orn-asterism">&#10087;</p>
         </div>
       </section>
 

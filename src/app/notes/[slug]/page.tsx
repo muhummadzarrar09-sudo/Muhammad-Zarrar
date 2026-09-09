@@ -4,6 +4,11 @@ import type { Metadata } from "next";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { NOTES, getNote } from "@/content/notes";
 import { Reveal } from "@/components/reveal";
+import { ReadingProgress } from "@/components/reading-progress";
+import { ArrowUpRightIcon } from "@/components/icons";
+import { Diagram } from "@/components/diagram";
+import { WaterfallFigure, RenderFigure } from "@/components/note-figures";
+import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { SITE_URL } from "@/lib/site";
@@ -65,7 +70,7 @@ export default async function NotePage({
         ])}
       />
 
-      <section className="page-hero">
+      <section className="page-hero" id="top">
         <div className="container">
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -75,28 +80,80 @@ export default async function NotePage({
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">{note.title}</span>
             </nav>
-            <span className="eyebrow">{note.date} · Muhammad Zarrar</span>
+            <ScrambleText
+              className="eyebrow"
+              text={`${note.date} · Muhammad Zarrar`}
+            />
             <h1>{note.title}</h1>
             <p className="lede">{note.excerpt}</p>
           </Reveal>
         </div>
       </section>
 
-      <section className="section">
+      <ReadingProgress target=".note-article" />
+      <section className="section note-article">
         <div className="container">
-          <div className="prose">
-            {note.sections.map((section) => (
+          <div className="prose prose-reveal">
+            {note.sections.map((section, si) => (
               <Reveal key={section.heading}>
                 <h2>{section.heading}</h2>
-                {section.body.map((paragraph) => (
-                  <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                {section.body.map((paragraph, pi) => (
+                  <p
+                    key={paragraph.slice(0, 24)}
+                    className={si === 0 && pi === 0 ? "dropcap" : undefined}
+                  >
+                    {paragraph}
+                  </p>
                 ))}
+                {si === 0 && note.figure && (
+                  <Diagram
+                    label={
+                      note.figure === "waterfall"
+                        ? "Fig. 01 — Waterfall"
+                        : "Fig. 01 — Two audiences"
+                    }
+                    caption={
+                      note.figure === "waterfall"
+                        ? "Illustrative waterfall of the pattern above — theme, builder, fonts, slider, and chat, every bar something the visitor never asked for."
+                        : "Same URL, two audiences — the crawler gets the shell. Illustrative, after the pattern above."
+                    }
+                    artLabel={
+                      note.figure === "waterfall"
+                        ? "Illustrative waterfall chart: five request bars stack past nine seconds; visitors leave around second four; first paint lands near second ten."
+                        : "Two browser frames: what Google fetched is an empty shell with zero words; what visitors saw is the painted page."
+                    }
+                  >
+                    {note.figure === "waterfall" ? (
+                      <WaterfallFigure />
+                    ) : (
+                      <RenderFigure />
+                    )}
+                  </Diagram>
+                )}
               </Reveal>
             ))}
             <Reveal className="inset-panel" >
               <p className="note-takeaway-label">The takeaway</p>
               <p className="note-takeaway">{note.takeaway}</p>
             </Reveal>
+            {(() => {
+              const idx = NOTES.findIndex((n) => n.slug === note.slug);
+              const next = NOTES[(idx + 1) % NOTES.length];
+              if (!next || next.slug === note.slug) return null;
+              return (
+                <Reveal className="card card-hover keep-reading" spotlight>
+                  <p className="keep-label">Keep reading</p>
+                  <Link
+                    href={`/notes/${next.slug}`}
+                    className="keep-link"
+                  >
+                    {next.title}{" "}
+                    <ArrowUpRightIcon size={18} className="keep-arrow" />
+                  </Link>
+                  <p className="idx-sub">{next.excerpt}</p>
+                </Reveal>
+              );
+            })()}
           </div>
         </div>
       </section>

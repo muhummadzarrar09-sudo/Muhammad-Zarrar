@@ -17,6 +17,8 @@ export function ScrollTimeline() {
   const fillRef = useRef<HTMLDivElement>(null);
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [active, setActive] = useState<string | null>(null);
+  const [pct, setPct] = useState(0);
+  const lastPct = useRef(-1);
 
   /* Rebuild markers whenever the route renders new sections. */
   useEffect(() => {
@@ -53,6 +55,11 @@ export function ScrollTimeline() {
       const max = doc.scrollHeight - window.innerHeight;
       const p = max > 0 ? window.scrollY / max : 0;
       if (fillRef.current) fillRef.current.style.height = `${p * 100}%`;
+      const rounded = Math.round(p * 100);
+      if (rounded !== lastPct.current) {
+        lastPct.current = rounded;
+        setPct(rounded);
+      }
       const mid = window.scrollY + window.innerHeight * 0.4;
       let current: string | null = null;
       for (const el of document.querySelectorAll<HTMLElement>("section[data-tl]")) {
@@ -88,6 +95,19 @@ export function ScrollTimeline() {
 
   return (
     <div className="scroll-timeline" ref={rootRef} aria-label="Page scroll timeline">
+      <div className="tl-readout" aria-hidden="true">
+        <span className="tl-index">
+          {markers.length
+            ? `${String(
+                Math.max(
+                  1,
+                  markers.findIndex((m) => m.id === active) + 1
+                )
+              ).padStart(2, "0")}/${String(markers.length).padStart(2, "0")}`
+            : "--/--"}
+        </span>
+        <span className="tl-pct">{pct}%</span>
+      </div>
       <div className="tl-track">
         <div className="tl-fill" ref={fillRef} />
         {markers.map((m) => (

@@ -12,10 +12,15 @@ export function Reveal({
   children,
   className = "",
   as: Tag = "div",
+  spotlight = false,
+  id,
 }: {
   children: ReactNode;
   className?: string;
   as?: "div" | "section" | "article" | "li";
+  /** Opt into the pointer-layer clay spotlight ([data-spotlight]). */
+  spotlight?: boolean;
+  id?: string;
 }) {
   const ref = useRef<HTMLElement | null>(null);
 
@@ -49,7 +54,12 @@ export function Reveal({
   }, []);
 
   return (
-    <Tag ref={ref as never} className={className}>
+    <Tag
+      ref={ref as never}
+      className={className}
+      data-spotlight={spotlight || undefined}
+      id={id}
+    >
       {children}
     </Tag>
   );

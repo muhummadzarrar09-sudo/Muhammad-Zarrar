@@ -6,6 +6,10 @@ import {
   RECOGNITIONS,
 } from "@/content/qualify";
 import { QualifyForm } from "@/components/qualify-form";
+import { ScrambleText } from "@/components/scramble-text";
+import { Placard } from "@/components/placard";
+import { CrossIcon, SealCheckIcon } from "@/components/icons";
+import { Scribble } from "@/components/scribble";
 import BorderGlow from "@/components/border-glow";
 import { PinnedManifesto } from "@/components/pinned-manifesto";
 import { Marquee } from "@/components/marquee";
@@ -33,7 +37,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="hero-promise hero-cluster">
-            <h1 className="hero-promise-title">You leave understood</h1>
+            <h1 className="hero-promise-title">You leave <em><Scribble>understood</Scribble></em></h1>
             <h3 className="hero-promise-subtitle">— not pitched.</h3>
           </div>
           <svg
@@ -68,13 +72,33 @@ export default function HomePage() {
         </div>
         <div className="hero-toolbar">
           <div className="hero-ctas">
-            <a href="#brief" className="btn btn-primary" data-magnetic>
+            <a href="#brief" className="btn btn-primary btn-star" data-magnetic>
+              <span className="btn-star-ring" aria-hidden="true" />
               Write your brief
             </a>
           </div>
         </div>
         <p className="hero-floor">
-          <span>This way</span>
+          <span className="sr-only">Scroll to continue</span>
+          <span className="crank" aria-hidden="true">
+            <svg className="crank-ring" viewBox="0 0 100 100" focusable="false">
+              <defs>
+                <path
+                  id="crank-orbit"
+                  d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"
+                  fill="none"
+                />
+              </defs>
+              <text className="crank-text">
+                <textPath href="#crank-orbit" textLength="231" lengthAdjust="spacingAndGlyphs">
+                  This way · Scroll · This way · Scroll ·
+                </textPath>
+              </text>
+            </svg>
+            <span className="crank-core">
+              <span className="crank-arrow">↓</span>
+            </span>
+          </span>
         </p>
       </section>
 
@@ -90,12 +114,13 @@ export default function HomePage() {
         <div className="recognize-stage">
           <div className="container recognize-layout">
             <div className="recognize-intro">
+              <Placard no="01" title="The Diagnostic" medium="Putty on ink" />
               <div className="sec-head">
                 <span className="sec-index">01</span>
-                <span className="sec-label">If this is your Tuesday</span>
+                <ScrambleText className="sec-label" text="If this is your Tuesday" />
                 <span className="sec-rule" />
               </div>
-              <h2 className="sec-title" id="you-heading">
+              <h2 className="sec-title" id="you-heading" data-pressure>
                 You&apos;re not behind.
                 <br />{" "}
                 <em>
@@ -153,10 +178,13 @@ export default function HomePage() {
         aria-label="A pause"
       >
         <div className="exhibit-stage">
+          <Placard no="02" title="A Pause" medium="Breath on canvas" tone="dark" />
           <img
             src="/images/gallery/arch.jpg"
             alt=""
-            className="exhibit-canvas"
+            className="exhibit-canvas grade"
+            loading="lazy"
+            decoding="async"
             width={1920}
             height={1080}
           />
@@ -192,15 +220,16 @@ export default function HomePage() {
         aria-labelledby="get-heading"
       >
         <div className="container">
-          <p className="room-label">What you walk away with</p>
-          <h2 className="room-title" id="get-heading">
+          <Placard no="03" title="The Results" medium="Plaques on nails" tone="dark" />
+          <ScrambleText as="p" className="room-label" text="What you walk away with" />
+          <h2 className="room-title" id="get-heading" data-pressure>
             Not a pitch. A result.
           </h2>
           <div className="vignette-grid">
             {OUTCOMES.map((item) => (
               <figure className="vignette" key={item.title}>
                 <div className="vignette-plaque">
-                  <img src={item.src} alt="" width={400} height={400} />
+                  <img src={item.src} alt="" width={400} height={400} loading="lazy" decoding="async" />
                 </div>
                 <figcaption>
                   <span className="vignette-cap">{item.title}</span>
@@ -220,23 +249,30 @@ export default function HomePage() {
         aria-labelledby="different-heading"
       >
         <div className="container">
+          <Placard no="04" title="The Difference" medium="Usual vs here" />
           <div className="sec-head">
             <span className="sec-index">02</span>
-            <span className="sec-label">Why this feels different</span>
+            <ScrambleText className="sec-label" text="Why this feels different" />
             <span className="sec-rule" />
           </div>
-          <h2 className="sec-title" id="different-heading">
+          <h2 className="sec-title" id="different-heading" data-pressure>
             The usual way, <em>and then this.</em>
           </h2>
           <div className="contrast-list">
             {CONTRAST.map((row) => (
-              <article className="contrast-row" key={row.here}>
+              <article className="contrast-row" data-spotlight key={row.here}>
                 <p className="contrast-usual">
-                  <span>Usual</span>
+                  <span className="contrast-kicker">
+                    <CrossIcon size={12} />
+                    Usual
+                  </span>
                   {row.usual}
                 </p>
                 <p className="contrast-here">
-                  <span>Here</span>
+                  <span className="contrast-kicker">
+                    <SealCheckIcon size={14} />
+                    Here
+                  </span>
                   {row.here}
                 </p>
               </article>
@@ -253,9 +289,10 @@ export default function HomePage() {
         aria-labelledby="next-heading"
       >
         <div className="container">
+          <Placard no="05" title="What Follows" medium="Three columns" />
           <div className="sec-head">
             <span className="sec-index">03</span>
-            <span className="sec-label">Then what happens</span>
+            <ScrambleText className="sec-label" text="Then what happens" />
             <span className="sec-rule" />
           </div>
           <h2 className="sec-title" id="next-heading">
@@ -263,7 +300,7 @@ export default function HomePage() {
           </h2>
           <div className="phase-grid next-grid">
             {NEXT_STEPS.map((step) => (
-              <article className="phase" key={step.no}>
+              <article className="phase" data-spotlight key={step.no}>
                 <span className="ph-no" aria-hidden="true">
                   {step.no}
                 </span>
@@ -286,12 +323,13 @@ export default function HomePage() {
       >
         <div className="container qualify-wrap">
           <div className="qualify-intro">
+            <Placard no="06" title="The Brief" medium="Ink on paper" />
             <div className="sec-head">
               <span className="sec-index">04</span>
-              <span className="sec-label">Your brief</span>
+              <ScrambleText className="sec-label" text="Your brief" />
               <span className="sec-rule" />
             </div>
-            <h2 className="sec-title" id="brief-heading">
+            <h2 className="sec-title" id="brief-heading" data-pressure>
               What you need. What you hoped to pay.{" "}
               <em>Then the honest quote.</em>
             </h2>
@@ -319,6 +357,8 @@ export default function HomePage() {
           <BorderGlow
             tone="glass"
             className="qualify-card border-glow-card--form"
+            coneSpread={34}
+            glowIntensity={0.85}
           >
             <h3 className="form-title">The brief</h3>
             <p className="form-sub">

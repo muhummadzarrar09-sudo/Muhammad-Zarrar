@@ -3,9 +3,11 @@ import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { waLink, EMAIL, WHATSAPP_DISPLAY, DEFAULT_WA_MESSAGE } from "@/lib/site";
 import { ContactForm } from "@/components/contact-form";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import BorderGlow from "@/components/border-glow";
 import { JsonLd } from "@/components/jsonld";
 import { WhatsAppIcon } from "@/components/icons";
+import { Scribble } from "@/components/scribble";
 
 export const metadata = pageMeta({
   title: "Contact — Talk to the Builder",
@@ -33,8 +35,8 @@ export default function ContactPage() {
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">Contact</span>
             </nav>
-            <span className="eyebrow">Contact</span>
-            <h1>Talk to <em>the builder.</em></h1>
+            <ScrambleText className="eyebrow" text="Contact" />
+            <h1>Talk to <em><Scribble>the builder.</Scribble></em></h1>
             <p className="lede">
               No support tickets, no account managers, no &ldquo;our team will
               reach out.&rdquo; Messages land with the person who writes the
@@ -93,7 +95,7 @@ export default function ContactPage() {
           </div>
 
           <Reveal>
-            <BorderGlow tone="glass" className="border-glow-card--form">
+            <BorderGlow tone="glass" className="border-glow-card--form" coneSpread={34} glowIntensity={0.85}>
               <h2 className="form-title">
                 Send a quick message
               </h2>

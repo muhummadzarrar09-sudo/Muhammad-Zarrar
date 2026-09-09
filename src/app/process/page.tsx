@@ -2,9 +2,12 @@ import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { PROCESS_STEPS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
+import { Placard } from "@/components/placard";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
-import { CheckIcon } from "@/components/icons";
+import { SealCheckIcon } from "@/components/icons";
+import { PhaseGlyph } from "@/components/phase-glyph";
 
 export const metadata = pageMeta({
   title: "Our Process — Audit, Findings, Build, Launch",
@@ -26,13 +29,14 @@ export default function ProcessPage() {
 
       <section className="page-hero" id="top" data-tl="Top">
         <div className="container">
+          <p className="stamp" aria-hidden="true">EVIDENCE FIRST</p>
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
               <Link href="/">Home</Link>
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">Process</span>
             </nav>
-            <span className="eyebrow">Process</span>
+            <ScrambleText className="eyebrow" text="Process" />
             <h1>
               Four phases. <em>Honest timelines.</em>
             </h1>
@@ -46,27 +50,45 @@ export default function ProcessPage() {
 
       <section className="section" id="phases" data-tl="Phases" aria-label="Process phases">
         <div className="container">
-          <div className="grid grid-2" style={{ gap: 56 }}>
-            {PROCESS_STEPS.map((step, i) => (
-              <Reveal key={step.name} className="phase" as="article">
-                <span className="ph-no" aria-hidden="true">
+          <Placard no="A" title="The Pipeline" medium="Four phases, honest" />
+          <div className="stepper">
+            <div className="stepper-rail" aria-hidden="true">
+              <span className="stepper-track">
+                <span className="stepper-fill" />
+              </span>
+              {PROCESS_STEPS.map((step, i) => (
+                <span className="stepper-tick" key={step.name}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3>{step.name}</h3>
-                <span className="ph-time">{step.timeline}</span>
-                <p>{step.detail}</p>
-                <ul className="checklist" style={{ marginTop: 20 }}>
-                  {step.deliverables.map((d) => (
-                    <li key={d}>
-                      <CheckIcon size={16} />
-                      <span>
-                        {d}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            ))}
+              ))}
+            </div>
+            <ol className="stepper-list">
+              {PROCESS_STEPS.map((step, i) => (
+                <li className="stepper-step" key={step.name}>
+                  <Reveal className="phase" as="article" spotlight>
+                    <span className="ph-no" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3>
+                      <PhaseGlyph index={i} />
+                      {step.name}
+                    </h3>
+                    <span className="ph-time">{step.timeline}</span>
+                    <p>{step.detail}</p>
+                    <ul className="checklist" data-stagger style={{ marginTop: 20 }}>
+                      {step.deliverables.map((d) => (
+                        <li key={d}>
+                          <SealCheckIcon size={16} />
+                          <span>
+                            {d}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </Reveal>
+                </li>
+              ))}
+            </ol>
           </div>
 
           <Reveal className="inset-panel process-after">

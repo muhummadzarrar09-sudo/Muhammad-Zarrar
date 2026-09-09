@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { SERVICES, getService } from "@/content/services";
 import { FaqAccordion } from "@/components/faq";
 import { JsonLd } from "@/components/jsonld";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { CtaBand } from "@/components/cta-band";
-import { CheckIcon, ArrowRightIcon } from "@/components/icons";
+import { SealCheckIcon, ArrowRightIcon } from "@/components/icons";
+import { ServiceMotif } from "@/components/service-motif";
+import { ServiceFigure } from "@/components/diagram";
 import { SITE_URL } from "@/lib/site";
 
 type RouteParams = { slug: string };
@@ -91,7 +95,7 @@ export default async function ServiceDetailPage({
         ])}
       />
 
-      <section className="page-hero">
+      <section className={slug === "website-audit" ? "page-hero hero-blueprint" : "page-hero"} id="top">
         <div className="container">
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -101,33 +105,43 @@ export default async function ServiceDetailPage({
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">{service.name}</span>
             </nav>
-            <span className="eyebrow">Service</span>
+            <ScrambleText className="eyebrow" text="Service" />
             <h1>{service.name}</h1>
             <p className="lede">{service.lead}</p>
           </Reveal>
+          <ServiceMotif slug={slug} />
         </div>
       </section>
 
       <section className="section">
         <div className="container service-detail-grid">
-          <div className="prose">
+          <div className="prose prose-reveal">
             <Reveal>
               <h2>The problem it solves</h2>
-              {service.problem.map((paragraph) => (
-                <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+              {service.problem.map((paragraph, i) => (
+                <p
+                  key={paragraph.slice(0, 24)}
+                  className={i === 0 ? "dropcap" : undefined}
+                >
+                  {paragraph}
+                </p>
               ))}
             </Reveal>
 
             <Reveal>
               <h2 className="prose-h2-spaced">What&rsquo;s included</h2>
-              <ul className="checklist checklist-2col">
+              <ul className="checklist checklist-2col" data-stagger>
                 {service.included.map((item) => (
                   <li key={item}>
-                    <CheckIcon size={16} />
+                    <SealCheckIcon size={16} />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
+            </Reveal>
+
+            <Reveal>
+              <ServiceFigure slug={slug} />
             </Reveal>
 
             <Reveal>
@@ -182,6 +196,38 @@ export default async function ServiceDetailPage({
           </aside>
         </div>
       </section>
+
+      {slug === "website-audit" && (
+        <section
+          className="section-tight stack-section"
+          aria-labelledby="deck-heading"
+        >
+          <div className="container">
+            <Reveal className="section-head">
+              <ScrambleText className="eyebrow" text="The full deck" />
+              <h2 id="deck-heading">What we check, in order.</h2>
+              <p className="lede">
+                Every audit walks the same deck, in the same order — so
+                nothing hides behind a summary paragraph.
+              </p>
+            </Reveal>
+            <div className="stack-deck">
+              {service.included.map((item, i) => (
+                <article
+                  className="stack-card"
+                  key={item}
+                  style={{ "--stack-i": i } as CSSProperties}
+                >
+                  <span className="stack-no" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p>{item}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <CtaBand
         headline="Start with evidence, not a guess."

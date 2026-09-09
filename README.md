@@ -85,8 +85,37 @@ storyboarded as data in `src/motion/wireframes.ts`.
   (canvas, decorative — the real `h1` stays for crawlers and screen readers).
 - **Pointer layer** (`src/motion/pointer.ts`, desktop only): cursor aura
   (difference-blended, native cursor never hidden), magnetic CTAs
-  (`[data-magnetic]`), marquee velocity skew, plaque pan. Scoped to
-  `(hover) + (pointer: fine)`; skipped under reduced motion.
+  (`[data-magnetic]`), marquee velocity skew, plaque pan, clay spotlight
+  (`[data-spotlight]` rows/cards), portrait tilt + glare (`[data-tilt]`).
+  Scoped to `(hover) + (pointer: fine)`; skipped under reduced motion.
+- **React Bits v3** (all tailored, zero new deps, no new ambient loops):
+  eyebrows/labels decode once (`ScrambleText`), CTA headlines sweep copper
+  (`ShinyText`), the hero floor is a wheel-cranked seal (ring scrubs 0→300°
+  across the pin), primary CTAs orbit a molten star on hover/focus only.
+- **React Bits v4** (17 bits, one commit each, same contract): focus-blur
+  Reveals, staggered checklists, color-wake + flinching plaque captions,
+  word-scrubbed prose, blueprint audit heroes, velocity-fed marquee, clay
+  click-ticks, target brackets, hero crosshair, focus veils, pressure
+  headlines, a landed RotatingText, the process stepper, the audit card
+  deck, and a spring-fill PKR budget slider.
+- **Beauty pass** (14 items, one commit each, same contract): editorial
+  type, asterism ornaments, exhibit placards, footer jewelry with a live
+  PKT clock, rubber stamps, a print stylesheet, reading-room notes,
+  blueprint service motifs, one house photo grade, a paper route wipe, a
+  jeweled timeline rail, a 10-second self-check quiz, a 46%-lighter
+  gallery, and Night at the Museum (persisted, OS-aware, zero-flash).
+- **Mamacita icons + type** (12 commits, same contract): one 24-grid icon
+  primitive, wayfinding arrows that lean on hover, a clay-ring back-to-top,
+  mail + pin contact glyphs, wax-seal promise checks, stamp-press and
+  blueprint-draw entrances, a 6rem hero display scale, hand-drawn scribble
+  underlines on six headlines, Usual-vs-Here verdict marks, a stamped 404,
+  per-phase pipeline glyphs, and a clay text selection.
+- **Diagnostic visuals** (7 commits, same contract): a museum figure system
+  (blueprint panels, severity tags, grade rings), a waterfall diagram for
+  the 70-files post, crawler-vs-visitor frames for the blank-page post,
+  exhibited schematics on all five service pages, a sample finding report
+  on free-audit, a builder spec sheet on about, and a 404 that files its
+  own failing grade. Proof, not purple.
 - **Scroll timeline**: the native scrollbar is hidden and replaced by a
   right-edge rail — progress fill plus diamond markers per section
   (`section[data-tl]`), keyboard-focusable, click-to-jump.

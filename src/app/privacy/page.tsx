@@ -2,6 +2,7 @@ import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { EMAIL } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { PrivacyLive } from "@/components/privacy-live";
 import { ProofStrip } from "@/components/proof-strip";
@@ -30,7 +31,7 @@ export default function PrivacyPage() {
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">Privacy</span>
             </nav>
-            <span className="eyebrow">Plain language · last updated August 2026 · verifiable in DevTools</span>
+            <ScrambleText className="eyebrow" text="Plain language · last updated August 2026 · verifiable in DevTools" />
             <h1>Privacy, the way we build: <em>nothing we don&apos;t need.</em></h1>
             <p className="lede">
               We sell sites that respect their visitors. Ours is built the

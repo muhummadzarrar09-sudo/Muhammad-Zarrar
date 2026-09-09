@@ -3,9 +3,11 @@ import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { SERVICES } from "@/content/services";
 import { ADDONS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
-import { CheckIcon } from "@/components/icons";
+import { SealCheckIcon } from "@/components/icons";
+import { Scribble } from "@/components/scribble";
 import { FaqAccordion } from "@/components/faq";
 
 export const metadata = pageMeta({
@@ -54,14 +56,15 @@ export default function PricingPage() {
 
       <section className="page-hero" id="top" data-tl="Top">
         <div className="container">
+          <p className="stamp" aria-hidden="true">IN WRITING &#10003;</p>
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
               <Link href="/">Home</Link>
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">Pricing</span>
             </nav>
-            <span className="eyebrow">Pricing</span>
-            <h1>In PKR, <em>in writing.</em></h1>
+            <ScrambleText className="eyebrow" text="Pricing" />
+            <h1>In PKR, <em><Scribble>in writing.</Scribble></em></h1>
             <p className="lede">
               Prices are ranges because scope varies — you get an exact written
               quote after the audit, and you can add or remove modules to fit
@@ -98,7 +101,7 @@ export default function PricingPage() {
             </h2>
             <div className="grid grid-3">
               {SERVICES.find((s) => s.slug === "redesign")?.tiers?.map((tier) => (
-                <div className="card card-hover tier-card" key={tier.label}>
+                <div className="card card-hover tier-card" data-spotlight key={tier.label}>
                   <span className="tier-label">{tier.label}</span>
                   <span className="tier-price">{tier.price}</span>
                   <p>{tier.desc}</p>
@@ -145,26 +148,26 @@ export default function PricingPage() {
               </h2>
               <ul className="checklist">
                 <li>
-                  <CheckIcon size={16} />
+                  <SealCheckIcon size={16} />
                   <span>40–50% deposit to start — nothing more up front.</span>
                 </li>
                 <li>
-                  <CheckIcon size={16} />
+                  <SealCheckIcon size={16} />
                   <span>Balance before go-live, once you&rsquo;ve approved the build.</span>
                 </li>
                 <li>
-                  <CheckIcon size={16} />
+                  <SealCheckIcon size={16} />
                   <span>
                     You own the code, design, and content on full payment —
                     completely.
                   </span>
                 </li>
                 <li>
-                  <CheckIcon size={16} />
+                  <SealCheckIcon size={16} />
                   <span>No lock-in, no forced retainers, no hostage hosting.</span>
                 </li>
                 <li>
-                  <CheckIcon size={16} />
+                  <SealCheckIcon size={16} />
                   <span>Payment by bank transfer — account details arrive with your written quote.</span>
                 </li>
               </ul>

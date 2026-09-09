@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { waLink } from "@/lib/site";
 import {
   BUDGETS,
@@ -22,9 +22,18 @@ const empty = {
   whatsapp: "",
 };
 
+const RANGES = BUDGETS.filter((b) => b.id !== "unsure");
+const UNSURE_ID = "unsure";
+
 export function QualifyForm() {
   const [needId, setNeedId] = useState<string>("");
   const [budgetId, setBudgetId] = useState<string>("");
+  /* ElasticSlider state: the slider parks mid-deck; the readout (not the
+     thumb) is the source of truth until a stop is picked. */
+  const [pos, setPos] = useState(2);
+  const sliderRef = useRef<HTMLInputElement>(null);
+  const readRef = useRef<HTMLOutputElement>(null);
+  const spring = useRef({ cur: 50, vel: 0, raf: 0 });
   const [when, setWhen] = useState<string>("");
   const [values, setValues] = useState(empty);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -35,6 +44,73 @@ export function QualifyForm() {
   const fit = quoteFit(need, budget);
 
   const plate = useMemo(() => plateCopy(need, budget, fit), [need, budget, fit]);
+  const unsure = budgetId === UNSURE_ID;
+
+  /* The fill chases the thumb on a spring — stiffness 170, damping 13 —
+     so it lands with one honest overshoot. Reduced motion sets it dead. */
+  useEffect(() => {
+    const input = sliderRef.current;
+    if (!input) return;
+    const target = (pos / (RANGES.length - 1)) * 100;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      input.style.setProperty("--fill", `${target}%`);
+      spring.current.cur = target;
+      spring.current.vel = 0;
+      return;
+    }
+    const s = spring.current;
+    cancelAnimationFrame(s.raf);
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      s.vel += ((target - s.cur) * 170 - s.vel * 13) * dt;
+      s.cur += s.vel * dt;
+      input.style.setProperty("--fill", `${s.cur.toFixed(2)}%`);
+      if (Math.abs(target - s.cur) > 0.05 || Math.abs(s.vel) > 0.5) {
+        s.raf = requestAnimationFrame(tick);
+      } else {
+        input.style.setProperty("--fill", `${target}%`);
+        s.cur = target;
+        s.vel = 0;
+      }
+    };
+    s.raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(s.raf);
+  }, [pos]);
+
+  const pickRange = (index: number) => {
+    setPos(index);
+    setBudgetId(RANGES[index].id);
+    if (errors.budget) setErrors((e) => ({ ...e, budget: "" }));
+    const read = readRef.current;
+    if (read && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      read.animate(
+        [
+          { transform: "scale(1)" },
+          { transform: "scale(1.06)", offset: 0.35 },
+          { transform: "scale(1)" },
+        ],
+        { duration: 280, easing: "cubic-bezier(0.2, 0.7, 0.3, 1)" }
+      );
+    }
+  };
+
+  const pickUnsure = () => {
+    setBudgetId(UNSURE_ID);
+    if (errors.budget) setErrors((e) => ({ ...e, budget: "" }));
+  };
+
+  const readText = !budgetId
+    ? "Slide to your number"
+    : unsure
+      ? "Not sure yet — we'll guide you"
+      : (budget?.label ?? "");
+  const sliderText = !budgetId
+    ? `No budget picked yet, slider parked at ${RANGES[pos].label}`
+    : unsure
+      ? "Not sure yet"
+      : RANGES[pos].label;
 
   function setField(name: keyof typeof empty, value: string) {
     setValues((v) => ({ ...v, [name]: value }));
@@ -205,22 +281,42 @@ export function QualifyForm() {
 
       <fieldset className="q-fieldset">
         <legend className="field-label">The budget you hoped for</legend>
-        <div className="q-chips q-chips-tight" role="group">
-          {BUDGETS.map((item) => (
-            <button
-              key={item.id}
-              id={item.id === BUDGETS[0].id ? "brief-budget" : undefined}
-              type="button"
-              className={`q-chip ${budgetId === item.id ? "is-on" : ""}`}
-              aria-pressed={budgetId === item.id}
-              onClick={() => {
-                setBudgetId(item.id);
-                if (errors.budget) setErrors((e) => ({ ...e, budget: "" }));
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
+        <div className={`q-budget${unsure ? " is-unsure" : ""}`}>
+          <output ref={readRef} className="q-budget-read" htmlFor="brief-budget">
+            {readText}
+          </output>
+          <input
+            ref={sliderRef}
+            id="brief-budget"
+            className="q-slider"
+            type="range"
+            min={0}
+            max={RANGES.length - 1}
+            step={1}
+            value={pos}
+            onChange={(e) => pickRange(Number(e.target.value))}
+            aria-valuetext={sliderText}
+          />
+          <div className="q-slider-scale" aria-hidden="true">
+            {RANGES.map((r, i) => (
+              <span
+                key={r.id}
+                className={`q-tick${!unsure && budgetId && i <= pos ? " is-on" : ""}`}
+              />
+            ))}
+          </div>
+          <div className="q-slider-ends" aria-hidden="true">
+            <span>{RANGES[0].label}</span>
+            <span>{RANGES[RANGES.length - 1].label}</span>
+          </div>
+          <button
+            type="button"
+            className={`q-chip${unsure ? " is-on" : ""}`}
+            aria-pressed={unsure}
+            onClick={pickUnsure}
+          >
+            I don&apos;t know yet
+          </button>
         </div>
         {errors.budget && (
           <p id="brief-budget-error" className="field-error" role="alert">

@@ -118,9 +118,9 @@ Audited: `src/motion/*`, `src/components/*`, `src/app/globals.css`.
 
 6.8. **GradientWaves (React Bits, tailored) — "ember dunes" in the ink close** — Phase 1: the `.cta-full` room on all 7 page groups breathes clay-rust dunes (horizon `#7a2e18`, graphite bodies, copper `#da7134` crests) rising from the bottom edge under a fade mask. The site's **one sanctioned ambient room** (see the Ambient Quota in MOTION-RULES): speed 0.16, opacity 0.55, `detail: low`, DPR ≤1.5, ogl dynamically imported (never on the critical path), pauses off-screen + hidden tabs, reduced motion = a single still frame, parallax listeners on the section (fine pointers only), silent bail without WebGL2. Direction variants (top/side flips) live in CSS if ever needed.
 
-6.5. **BorderGlow (React Bits, tailored)** — pointer-reactive clay border on the three fillable cards (contact form, free-audit form, the brief). Copper glow `"22 66 58"` + copper→rust→clay mesh ramp replace the neon defaults; radius from the house `--radius` token; reveal/collapse on `--dur-2/--dur-4`; rAF-throttled pointer work, never attached on touch; intro sweep compressed to ~1.5s and skipped under reduced motion; **`:focus-within` keyboard parity** added (upstream has none). Styles in `globals.css` ("BORDER GLOW" section).
+6.5. **BorderGlow (React Bits, tailored)** — pointer-reactive clay border on the three fillable cards (contact form, free-audit form, the brief). Copper glow `"22 66 58"` + copper→rust→clay mesh ramp replace the neon defaults; radius from the house `--radius` token; reveal/collapse on `--dur-2/--dur-4`; rAF-throttled pointer work, never attached on touch; intro sweep compressed to ~1.5s and skipped under reduced motion; **`:focus-within` keyboard parity** added (upstream has none) — focus lights a calm full ring, never a stale cone. Styles in `globals.css` ("BORDER GLOW" section).
 
-1. **Cursor aura** — difference-blended dot + trailing ring (`motion/pointer.ts`). Native cursor never hidden; `(hover)+(fine)` + reduced-motion gated; grows on interactive elements, presses on click.
+1. **Cursor aura** — RETIRED. The difference-blended trailer was removed and the native pointer flies solo again. (History: dot + ring, input-driven, never hid the cursor.)
 2. **Magnetic CTAs** — `[data-magnetic]` on the header CTA, hero CTA and CTA-band actions; ≤12px pull, `gsap.quickTo`, elastic release.
 3. **Marquee velocity skew** — the proof band bends up to ±8° with Lenis scroll velocity and self-settles; **plus WCAG 2.2.2 hover/focus pause**.
 4. **Plaque pan** — hanging artworks drift ±2.2% toward the cursor with pointer-following transform-origin; pure-CSS fallback.
@@ -128,6 +128,43 @@ Audited: `src/motion/*`, `src/components/*`, `src/app/globals.css`.
 6. **Logo draw** — the S strokes draw once on load (pathLength-normalized), Z fades in; header only.
 
 Rules ledger for all of the above: `docs/MOTION-RULES.md` (NN/g durations, Material 3 tokens/easing, WCAG 2.2.2/2.3.3, Apple HIG, Refactoring UI transform-only).
+
+### Shipped (v3 — React Bits, this branch)
+
+Zero new dependencies; zero new ambient loops. Every addition is input-driven (wheel/pointer/focus) or one-shot.
+
+7. **ScrambleText (React Bits, tailored)** — eyebrows, home section labels and the CTA plate decode like a diagnostic readout: code-glyphs churn, the real text settles left-to-right, once per entry. SSR renders final text (SEO/no-JS safe); rAF loop with no dep (upstream uses gsap); skipped under reduced motion. Closes Tier 2 item 10 in adapted form — one-shot on entry rather than scrubbed, since churned text-content can't reversibly scrub.
+8. **ShinyText (React Bits, tailored)** — the CTA-band headline carries a copper sheen sweep, one sweep per viewport entry (reversible, like Reveal). CSS-only (`background-clip: text`, no motion dep); `.is-live` is added client-side only, so no-JS and reduced-motion readers keep plain bone text.
+9. **SpotlightCard (React Bits, tailored)** — a clay spotlight follows the cursor across `[data-spotlight]` rows and cards (service + note index rows, contrast rows, phases, pricing tiers, about cards). One delegated pointermove feeds element-relative % coords; the fade rides `--spot-o`, so `:hover`, `:focus-within` and `:focus-visible` share one path; no-JS still gets a centred hover wash.
+10. **CircularText (React Bits, tailored)** — the hero floor becomes a museum seal (*"This way · Scroll ·"*) whose ring is **cranked by the wheel**: hero-converge scrubs it 0→300°, then it bows out before the handoff. A reel, not a spinner — costs nothing from the ambient quota.
+11. **StarBorder (React Bits, tailored)** — a molten copper star orbits the primary CTA edge on hover/focus only (`@property --star-angle`, 2.6s orbit, masked 1.5px hairline). Rest state is the untouched house button; no idle loop; hidden under reduced motion.
+12. **TiltedCard + GlareHover (React Bits, tailored)** — the about portrait/monogram eases ±5° toward the cursor (upstream tilts ±15°) with a warm travelling glare. JS writes custom properties only; the settle rides the token `--dur-2` transition.
+
+Rules ledger for v3: `docs/MOTION-RULES.md` §2 (v3 rows) + §4 (rejected-bits rationale).
+
+### Shipped (v4 — React Bits: the full menu, this branch)
+
+Seventeen more bits, one commit each (see history `v4: *`). Same v3 contract: zero new dependencies, zero new ambient loops — input-driven or one-shot, every addition reduced-motion safe.
+
+13. **BlurText (React Bits, tailored)** — every Reveal rise now lands focus with it (blur 6px→0 on `--dur-4`). The class is only added client-side, so no-JS/reduced readers never meet a blurred pixel.
+14. **StarBorder on the header CTA** — the v3 molten orbit, extended to the one button that was missing it.
+15. **AnimatedList (React Bits, tailored)** — `[data-stagger]` checklists/point-lists land in reading order, 70ms apart (process deliverables, service `included`, free-audit points). nth-child delays + the existing Reveal observer; no motion dep.
+16. **ChromaGrid (React Bits, tailored)** — plaque artwork rests at saturate(.6) and wakes to full color on hover; reduced motion pins the classic grade.
+17. **DirectionalHover (React Bits, tailored)** — plaque captions flinch away from the arriving cursor (±10px by entry vector) and ease home on `--dur-3`. No overlay redesign — the caption keeps its seat below the frame.
+18. **ScrollReveal (React Bits, tailored)** — storytelling prose (service + note details, about) resolves word-by-word up the viewport, scrubbed per paragraph. Legal/pricing prose excluded by policy.
+19. **Frozen DotGrid (React Bits, tailored)** — a static hairline graph behind the website-audit and free-audit heroes. Zero motion, zero quota: paper, like the grain.
+20. **ScrollVelocity (React Bits, tailored)** — the marquee abandons CSS keyframes for a Lenis-fed ticker once the pointer layer boots: 42s base pace, up to ~4x with wheel velocity, decayed. Keyframes stay the no-JS/touch path; hover/focus parks it (2.2.2).
+21. **ClickSpark, rehabilitated (React Bits, tailored)** — one clay tick (ten sparks, ~220ms, slight gravity) on CTA/chip/slider press. Canvas fixed overlay; the rAF loop parks when the last spark dies.
+22. **TargetCursor (React Bits, tailored)** — clay corner-brackets snap around the control under the cursor (240ms chase), skipping full-width rows and regions. Parks on scroll, re-acquires on hover; native cursor untouched.
+23. **Crosshair (scoped diagnostic)** — clay crosshair trails the cursor, armed ONLY over heroes (`.hero-minimal`, `.page-hero`), bowed out everywhere else. Lerped, transform-only, under the header.
+24. **GradualBlur, stilled (React Bits, tailored)** — soft blur pooled at the viewport edges (13vh, 9px). No loop, no JS: desktop fine-pointer only, never under reduced motion, graceful where backdrop-filter no-ops.
+25. **TextPressure (React Bits, tailored)** — home display headings swell toward the pointer on the Fraunces variable wght axis (400→720, 170px radius, 20-step quantization). Weight-only (kerning preserved), IO-gated, teardown unwraps the chars.
+26. **RotatingText, landed (React Bits, tailored)** — the services hero corrects itself once per entry (*hunches. → vibes. → evidence.*) and rests on the final. SSR/SEO see `evidence.`; reduced motion sees it statically.
+27. **Stepper (React Bits, tailored)** — the process page walks a sticky rail: fill + lit ticks derived from scroll progress (recognize-room pattern), past numbers clayed. Rail hides on mobile; steps never do.
+28. **ScrollStack (React Bits, tailored)** — the eight website-audit checks fan into sticky cards (30px seats, pure CSS so no-JS/reduced get the deck); covered cards settle to 0.93, scrubbed, desktop only.
+29. **ElasticSlider (React Bits, tailored)** — the brief's budget chips graduate to a five-stop PKR slider: spring fill (one overshoot), readout pop, tick scale. Native range (keyboard/touch/SR intact); `unsure` stays a chip because it is not a magnitude.
+
+Rules ledger for v4: `docs/MOTION-RULES.md` §2 (v4 rows). Still waiting on content: case-study galleries, honest metrics, the portrait, client logos (#18–21 in the v4 proposal).
 
 ### ⏳ Waiting on case studies (deliberately not built yet)
 

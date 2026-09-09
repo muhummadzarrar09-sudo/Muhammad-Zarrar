@@ -4,9 +4,11 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { CrossIcon } from "@/components/icons";
+import { Scribble } from "@/components/scribble";
 
 export const metadata = pageMeta({
   title: "About — Muhammad Zarrar, Senior Full-Stack Builder",
@@ -56,14 +58,15 @@ export default function AboutPage() {
 
       <section className="page-hero" id="top" data-tl="Top">
         <div className="container">
+          <p className="stamp" aria-hidden="true">ONE BUILDER</p>
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
               <Link href="/">Home</Link>
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">About</span>
             </nav>
-            <span className="eyebrow">About</span>
-            <h1>One builder. <em>A system that ships.</em></h1>
+            <ScrambleText className="eyebrow" text="About" />
+            <h1>One builder. <em><Scribble>A system that ships.</Scribble></em></h1>
             <p className="lede">
               Zarrar.Solutions is Muhammad Zarrar — a senior full-stack builder
               in Rawalpindi — plus a working system of audits, specs, and
@@ -77,13 +80,14 @@ export default function AboutPage() {
       <section className="section" id="story" data-tl="Story" aria-labelledby="story-heading">
         <div className="container service-detail-grid">
           <Reveal className="monogram-card">
-            {hasPortrait ? (
+            <div className="monogram-tilt" data-tilt>
+              {hasPortrait ? (
               <Image
                 src="/images/portrait.jpg"
                 alt="Muhammad Zarrar — founder of Zarrar.Solutions, Rawalpindi"
                 width={720}
                 height={860}
-                className="portrait-img"
+                className="portrait-img grade"
                 priority
               />
             ) : (
@@ -95,9 +99,10 @@ export default function AboutPage() {
                 width={240}
                 height={240}
               />
-            )}
+              )}
+            </div>
           </Reveal>
-          <div className="prose">
+          <div className="prose prose-reveal">
             <h2 id="story-heading">Why audit-first</h2>
             <p>
               Most agencies sell rebuilds without diagnosis. A client arrives
@@ -113,6 +118,10 @@ export default function AboutPage() {
               building — and by then the scope, the price, and the timeline
               are facts, not guesses.
             </p>
+            <aside className="pull-quote">
+              <p className="pull-text">Under-promising is a feature.</p>
+              <p className="pull-attr">Studio values, kept in writing</p>
+            </aside>
             <p>
               Being solo is the point, not a limitation. One senior builder
               means no handoffs, no telephone game, no junior learning on
@@ -123,17 +132,50 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <section className="section-tight" style={{ paddingTop: 0 }} aria-labelledby="spec-heading">
+        <div className="container">
+          <Reveal className="section-head">
+            <ScrambleText className="eyebrow" text="Datasheet" />
+            <h2 id="spec-heading">Builder, specced</h2>
+          </Reveal>
+          <Reveal>
+            <dl className="spec-sheet">
+              <div>
+                <dt>Base</dt>
+                <dd>Rawalpindi, PKT (UTC+5)</dd>
+              </div>
+              <div>
+                <dt>Stack</dt>
+                <dd>Next.js · React · TypeScript</dd>
+              </div>
+              <div>
+                <dt>Replies</dt>
+                <dd>Within 24 hours</dd>
+              </div>
+              <div>
+                <dt>Builds</dt>
+                <dd>Solo — start to ship</dd>
+              </div>
+              <div>
+                <dt>Audits</dt>
+                <dd>In writing, with evidence</dd>
+              </div>
+            </dl>
+          </Reveal>
+        </div>
+      </section>
+
       <section className="section-tight" aria-labelledby="values-heading" style={{ paddingTop: 0 }}>
         <div className="container">
           <Reveal className="section-head">
-            <span className="eyebrow">Values</span>
+            <ScrambleText className="eyebrow" text="Values" />
             <h2 id="values-heading">
               Three rules, kept in writing
             </h2>
           </Reveal>
           <div className="grid grid-3">
             {VALUES.map((value) => (
-              <Reveal key={value.title} className="card card-hover value-card">
+              <Reveal key={value.title} className="card card-hover value-card" spotlight>
                 <h3>{value.title}</h3>
                 <p>{value.body}</p>
               </Reveal>
@@ -145,14 +187,14 @@ export default function AboutPage() {
       <section className="section" aria-labelledby="not-doing-heading">
         <div className="container">
           <Reveal className="section-head">
-            <span className="eyebrow">Equally important</span>
+            <ScrambleText className="eyebrow" text="Equally important" />
             <h2 id="not-doing-heading">
               What you won&rsquo;t get here
             </h2>
           </Reveal>
           <div className="grid grid-2">
             {NOT_DOING.map((item) => (
-              <Reveal key={item} className="card why-card">
+              <Reveal key={item} className="card why-card" spotlight>
                 <span className="why-check" aria-hidden="true">
                   <CrossIcon size={16} />
                 </span>

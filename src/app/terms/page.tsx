@@ -2,6 +2,7 @@ import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { EMAIL } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
+import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 
 export const metadata = pageMeta({
@@ -28,7 +29,7 @@ export default function TermsPage() {
               <span className="sep" aria-hidden="true">/</span>
               <span aria-current="page">Terms</span>
             </nav>
-            <span className="eyebrow">Plain language · last updated August 2026</span>
+            <ScrambleText className="eyebrow" text="Plain language · last updated August 2026" />
             <h1>Terms of work</h1>
             <p className="lede">
               No twenty-page wall of legalese. These are the rules we actually
