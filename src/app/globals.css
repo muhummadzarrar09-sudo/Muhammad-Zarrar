@@ -7057,6 +7057,26 @@ html.has-motion .room-ink .vignette-plaque {
   }
 }
 
+/* ---- Night shift ---------------------------------------------------------
+   Glass cards go near-transparent on dark (surface-2 = 8% white), so the
+   cone fill must flip too — otherwise a putty patch flashes inside the
+   dark card on hover. Copper runs full strength here (it earns it on
+   dark), and the edge light goes additive like the --ink tone. */
+html[data-theme="night"] .border-glow-card--glass {
+  --card-fill: #2d2b27; /* surface-2 composited over the night canvas */
+}
+
+html[data-theme="night"] .border-glow-card--form::before {
+  opacity: calc(
+    (var(--edge-proximity) - var(--color-sensitivity)) /
+      (100 - var(--color-sensitivity))
+  );
+}
+
+html[data-theme="night"] .border-glow-card--glass > .edge-light {
+  mix-blend-mode: plus-lighter;
+}
+
 /* ==========================================================================
    PARTICLE TEXT — React Bits scatter-and-gather headline, PUTTY GALLERY
    tailoring (component: src/components/particle-text.tsx).
