@@ -55,6 +55,7 @@ export default function PricingPage() {
 
       <section className="page-hero" id="top" data-tl="Top">
         <div className="container">
+          <p className="stamp" aria-hidden="true">IN WRITING \u2713</p>
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
               <Link href="/">Home</Link>

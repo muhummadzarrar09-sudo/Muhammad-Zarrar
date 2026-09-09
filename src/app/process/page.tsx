@@ -28,6 +28,7 @@ export default function ProcessPage() {
 
       <section className="page-hero" id="top" data-tl="Top">
         <div className="container">
+          <p className="stamp" aria-hidden="true">EVIDENCE FIRST</p>
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
               <Link href="/">Home</Link>
