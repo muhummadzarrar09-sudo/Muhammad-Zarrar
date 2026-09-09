@@ -357,6 +357,8 @@ export default function HomePage() {
           <BorderGlow
             tone="glass"
             className="qualify-card border-glow-card--form"
+            coneSpread={34}
+            glowIntensity={0.85}
           >
             <h3 className="form-title">The brief</h3>
             <p className="form-sub">

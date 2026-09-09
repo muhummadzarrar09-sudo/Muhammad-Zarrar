@@ -95,7 +95,7 @@ export default function ContactPage() {
           </div>
 
           <Reveal>
-            <BorderGlow tone="glass" className="border-glow-card--form">
+            <BorderGlow tone="glass" className="border-glow-card--form" coneSpread={34} glowIntensity={0.85}>
               <h2 className="form-title">
                 Send a quick message
               </h2>

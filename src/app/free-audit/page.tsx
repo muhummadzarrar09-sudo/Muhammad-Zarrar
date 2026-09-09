@@ -88,7 +88,7 @@ export default function FreeAuditPage() {
           </div>
 
           <Reveal id="request">
-            <BorderGlow tone="glass" className="border-glow-card--form">
+            <BorderGlow tone="glass" className="border-glow-card--form" coneSpread={34} glowIntensity={0.85}>
               <h2 className="form-title">
                 Request your mini-audit
               </h2>

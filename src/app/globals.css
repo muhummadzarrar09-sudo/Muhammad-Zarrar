@@ -6850,6 +6850,16 @@ html.has-motion .room-ink .vignette-plaque {
   box-shadow: var(--e-3);
 }
 
+/* Tall form cards: the cone window rides the full card height, so the mesh
+   never runs at full blast here — 0.8 keeps the copper gentlemanly on
+   putty. (Night mode restores full strength; see the night section.) */
+.border-glow-card--form::before {
+  opacity: calc(
+    (var(--edge-proximity) - var(--color-sensitivity)) /
+      (100 - var(--color-sensitivity)) * 0.8
+  );
+}
+
 .border-glow-card--ink {
   background: var(--card-bg, #111110);
   border: 1px solid rgba(231, 229, 228, 0.14);
@@ -7019,20 +7029,25 @@ html.has-motion .room-ink .vignette-plaque {
 }
 
 /* ---- Keyboard parity ----------------------------------------------------
-   Upstream reveals only via pointer proximity. Here, any focused control
-   inside the card lights the same layers, so keyboard users get the same
-   "this card is live" signal. Doubled class wins the tie against the
+   Upstream reveals only via pointer proximity. Here, keyboard focus inside
+   the card (with no hovering pointer) lights a calm FULL ring instead of
+   the cursor cone — tabbing through a tall form never parks the gradient
+   at full blast on a stale angle. Doubled class wins the tie against the
    :not(:hover) collapse rule above. ------------------------------------- */
-.border-glow-card.border-glow-card:focus-within::before {
-  opacity: 1;
+.border-glow-card.border-glow-card:focus-within:not(:hover)::before {
+  opacity: 0.55;
+  mask-image: linear-gradient(#000 0 0);
+  -webkit-mask-image: linear-gradient(#000 0 0);
 }
 
-.border-glow-card.border-glow-card:focus-within::after {
+.border-glow-card.border-glow-card:focus-within:not(:hover)::after {
   opacity: var(--fill-opacity, 0.5);
 }
 
-.border-glow-card.border-glow-card:focus-within > .edge-light {
-  opacity: 1;
+.border-glow-card.border-glow-card:focus-within:not(:hover) > .edge-light {
+  opacity: 0.35;
+  mask-image: linear-gradient(#000 0 0);
+  -webkit-mask-image: linear-gradient(#000 0 0);
 }
 
 /* ---- Mobile: match the .form-card mobile padding fix -------------------- */
