@@ -181,6 +181,8 @@ export default function HomePage() {
             src="/images/gallery/arch.jpg"
             alt=""
             className="exhibit-canvas grade"
+            loading="lazy"
+            decoding="async"
             width={1920}
             height={1080}
           />
@@ -225,7 +227,7 @@ export default function HomePage() {
             {OUTCOMES.map((item) => (
               <figure className="vignette" key={item.title}>
                 <div className="vignette-plaque">
-                  <img src={item.src} alt="" width={400} height={400} />
+                  <img src={item.src} alt="" width={400} height={400} loading="lazy" decoding="async" />
                 </div>
                 <figcaption>
                   <span className="vignette-cap">{item.title}</span>
