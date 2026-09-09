@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { NOTES, getNote } from "@/content/notes";
 import { Reveal } from "@/components/reveal";
+import { ReadingProgress } from "@/components/reading-progress";
 import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
@@ -86,7 +87,8 @@ export default async function NotePage({
         </div>
       </section>
 
-      <section className="section">
+      <ReadingProgress target=".note-article" />
+      <section className="section note-article">
         <div className="container">
           <div className="prose prose-reveal">
             {note.sections.map((section, si) => (
@@ -106,6 +108,23 @@ export default async function NotePage({
               <p className="note-takeaway-label">The takeaway</p>
               <p className="note-takeaway">{note.takeaway}</p>
             </Reveal>
+            {(() => {
+              const idx = NOTES.findIndex((n) => n.slug === note.slug);
+              const next = NOTES[(idx + 1) % NOTES.length];
+              if (!next || next.slug === note.slug) return null;
+              return (
+                <Reveal className="card card-hover keep-reading" spotlight>
+                  <p className="keep-label">Keep reading</p>
+                  <Link
+                    href={`/notes/${next.slug}`}
+                    className="keep-link"
+                  >
+                    {next.title} &rarr;
+                  </Link>
+                  <p className="idx-sub">{next.excerpt}</p>
+                </Reveal>
+              );
+            })()}
           </div>
         </div>
       </section>
