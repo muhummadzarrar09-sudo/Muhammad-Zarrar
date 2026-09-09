@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { LogoMark } from "./logo";
-import { WhatsAppIcon, ArrowUpRightIcon, ArrowUpIcon } from "./icons";
+import {
+  WhatsAppIcon,
+  ArrowUpRightIcon,
+  ArrowUpIcon,
+  MailIcon,
+  PinIcon,
+} from "./icons";
 import { StudioClock } from "./studio-clock";
 import { SERVICES } from "@/content/services";
 import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, EMAIL, POSITIONING, waLink, DEFAULT_WA_MESSAGE } from "@/lib/site";
@@ -55,12 +61,15 @@ export function SiteFooter() {
               </span>
             </a>
             <a href={`mailto:${EMAIL}`} className="footer-contact">
+              <MailIcon size={16} />
               {EMAIL}
               <span className="icon-nudge">
                 <ArrowUpRightIcon size={14} />
               </span>
             </a>
-            <p className="footer-contact-static">Rawalpindi, Pakistan</p>
+            <p className="footer-contact-static">
+              <PinIcon size={16} /> Rawalpindi, Pakistan
+            </p>
             <p className="footer-contact-static">
               <StudioClock />
             </p>

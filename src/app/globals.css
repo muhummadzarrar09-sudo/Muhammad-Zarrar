@@ -8480,6 +8480,14 @@ a:focus-visible > .icon-nudge svg,
   }
 }
 
+/* ---------- CONTACT GLYPHS ---------------------------------------------------
+   The static contact lines are plain paragraphs, so their glyphs align by
+   hand. (The link rows are flex with a gap and need nothing.) */
+.footer-contact-static svg {
+  vertical-align: -3px;
+  margin-right: 8px;
+}
+
 /* ---------- THEME TOGGLE ----------------------------------------------------
    Icon-only night switch in the header. A control, not a toy: full-size hit
    area, pressed state announced, motion-still safe. */

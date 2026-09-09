@@ -127,6 +127,37 @@ export function ArrowUpIcon({ size = 16, className }: Omit<IconProps, "children"
   );
 }
 
+/**
+ * Contact set — mail and map pin in the house voice. The WhatsApp glyph
+ * stays brand-true; these two do the talking beside it.
+ */
+export function MailIcon({ size = 16, className }: Omit<IconProps, "children">) {
+  return (
+    <Icon size={size} className={className}>
+      <rect x="3.5" y="5.5" width="17" height="13" rx="2" stroke="currentColor" />
+      <path
+        d="M4.5 7.5l7.5 5.5 7.5-5.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Icon>
+  );
+}
+
+export function PinIcon({ size = 16, className }: Omit<IconProps, "children">) {
+  return (
+    <Icon size={size} className={className}>
+      <path
+        d="M12 21.5s-6.5-5.6-6.5-10.5a6.5 6.5 0 1 1 13 0c0 4.9-6.5 10.5-6.5 10.5z"
+        stroke="currentColor"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="11" r="2.2" stroke="currentColor" />
+    </Icon>
+  );
+}
+
 export function ArrowLeftIcon({ size = 16, className }: Omit<IconProps, "children">) {
   return (
     <Icon size={size} className={className}>
