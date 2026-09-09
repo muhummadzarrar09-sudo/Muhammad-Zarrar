@@ -7278,8 +7278,8 @@ html[data-theme="night"] .spot-unified {
 /* ---------- STAR BORDER (React Bits StarBorder, tailored) ------------------
    A molten copper star orbits the CTA edge — but ONLY while hovered or
    keyboard-focused. Rest state is the untouched house button; there is no
-   idle loop to spend quota on. The ring lives at inset 1px (inside the
-   button's overflow:hidden) and is masked to a 1.5px hairline. */
+   idle loop to spend quota on. The ring hugs inset 0 (the button's outer edge,
+   clipped by its overflow:hidden) and is masked to a 1.5px hairline. */
 @property --star-angle {
   syntax: "<angle>";
   inherits: false;
@@ -7288,8 +7288,8 @@ html[data-theme="night"] .spot-unified {
 
 .btn-star-ring {
   position: absolute;
-  inset: 1px;
-  border-radius: calc(var(--radius) - 1px);
+  inset: 0;
+  border-radius: inherit; /* the button's own shape — the ring wraps it exactly */
   padding: 1.5px;
   pointer-events: none;
   opacity: 0;
@@ -7297,11 +7297,11 @@ html[data-theme="night"] .spot-unified {
   background: conic-gradient(
     from var(--star-angle),
     transparent 0deg,
-    transparent 262deg,
-    var(--copper) 305deg,
-    var(--white) 322deg,
-    var(--copper) 335deg,
-    transparent 350deg
+    transparent 296deg,
+    var(--copper) 322deg,
+    var(--white) 334deg,
+    var(--copper) 342deg,
+    transparent 354deg
   );
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
