@@ -104,6 +104,12 @@ storyboarded as data in `src/motion/wireframes.ts`.
   blueprint service motifs, one house photo grade, a paper route wipe, a
   jeweled timeline rail, a 10-second self-check quiz, a 46%-lighter
   gallery, and Night at the Museum (persisted, OS-aware, zero-flash).
+- **Mamacita icons + type** (12 commits, same contract): one 24-grid icon
+  primitive, wayfinding arrows that lean on hover, a clay-ring back-to-top,
+  mail + pin contact glyphs, wax-seal promise checks, stamp-press and
+  blueprint-draw entrances, a 6rem hero display scale, hand-drawn scribble
+  underlines on six headlines, Usual-vs-Here verdict marks, a stamped 404,
+  per-phase pipeline glyphs, and a clay text selection.
 - **Scroll timeline**: the native scrollbar is hidden and replaced by a
   right-edge rail — progress fill plus diamond markers per section
   (`section[data-tl]`), keyboard-focusable, click-to-jump.
