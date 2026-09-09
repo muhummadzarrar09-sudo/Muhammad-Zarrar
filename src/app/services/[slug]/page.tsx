@@ -115,8 +115,13 @@ export default async function ServiceDetailPage({
           <div className="prose prose-reveal">
             <Reveal>
               <h2>The problem it solves</h2>
-              {service.problem.map((paragraph) => (
-                <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+              {service.problem.map((paragraph, i) => (
+                <p
+                  key={paragraph.slice(0, 24)}
+                  className={i === 0 ? "dropcap" : undefined}
+                >
+                  {paragraph}
+                </p>
               ))}
             </Reveal>
 

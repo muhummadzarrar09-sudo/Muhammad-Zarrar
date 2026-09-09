@@ -89,11 +89,16 @@ export default async function NotePage({
       <section className="section">
         <div className="container">
           <div className="prose prose-reveal">
-            {note.sections.map((section) => (
+            {note.sections.map((section, si) => (
               <Reveal key={section.heading}>
                 <h2>{section.heading}</h2>
-                {section.body.map((paragraph) => (
-                  <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                {section.body.map((paragraph, pi) => (
+                  <p
+                    key={paragraph.slice(0, 24)}
+                    className={si === 0 && pi === 0 ? "dropcap" : undefined}
+                  >
+                    {paragraph}
+                  </p>
                 ))}
               </Reveal>
             ))}

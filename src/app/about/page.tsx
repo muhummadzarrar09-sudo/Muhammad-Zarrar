@@ -116,6 +116,10 @@ export default function AboutPage() {
               building — and by then the scope, the price, and the timeline
               are facts, not guesses.
             </p>
+            <aside className="pull-quote">
+              <p className="pull-text">Under-promising is a feature.</p>
+              <p className="pull-attr">Studio values, kept in writing</p>
+            </aside>
             <p>
               Being solo is the point, not a limitation. One senior builder
               means no handoffs, no telephone game, no junior learning on
