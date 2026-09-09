@@ -29,6 +29,7 @@ export default function FreeAuditPage() {
 
       <section className="page-hero hero-blueprint" id="top" data-tl="Top">
         <div className="container">
+          <p className="stamp" aria-hidden="true">24H REPLY</p>
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
               <Link href="/">Home</Link>
