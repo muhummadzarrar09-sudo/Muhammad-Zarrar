@@ -180,7 +180,7 @@ export default function HomePage() {
           <img
             src="/images/gallery/arch.jpg"
             alt=""
-            className="exhibit-canvas"
+            className="exhibit-canvas grade"
             width={1920}
             height={1080}
           />

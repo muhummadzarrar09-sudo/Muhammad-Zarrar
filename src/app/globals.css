@@ -1983,8 +1983,7 @@ button {
   object-fit: cover;
   aspect-ratio: 5 / 6;
   border-radius: var(--radius);
-  /* Same grade as the ember/smoke plates so photography joins the palette. */
-  filter: saturate(0.92) contrast(1.04);
+  /* Graded via the .grade utility — see HOUSE GRADE. */
 }
 
 .value-card {
@@ -8227,6 +8226,13 @@ html.has-motion .rv-in [data-stagger] > li {
   .service-motif {
     display: none;
   }
+}
+
+/* ---------- HOUSE GRADE ------------------------------------------------------
+   The film grade every photograph joins: warm, quiet, putty-native.
+   (Plaques keep their own ChromaGrid rest state; everything else wears this.) */
+.grade {
+  filter: saturate(0.92) contrast(1.04);
 }
 
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------

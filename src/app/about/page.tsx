@@ -86,7 +86,7 @@ export default function AboutPage() {
                 alt="Muhammad Zarrar — founder of Zarrar.Solutions, Rawalpindi"
                 width={720}
                 height={860}
-                className="portrait-img"
+                className="portrait-img grade"
                 priority
               />
             ) : (
