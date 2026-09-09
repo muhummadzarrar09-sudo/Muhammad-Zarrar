@@ -178,7 +178,6 @@ export default function HomePage() {
         aria-label="A pause"
       >
         <div className="exhibit-stage">
-          <Placard no="02" title="A Pause" medium="Breath on canvas" tone="dark" />
           <img
             src="/images/gallery/arch.jpg"
             alt=""
@@ -188,24 +187,27 @@ export default function HomePage() {
             width={1920}
             height={1080}
           />
-          <div className="notch-card">
-            <span className="notch-kicker">A pause</span>
-            <p className="notch-title">
-              <span className="type-src">
-                You don&apos;t need another website.
-              </span>
-              <span className="type-out" aria-hidden="true" />
-            </p>
-            <p className="notch-body">
-              <span className="type-src">
-                You need the one that takes the next order — and a number that
-                doesn&apos;t move unless the work does.
-              </span>
-              <span className="type-out" aria-hidden="true" />
-            </p>
-            <a className="notch-scroll" href="#brief">
-              Write the brief
-            </a>
+          <div className="exhibit-copy">
+            <Placard no="02" title="A Pause" medium="Breath on canvas" tone="dark" />
+            <div className="notch-card">
+              <span className="notch-kicker">A pause</span>
+              <p className="notch-title">
+                <span className="type-src">
+                  You don&apos;t need another website.
+                </span>
+                <span className="type-out" aria-hidden="true" />
+              </p>
+              <p className="notch-body">
+                <span className="type-src">
+                  You need the one that takes the next order — and a number that
+                  doesn&apos;t move unless the work does.
+                </span>
+                <span className="type-out" aria-hidden="true" />
+              </p>
+              <a className="notch-scroll" href="#brief">
+                Write the brief
+              </a>
+            </div>
           </div>
         </div>
       </section>

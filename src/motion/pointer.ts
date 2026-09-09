@@ -356,12 +356,6 @@ function buildSpotlight(): { teardown: () => void } {
     }
     kick();
   };
-  const themeObserver = new MutationObserver(readColor);
-  themeObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-theme"],
-  });
-
   document.addEventListener("pointermove", onMove, { passive: true });
   document.addEventListener("pointerleave", onLeave);
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -378,7 +372,6 @@ function buildSpotlight(): { teardown: () => void } {
       window.removeEventListener("resize", resize);
       document.removeEventListener("focusin", onFocus);
       document.removeEventListener("focusout", onFocus);
-      themeObserver.disconnect();
       if (raf) cancelAnimationFrame(raf);
       canvas.remove();
     },
