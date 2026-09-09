@@ -7945,6 +7945,92 @@ html.has-motion .rv-in [data-stagger] > li {
   background: var(--hairline);
 }
 
+/* ---------- PRINT — the gallery on paper -----------------------------------
+   Auditors love paper trails. Ink on white, chrome gone, FAQs forced open,
+   links footnoted with their URLs. Uses the token whites/blacks — paper is
+   paper, but the law still holds. */
+@media print {
+  .site-header,
+  .scroll-timeline,
+  .route-progress,
+  .marquee,
+  .hero-toolbar,
+  .hero-floor,
+  .hero-loader,
+  .focus-veil,
+  .cursor-aura,
+  .target-cursor,
+  .crosshair,
+  .click-sparks,
+  .cursor-aura,
+  .mobile-menu,
+  .mobile-menu-panel,
+  form,
+  fieldset,
+  .faq-icon,
+  .cta-actions,
+  .footer-col,
+  .footer-word,
+  .footer-top,
+  .tl-readout {
+    display: none !important;
+  }
+
+  body {
+    background: var(--white);
+  }
+
+  body,
+  h1, h2, h3, h4, p, li, span, a, blockquote {
+    color: var(--ember-550) !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+
+  .section-ink,
+  .section-ink *,
+  .room-ink,
+  .room-ink *,
+  .cta-full,
+  .cta-full *,
+  .site-footer,
+  .site-footer * {
+    background: var(--white) !important;
+    color: var(--ember-550) !important;
+    border-color: var(--hairline-strong) !important;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.78em;
+    word-break: break-all;
+  }
+
+  .faq-panel {
+    display: block !important;
+    grid-template-rows: 1fr !important;
+  }
+
+  .rv,
+  .rv-in {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .checklist li,
+  .card,
+  .stepper-step,
+  .stack-card,
+  section {
+    break-inside: avoid;
+  }
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */
