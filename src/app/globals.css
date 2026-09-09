@@ -8793,6 +8793,81 @@ a:focus-visible > .icon-nudge svg,
   opacity: 1;
 }
 
+/* ---------- SAMPLE REPORT ----------------------------------------------------
+   The free-audit page shows its goods: a specimen report with severity tags
+   and a grade ring. Every finding is labelled illustrative; the numbers
+   come from the published Field Notes pattern. */
+.sample-wrap {
+  margin-top: 56px;
+}
+
+.sample-report {
+  padding: clamp(24px, 4vw, 40px);
+}
+
+.sample-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.sample-kicker {
+  margin: 0 0 12px;
+}
+
+.sample-title {
+  margin: 0;
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  letter-spacing: var(--ls-heading);
+}
+
+.sample-findings {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+}
+
+.sample-findings li {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 18px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.sample-findings .dtag {
+  flex: none;
+  margin-top: 2px;
+}
+
+.sample-finding {
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+
+.sample-evidence {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+
+.sample-foot {
+  margin: 20px 0 0;
+  font-size: 0.95rem;
+  color: var(--text-2);
+  max-width: 62ch;
+}
+
+.sample-foot a {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* ---------- THEME TOGGLE ----------------------------------------------------
    Icon-only night switch in the header. A control, not a toy: full-size hit
    area, pressed state announced, motion-still safe. */

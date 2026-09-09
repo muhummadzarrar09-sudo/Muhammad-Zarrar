@@ -5,6 +5,7 @@ import { FREE_AUDIT_POINTS } from "@/content/site-content";
 import { AuditForm } from "@/components/audit-form";
 import { Reveal } from "@/components/reveal";
 import { SelfCheck } from "@/components/self-check";
+import { DTag, GradeRing } from "@/components/diagram";
 import { Scribble } from "@/components/scribble";
 import { ScrambleText } from "@/components/scramble-text";
 import BorderGlow from "@/components/border-glow";
@@ -96,6 +97,55 @@ export default function FreeAuditPage() {
               </p>
               <AuditForm />
             </BorderGlow>
+          </Reveal>
+        </div>
+        <div className="container sample-wrap">
+          <Reveal className="card sample-report" spotlight>
+            <div className="sample-head">
+              <div>
+                <p className="sample-kicker">
+                  <DTag tone="sample">Sample report</DTag>
+                </p>
+                <h2 className="sample-title">What lands in your inbox</h2>
+              </div>
+              <GradeRing grade="C" />
+            </div>
+            <ol className="sample-findings">
+              <li>
+                <DTag tone="high">High</DTag>
+                <div>
+                  <p className="sample-finding">71 files block first paint</p>
+                  <p className="sample-evidence">
+                    theme.css · builder-runtime.js · 3 font CDNs · slider.js · chat-widget.js
+                  </p>
+                </div>
+              </li>
+              <li>
+                <DTag tone="high">High</DTag>
+                <div>
+                  <p className="sample-finding">
+                    Google receives an empty shell
+                  </p>
+                  <p className="sample-evidence">
+                    {"<div id=\"root\"></div> — 0 words in the raw HTML"}
+                  </p>
+                </div>
+              </li>
+              <li>
+                <DTag tone="med">Medium</DTag>
+                <div>
+                  <p className="sample-finding">No WhatsApp above the fold</p>
+                  <p className="sample-evidence">
+                    Contact link sits in the footer, three screens down
+                  </p>
+                </div>
+              </li>
+            </ol>
+            <p className="sample-foot">
+              Illustrative findings in the documented pattern — yours will
+              name your files, your seconds, your pages.{" "}
+              <Link href="#request">Request yours</Link>
+            </p>
           </Reveal>
         </div>
       </section>
