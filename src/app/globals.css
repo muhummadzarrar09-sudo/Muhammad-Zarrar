@@ -8627,6 +8627,13 @@ a:focus-visible > .icon-nudge svg,
   color: var(--gold);
 }
 
+/* ---------- LOST & FOUND ------------------------------------------------------
+   The 404 anchors its stamp to the section. (Buttons already space their
+   icons — `.btn` carries the gap.) */
+.notfound {
+  position: relative;
+}
+
 /* ---------- THEME TOGGLE ----------------------------------------------------
    Icon-only night switch in the header. A control, not a toy: full-size hit
    area, pressed state announced, motion-still safe. */

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ParticleText from "@/components/particle-text";
+import { ArrowLeftIcon, ArrowRightIcon } from "@/components/icons";
 
 export const metadata = {
   title: "404 — This Page Failed Its Audit",
@@ -9,6 +10,9 @@ export const metadata = {
 export default function NotFound() {
   return (
     <section className="notfound">
+      <p className="stamp" aria-hidden="true">
+        FILED UNDER NOWHERE
+      </p>
       <img
         src="/images/logo-mark-transparent-original.png"
         alt=""
@@ -44,10 +48,12 @@ export default function NotFound() {
       </p>
       <div className="notfound-actions">
         <Link href="/" className="btn btn-primary btn-lg">
+          <ArrowLeftIcon size={18} />
           Back to the homepage
         </Link>
         <Link href="/free-audit" className="btn btn-ghost btn-lg">
           Get a free 5-point audit
+          <ArrowRightIcon size={18} />
         </Link>
       </div>
     </section>
