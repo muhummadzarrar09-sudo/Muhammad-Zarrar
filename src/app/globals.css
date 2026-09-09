@@ -8114,6 +8114,42 @@ html.has-motion .rv-in [data-stagger] > li {
   }
 }
 
+/* ---------- FOOTER JEWELRY ---------------------------------------------------
+   Giant outlined wordmark (transparent fill, ink stroke, low-key), colophon
+   line, tabular studio clock, and a Lenis-riding back-to-top. */
+.footer-word {
+  margin: 8px 0 48px;
+  font-family: var(--font-display);
+  font-weight: var(--fw-display);
+  font-size: clamp(3rem, 11vw, 9.5rem);
+  line-height: 0.95;
+  letter-spacing: var(--ls-display);
+  text-align: center;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--hairline-strong);
+  user-select: none;
+}
+
+@supports not (-webkit-text-stroke: 1px black) {
+  .footer-word {
+    color: var(--text-3);
+  }
+}
+
+.footer-colophon {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--text-3);
+}
+
+.footer-top {
+  font-size: 0.84rem;
+}
+
+.studio-clock {
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */

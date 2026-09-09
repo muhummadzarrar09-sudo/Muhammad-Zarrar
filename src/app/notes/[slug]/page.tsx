@@ -66,7 +66,7 @@ export default async function NotePage({
         ])}
       />
 
-      <section className="page-hero">
+      <section className="page-hero" id="top">
         <div className="container">
           <Reveal>
             <nav className="breadcrumb" aria-label="Breadcrumb">
