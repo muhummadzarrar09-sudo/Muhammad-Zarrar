@@ -110,6 +110,12 @@ storyboarded as data in `src/motion/wireframes.ts`.
   blueprint-draw entrances, a 6rem hero display scale, hand-drawn scribble
   underlines on six headlines, Usual-vs-Here verdict marks, a stamped 404,
   per-phase pipeline glyphs, and a clay text selection.
+- **Diagnostic visuals** (7 commits, same contract): a museum figure system
+  (blueprint panels, severity tags, grade rings), a waterfall diagram for
+  the 70-files post, crawler-vs-visitor frames for the blank-page post,
+  exhibited schematics on all five service pages, a sample finding report
+  on free-audit, a builder spec sheet on about, and a 404 that files its
+  own failing grade. Proof, not purple.
 - **Scroll timeline**: the native scrollbar is hidden and replaced by a
   right-edge rail — progress fill plus diamond markers per section
   (`section[data-tl]`), keyboard-focusable, click-to-jump.
