@@ -3,6 +3,7 @@ import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { PROCESS_STEPS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
 import { ScrambleText } from "@/components/scramble-text";
+import { Placard } from "@/components/placard";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { CheckIcon } from "@/components/icons";
@@ -47,6 +48,7 @@ export default function ProcessPage() {
 
       <section className="section" id="phases" data-tl="Phases" aria-label="Process phases">
         <div className="container">
+          <Placard no="A" title="The Pipeline" medium="Four phases, honest" />
           <div className="stepper">
             <div className="stepper-rail" aria-hidden="true">
               <span className="stepper-track">

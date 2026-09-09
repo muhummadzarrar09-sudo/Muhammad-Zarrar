@@ -245,6 +245,7 @@ export default function HomePage() {
         aria-labelledby="different-heading"
       >
         <div className="container">
+          <Placard no="04" title="The Difference" medium="Usual vs here" />
           <div className="sec-head">
             <span className="sec-index">02</span>
             <ScrambleText className="sec-label" text="Why this feels different" />
@@ -278,6 +279,7 @@ export default function HomePage() {
         aria-labelledby="next-heading"
       >
         <div className="container">
+          <Placard no="05" title="What Follows" medium="Three columns" />
           <div className="sec-head">
             <span className="sec-index">03</span>
             <ScrambleText className="sec-label" text="Then what happens" />
@@ -311,6 +313,7 @@ export default function HomePage() {
       >
         <div className="container qualify-wrap">
           <div className="qualify-intro">
+            <Placard no="06" title="The Brief" medium="Ink on paper" />
             <div className="sec-head">
               <span className="sec-index">04</span>
               <ScrambleText className="sec-label" text="Your brief" />
