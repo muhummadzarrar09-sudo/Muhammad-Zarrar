@@ -8235,6 +8235,58 @@ html.has-motion .rv-in [data-stagger] > li {
   filter: saturate(0.92) contrast(1.04);
 }
 
+/* ---------- ROUTE WIPE ---------------------------------------------------------
+   A paper curtain with a clay hem between routes. Drops from the bottom in
+   200ms on internal clicks, lifts in 320ms when the route lands. */
+.route-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  pointer-events: none;
+  background: var(--canvas);
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+
+.route-wipe::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gold);
+  opacity: 0;
+}
+
+.route-wipe.is-down {
+  transform: scaleY(1);
+  transform-origin: bottom;
+  transition: transform 0.2s var(--ease-exit);
+}
+
+.route-wipe.is-down::after {
+  top: 0;
+  opacity: 1;
+}
+
+.route-wipe.is-lifting {
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.32s var(--ease-entrance);
+}
+
+.route-wipe.is-lifting::after {
+  top: auto;
+  bottom: 0;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-wipe {
+    display: none;
+  }
+}
+
 /* ---------- DIRECTIONAL HOVER (React Bits DirectionalHover, tailored) --------
    The note's return journey rides the panel token; .no-anim exists for the
    single committed frame JS needs (see buildEnter). */

@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { RouteProgress } from "@/components/route-progress";
+import { RouteWipe } from "@/components/route-wipe";
 import { ScrollTimeline } from "@/components/scroll-timeline";
 import { MotionRoot } from "@/components/motion-root";
 import { RegisterSw } from "@/components/register-sw";
@@ -105,6 +106,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <RouteProgress />
+        <RouteWipe />
         <ScrollTimeline />
         <MotionRoot />
         <div className="gallery-ground" aria-hidden="true" />
