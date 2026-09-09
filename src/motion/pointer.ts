@@ -62,112 +62,6 @@ const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value));
 
 /* ------------------------------------------------------------------ */
-/* 1 · Cursor aura                                                     */
-/* ------------------------------------------------------------------ */
-
-/**
- * A difference-blended dot (fast) and ring (slow) that trail the pointer.
- * The ring eases with a long lerp so it reads as a weight following the
- * cursor — deliberately the only "timer-free" motion here: it tracks
- * input 1:1 rather than playing a duration, so it can never block a task.
- */
-function buildAura(): { teardown: () => void } {
-  const root = document.createElement("div");
-  root.className = "cursor-aura";
-  root.setAttribute("aria-hidden", "true");
-
-  const dot = document.createElement("span");
-  dot.className = "cursor-aura-dot";
-  const ring = document.createElement("span");
-  ring.className = "cursor-aura-ring";
-  root.append(ring, dot);
-  document.body.appendChild(root);
-
-  const target = { x: -100, y: -100 };
-  const dotPos = { x: -100, y: -100, s: 1 };
-  const ringPos = { x: -100, y: -100, s: 1 };
-  const scaleTarget = { dot: 1, ring: 1 };
-  let live = false;
-
-  const render = () => {
-    dotPos.x += (target.x - dotPos.x) * 0.55;
-    dotPos.y += (target.y - dotPos.y) * 0.55;
-    ringPos.x += (target.x - ringPos.x) * 0.16;
-    ringPos.y += (target.y - ringPos.y) * 0.16;
-    dotPos.s += (scaleTarget.dot - dotPos.s) * 0.2;
-    ringPos.s += (scaleTarget.ring - ringPos.s) * 0.2;
-
-    dot.style.transform = `translate3d(${dotPos.x}px, ${dotPos.y}px, 0) translate(-50%, -50%) scale(${dotPos.s.toFixed(3)})`;
-    ring.style.transform = `translate3d(${ringPos.x}px, ${ringPos.y}px, 0) translate(-50%, -50%) scale(${ringPos.s.toFixed(3)})`;
-  };
-
-  const tick = () => {
-    if (!live) return;
-    render();
-  };
-
-  const onMove = (event: PointerEvent) => {
-    target.x = event.clientX;
-    target.y = event.clientY;
-    if (!live) {
-      live = true;
-      dotPos.x = ringPos.x = target.x;
-      dotPos.y = ringPos.y = target.y;
-      root.classList.add("is-live");
-      gsap.ticker.add(tick);
-    }
-  };
-
-  /* Delegated hover state — one listener for the whole document. */
-  const INTERACTIVE =
-    'a, button, [role="button"], input, select, textarea, label, summary, [data-cursor]';
-  const onOver = (event: PointerEvent) => {
-    const hit = (event.target as HTMLElement | null)?.closest?.(INTERACTIVE);
-    root.classList.toggle("is-link", Boolean(hit));
-    scaleTarget.dot = hit ? 1.7 : 1;
-    scaleTarget.ring = hit ? 1.55 : 1;
-  };
-
-  const onDown = () => {
-    root.classList.add("is-down");
-    scaleTarget.dot = 0.72;
-    scaleTarget.ring = 0.8;
-  };
-  const onUp = () => {
-    root.classList.remove("is-down");
-    const linked = root.classList.contains("is-link");
-    scaleTarget.dot = linked ? 1.7 : 1;
-    scaleTarget.ring = linked ? 1.55 : 1;
-  };
-
-  /* Leave the window → the aura bows out. */
-  const onLeave = () => root.classList.remove("is-live");
-  const onEnter = () => {
-    if (live) root.classList.add("is-live");
-  };
-
-  window.addEventListener("pointermove", onMove, { passive: true });
-  document.addEventListener("pointerover", onOver, { passive: true });
-  document.addEventListener("pointerdown", onDown, { passive: true });
-  document.addEventListener("pointerup", onUp, { passive: true });
-  document.documentElement.addEventListener("pointerleave", onLeave);
-  document.documentElement.addEventListener("pointerenter", onEnter);
-
-  return {
-    teardown: () => {
-      gsap.ticker.remove(tick);
-      window.removeEventListener("pointermove", onMove);
-      document.removeEventListener("pointerover", onOver);
-      document.removeEventListener("pointerdown", onDown);
-      document.removeEventListener("pointerup", onUp);
-      document.documentElement.removeEventListener("pointerleave", onLeave);
-      document.documentElement.removeEventListener("pointerenter", onEnter);
-      root.remove();
-    },
-  };
-}
-
-/* ------------------------------------------------------------------ */
 /* 2 · Magnetic CTAs                                                   */
 /* ------------------------------------------------------------------ */
 
@@ -1091,7 +985,6 @@ export function initPointer(lenis: Lenis) {
   if (!window.matchMedia(FINE_POINTER).matches) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  const aura = buildAura();
   const magnetics = buildMagnetics();
   const skew = buildSkew(lenis);
   const pan = buildPan();
@@ -1105,7 +998,6 @@ export function initPointer(lenis: Lenis) {
   const pressure = buildPressure();
 
   dispose = () => {
-    aura.teardown();
     magnetics.teardown();
     skew.teardown();
     pan.teardown();

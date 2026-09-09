@@ -120,7 +120,7 @@ Audited: `src/motion/*`, `src/components/*`, `src/app/globals.css`.
 
 6.5. **BorderGlow (React Bits, tailored)** — pointer-reactive clay border on the three fillable cards (contact form, free-audit form, the brief). Copper glow `"22 66 58"` + copper→rust→clay mesh ramp replace the neon defaults; radius from the house `--radius` token; reveal/collapse on `--dur-2/--dur-4`; rAF-throttled pointer work, never attached on touch; intro sweep compressed to ~1.5s and skipped under reduced motion; **`:focus-within` keyboard parity** added (upstream has none). Styles in `globals.css` ("BORDER GLOW" section).
 
-1. **Cursor aura** — difference-blended dot + trailing ring (`motion/pointer.ts`). Native cursor never hidden; `(hover)+(fine)` + reduced-motion gated; grows on interactive elements, presses on click.
+1. **Cursor aura** — RETIRED. The difference-blended trailer was removed and the native pointer flies solo again. (History: dot + ring, input-driven, never hid the cursor.)
 2. **Magnetic CTAs** — `[data-magnetic]` on the header CTA, hero CTA and CTA-band actions; ≤12px pull, `gsap.quickTo`, elastic release.
 3. **Marquee velocity skew** — the proof band bends up to ±8° with Lenis scroll velocity and self-settles; **plus WCAG 2.2.2 hover/focus pause**.
 4. **Plaque pan** — hanging artworks drift ±2.2% toward the cursor with pointer-following transform-origin; pure-CSS fallback.
@@ -154,7 +154,7 @@ Seventeen more bits, one commit each (see history `v4: *`). Same v3 contract: ze
 18. **ScrollReveal (React Bits, tailored)** — storytelling prose (service + note details, about) resolves word-by-word up the viewport, scrubbed per paragraph. Legal/pricing prose excluded by policy.
 19. **Frozen DotGrid (React Bits, tailored)** — a static hairline graph behind the website-audit and free-audit heroes. Zero motion, zero quota: paper, like the grain.
 20. **ScrollVelocity (React Bits, tailored)** — the marquee abandons CSS keyframes for a Lenis-fed ticker once the pointer layer boots: 42s base pace, up to ~4x with wheel velocity, decayed. Keyframes stay the no-JS/touch path; hover/focus parks it (2.2.2).
-21. **ClickSpark, rehabilitated (React Bits, tailored)** — one clay tick (ten sparks, ~220ms, slight gravity) on CTA/chip/slider press. Canvas below the aura; the rAF loop parks when the last spark dies.
+21. **ClickSpark, rehabilitated (React Bits, tailored)** — one clay tick (ten sparks, ~220ms, slight gravity) on CTA/chip/slider press. Canvas fixed overlay; the rAF loop parks when the last spark dies.
 22. **TargetCursor (React Bits, tailored)** — clay corner-brackets snap around the control under the cursor (240ms chase), skipping full-width rows and regions. Parks on scroll, re-acquires on hover; native cursor untouched.
 23. **Crosshair (scoped diagnostic)** — clay crosshair trails the cursor, armed ONLY over heroes (`.hero-minimal`, `.page-hero`), bowed out everywhere else. Lerped, transform-only, under the header.
 24. **GradualBlur, stilled (React Bits, tailored)** — soft blur pooled at the viewport edges (13vh, 9px). No loop, no JS: desktop fine-pointer only, never under reduced motion, graceful where backdrop-filter no-ops.

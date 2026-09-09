@@ -6673,54 +6673,6 @@ html.has-motion .room-ink .vignette-plaque {
      below double-guard it in CSS.
    ========================================================================== */
 
-/* ---- Cursor aura (difference-blended: reads on putty AND ink) ---------- */
-@media (hover: hover) and (pointer: fine) {
-  .cursor-aura {
-    position: fixed;
-    inset: 0;
-    z-index: 9990; /* below the skip-link (10000), above all chrome */
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity var(--dur-3) var(--ease-standard);
-  }
-
-  .cursor-aura.is-live {
-    opacity: 1;
-  }
-
-  .cursor-aura span {
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: block;
-    border-radius: 50%;
-    background: var(--ember-100);
-    mix-blend-mode: difference;
-    opacity: 0;
-  }
-
-  .cursor-aura.is-live span {
-    opacity: 1;
-  }
-
-  .cursor-aura-dot {
-    width: 7px;
-    height: 7px;
-  }
-
-  .cursor-aura-ring {
-    width: 34px;
-    height: 34px;
-    background: none;
-    border: 1px solid var(--ember-100);
-    opacity: 0.55;
-  }
-
-  .cursor-aura.is-live .cursor-aura-ring {
-    opacity: 0.55;
-  }
-}
-
 /* ---- Marquee: WCAG 2.2.2 pause affordance ------------------------------
    Auto-moving content must be pausable. Hover or keyboard focus inside
    the band stops it; reduced-motion already ships it static. ------------ */
@@ -6824,10 +6776,6 @@ html.has-motion .room-ink .vignette-plaque {
 
 /* ---- Reduced-motion neutralizer (double-guard; JS already self-gates) -- */
 @media (prefers-reduced-motion: reduce) {
-  .cursor-aura {
-    display: none !important;
-  }
-
   .marquee:hover .marquee-track,
   .marquee:focus-within .marquee-track {
     animation-play-state: running;
@@ -7944,11 +7892,9 @@ html.has-motion .rv-in [data-stagger] > li {
   .hero-floor,
   .hero-loader,
   .focus-veil,
-  .cursor-aura,
   .target-cursor,
   .crosshair,
   .click-sparks,
-  .cursor-aura,
   .mobile-menu,
   .mobile-menu-panel,
   form,
