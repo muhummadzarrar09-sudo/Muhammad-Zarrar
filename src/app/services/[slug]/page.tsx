@@ -11,6 +11,7 @@ import { ScrambleText } from "@/components/scramble-text";
 import { CtaBand } from "@/components/cta-band";
 import { SealCheckIcon, ArrowRightIcon } from "@/components/icons";
 import { ServiceMotif } from "@/components/service-motif";
+import { ServiceFigure } from "@/components/diagram";
 import { SITE_URL } from "@/lib/site";
 
 type RouteParams = { slug: string };
@@ -137,6 +138,10 @@ export default async function ServiceDetailPage({
                   </li>
                 ))}
               </ul>
+            </Reveal>
+
+            <Reveal>
+              <ServiceFigure slug={slug} />
             </Reveal>
 
             <Reveal>

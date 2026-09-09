@@ -8780,6 +8780,19 @@ a:focus-visible > .icon-nudge svg,
   stroke: var(--gold);
 }
 
+/* ---------- EXHIBIT PLATES -----------------------------------------------------
+   Hero motifs moonlight as full figures: static, centred, always on.
+   (Higher specificity re-shows them where the hero hides them.) */
+.diagram .service-motif {
+  position: static;
+  display: block;
+  width: min(100%, 400px);
+  height: auto;
+  margin: 8px auto;
+  transform: none;
+  opacity: 1;
+}
+
 /* ---------- THEME TOGGLE ----------------------------------------------------
    Icon-only night switch in the header. A control, not a toy: full-size hit
    area, pressed state announced, motion-still safe. */
