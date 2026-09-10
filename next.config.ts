@@ -8,7 +8,12 @@ const nextConfig: NextConfig = {
   // Next 16 protects dev-only client chunks by origin. Arena proxies the
   // preview through this trusted host, so allow it during local development
   // or the Lenis/GSAP motion chunk is blocked before it can hydrate.
-  allowedDevOrigins: ["3000-iwg1ratpfefca1hixbunh.e2b.app"],
+  allowedDevOrigins: [
+    "3000-iwg1ratpfefca1hixbunh.e2b.app",
+    process.env.E2B_SANDBOX_ID
+      ? `3000-${process.env.E2B_SANDBOX_ID}.e2b.app`
+      : "",
+  ].filter(Boolean),
   output: "export",
   // Required for static export. All imagery on this site is local and
   // dimension-explicit, so no optimization endpoint is needed.
