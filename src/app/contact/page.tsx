@@ -1,13 +1,12 @@
-import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { waLink, EMAIL, WHATSAPP_DISPLAY, DEFAULT_WA_MESSAGE } from "@/lib/site";
 import { ContactForm } from "@/components/contact-form";
 import { Reveal } from "@/components/reveal";
-import { ScrambleText } from "@/components/scramble-text";
 import BorderGlow from "@/components/border-glow";
 import { JsonLd } from "@/components/jsonld";
 import { WhatsAppIcon } from "@/components/icons";
 import { Scribble } from "@/components/scribble";
+import { PageHero } from "@/components/page-hero";
 
 export const metadata = pageMeta({
   title: "Contact — Talk to the Builder",
@@ -27,33 +26,43 @@ export default function ContactPage() {
         ])}
       />
 
-      <section className="page-hero" id="top" data-tl="Top">
-        <div className="container">
-          <Reveal>
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <span aria-current="page">Contact</span>
-            </nav>
-            <ScrambleText className="eyebrow" text="Contact" />
-            <h1>Talk to <em><Scribble>the builder.</Scribble></em></h1>
-            <p className="lede">
-              No support tickets, no account managers, no &ldquo;our team will
-              reach out.&rdquo; Messages land with the person who writes the
-              code. Replies within 24 hours — usually much faster.
-            </p>
-          </Reveal>
+      <PageHero
+        crumbs={[
+          { href: "/", label: "Home" },
+          { label: "Contact" },
+        ]}
+        kicker="Direct line"
+        title={
+          <>
+            Talk to{" "}
+            <em>
+              <Scribble>the builder.</Scribble>
+            </em>
+          </>
+        }
+        lede="No support tickets, no account managers, no “our team will reach out.” Messages land with the person who writes the code. Replies within 24 hours — usually much faster."
+      >
+        <div className="page-hero-actions">
+          <a
+            href={waLink(DEFAULT_WA_MESSAGE)}
+            target="_blank"
+            rel="noopener"
+            className="btn btn-primary"
+          >
+            <WhatsAppIcon size={16} /> WhatsApp us
+          </a>
+          <a href={`mailto:${EMAIL}`} className="btn btn-ghost">
+            {EMAIL}
+          </a>
         </div>
-      </section>
+      </PageHero>
 
       <section className="section">
         <div className="container service-detail-grid">
           <div>
             <div className="grid" style={{ gap: 16 }}>
               <Reveal className="card">
-                <h2 className="card-title">
-                  WhatsApp — fastest
-                </h2>
+                <h2 className="card-title">WhatsApp — fastest</h2>
                 <p className="card-body">
                   The channel we build for clients is the one we answer on.
                   Number: <strong>{WHATSAPP_DISPLAY}</strong>
@@ -69,9 +78,7 @@ export default function ContactPage() {
               </Reveal>
 
               <Reveal className="card">
-                <h2 className="card-title">
-                  Email
-                </h2>
+                <h2 className="card-title">Email</h2>
                 <p className="card-body">
                   For briefs, documents, and anything longer than a chat.
                 </p>
@@ -81,9 +88,7 @@ export default function ContactPage() {
               </Reveal>
 
               <Reveal className="card">
-                <h2 className="card-title">
-                  Location &amp; hours
-                </h2>
+                <h2 className="card-title">Location &amp; hours</h2>
                 <p className="card-body">
                   Rawalpindi, Pakistan — serving Islamabad, Rawalpindi, and
                   businesses Pakistan-wide. Monday to Saturday, 10:00–19:00
@@ -95,10 +100,13 @@ export default function ContactPage() {
           </div>
 
           <Reveal>
-            <BorderGlow tone="glass" className="border-glow-card--form" coneSpread={34} glowIntensity={0.85}>
-              <h2 className="form-title">
-                Send a quick message
-              </h2>
+            <BorderGlow
+              tone="glass"
+              className="border-glow-card--form"
+              coneSpread={34}
+              glowIntensity={0.85}
+            >
+              <h2 className="form-title">Send a quick message</h2>
               <p className="form-sub">
                 Opens WhatsApp with your message pre-filled — nothing is stored.
               </p>

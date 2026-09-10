@@ -8,10 +8,10 @@ import { ReadingProgress } from "@/components/reading-progress";
 import { ArrowUpRightIcon } from "@/components/icons";
 import { Diagram } from "@/components/diagram";
 import { WaterfallFigure, RenderFigure } from "@/components/note-figures";
-import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { SITE_URL } from "@/lib/site";
+import { PageHero } from "@/components/page-hero";
 
 type RouteParams = { slug: string };
 
@@ -70,25 +70,17 @@ export default async function NotePage({
         ])}
       />
 
-      <section className="page-hero" id="top">
-        <div className="container">
-          <Reveal>
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <Link href="/notes">Field Notes</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <span aria-current="page">{note.title}</span>
-            </nav>
-            <ScrambleText
-              className="eyebrow"
-              text={`${note.date} · Muhammad Zarrar`}
-            />
-            <h1>{note.title}</h1>
-            <p className="lede">{note.excerpt}</p>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        compact
+        crumbs={[
+          { href: "/", label: "Home" },
+          { href: "/notes", label: "Field Notes" },
+          { label: note.title },
+        ]}
+        kicker={`${note.date} · Muhammad Zarrar`}
+        title={note.title}
+        lede={note.excerpt}
+      />
 
       <ReadingProgress target=".note-article" />
       <section className="section note-article">
@@ -159,6 +151,7 @@ export default async function NotePage({
       </section>
 
       <CtaBand
+        plate="Field notes"
         headline="Want the same eyes on your site?"
         body="The free 5-point mini-audit checks speed on mobile data, Google visibility, mobile experience, conversion path, and security. 24 hours, no obligation."
         primaryHref="/free-audit"

@@ -3,11 +3,11 @@ import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { SERVICES } from "@/content/services";
 import { ADDONS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
-import { ScrambleText } from "@/components/scramble-text";
 import { RotatingText } from "@/components/rotating-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { ArrowRightIcon } from "@/components/icons";
+import { PageHero } from "@/components/page-hero";
 
 export const metadata = pageMeta({
   title: "Web Development Services & Real Pricing, Rawalpindi & Islamabad",
@@ -27,28 +27,27 @@ export default function ServicesPage() {
         ])}
       />
 
-      <section className="page-hero" id="top" data-tl="Top">
-        <div className="container">
-          <Reveal>
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <span aria-current="page">Services</span>
-            </nav>
-            <ScrambleText className="eyebrow" text="Services" />
-            <h1>
-              Five services. One starting point: <RotatingText words={["hunches.", "vibes.", "evidence."]} />
-            </h1>
-            <p className="lede">
-              Every engagement starts with an audit, because fixing the wrong
-              thing costs more than finding the right thing. Pick a service —
-              or start with the audit and let the findings decide.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        crumbs={[
+          { href: "/", label: "Home" },
+          { label: "Services" },
+        ]}
+        kicker="The work"
+        title={
+          <>
+            Five services. One starting point:{" "}
+            <RotatingText words={["hunches.", "vibes.", "evidence."]} />
+          </>
+        }
+        lede="Every engagement starts with an audit, because fixing the wrong thing costs more than finding the right thing. Pick a service — or start with the audit and let the findings decide."
+      />
 
-      <section className="section" id="services-list" data-tl="Services" aria-label="Service list">
+      <section
+        className="section"
+        id="services-list"
+        data-tl="Services"
+        aria-label="Service list"
+      >
         <div className="container">
           <div className="index-list">
             {SERVICES.map((service, i) => (
@@ -58,7 +57,9 @@ export default function ServicesPage() {
                   className="index-row"
                   data-spotlight
                 >
-                  <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="idx-no">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   <div>
                     <h3 className="idx-title">{service.name}</h3>
                     <p className="idx-sub">{service.blurb}</p>
@@ -74,11 +75,9 @@ export default function ServicesPage() {
             ))}
           </div>
 
-          <Reveal className="inset-panel" >
+          <Reveal className="inset-panel">
             <div style={{ marginTop: 26 }}>
-              <h2 className="panel-title">
-                Add-ons &amp; care plans
-              </h2>
+              <h2 className="panel-title">Add-ons &amp; care plans</h2>
               <p className="panel-body">
                 {ADDONS.map((a) => a.name).join(" · ")} — bolt any of these
                 onto a build, or onto a site you already have.{" "}
@@ -92,6 +91,7 @@ export default function ServicesPage() {
       </section>
 
       <CtaBand
+        plate="The work"
         headline="Not sure which service fits?"
         body="Start with the free 5-point mini-audit. One link, 24 hours, five findings — then you'll know exactly what needs doing."
         primaryHref="/free-audit"

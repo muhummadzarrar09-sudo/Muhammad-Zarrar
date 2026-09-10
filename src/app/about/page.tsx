@@ -1,14 +1,13 @@
-import Link from "next/link";
 import Image from "next/image";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { Reveal } from "@/components/reveal";
-import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { CrossIcon } from "@/components/icons";
 import { Scribble } from "@/components/scribble";
+import { PageHero, SectionIntro } from "@/components/page-hero";
 
 export const metadata = pageMeta({
   title: "About — Muhammad Zarrar, Senior Full-Stack Builder",
@@ -56,49 +55,64 @@ export default function AboutPage() {
         ])}
       />
 
-      <section className="page-hero" id="top" data-tl="Top">
-        <div className="container">
-          <p className="stamp" aria-hidden="true">ONE BUILDER</p>
-          <Reveal>
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <span aria-current="page">About</span>
-            </nav>
-            <ScrambleText className="eyebrow" text="About" />
-            <h1>One builder. <em><Scribble>A system that ships.</Scribble></em></h1>
-            <p className="lede">
-              Zarrar.Solutions is Muhammad Zarrar — a senior full-stack builder
-              in Rawalpindi — plus a working system of audits, specs, and
-              builds. When you call, you talk to the person who writes the
-              code.
-            </p>
-          </Reveal>
-        </div>
+      <PageHero
+        crumbs={[
+          { href: "/", label: "Home" },
+          { label: "About" },
+        ]}
+        kicker="The studio"
+        stamp="One builder"
+        title={
+          <>
+            One builder.{" "}
+            <em>
+              <Scribble>A system that ships.</Scribble>
+            </em>
+          </>
+        }
+        lede="Zarrar.Solutions is Muhammad Zarrar — a senior full-stack builder in Rawalpindi — plus a working system of audits, specs, and builds. When you call, you talk to the person who writes the code."
+      />
+
+      <section className="inner-pause" aria-hidden="true">
+        <img
+          src="/images/gallery/hands.jpg"
+          alt=""
+          className="grade"
+          width={1920}
+          height={1080}
+          loading="lazy"
+          decoding="async"
+        />
+        <p>Built here · Rawalpindi</p>
       </section>
 
-      <section className="section" id="story" data-tl="Story" aria-labelledby="story-heading">
+      <section
+        className="section"
+        id="story"
+        data-tl="Story"
+        aria-labelledby="story-heading"
+      >
         <div className="container service-detail-grid">
           <Reveal className="monogram-card">
             <div className="monogram-tilt" data-tilt>
               {hasPortrait ? (
-              <Image
-                src="/images/portrait.jpg"
-                alt="Muhammad Zarrar — founder of Zarrar.Solutions, Rawalpindi"
-                width={720}
-                height={860}
-                className="portrait-img grade"
-                priority
-              />
-            ) : (
-              <img
-                src="/images/logo-actual-mark-512.png"
-                alt=""
-                aria-hidden="true"
-                className="monogram-mark"
-                width={240}
-                height={240}
-              />
+                <Image
+                  src="/images/portrait.jpg"
+                  alt="Muhammad Zarrar — founder of Zarrar.Solutions, Rawalpindi"
+                  width={720}
+                  height={860}
+                  className="portrait-img grade"
+                  priority
+                />
+              ) : (
+                <img
+                  src="/images/logo-actual-mark-512.png"
+                  alt=""
+                  aria-hidden="true"
+                  className="monogram-mark"
+                  width={240}
+                  height={240}
+                />
               )}
             </div>
           </Reveal>
@@ -132,11 +146,19 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section-tight" style={{ paddingTop: 0 }} aria-labelledby="spec-heading">
+      <section
+        className="section-tight"
+        style={{ paddingTop: 0 }}
+        aria-labelledby="spec-heading"
+      >
         <div className="container">
-          <Reveal className="section-head">
-            <ScrambleText className="eyebrow" text="Datasheet" />
-            <h2 id="spec-heading">Builder, specced</h2>
+          <Reveal>
+            <SectionIntro
+              index="02"
+              label="Datasheet"
+              title="Builder, specced"
+              headingId="spec-heading"
+            />
           </Reveal>
           <Reveal>
             <dl className="spec-sheet">
@@ -165,17 +187,27 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section-tight" aria-labelledby="values-heading" style={{ paddingTop: 0 }}>
+      <section
+        className="section-tight"
+        aria-labelledby="values-heading"
+        style={{ paddingTop: 0 }}
+      >
         <div className="container">
-          <Reveal className="section-head">
-            <ScrambleText className="eyebrow" text="Values" />
-            <h2 id="values-heading">
-              Three rules, kept in writing
-            </h2>
+          <Reveal>
+            <SectionIntro
+              index="03"
+              label="Values"
+              title="Three rules, kept in writing"
+              headingId="values-heading"
+            />
           </Reveal>
           <div className="grid grid-3">
             {VALUES.map((value) => (
-              <Reveal key={value.title} className="card card-hover value-card" spotlight>
+              <Reveal
+                key={value.title}
+                className="card card-hover value-card"
+                spotlight
+              >
                 <h3>{value.title}</h3>
                 <p>{value.body}</p>
               </Reveal>
@@ -186,11 +218,13 @@ export default function AboutPage() {
 
       <section className="section" aria-labelledby="not-doing-heading">
         <div className="container">
-          <Reveal className="section-head">
-            <ScrambleText className="eyebrow" text="Equally important" />
-            <h2 id="not-doing-heading">
-              What you won&rsquo;t get here
-            </h2>
+          <Reveal>
+            <SectionIntro
+              index="04"
+              label="Equally important"
+              title="What you won’t get here"
+              headingId="not-doing-heading"
+            />
           </Reveal>
           <div className="grid grid-2">
             {NOT_DOING.map((item) => (
@@ -208,6 +242,7 @@ export default function AboutPage() {
       </section>
 
       <CtaBand
+        plate="The studio"
         headline="Talk to the builder directly."
         body="No forms disappearing into a CRM, no 'our team will reach out'. Start with the free 5-point mini-audit and see the standard for yourself."
         primaryHref="/free-audit"

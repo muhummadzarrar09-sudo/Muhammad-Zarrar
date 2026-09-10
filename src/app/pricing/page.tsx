@@ -3,12 +3,12 @@ import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { SERVICES } from "@/content/services";
 import { ADDONS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
-import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { SealCheckIcon } from "@/components/icons";
 import { Scribble } from "@/components/scribble";
 import { FaqAccordion } from "@/components/faq";
+import { PageHero, SectionIntro } from "@/components/page-hero";
 
 export const metadata = pageMeta({
   title: "Pricing in PKR, in Writing — Website Packages & Add-ons",
@@ -54,39 +54,47 @@ export default function PricingPage() {
         }}
       />
 
-      <section className="page-hero" id="top" data-tl="Top">
-        <div className="container">
-          <p className="stamp" aria-hidden="true">IN WRITING &#10003;</p>
-          <Reveal>
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <span aria-current="page">Pricing</span>
-            </nav>
-            <ScrambleText className="eyebrow" text="Pricing" />
-            <h1>In PKR, <em><Scribble>in writing.</Scribble></em></h1>
-            <p className="lede">
-              Prices are ranges because scope varies — you get an exact written
-              quote after the audit, and you can add or remove modules to fit
-              your budget.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        crumbs={[
+          { href: "/", label: "Home" },
+          { label: "Pricing" },
+        ]}
+        kicker="The rates"
+        stamp="In writing ✓"
+        title={
+          <>
+            In PKR,{" "}
+            <em>
+              <Scribble>in writing.</Scribble>
+            </em>
+          </>
+        }
+        lede="Prices are ranges because scope varies — you get an exact written quote after the audit, and you can add or remove modules to fit your budget."
+      />
 
-      <section className="section pricing-rates-section" id="rates" data-tl="Rates" aria-labelledby="services-pricing-heading">
+      <section
+        className="section pricing-rates-section"
+        id="rates"
+        data-tl="Rates"
+        aria-labelledby="services-pricing-heading"
+      >
         <div className="container">
-          <Reveal className="section-head">
-            <h2 id="services-pricing-heading">
-              Services
-            </h2>
+          <Reveal>
+            <SectionIntro
+              index="01"
+              label="Services"
+              title="What the work costs"
+              headingId="services-pricing-heading"
+            />
           </Reveal>
           <div className="grid" style={{ gap: 14 }}>
             {SERVICES.map((service) => (
               <Reveal key={service.slug}>
                 <div className="price-row">
                   <h3>
-                    <Link href={`/services/${service.slug}`}>{service.name}</Link>
+                    <Link href={`/services/${service.slug}`}>
+                      {service.name}
+                    </Link>
                   </h3>
                   <p className="row-desc">{service.blurb}</p>
                   <p className="row-price">{service.priceDetail}</p>
@@ -100,36 +108,44 @@ export default function PricingPage() {
               Audit + Redesign tiers
             </h2>
             <div className="grid grid-3">
-              {SERVICES.find((s) => s.slug === "redesign")?.tiers?.map((tier) => (
-                <div className="card card-hover tier-card" data-spotlight key={tier.label}>
-                  <span className="tier-label">{tier.label}</span>
-                  <span className="tier-price">{tier.price}</span>
-                  <p>{tier.desc}</p>
-                </div>
-              ))}
+              {SERVICES.find((s) => s.slug === "redesign")?.tiers?.map(
+                (tier) => (
+                  <div
+                    className="card card-hover tier-card"
+                    data-spotlight
+                    key={tier.label}
+                  >
+                    <span className="tier-label">{tier.label}</span>
+                    <span className="tier-price">{tier.price}</span>
+                    <p>{tier.desc}</p>
+                  </div>
+                )
+              )}
             </div>
           </Reveal>
         </div>
       </section>
 
-      <section className="section-tight pricing-addons-section" aria-labelledby="addons-heading" style={{ paddingTop: 0 }}>
+      <section
+        className="section-tight pricing-addons-section"
+        aria-labelledby="addons-heading"
+        style={{ paddingTop: 0 }}
+      >
         <div className="container">
-          <Reveal className="section-head">
-            <h2 id="addons-heading">
-              Add-ons
-            </h2>
-            <p className="lede">
-              Bolt these onto any build — or add them to a site you already
-              have.
-            </p>
+          <Reveal>
+            <SectionIntro
+              index="02"
+              label="Add-ons"
+              title="Bolt these on"
+              lede="Bolt these onto any build — or add them to a site you already have."
+              headingId="addons-heading"
+            />
           </Reveal>
           <div className="grid" style={{ gap: 14 }}>
             {ADDONS.map((addon) => (
               <Reveal key={addon.name}>
                 <div className="price-row">
-                  <h3 className="row-title-sm">
-                    {addon.name}
-                  </h3>
+                  <h3 className="row-title-sm">{addon.name}</h3>
                   <p className="row-desc">{addon.desc}</p>
                   <p className="row-price">{addon.price}</p>
                 </div>
@@ -139,7 +155,12 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="section pricing-terms-section" id="terms" data-tl="Terms" aria-labelledby="terms-heading">
+      <section
+        className="section pricing-terms-section"
+        id="terms"
+        data-tl="Terms"
+        aria-labelledby="terms-heading"
+      >
         <div className="container">
           <div className="service-detail-grid">
             <Reveal className="card">
@@ -153,7 +174,10 @@ export default function PricingPage() {
                 </li>
                 <li>
                   <SealCheckIcon size={16} />
-                  <span>Balance before go-live, once you&rsquo;ve approved the build.</span>
+                  <span>
+                    Balance before go-live, once you&rsquo;ve approved the
+                    build.
+                  </span>
                 </li>
                 <li>
                   <SealCheckIcon size={16} />
@@ -164,11 +188,16 @@ export default function PricingPage() {
                 </li>
                 <li>
                   <SealCheckIcon size={16} />
-                  <span>No lock-in, no forced retainers, no hostage hosting.</span>
+                  <span>
+                    No lock-in, no forced retainers, no hostage hosting.
+                  </span>
                 </li>
                 <li>
                   <SealCheckIcon size={16} />
-                  <span>Payment by bank transfer — account details arrive with your written quote.</span>
+                  <span>
+                    Payment by bank transfer — account details arrive with
+                    your written quote.
+                  </span>
                 </li>
               </ul>
             </Reveal>
@@ -191,9 +220,7 @@ export default function PricingPage() {
                 </p>
               </div>
               <div className="prose pricing-faq-block">
-                <h2 className="pricing-panel-title">
-                  Pricing questions
-                </h2>
+                <h2 className="pricing-panel-title">Pricing questions</h2>
                 <FaqAccordion items={PRICING_FAQ} />
               </div>
             </Reveal>
@@ -202,6 +229,7 @@ export default function PricingPage() {
       </section>
 
       <CtaBand
+        plate="The rates"
         headline="Get the exact number, in writing."
         body="The free 5-point mini-audit tells you what's wrong in 24 hours. The full audit prices the fix. Then you decide."
         primaryHref="/free-audit"

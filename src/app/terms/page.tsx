@@ -2,8 +2,8 @@ import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { EMAIL } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
-import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
+import { PageHero } from "@/components/page-hero";
 
 export const metadata = pageMeta({
   title: "Terms of Work — Honest, Short, In Writing",
@@ -21,23 +21,16 @@ export default function TermsPage() {
           { name: "Terms", path: "/terms" },
         ])}
       />
-      <section className="page-hero">
-        <div className="container">
-          <Reveal>
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <span aria-current="page">Terms</span>
-            </nav>
-            <ScrambleText className="eyebrow" text="Plain language · last updated August 2026" />
-            <h1>Terms of work</h1>
-            <p className="lede">
-              No twenty-page wall of legalese. These are the rules we actually
-              work by — the same ones you&rsquo;ll see in any written quote.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        compact
+        crumbs={[
+          { href: "/", label: "Home" },
+          { label: "Terms" },
+        ]}
+        kicker="Plain language · August 2026"
+        title="Terms of work"
+        lede="No twenty-page wall of legalese. These are the rules we actually work by — the same ones you’ll see in any written quote."
+      />
 
       <section className="section">
         <div className="container">

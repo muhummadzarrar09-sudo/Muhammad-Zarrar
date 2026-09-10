@@ -5,7 +5,6 @@ import { waLink, DEFAULT_WA_MESSAGE } from "@/lib/site";
 import { Reveal } from "./reveal";
 import { ScrambleText } from "./scramble-text";
 import { ShinyText } from "./shiny-text";
-import { Placard } from "./placard";
 
 /** Full-bleed ink room. Serif statement + actions.
  *  The close of the walk carries the site's ONE sanctioned ambient room:
@@ -16,20 +15,21 @@ export function CtaBand({
   body,
   primaryHref,
   primaryLabel,
+  plate = "The close",
   whatsappMessage = DEFAULT_WA_MESSAGE,
 }: {
   headline: string;
   body: string;
   primaryHref: string;
   primaryLabel: string;
+  plate?: string;
   whatsappMessage?: string;
 }) {
   return (
     <section className="cta-full" data-motion>
       <GradientWaves className="cta-waves" />
       <div className="container">
-        <Placard no="07" title="The Close" medium="Ember dunes" tone="dark" />
-        <ScrambleText as="p" className="cta-plate" text="The close" />
+        <ScrambleText as="p" className="cta-plate" text={plate} />
         <Reveal>
           <h2>
             <ShinyText text={headline} />
