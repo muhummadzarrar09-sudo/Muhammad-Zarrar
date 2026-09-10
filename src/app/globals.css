@@ -6532,7 +6532,8 @@ html.has-motion .recognize-underline {
   /* Header fit at 320px: brand 34→28px mark, name 1rem→0.875rem, and an
      ellipsis failsafe. Previously the fixed-content row (~338px) overflowed
      the 320px viewport and the clipped hamburger was unreachable. */
-  .brand svg {
+  .brand svg,
+  .brand .logo-mark-image {
     width: 28px;
     height: 28px;
   }

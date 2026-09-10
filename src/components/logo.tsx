@@ -6,7 +6,7 @@
 export function LogoMark({ size = 34 }: { size?: number }) {
   return (
     <img
-      src="/images/logo-actual-mark-512.png"
+      src="/images/logo-actual-mark-small.png"
       alt=""
       aria-hidden="true"
       width={size}
