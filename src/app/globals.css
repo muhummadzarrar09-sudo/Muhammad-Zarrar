@@ -9397,37 +9397,90 @@ main {
 }
 
 /* ==========================================================================
-   WORDMARK — traced ZARRAR · SOLUTIONS lockup (transparent, clay bead)
-   Letters inherit currentColor. Clay bead + rules keep their own fills.
+   WORDMARK — live Montserrat ExtraBold, clay bead, copper rules
+   Letters inherit currentColor. Bead + rules keep house copper.
    ========================================================================== */
 
 .wordmark {
-  display: block;
-  width: clamp(132px, 20vw, 188px);
-  height: auto;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
   flex: none;
+  width: max-content;
   max-width: 100%;
-  overflow: visible;
   color: var(--text);
+  font-family: var(--font-montserrat), "Arial Black", sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  font-synthesis: none;
+  letter-spacing: 0.045em;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.wordmark-row {
+  display: flex;
+  align-items: center;
+  gap: 0.26em;
+}
+
+.wordmark-name {
+  display: block;
+}
+
+.wordmark-bead {
+  flex: none;
+  width: 0.2em;
+  height: 0.2em;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, var(--copper), var(--gold) 62%, var(--gold-deep));
+}
+
+.wordmark-tagline {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  width: 100%;
+  margin-top: 0.2em;
+}
+
+.wordmark-rule {
+  flex: 1 1 auto;
+  height: 0.055em;
+  min-width: 1.2em;
+  border-radius: 999px;
+  background: var(--gold);
+}
+
+.wordmark-tag {
+  flex: none;
+  font-weight: 500;
+  font-size: 0.26em;
+  letter-spacing: 0.32em;
+  color: inherit;
 }
 
 body > .site-header .wordmark {
-  width: clamp(118px, 22vw, 196px);
+  font-size: clamp(10px, 1.2vw, 12.5px);
 }
 
 .footer-brand .wordmark {
-  width: clamp(160px, 24vw, 240px);
+  font-size: clamp(12px, 1.55vw, 15px);
 }
 
 .wordmark-full {
-  width: min(920px, 94%);
+  display: flex;
+  width: max-content;
+  max-width: min(920px, 94%);
   margin: 12px auto 48px;
-  color: var(--text);
+  font-size: clamp(1.35rem, 5.2vw, 4.5rem);
+  letter-spacing: 0.035em;
 }
 
 @media (max-width: 760px) {
   body > .site-header .wordmark {
-    width: clamp(96px, 34vw, 148px);
+    font-size: clamp(9px, 2.6vw, 11px);
   }
 
   .wordmark-full {
