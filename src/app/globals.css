@@ -7580,6 +7580,29 @@ html.has-motion .rv-in [data-stagger] > li {
   pointer-events: none;
 }
 
+/* ---------- PRESSURE TYPE ---------------------------------------------------
+   The headline swell stays on the variable font axis instead of stepping
+   through discrete font-weight changes, which keeps the boldening smoother
+   and avoids the clipped/sticky feel while the pointer moves across it. */
+[data-pressure] {
+  overflow: visible;
+}
+
+.pchar {
+  font-synthesis: none;
+  font-variation-settings: "wght" var(--pchar-wght, 500);
+  transition: font-variation-settings 90ms linear;
+  will-change: font-variation-settings;
+}
+
+@supports not (font-variation-settings: normal) {
+  .pchar {
+    font-weight: var(--pchar-wght, 500);
+    transition: font-weight 90ms linear;
+    will-change: font-weight;
+  }
+}
+
 /* ---------- TARGET BRACKETS (React Bits TargetCursor, tailored) ------------
    Fixed frame below sparks/aura; corners only, clay 1.5px hairlines. */
 .target-cursor {
@@ -9043,7 +9066,7 @@ a:focus-visible > .icon-nudge svg,
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 6.1vw, 5.4rem);
   font-weight: 500;
-  line-height: 1.04;
+  line-height: 1.08;
   letter-spacing: -0.02em;
   color: var(--text);
 }
@@ -9051,18 +9074,25 @@ a:focus-visible > .icon-nudge svg,
 .results-vignette-grid {
   margin-top: var(--sp-5);
   gap: var(--sp-8);
+  align-items: start;
 }
 
 .results-vignette {
   width: min(100%, 320px);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  align-content: start;
+  gap: var(--sp-6);
   color: var(--text);
 }
 
 .results-section .results-vignette-plaque {
+  --plaque-size: clamp(208px, 16vw, 244px);
   --plaque-hang: var(--sp-6);
   position: relative;
-  width: min(220px, 58vw);
-  aspect-ratio: 1;
+  width: var(--plaque-size);
+  height: var(--plaque-size);
+  flex: none;
   margin: var(--plaque-hang) auto 0;
   overflow: visible;
   border: 1px solid rgba(36, 20, 15, 0.18);
@@ -9103,6 +9133,7 @@ a:focus-visible > .icon-nudge svg,
 .results-section .results-vignette-image {
   width: 100%;
   height: 100%;
+  max-width: none;
   margin: 0;
   object-fit: cover;
   border: var(--sp-1) solid var(--ground-750);
@@ -9114,11 +9145,15 @@ a:focus-visible > .icon-nudge svg,
 
 .results-section .results-vignette figcaption {
   width: 100%;
-  margin-top: var(--sp-6);
+  display: grid;
+  align-content: start;
+  gap: var(--sp-2);
+  margin-top: 0;
 }
 
 .results-vignette-cap {
   color: var(--text);
+  min-height: 2.45em;
 }
 
 .results-vignette-note {
@@ -9128,6 +9163,12 @@ a:focus-visible > .icon-nudge svg,
 @media (hover: hover) and (pointer: fine) {
   .results-section .vignette-plaque:hover .results-vignette-image {
     filter: none;
+  }
+}
+
+@media (max-width: 1020px) {
+  .results-section .results-vignette-plaque {
+    --plaque-size: clamp(196px, 34vw, 236px);
   }
 }
 
@@ -9144,6 +9185,18 @@ a:focus-visible > .icon-nudge svg,
   .results-vignette-grid {
     margin-top: var(--sp-4);
     gap: var(--sp-8);
+  }
+
+  .results-vignette {
+    width: min(100%, 360px);
+  }
+
+  .results-section .results-vignette-plaque {
+    --plaque-size: min(220px, 58vw);
+  }
+
+  .results-vignette-cap {
+    min-height: 0;
   }
 }
 
