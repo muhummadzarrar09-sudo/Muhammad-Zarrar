@@ -2859,7 +2859,13 @@ button {
   min-height: var(--tap-min);
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
   transition: color var(--dur-2) var(--ease-standard);
+}
+
+.footer-contact,
+.footer-contact-static {
+  overflow-wrap: anywhere;
 }
 
 .footer-col {
@@ -6083,6 +6089,26 @@ main {
   }
 }
 
+@media (max-width: 560px) {
+  .proof-rail-list {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-rail-item {
+    min-height: 0;
+    padding-inline: 0;
+  }
+
+  .proof-rail-item + .proof-rail-item {
+    border-left: 0;
+    border-top: 1px solid rgba(17, 17, 16, 0.14);
+  }
+
+  .proof-rail-item:nth-child(n + 3) {
+    border-top: 0;
+  }
+}
+
 /* Completed loader mark: all three pieces now share one vector coordinate
    system and the same 8-unit rounded stroke. No font-glyph sizing drift. */
 .hero-code-slash {
@@ -8230,6 +8256,23 @@ html.has-motion .rv-in [data-stagger] > li {
   translate: 0 -3px;
 }
 
+@media (max-width: 560px) {
+  .footer-positioning,
+  .footer-meta {
+    max-width: 32ch;
+  }
+
+  .footer-contact {
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .footer-contact .icon-nudge {
+    margin-left: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .footer-top {
     transition: none;
@@ -8963,7 +9006,7 @@ a:focus-visible > .icon-nudge svg,
   font-size: 1.05rem;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 680px) {
   .spec-sheet > div {
     grid-template-columns: 1fr;
     gap: 4px;
@@ -8978,50 +9021,3 @@ a:focus-visible > .icon-nudge svg,
   gap: 16px;
   margin: 20px 0 4px;
 }
-
-/* ---------- SPEC SHEET -------------------------------------------------------
-   The builder as a datasheet: mono keys, plain-words values. Every row is a
-   fact stated elsewhere on the site — the sheet just racks them. */
-.spec-sheet {
-  margin: 32px 0 0;
-  border-top: 1px solid var(--hairline-strong);
-}
-
-.spec-sheet > div {
-  display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 16px;
-  align-items: baseline;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--hairline);
-}
-
-.spec-sheet dt {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-.spec-sheet dd {
-  margin: 0;
-  font-size: 1.05rem;
-}
-
-@media (max-width: 560px) {
-  .spec-sheet > div {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
-}
-
-/* ---------- NOTFOUND GRADE ---------------------------------------------------
-   The 404 files its own report: a failing grade, honestly tagged cosmetic. */
-.notfound-grade {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 20px 0 4px;
-}
-
