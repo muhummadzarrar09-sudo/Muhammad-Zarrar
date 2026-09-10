@@ -876,6 +876,10 @@ button {
   text-decoration: none;
 }
 
+.logo-mark-image {
+  flex: none;
+}
+
 .brand-name {
   font-family: var(--font-display);
   font-weight: var(--fw-semibold);
