@@ -215,27 +215,28 @@ export default function HomePage() {
       <Marquee />
 
       <section
-        className="room-ink"
+        className="section results-section"
         id="get"
         data-tl="You get"
         data-motion
         aria-labelledby="get-heading"
       >
         <div className="container">
-          <Placard no="03" title="The Results" medium="Plaques on nails" tone="dark" />
-          <ScrambleText as="p" className="room-label" text="What you walk away with" />
-          <h2 className="room-title" id="get-heading" data-pressure>
+          <p className="results-intro">
+            What you walk away with
+          </p>
+          <h2 className="results-title" id="get-heading" data-pressure>
             Not a pitch. A result.
           </h2>
-          <div className="vignette-grid">
+          <div className="results-grid">
             {OUTCOMES.map((item) => (
-              <figure className="vignette" key={item.title}>
-                <div className="vignette-plaque">
+              <figure className="result-card" key={item.title}>
+                <div className="result-media">
                   <img src={item.src} alt="" width={400} height={400} loading="lazy" decoding="async" />
                 </div>
-                <figcaption>
-                  <span className="vignette-cap">{item.title}</span>
-                  <span className="vignette-note">{item.body}</span>
+                <figcaption className="result-copy">
+                  <span className="result-card-title">{item.title}</span>
+                  <span className="result-card-body">{item.body}</span>
                 </figcaption>
               </figure>
             ))}
@@ -251,7 +252,6 @@ export default function HomePage() {
         aria-labelledby="different-heading"
       >
         <div className="container">
-          <Placard no="04" title="The Difference" medium="Usual vs here" />
           <div className="sec-head">
             <span className="sec-index">02</span>
             <ScrambleText className="sec-label" text="Why this feels different" />
@@ -262,7 +262,7 @@ export default function HomePage() {
           </h2>
           <div className="contrast-list">
             {CONTRAST.map((row) => (
-              <article className="contrast-row" data-spotlight key={row.here}>
+              <article className="contrast-row" key={row.here}>
                 <p className="contrast-usual">
                   <span className="contrast-kicker">
                     <CrossIcon size={12} />
@@ -291,7 +291,6 @@ export default function HomePage() {
         aria-labelledby="next-heading"
       >
         <div className="container">
-          <Placard no="05" title="What Follows" medium="Three columns" />
           <div className="sec-head">
             <span className="sec-index">03</span>
             <ScrambleText className="sec-label" text="Then what happens" />
@@ -302,7 +301,7 @@ export default function HomePage() {
           </h2>
           <div className="phase-grid next-grid">
             {NEXT_STEPS.map((step) => (
-              <article className="phase" data-spotlight key={step.no}>
+              <article className="phase" key={step.no}>
                 <span className="ph-no" aria-hidden="true">
                   {step.no}
                 </span>
@@ -325,7 +324,6 @@ export default function HomePage() {
       >
         <div className="container qualify-wrap">
           <div className="qualify-intro">
-            <Placard no="06" title="The Brief" medium="Ink on paper" />
             <div className="sec-head">
               <span className="sec-index">04</span>
               <ScrambleText className="sec-label" text="Your brief" />
