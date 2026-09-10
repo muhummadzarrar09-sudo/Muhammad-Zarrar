@@ -9247,6 +9247,8 @@ body > .site-header {
   box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+  /* The shell is full-bleed; only the pill should catch clicks. */
+  pointer-events: none;
 }
 
 body > .site-header .container {
@@ -9270,6 +9272,27 @@ body > .site-header .header-inner {
   backdrop-filter: blur(22px) saturate(1.35) !important;
   -webkit-backdrop-filter: blur(22px) saturate(1.35) !important;
   overflow: visible;
+  pointer-events: auto;
+  transition:
+    background-color var(--dur-2) var(--ease-standard),
+    box-shadow var(--dur-2) var(--ease-standard);
+}
+
+body > .site-header.is-scrolled .header-inner {
+  background: rgba(247, 231, 211, 0.78) !important;
+  box-shadow:
+    0 14px 40px -14px rgba(36, 20, 15, 0.28),
+    0 0 0 1px rgba(36, 20, 15, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Drawer is portaled to body so the pill's backdrop-filter cannot trap it. */
+body > .menu-overlay {
+  z-index: 9990;
+}
+
+body > .mobile-panel {
+  z-index: 9991;
 }
 
 @supports not (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/content/site-content";
@@ -8,9 +9,12 @@ import { NAV_LINKS } from "@/content/site-content";
 /** Accessible slide-in mobile navigation with a contained keyboard focus loop. */
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => setMounted(true), []);
 
   // Covers browser navigation as well as a click on one of the menu links.
   useEffect(() => setOpen(false), [pathname]);
@@ -57,21 +61,8 @@ export function MobileMenu() {
     };
   }, [open]);
 
-  return (
+  const drawer = (
     <>
-      <button
-        ref={triggerRef}
-        type="button"
-        className={`nav-toggle ${open ? "open" : ""}`}
-        aria-expanded={open}
-        aria-controls="mobile-menu"
-        aria-label={open ? "Close menu" : "Open menu"}
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span className="nav-toggle-bar" />
-        <span className="nav-toggle-bar" />
-      </button>
-
       <div
         className={`menu-overlay ${open ? "show" : ""}`}
         aria-hidden="true"
@@ -139,6 +130,25 @@ export function MobileMenu() {
           You talk to the builder · Islamabad &amp; Rawalpindi
         </p>
       </div>
+    </>
+  );
+
+  return (
+    <>
+      <button
+        ref={triggerRef}
+        type="button"
+        className={`nav-toggle ${open ? "open" : ""}`}
+        aria-expanded={open}
+        aria-controls="mobile-menu"
+        aria-label={open ? "Close menu" : "Open menu"}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span className="nav-toggle-bar" />
+        <span className="nav-toggle-bar" />
+      </button>
+
+      {mounted ? createPortal(drawer, document.body) : drawer}
     </>
   );
 }
