@@ -9224,6 +9224,10 @@ a:focus-visible > .icon-nudge svg,
   --nav-logo: 28px;
 }
 
+html {
+  background: var(--ground-700);
+}
+
 @media (max-width: 760px) {
   :root {
     --header-inset: 8px;
@@ -9346,9 +9350,13 @@ main {
   padding-top: var(--header-offset);
 }
 
+/* Inner pages keep the offset. The home hero pulls back under the pill
+   so cream paints the slot — otherwise that gutter reads as a grey bar. */
 .hero.hero-minimal {
-  height: calc(100svh - var(--header-offset)) !important;
-  min-height: calc(100svh - var(--header-offset)) !important;
+  height: 100svh !important;
+  min-height: 100svh !important;
+  margin-top: calc(-1 * var(--header-offset));
+  background: var(--ground-700);
 }
 
 @media (max-width: 760px) {
