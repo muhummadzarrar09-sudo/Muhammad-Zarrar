@@ -228,15 +228,23 @@ export default function HomePage() {
           <h2 className="results-title" id="get-heading" data-pressure>
             Not a pitch. A result.
           </h2>
-          <div className="results-grid">
+          <div className="vignette-grid results-vignette-grid">
             {OUTCOMES.map((item) => (
-              <figure className="result-card" key={item.title}>
-                <div className="result-media">
-                  <img src={item.src} alt="" width={400} height={400} loading="lazy" decoding="async" />
+              <figure className="vignette results-vignette" key={item.title}>
+                <div className="vignette-plaque results-vignette-plaque">
+                  <img
+                    src={item.src}
+                    alt=""
+                    width={400}
+                    height={400}
+                    loading="lazy"
+                    decoding="async"
+                    className="results-vignette-image"
+                  />
                 </div>
-                <figcaption className="result-copy">
-                  <span className="result-card-title">{item.title}</span>
-                  <span className="result-card-body">{item.body}</span>
+                <figcaption>
+                  <span className="vignette-cap results-vignette-cap">{item.title}</span>
+                  <span className="vignette-note results-vignette-note">{item.body}</span>
                 </figcaption>
               </figure>
             ))}
