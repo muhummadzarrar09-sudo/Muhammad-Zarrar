@@ -6530,7 +6530,7 @@ html.has-motion .recognize-underline {
   /* Header fit at 320px: brand 34→28px mark, name 1rem→0.875rem, and an
      ellipsis failsafe. Previously the fixed-content row (~338px) overflowed
      the 320px viewport and the clipped hamburger was unreachable. */
-  .brand svg,
+  .brand svg:not(.wordmark),
   .brand .logo-mark-image {
     width: 28px;
     height: 28px;
@@ -9387,3 +9387,44 @@ main {
     -webkit-backdrop-filter: none !important;
   }
 }
+
+/* ==========================================================================
+   WORDMARK — traced ZARRAR · SOLUTIONS lockup (transparent, clay bead)
+   Letters inherit currentColor. Clay bead + rules keep their own fills.
+   ========================================================================== */
+
+.wordmark {
+  display: block;
+  width: clamp(132px, 20vw, 188px);
+  height: auto;
+  flex: none;
+  max-width: 100%;
+  overflow: visible;
+  color: var(--text);
+}
+
+body > .site-header .wordmark {
+  width: clamp(118px, 22vw, 196px);
+}
+
+.footer-brand .wordmark {
+  width: clamp(160px, 24vw, 240px);
+}
+
+.wordmark-full {
+  width: min(920px, 94%);
+  margin: 12px auto 48px;
+  color: var(--text);
+}
+
+@media (max-width: 760px) {
+  body > .site-header .wordmark {
+    width: clamp(96px, 34vw, 148px);
+  }
+
+  .wordmark-full {
+    width: min(100%, 94vw);
+    margin: 8px auto 36px;
+  }
+}
+

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/content/site-content";
 import { LogoMark } from "./logo";
+import { Wordmark } from "./wordmark";
 import { MobileMenu } from "./mobile-menu";
 
 export function SiteHeader() {
@@ -34,9 +35,7 @@ export function SiteHeader() {
         <div className="header-inner">
           <Link href="/" className="brand" aria-label="Zarrar.Solutions — home">
             <LogoMark size={28} />
-            <span className="brand-name">
-              Zarrar<span className="brand-dot">.Solutions</span>
-            </span>
+            <Wordmark />
           </Link>
 
           <nav className="desktop-nav" aria-label="Primary">

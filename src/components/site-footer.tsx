@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogoMark } from "./logo";
+import { Wordmark } from "./wordmark";
 import {
   WhatsAppIcon,
   ArrowUpRightIcon,
@@ -22,9 +23,7 @@ export function SiteFooter() {
           <div className="footer-brand">
             <Link href="/" className="brand brand-on-ink" aria-label="Zarrar.Solutions — home">
               <LogoMark size={36} />
-              <span className="brand-name">
-                Zarrar<span className="brand-dot">.Solutions</span>
-              </span>
+              <Wordmark />
             </Link>
             <p className="footer-positioning">{POSITIONING}</p>
             <p className="footer-meta">Rawalpindi, Pakistan · serving Islamabad, Rawalpindi, and Pakistan-wide</p>
@@ -76,9 +75,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <p className="footer-word" aria-hidden="true">
-          Zarrar.Solutions
-        </p>
+        <Wordmark variant="full" />
         <div className="footer-bottom">
           <p>© 2026 Zarrar.Solutions — all rights reserved.</p>
           <p className="footer-bottom-note">Built to the same standard we audit against.</p>
