@@ -9479,10 +9479,6 @@ body > .site-header .wordmark {
 }
 
 @media (max-width: 760px) {
-  body > .site-header .wordmark {
-    font-size: clamp(9px, 2.6vw, 11px);
-  }
-
   .wordmark-full {
     width: min(100%, 94vw);
     margin: 8px auto 36px;

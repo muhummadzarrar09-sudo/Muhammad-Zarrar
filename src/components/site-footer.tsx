@@ -23,7 +23,6 @@ export function SiteFooter() {
           <div className="footer-brand">
             <Link href="/" className="brand brand-on-ink" aria-label="Zarrar.Solutions — home">
               <LogoMark size={36} />
-              <Wordmark />
             </Link>
             <p className="footer-positioning">{POSITIONING}</p>
             <p className="footer-meta">Rawalpindi, Pakistan · serving Islamabad, Rawalpindi, and Pakistan-wide</p>
