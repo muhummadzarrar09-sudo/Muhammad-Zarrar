@@ -356,12 +356,6 @@ function buildSpotlight(): { teardown: () => void } {
     }
     kick();
   };
-  const themeObserver = new MutationObserver(readColor);
-  themeObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-theme"],
-  });
-
   document.addEventListener("pointermove", onMove, { passive: true });
   document.addEventListener("pointerleave", onLeave);
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -378,7 +372,6 @@ function buildSpotlight(): { teardown: () => void } {
       window.removeEventListener("resize", resize);
       document.removeEventListener("focusin", onFocus);
       document.removeEventListener("focusout", onFocus);
-      themeObserver.disconnect();
       if (raf) cancelAnimationFrame(raf);
       canvas.remove();
     },
@@ -823,6 +816,10 @@ function buildPressure(): { teardown: () => void } {
   const charsOf = new Map<HTMLElement, HTMLElement[]>();
   const baseOf = new Map<HTMLElement, number>();
   const cur = new Map<HTMLElement, number>();
+  const writeWeight = (ch: HTMLElement, value: number) => {
+    ch.style.setProperty("--pchar-wght", value.toFixed(1));
+  };
+
   for (const t of targets) {
     const walker = document.createTreeWalker(t, NodeFilter.SHOW_TEXT);
     const nodes: Text[] = [];
@@ -848,14 +845,17 @@ function buildPressure(): { teardown: () => void } {
     // static ink sits — no step at the edge of the radius.
     const b = parseFloat(getComputedStyle(t).fontWeight) || 400;
     baseOf.set(t, b);
-    for (const ch of chars) cur.set(ch, b);
+    for (const ch of chars) {
+      cur.set(ch, b);
+      writeWeight(ch, b);
+    }
   }
 
   const hardReset = (t: HTMLElement) => {
     const b = baseOf.get(t) ?? 400;
     for (const ch of charsOf.get(t) ?? []) {
       cur.set(ch, b);
-      if (ch.style.fontWeight) ch.style.fontWeight = "";
+      writeWeight(ch, b);
     }
   };
 
@@ -875,11 +875,11 @@ function buildPressure(): { teardown: () => void } {
   );
   for (const t of targets) io.observe(t);
 
-  const RADIUS = 170;
-  const POINTER_EASE = 0.35;
-  const WEIGHT_EASE = 0.16;
-  const SNAP = 0.6;
-  const PEAK = 720;
+  const RADIUS = 200;
+  const POINTER_EASE = 0.24;
+  const WEIGHT_EASE = 0.12;
+  const SNAP = 0.35;
+  const PEAK = 680;
   let raf = 0;
   let running = false;
   let tx = -9999;
@@ -919,13 +919,13 @@ function buildPressure(): { teardown: () => void } {
         if (Math.abs(n - target) < SNAP && Math.abs(curW - target) < SNAP) {
           if (curW !== target) {
             cur.set(ch, target);
-            ch.style.fontWeight = target === b ? "" : target.toFixed(1);
+            writeWeight(ch, target);
           }
           continue;
         }
         settled = false;
         cur.set(ch, n);
-        ch.style.fontWeight = n.toFixed(1);
+        writeWeight(ch, n);
       }
     }
     if (settled) {

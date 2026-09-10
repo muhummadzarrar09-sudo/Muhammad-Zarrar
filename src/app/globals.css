@@ -11,87 +11,85 @@
    ========================================================================== */
 
 :root {
-  /* ---- Ink ramp (no saturated UI colour) -------------------------------- */
-  --ember-50: #ebebeb;    /* chalk */
-  --ember-100: #e7e5e4;   /* bone */
-  --ember-200: #dfdcd5;   /* vellum */
-  --ember-300: #c4c3b6;   /* putty */
-  --ember-400: #3f3e3b;   /*  6.02:1  graphite */
-  --ember-500: #111110;   /* 10.64:1  ink accent */
-  --ember-550: #000000;   /* pressed fill */
-  --ember-600: #000000;   /* hover */
-  --ember-700: #000000;
-  --ember-800: #111110;
-  --ember-900: #000000;
+  /* ---- Ink ramp (logo-led warm editorial neutrals) ----------------------- */
+  --ember-50: #f7e7d3;    /* cream wash */
+  --ember-100: #f3e4c7;   /* ivory cream */
+  --ember-200: #f0ccb7;   /* warm sand */
+  --ember-300: #d8b89a;   /* parchment clay */
+  --ember-400: #8a4733;   /* walnut clay */
+  --ember-500: #1a1412;   /* soft ink */
+  --ember-550: #24140f;   /* pressed fill */
+  --ember-600: #24140f;   /* hover */
+  --ember-700: #24140f;
+  --ember-800: #1a1412;
+  --ember-900: #1a1412;
 
-  /* ---- Ground ramp (putty gallery wall) ---- */
-  --ground-900: #b8b7aa; /* footer — deeper putty */
-  --ground-850: #d4d2c6; /* mobile panel / tooltip */
-  --ground-800: #bbb9ac; /* inset wells */
-  --ground-750: #d8d6cc; /* monogram card */
-  --ground-700: #c4c3b6; /* canvas — the dominant 60% */
-  --ground-600: #cecdc0;
-  --ground-500: #d8d6cc;
-  --ground-400: #e7e5e4; /* bone */
-  --ground-300: #a8a696;
+  /* ---- Ground ramp (warm invitational paper) ----------------------------- */
+  --ground-900: #d8b89a; /* footer / deeper paper */
+  --ground-850: #e8b49d; /* mobile panel / tooltip */
+  --ground-800: #f0ccb7; /* inset wells */
+  --ground-750: #f7e7d3; /* raised light card */
+  --ground-700: #f3e4c7; /* canvas — dominant 60% */
+  --ground-600: #f7e7d3;
+  --ground-500: #fbf1e2;
+  --ground-400: #fff7ee; /* brightest paper */
+  --ground-300: #d8b89a;
 
   /* ---- Roles ---- */
   --canvas: var(--ground-700);
   --inset: var(--ground-800);
-  --aura: #dfdcd5;                    /* vellum band */
-  --accent: var(--ember-500);
-  --accent-hover: var(--ember-600);
-  --accent-2: var(--ember-400);
-  --accent-on-ink: #e7e5e4;
+  --aura: #f0ccb7;
+  --accent: var(--gold);
+  --accent-hover: var(--gold-deep);
+  --accent-2: #5a3328;
+  --accent-on-ink: #f3e4c7;
   --on-accent: #ffffff;
-  --gold: #7a2e18;                    /* clay rust — brand mark + live diagnostic signal, 5.30:1 */
-  --gold-deep: #571f0c;              /*  7.36:1 AAA — active ordinal (16.8px text) on canvas */
-  --copper: #da7134;                 /* molten accent — star borders, sheen tips (decorative only) */
-  --copper-soft: #e09a68;            /* sheen mid — on-ink display text only */
-  --spot-rgb: 122, 46, 24; /* unified spotlight clay — the canvas reads this */
-  --crosshair: rgba(122, 46, 24, 0.3);   /* diagnostic crosshair lines */
-  --text: #111110;                    /* 10.64:1 ink */
-  --text-2: #2a2926;                  /*  8.19:1 graphite — AAA on canvas AND footer */
-  --text-3: #33322e;                  /*  7.23:1 tertiary — AAA on canvas */
-  --text-on-aura: #111110;
-  --text-2-on-aura: #3f3e3b;
+  --gold: #a3492f;                    /* readable terracotta signal on light paper */
+  --gold-deep: #723021;               /* active ordinal / pressed accent */
+  --copper: #e7925e;                  /* warm inviting decorative accent */
+  --copper-soft: #d8b89a;             /* soft companion for highlights */
+  --spot-rgb: 196, 92, 57;            /* unified spotlight terracotta */
+  --crosshair: rgba(196, 92, 57, 0.28);
+  --text: #1a1412;                    /* soft ink */
+  --text-2: #5a3328;                  /* walnut copy */
+  --text-3: #8a4733;                  /* tertiary warm brown */
+  --text-on-aura: #1a1412;
+  --text-2-on-aura: #5a3328;
 
-  /* ---- Semantic — all 4.5:1+ on putty. ---- */
-  --danger: #8b1e1e;      /* 5.14:1 */
-  --danger-on-ink: #e7e5e4;
-  --success: #14532d;     /* 5.13:1 */
-  --warning: #713f12;     /* 4.88:1 */
-  --info: #1e3a8a;        /* 5.83:1 */
+  /* ---- Semantic — keep distinct but warmer around the edges. ------------ */
+  --danger: #8b1e1e;
+  --danger-on-ink: #f3e4c7;
+  --success: #14532d;
+  --warning: #713f12;
+  --info: #1e3a8a;
   --danger-quiet: rgba(139, 30, 30, 0.12);
   --success-quiet: rgba(20, 83, 45, 0.12);
-  --tap-highlight: rgba(17, 17, 16, 0.14); /* custom mobile pressed state */
+  --tap-highlight: rgba(26, 20, 18, 0.14);
 
-  /* ---- Surfaces & lines (frosted glass on a light ground) ---- */
-  --surface: rgba(255, 255, 255, 0.42);
-  --surface-2: rgba(255, 255, 255, 0.58);
-  --surface-3: rgba(255, 255, 255, 0.76);
-  --hairline: rgba(27, 24, 20, 0.12);
-  --hairline-soft: rgba(27, 24, 20, 0.10);
-  --hairline-strong: rgba(27, 24, 20, 0.52); /* ≥3:1 — focus & controls */
+  /* ---- Surfaces & lines (warm glass on cream paper) ---------------------- */
+  --surface: rgba(247, 231, 211, 0.42);
+  --surface-2: rgba(243, 228, 199, 0.62);
+  --surface-3: rgba(247, 231, 211, 0.78);
+  --hairline: rgba(36, 20, 15, 0.14);
+  --hairline-soft: rgba(36, 20, 15, 0.10);
+  --hairline-strong: rgba(36, 20, 15, 0.48);
 
-  /* ---- Quiet glass — whisper only ---- */
-  --glass: rgba(231, 229, 228, 0.38);
-  --glass-strong: rgba(231, 229, 228, 0.62);
-  --glass-border: rgba(17, 17, 16, 0.10);
-  --glass-edge: rgba(17, 17, 16, 0.08);
-  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.28);
-  --glass-blur: blur(18px) saturate(1.08);
-  --glass-shadow: 0 1px 0 rgba(17, 17, 16, 0.04);
+  /* ---- Quiet glass — whisper only ---------------------------------------- */
+  --glass: rgba(247, 231, 211, 0.38);
+  --glass-strong: rgba(243, 228, 199, 0.62);
+  --glass-border: rgba(26, 20, 18, 0.10);
+  --glass-edge: rgba(26, 20, 18, 0.08);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  --glass-blur: blur(18px) saturate(1.04);
+  --glass-shadow: 0 1px 0 rgba(26, 20, 18, 0.04);
 
-  /* ---- Elevation: warm-tinted, never cold black. Monotonic 4-rung scale:
-     e-1 (rest) < e-2 (controls) < e-3 (raised) < e-4 (floating).
-     A rung may be swapped for the rung above it — never for one below. ---- */
+  /* ---- Elevation: warm-tinted, never cold black. ------------------------- */
   --e-0: none;
-  --e-1: 0 1px 2px rgba(27, 24, 20, 0.07);
-  --e-2: 0 2px 8px -2px rgba(27, 24, 20, 0.10), 0 1px 2px rgba(27, 24, 20, 0.05);
-  --e-3: 0 10px 28px -8px rgba(27, 24, 20, 0.18), 0 2px 8px -2px rgba(27, 24, 20, 0.07);
-  --e-4: 0 24px 64px -16px rgba(27, 24, 20, 0.28), 0 8px 20px -6px rgba(27, 24, 20, 0.12);
-  --e-glow: 0 0 0 1px rgba(17, 17, 16, 0.22);
+  --e-1: 0 1px 2px rgba(36, 20, 15, 0.07);
+  --e-2: 0 2px 8px -2px rgba(36, 20, 15, 0.10), 0 1px 2px rgba(36, 20, 15, 0.05);
+  --e-3: 0 10px 28px -8px rgba(36, 20, 15, 0.18), 0 2px 8px -2px rgba(36, 20, 15, 0.07);
+  --e-4: 0 24px 64px -16px rgba(36, 20, 15, 0.28), 0 8px 20px -6px rgba(36, 20, 15, 0.12);
+  --e-glow: 0 0 0 1px rgba(26, 20, 18, 0.22);
   /* Pure white exists once, as a token — never as a raw hex below this block. */
   --white: #ffffff;
 
@@ -269,7 +267,7 @@ button {
 }
 
 ::selection {
-  background: rgba(122, 46, 24, 0.25);
+  background: rgba(196, 92, 57, 0.25);
   color: var(--text);
 }
 
@@ -771,7 +769,7 @@ button {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(122, 46, 24, 0.08), transparent 65%);
+  background: linear-gradient(90deg, rgba(196, 92, 57, 0.08), transparent 65%);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s ease;
@@ -856,7 +854,7 @@ button {
   (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))
 ) {
   .site-header {
-    background: rgba(246, 241, 232, 0.58);
+    background: rgba(247, 231, 211, 0.66);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
   }
@@ -874,6 +872,10 @@ button {
   align-items: center;
   gap: 12px;
   text-decoration: none;
+}
+
+.logo-mark-image {
+  flex: none;
 }
 
 .brand-name {
@@ -1886,7 +1888,7 @@ button {
 }
 
 .price-row:hover {
-  background: linear-gradient(90deg, rgba(122, 46, 24, 0.07), transparent 70%);
+  background: linear-gradient(90deg, rgba(196, 92, 57, 0.07), transparent 70%);
 }
 
 .price-row h3 {
@@ -1961,7 +1963,7 @@ button {
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
   background:
-    radial-gradient(120% 80% at 50% 120%, rgba(218, 154, 104, 0.38), transparent 60%),
+    radial-gradient(120% 80% at 50% 120%, rgba(231, 146, 94, 0.34), transparent 60%),
     var(--ground-750);
   box-shadow: var(--e-2);
 }
@@ -2066,7 +2068,7 @@ button {
 
 .point-list li:hover {
   padding-left: 12px;
-  background: linear-gradient(90deg, rgba(122, 46, 24, 0.07), transparent 70%);
+  background: linear-gradient(90deg, rgba(196, 92, 57, 0.07), transparent 70%);
 }
 
 .point-list li::before {
@@ -2859,7 +2861,13 @@ button {
   min-height: var(--tap-min);
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
   transition: color var(--dur-2) var(--ease-standard);
+}
+
+.footer-contact,
+.footer-contact-static {
+  overflow-wrap: anywhere;
 }
 
 .footer-col {
@@ -3355,9 +3363,9 @@ body::after {
 
 :root {
   --radius: 9px;
-  --surface: rgba(231, 229, 228, 0.42);
-  --surface-2: rgba(231, 229, 228, 0.62);
-  --surface-3: rgba(235, 235, 235, 0.78);
+  --surface: rgba(247, 231, 211, 0.42);
+  --surface-2: rgba(243, 228, 199, 0.62);
+  --surface-3: rgba(247, 231, 211, 0.78);
 }
 
 body {
@@ -3385,7 +3393,7 @@ main,
   position: sticky;
   top: 0;
   z-index: 90;
-  background: rgba(196, 195, 182, 0.78) !important;
+  background: rgba(243, 228, 199, 0.82) !important;
   border: 0 !important;
   border-bottom: 1px solid rgba(17, 17, 16, 0.12) !important;
   box-shadow: none !important;
@@ -3396,7 +3404,7 @@ main,
 
 @supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
   .site-header {
-    background: rgba(196, 195, 182, 0.72) !important;
+    background: rgba(243, 228, 199, 0.76) !important;
     backdrop-filter: blur(16px) saturate(1.08) !important;
     -webkit-backdrop-filter: blur(16px) saturate(1.08) !important;
   }
@@ -3466,7 +3474,7 @@ main,
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-  background: rgba(231, 229, 228, 0.45);
+  background: rgba(247, 231, 211, 0.45);
   border: 1px solid rgba(17, 17, 16, 0.10);
   backdrop-filter: blur(12px) saturate(1.05);
   -webkit-backdrop-filter: blur(12px) saturate(1.05);
@@ -3508,7 +3516,7 @@ main,
 .hero-kicker-live {
   border-radius: 999px;
   padding: 6px 12px;
-  background: rgba(231, 229, 228, 0.5);
+  background: rgba(247, 231, 211, 0.50);
   backdrop-filter: blur(12px) saturate(1.05);
   -webkit-backdrop-filter: blur(12px) saturate(1.05);
   border: 1px solid rgba(17, 17, 16, 0.14);
@@ -3522,7 +3530,7 @@ main,
 .teardown,
 .monogram-card,
 .privacy-live {
-  background: rgba(231, 229, 228, 0.48);
+  background: rgba(247, 231, 211, 0.48);
   backdrop-filter: blur(16px) saturate(1.08);
   -webkit-backdrop-filter: blur(16px) saturate(1.08);
   border: 1px solid rgba(17, 17, 16, 0.10);
@@ -3534,14 +3542,14 @@ main,
 
 .card-hover:hover,
 .card-hover:focus-within {
-  background: rgba(231, 229, 228, 0.72) !important;
+  background: rgba(243, 228, 199, 0.72) !important;
   transform: none;
   box-shadow: none !important;
 }
 
 .form-card,
 .price-card {
-  background: rgba(231, 229, 228, 0.62) !important;
+  background: rgba(243, 228, 199, 0.62) !important;
 }
 
 .field textarea {
@@ -3898,7 +3906,7 @@ main,
   /* Mobile section rhythm is owned once, by the BREATHE block (80px). */
   .hero { padding: var(--sp-14) 0 var(--sp-18) !important; }
   .site-header {
-    background: rgba(196, 195, 182, 0.88) !important;
+    background: rgba(243, 228, 199, 0.90) !important;
     backdrop-filter: blur(14px) saturate(1.05) !important;
     -webkit-backdrop-filter: blur(14px) saturate(1.05) !important;
     padding: 0;
@@ -4268,7 +4276,7 @@ main,
 }
 
 .site-header {
-  background: rgba(196, 195, 182, 0.82) !important;
+  background: rgba(243, 228, 199, 0.86) !important;
 }
 
 @media (max-width: 1020px) {
@@ -4294,6 +4302,14 @@ main,
     gap: 16px 22px;
     font-size: 14px;
   }
+  .exhibit-copy {
+    padding-top: 64px;
+  }
+
+  .exhibit-copy > .placard {
+    transform: translate(-50%, calc(-100% - 12px));
+  }
+
   .notch-card {
     min-height: 320px;
   }
@@ -4742,7 +4758,7 @@ html.has-motion-reduced .hero-floor {
   margin: 4px 0 26px;
   padding: 18px 18px 16px;
   border-left: 2px solid var(--ember-500);
-  background: rgba(231, 229, 228, 0.42);
+  background: rgba(247, 231, 211, 0.42);
 }
 
 .q-quote-k {
@@ -4946,6 +4962,8 @@ html.has-motion-reduced .qualify-card {
    ========================================================================== */
 
 .exhibit {
+  --exhibit-focus-x: 50%;
+  --exhibit-focus-y: 48%;
   position: relative;
   min-height: 100vh !important;
   min-height: 100svh !important;
@@ -4968,15 +4986,85 @@ html.has-motion-reduced .qualify-card {
   display: grid;
   place-items: center;
   overflow: hidden;
+  isolation: isolate;
+}
+
+.exhibit-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(17, 17, 16, 0.7) 0%,
+      rgba(17, 17, 16, 0.42) 28%,
+      rgba(17, 17, 16, 0.6) 100%
+    ),
+    radial-gradient(
+      circle at 50% 48%,
+      rgba(17, 17, 16, 0.06) 0%,
+      rgba(17, 17, 16, 0.34) 100%
+    );
 }
 
 .exhibit-canvas {
   position: absolute;
   inset: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
   max-width: none;
   object-fit: cover;
+  object-position: var(--exhibit-focus-x) var(--exhibit-focus-y);
+  transform-origin: var(--exhibit-focus-x) var(--exhibit-focus-y);
+  filter: saturate(0.68) brightness(0.5) contrast(1.08);
+}
+
+.exhibit-copy {
+  position: relative;
+  z-index: 2;
+  width: min(calc(100% - 48px), 560px);
+  padding: clamp(72px, 11vh, 104px) var(--sp-6) var(--sp-6);
+  display: grid;
+  justify-items: center;
+}
+
+.exhibit-copy > .placard {
+  position: absolute;
+  top: clamp(18px, 2.5vh, 28px);
+  left: 50%;
+  z-index: 3;
+  margin: 0;
+  transform: translate(-50%, -100%);
+  white-space: nowrap;
+}
+
+.notch-card {
+  position: relative;
+  z-index: 2;
+  width: min(420px, 100%);
+  min-height: 400px;
+  margin-inline: auto;
+  background: rgba(17, 17, 16, 0.94);
+  color: var(--white);
+  padding: 32px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 64px -18px rgba(0, 0, 0, 0.45);
+  border-radius: 9px;
+  clip-path: polygon(
+    14px 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    14px 100%,
+    0 calc(100% - 14px),
+    0 14px
+  );
 }
 
 .notch-title,
@@ -5049,10 +5137,31 @@ html.has-motion-reduced .notch-body {
   transform: none;
 }
 
+@media (max-width: 1020px) {
+  .exhibit {
+    --exhibit-focus-y: 50%;
+  }
+}
+
 @media (max-width: 760px) {
   .exhibit {
+    --exhibit-focus-x: 50%;
+    --exhibit-focus-y: 44%;
     height: 100svh !important;
     min-height: 100svh !important;
+  }
+
+  .exhibit-copy {
+    width: min(calc(100% - 32px), 460px);
+    padding: 72px var(--sp-5) var(--sp-5);
+  }
+
+  .exhibit-copy > .placard {
+    top: 18px;
+  }
+
+  .notch-card {
+    width: min(100%, 380px);
   }
 }
 
@@ -5982,6 +6091,26 @@ main {
   }
 }
 
+@media (max-width: 560px) {
+  .proof-rail-list {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-rail-item {
+    min-height: 0;
+    padding-inline: 0;
+  }
+
+  .proof-rail-item + .proof-rail-item {
+    border-left: 0;
+    border-top: 1px solid rgba(17, 17, 16, 0.14);
+  }
+
+  .proof-rail-item:nth-child(n + 3) {
+    border-top: 0;
+  }
+}
+
 /* Completed loader mark: all three pieces now share one vector coordinate
    system and the same 8-unit rounded stroke. No font-glyph sizing drift. */
 .hero-code-slash {
@@ -6247,7 +6376,7 @@ html.has-motion .recognize-row {
   width: 2px;
   border-radius: 2px;
   background: var(--gold);
-  box-shadow: 0 0 14px 1px rgba(122, 46, 24, 0.35);
+  box-shadow: 0 0 14px 1px rgba(196, 92, 57, 0.32);
   opacity: 0;
   pointer-events: none;
   will-change: transform, opacity;
@@ -6401,7 +6530,8 @@ html.has-motion .recognize-underline {
   /* Header fit at 320px: brand 34→28px mark, name 1rem→0.875rem, and an
      ellipsis failsafe. Previously the fixed-content row (~338px) overflowed
      the 320px viewport and the clipped hamburger was unreachable. */
-  .brand svg {
+  .brand svg,
+  .brand .logo-mark-image {
     width: 28px;
     height: 28px;
   }
@@ -7057,25 +7187,6 @@ html.has-motion .room-ink .vignette-plaque {
   }
 }
 
-/* ---- Night shift ---------------------------------------------------------
-   Glass cards go near-transparent on dark (surface-2 = 8% white), so the
-   cone fill must flip too — otherwise a putty patch flashes inside the
-   dark card on hover. Copper runs full strength here (it earns it on
-   dark), and the edge light goes additive like the --ink tone. */
-html[data-theme="night"] .border-glow-card--glass {
-  --card-fill: #2d2b27; /* surface-2 composited over the night canvas */
-}
-
-html[data-theme="night"] .border-glow-card--form::before {
-  opacity: calc(
-    (var(--edge-proximity) - var(--color-sensitivity)) /
-      (100 - var(--color-sensitivity))
-  );
-}
-
-html[data-theme="night"] .border-glow-card--glass > .edge-light {
-  mix-blend-mode: plus-lighter;
-}
 
 /* ==========================================================================
    PARTICLE TEXT — React Bits scatter-and-gather headline, PUTTY GALLERY
@@ -7253,9 +7364,6 @@ html.has-motion .shiny-text.is-live.is-shine {
   mix-blend-mode: multiply;
 }
 
-html[data-theme="night"] .spot-unified {
-  mix-blend-mode: screen;
-}
 
 /* ---------- SCROLL CRANK (React Bits CircularText, tailored) ---------------
    The hero floor's "This way" becomes a museum seal: circular text on an
@@ -7470,6 +7578,29 @@ html.has-motion .rv-in [data-stagger] > li {
   inset: 0;
   z-index: 9989;
   pointer-events: none;
+}
+
+/* ---------- PRESSURE TYPE ---------------------------------------------------
+   The headline swell stays on the variable font axis instead of stepping
+   through discrete font-weight changes, which keeps the boldening smoother
+   and avoids the clipped/sticky feel while the pointer moves across it. */
+[data-pressure] {
+  overflow: visible;
+}
+
+.pchar {
+  font-synthesis: none;
+  font-variation-settings: "wght" var(--pchar-wght, 500);
+  transition: font-variation-settings 90ms linear;
+  will-change: font-variation-settings;
+}
+
+@supports not (font-variation-settings: normal) {
+  .pchar {
+    font-weight: var(--pchar-wght, 500);
+    transition: font-weight 90ms linear;
+    will-change: font-weight;
+  }
 }
 
 /* ---------- TARGET BRACKETS (React Bits TargetCursor, tailored) ------------
@@ -8149,6 +8280,23 @@ html.has-motion .rv-in [data-stagger] > li {
   border-color: var(--accent);
   color: var(--on-accent);
   translate: 0 -3px;
+}
+
+@media (max-width: 560px) {
+  .footer-positioning,
+  .footer-meta {
+    max-width: 32ch;
+  }
+
+  .footer-contact {
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .footer-contact .icon-nudge {
+    margin-left: auto;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -8884,10 +9032,171 @@ a:focus-visible > .icon-nudge svg,
   font-size: 1.05rem;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 680px) {
   .spec-sheet > div {
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+}
+
+/* ---------- RESULTS SECTION -------------------------------------------------
+   Same paper as the rest of the site, but keep the circular outcome plaques.
+   Natural image color stays; only the room/background treatment changes. */
+.results-section {
+  background: var(--ground-700);
+}
+
+.results-section .container {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.results-intro {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.results-title {
+  margin: 0;
+  max-width: 10ch;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6.1vw, 5.4rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.results-vignette-grid {
+  margin-top: var(--sp-5);
+  gap: var(--sp-8);
+  align-items: start;
+}
+
+.results-vignette {
+  width: min(100%, 320px);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  align-content: start;
+  gap: var(--sp-6);
+  color: var(--text);
+}
+
+.results-section .results-vignette-plaque {
+  --plaque-size: clamp(208px, 16vw, 244px);
+  --plaque-hang: var(--sp-6);
+  position: relative;
+  width: var(--plaque-size);
+  height: var(--plaque-size);
+  flex: none;
+  margin: var(--plaque-hang) auto 0;
+  overflow: visible;
+  border: 1px solid rgba(36, 20, 15, 0.18);
+  border-radius: 50%;
+  background: var(--ground-750);
+  box-shadow: 0 14px 28px -14px rgba(36, 20, 15, 0.22);
+  transform-origin: 50% calc(-1 * var(--plaque-hang) - var(--sp-1));
+}
+
+.results-section .results-vignette-plaque::before,
+.results-section .results-vignette-plaque::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  pointer-events: none;
+}
+
+.results-section .results-vignette-plaque::before {
+  top: calc(-1 * var(--plaque-hang) - var(--sp-2));
+  z-index: 2;
+  width: var(--sp-2);
+  height: var(--sp-2);
+  border: 1px solid rgba(36, 20, 15, 0.28);
+  border-radius: 50%;
+  background: var(--gold);
+  transform: translateX(-50%);
+}
+
+.results-section .results-vignette-plaque::after {
+  top: calc(-1 * var(--plaque-hang));
+  z-index: 1;
+  width: 1px;
+  height: var(--plaque-hang);
+  background: rgba(36, 20, 15, 0.24);
+  transform: translateX(-50%);
+}
+
+.results-section .results-vignette-image {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  object-fit: cover;
+  border: var(--sp-1) solid var(--ground-750);
+  border-radius: 50%;
+  outline: 1px solid rgba(36, 20, 15, 0.12);
+  outline-offset: -5px;
+  filter: none;
+}
+
+.results-section .results-vignette figcaption {
+  width: 100%;
+  display: grid;
+  align-content: start;
+  gap: var(--sp-2);
+  margin-top: 0;
+}
+
+.results-vignette-cap {
+  color: var(--text);
+  min-height: 2.45em;
+}
+
+.results-vignette-note {
+  color: var(--text-2) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .results-section .vignette-plaque:hover .results-vignette-image {
+    filter: none;
+  }
+}
+
+@media (max-width: 1020px) {
+  .results-section .results-vignette-plaque {
+    --plaque-size: clamp(196px, 34vw, 236px);
+  }
+}
+
+@media (max-width: 760px) {
+  .results-section .container {
+    gap: var(--sp-2);
+  }
+
+  .results-intro {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+  }
+
+  .results-vignette-grid {
+    margin-top: var(--sp-4);
+    gap: var(--sp-8);
+  }
+
+  .results-vignette {
+    width: min(100%, 360px);
+  }
+
+  .results-section .results-vignette-plaque {
+    --plaque-size: min(220px, 58vw);
+  }
+
+  .results-vignette-cap {
+    min-height: 0;
   }
 }
 
@@ -8898,275 +9207,4 @@ a:focus-visible > .icon-nudge svg,
   align-items: center;
   gap: 16px;
   margin: 20px 0 4px;
-}
-
-/* ---------- THEME TOGGLE ----------------------------------------------------
-   Icon-only night switch in the header. A control, not a toy: full-size hit
-   area, pressed state announced, motion-still safe. */
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  flex: none;
-  border: 1px solid var(--hairline-strong);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
-  transition:
-    border-color 0.18s var(--ease-out),
-    color 0.18s var(--ease-out),
-    transform 0.18s var(--ease-out);
-}
-
-.theme-toggle:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.theme-toggle:active {
-  transform: scale(0.94);
-}
-
-/* ---------- PALETTE GLIDE ----------------------------------------------------
-   Flipping the theme parks a temporary `theming` class on <html>: every
-   painted property eases into the new palette over half a second, then the
-   class leaves so hover transitions behave normally again. The glyph morph
-   below carries its own !important later in the file, so it wins the tie
-   on its two svgs. Instant under reduced motion. */
-html.theming *,
-html.theming *::before,
-html.theming *::after {
-  transition:
-    background-color 0.5s var(--ease-out),
-    border-color 0.5s var(--ease-out),
-    color 0.5s var(--ease-out),
-    fill 0.5s var(--ease-out),
-    stroke 0.5s var(--ease-out),
-    box-shadow 0.5s var(--ease-out),
-    outline-color 0.5s var(--ease-out) !important;
-}
-
-.theme-icon {
-  position: relative;
-  width: 18px;
-  height: 18px;
-}
-
-.theme-icon svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  transition:
-    opacity 0.3s var(--ease-out),
-    rotate 0.45s var(--ease-out),
-    scale 0.45s var(--ease-out) !important;
-}
-
-.theme-moon {
-  opacity: 1;
-  rotate: 0deg;
-  scale: 1;
-}
-
-.theme-sun {
-  opacity: 0;
-  rotate: -120deg;
-  scale: 0.5;
-}
-
-.theme-toggle.is-night .theme-moon {
-  opacity: 0;
-  rotate: 120deg;
-  scale: 0.5;
-}
-
-.theme-toggle.is-night .theme-sun {
-  opacity: 1;
-  rotate: 0deg;
-  scale: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .theme-icon svg {
-    transition: none !important;
-  }
-
-  html.theming *,
-  html.theming *::before,
-  html.theming *::after {
-    transition: none !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .theme-toggle {
-    transition: none;
-  }
-
-  .theme-toggle:active {
-    transform: none;
-  }
-}
-
-/* ==========================================================================
-   NIGHT AT THE MUSEUM — html[data-theme="night"] remaps the leaf tokens and
-   every role that references them follows. Dark rooms stay dark, light rooms
-   go bronze-dark, clay lifts to stay readable. Lives last in the file so it
-   wins every non-important tie with the museum layer above.
-   ========================================================================== */
-html[data-theme="night"] {
-  color-scheme: dark;
-
-  /* Ink ramp: graphite lifts, accent goes bone, pressed steps stay black. */
-  --ember-50: #2c2923;
-  --ember-100: #26231d;
-  --ember-200: #211e18;
-  --ember-300: #38342a;
-  --ember-400: #cfc9ba;
-  --ember-500: #ece8df;
-  --ember-550: #d8d4c8;
-  --ember-600: #ffffff;
-
-  /* Ground ramp: the gallery wall after hours. */
-  --ground-900: #12100d;
-  --ground-850: #1d1a14;
-  --ground-800: #1a1712;
-  --ground-750: #201c15;
-  --ground-700: #1b1914;
-  --ground-600: #232019;
-  --ground-500: #25221b;
-  --ground-400: #2b2820;
-  --ground-300: #2e2a21;
-
-  --aura: #26221a;
-  --on-accent: #1b1914;
-
-  /* Clay, lifted: day rust would drown on bronze. */
-  --gold: #d98a52;
-  --gold-deep: #eab183;
-  --spot-rgb: 217, 138, 82;
-  --crosshair: rgba(217, 138, 82, 0.4);
-
-  --text: #ede9de;
-  --text-2: #c6c0b1;
-  --text-3: #a39d8c;
-  --text-on-aura: #ede9de;
-  --text-2-on-aura: #c6c0b1;
-
-  /* Semantics, lifted to hold 4.5:1 on bronze. */
-  --danger: #e88d86;
-  --danger-quiet: rgba(232, 141, 134, 0.14);
-  --success: #7cc79a;
-  --success-quiet: rgba(124, 199, 154, 0.14);
-  --warning: #e0a85e;
-  --info: #93aef5;
-  --tap-highlight: rgba(237, 233, 222, 0.18);
-
-  /* Surfaces go whisper-light; hairlines go bone-alpha. */
-  --surface: rgba(255, 255, 255, 0.05);
-  --surface-2: rgba(255, 255, 255, 0.08);
-  --surface-3: rgba(255, 255, 255, 0.13);
-  --hairline: rgba(237, 233, 222, 0.16);
-  --hairline-soft: rgba(237, 233, 222, 0.1);
-  --hairline-strong: rgba(237, 233, 222, 0.42);
-
-  --glass: rgba(20, 18, 14, 0.5);
-  --glass-strong: rgba(20, 18, 14, 0.72);
-  --glass-border: rgba(237, 233, 222, 0.14);
-  --glass-edge: rgba(237, 233, 222, 0.08);
-  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  --glass-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
-
-  /* Elevation keeps its 4 rungs, poured in warm black. */
-  --e-1: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --e-2:
-    0 2px 8px -2px rgba(0, 0, 0, 0.5),
-    0 1px 2px rgba(0, 0, 0, 0.3);
-  --e-3:
-    0 10px 28px -8px rgba(0, 0, 0, 0.55),
-    0 2px 8px -2px rgba(0, 0, 0, 0.35);
-  --e-4:
-    0 24px 64px -16px rgba(0, 0, 0, 0.6),
-    0 8px 20px -6px rgba(0, 0, 0, 0.4);
-  --e-glow: 0 0 0 1px rgba(237, 233, 222, 0.22);
-}
-
-/* Fixed-ink hairlines, one grouped flip. Widths and styles survive. */
-html[data-theme="night"] .site-header,
-html[data-theme="night"] .nav-toggle,
-html[data-theme="night"] .hero-emblem,
-html[data-theme="night"] .hero-kicker-live,
-html[data-theme="night"] .privacy-live,
-html[data-theme="night"] .proof-strip,
-html[data-theme="night"] .proof-metric,
-html[data-theme="night"] .teardown-head,
-html[data-theme="night"] .index-list,
-html[data-theme="night"] .index-row,
-html[data-theme="night"] .marquee,
-html[data-theme="night"] .phase,
-html[data-theme="night"] .why-row,
-html[data-theme="night"] .mobile-panel,
-html[data-theme="night"] .monogram-card,
-html[data-theme="night"] .value-card,
-html[data-theme="night"] .page-hero,
-html[data-theme="night"] .contrast-list,
-html[data-theme="night"] .contrast-row,
-html[data-theme="night"] .q-chip,
-html[data-theme="night"] .qualify-section,
-html[data-theme="night"] .proof-rail-list {
-  border-color: rgba(237, 233, 222, 0.16) !important;
-}
-
-/* Fixed washes, scrims, and dots that can't ride a token. */
-html[data-theme="night"] ::selection {
-  background: rgba(217, 138, 82, 0.45);
-}
-
-html[data-theme="night"] .site-header {
-  background: rgba(24, 22, 17, 0.78) !important;
-}
-
-@media (max-width: 760px) {
-  html[data-theme="night"] .site-header {
-    background: rgba(24, 22, 17, 0.78);
-  }
-}
-
-html[data-theme="night"] .teardown-head {
-  background: rgba(237, 233, 222, 0.05) !important;
-}
-
-html[data-theme="night"] .menu-overlay {
-  background: rgba(0, 0, 0, 0.55);
-}
-
-html[data-theme="night"] .hero-floor::before {
-  background: rgba(237, 233, 222, 0.16);
-}
-
-html[data-theme="night"] .proof-caption span + span::before {
-  color: rgba(237, 233, 222, 0.4);
-}
-
-html[data-theme="night"] .hero-loader-track {
-  background: rgba(237, 233, 222, 0.2);
-}
-
-/* Chips go bone when on — ink text keeps them honest. */
-html[data-theme="night"] .q-chip.is-on {
-  color: #1b1914;
-}
-
-/* Museum buttons pin white text; at night the fills go bone, so the text
-   goes ink. Hover states stay black-with-white and need no override. */
-html[data-theme="night"] .btn-primary {
-  color: #1b1914 !important;
-}
-
-html[data-theme="night"] .btn-light {
-  color: #1b1914 !important;
 }

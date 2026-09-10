@@ -15,7 +15,7 @@ export default function NotFound() {
         FILED UNDER NOWHERE
       </p>
       <img
-        src="/images/logo-mark-transparent-original.png"
+        src="/images/logo-actual-mark-512.png"
         alt=""
         aria-hidden="true"
         className="notfound-mark"

@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { NAV_LINKS } from "@/content/site-content";
 import { LogoMark } from "./logo";
 import { MobileMenu } from "./mobile-menu";
-import { ThemeToggle } from "./theme-toggle";
-import { NAV_LINKS } from "@/content/site-content";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -14,41 +13,41 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="container">
         <div className="header-inner">
-        <Link href="/" className="brand" aria-label="Zarrar.Solutions — home">
-          <LogoMark size={34} />
-          <span className="brand-name">
-            Zarrar<span className="brand-dot">.Solutions</span>
-          </span>
-        </Link>
-
-        <nav className="desktop-nav" aria-label="Primary">
-          {NAV_LINKS.map((link) => {
-            const current =
-              pathname === link.href || pathname.startsWith(`${link.href}/`);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                aria-current={current ? "page" : undefined}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="header-actions">
-          <Link
-            href="/#brief"
-            className="btn btn-primary btn-sm btn-star header-cta"
-            data-magnetic
-          >
-            <span className="btn-star-ring" aria-hidden="true" />
-            Write your brief
+          <Link href="/" className="brand" aria-label="Zarrar.Solutions — home">
+            <LogoMark size={34} />
+            <span className="brand-name">
+              Zarrar<span className="brand-dot">.Solutions</span>
+            </span>
           </Link>
-          <ThemeToggle />
-          <MobileMenu />
-        </div>
+
+          <nav className="desktop-nav" aria-label="Primary">
+            {NAV_LINKS.map((link) => {
+              const current =
+                pathname === link.href || pathname.startsWith(`${link.href}/`);
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={current ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="header-actions">
+            <Link
+              href="/#brief"
+              className="btn btn-primary btn-sm btn-star header-cta"
+              data-magnetic
+            >
+              <span className="btn-star-ring" aria-hidden="true" />
+              Write your brief
+            </Link>
+            <MobileMenu />
+          </div>
         </div>
       </div>
     </header>

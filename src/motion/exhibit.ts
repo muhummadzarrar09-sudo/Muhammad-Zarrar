@@ -62,8 +62,8 @@ export function playExhibit() {
       },
     });
     breathe
-      .fromTo(canvas, { scale: 1.08 }, { scale: 1.18, duration: 0.5 })
-      .to(canvas, { scale: 1.06, duration: 0.5 });
+      .fromTo(canvas, { scale: 1.02 }, { scale: 1.08, duration: 0.5 })
+      .to(canvas, { scale: 1.01, duration: 0.5 });
   }
 
   const tl = gsap.timeline({
