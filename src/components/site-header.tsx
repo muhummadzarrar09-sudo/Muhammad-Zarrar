@@ -14,7 +14,7 @@ export function SiteHeader() {
       <div className="container">
         <div className="header-inner">
           <Link href="/" className="brand" aria-label="Zarrar.Solutions — home">
-            <LogoMark size={34} />
+            <LogoMark size={28} />
             <span className="brand-name">
               Zarrar<span className="brand-dot">.Solutions</span>
             </span>

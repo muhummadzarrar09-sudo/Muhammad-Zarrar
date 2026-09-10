@@ -9208,3 +9208,159 @@ a:focus-visible > .icon-nudge svg,
   gap: 16px;
   margin: 20px 0 4px;
 }
+
+/* ==========================================================================
+   FLOATING GLASS PILL NAV
+   The header shell stays invisible; the inner bar is the frosted pill.
+   Logo is 28×28 (24×24 on phones) so the mark sits on the pill's flat
+   middle and never meets the rounded caps — 250px is the about-page
+   monogram, not this lockup.
+   ========================================================================== */
+
+:root {
+  --header-inset: 12px;
+  --header-pill-h: 52px;
+  --header-offset: calc(var(--header-inset) + var(--header-pill-h));
+  --nav-logo: 28px;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --header-inset: 8px;
+    --header-pill-h: 52px;
+    --nav-logo: 24px;
+  }
+}
+
+body > .site-header {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: 0 !important;
+  z-index: 10000 !important;
+  width: 100%;
+  padding: var(--header-inset) 20px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body > .site-header .container {
+  max-width: 1120px;
+  padding-inline: 0 !important;
+}
+
+body > .site-header .header-inner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: var(--header-pill-h) !important;
+  padding: 0 8px 0 18px !important;
+  border-radius: 999px !important;
+  background: rgba(247, 231, 211, 0.52) !important;
+  border: 1px solid rgba(255, 255, 255, 0.48) !important;
+  box-shadow:
+    0 10px 36px -14px rgba(36, 20, 15, 0.22),
+    0 0 0 1px rgba(36, 20, 15, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(22px) saturate(1.35) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.35) !important;
+  overflow: visible;
+}
+
+@supports not (
+  (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))
+) {
+  body > .site-header .header-inner {
+    background: rgba(243, 228, 199, 0.94) !important;
+  }
+}
+
+body > .site-header .brand {
+  gap: 10px;
+  align-items: center;
+  min-height: 0;
+}
+
+body > .site-header .logo-mark-image {
+  width: var(--nav-logo) !important;
+  height: var(--nav-logo) !important;
+  flex: none;
+  object-fit: contain;
+  object-position: center;
+}
+
+body > .site-header .desktop-nav a {
+  border-bottom: 0 !important;
+  border-radius: 999px;
+  padding: 6px 10px !important;
+  min-height: 32px;
+}
+
+body > .site-header .desktop-nav a:hover,
+body > .site-header .desktop-nav a[aria-current="page"] {
+  background: rgba(26, 20, 18, 0.06);
+  color: var(--text);
+  border-bottom-color: transparent !important;
+}
+
+body > .site-header .header-cta {
+  min-height: 36px;
+}
+
+body > .site-header .nav-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px !important;
+  border-color: rgba(26, 20, 18, 0.16);
+}
+
+main {
+  padding-top: var(--header-offset);
+}
+
+.hero.hero-minimal {
+  height: calc(100svh - var(--header-offset)) !important;
+  min-height: calc(100svh - var(--header-offset)) !important;
+}
+
+@media (max-width: 760px) {
+  body > .site-header {
+    padding: var(--header-inset) 12px 0 !important;
+  }
+
+  body > .site-header .header-inner {
+    gap: 8px;
+    padding: 0 6px 0 14px !important;
+  }
+
+  body > .site-header .brand {
+    gap: 8px;
+  }
+
+  body > .site-header .header-cta {
+    min-height: 40px;
+  }
+
+  main {
+    padding-top: var(--header-offset);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  body > .site-header {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body > .site-header .header-inner {
+    background: var(--ground-400) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
