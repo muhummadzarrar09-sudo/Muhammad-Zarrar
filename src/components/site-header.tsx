@@ -13,9 +13,13 @@ export function SiteHeader() {
 
   useEffect(() => {
     let ticking = false;
+    const y = () =>
+      window.scrollY || document.documentElement.scrollTop || 0;
     const update = () => {
-      const next = window.scrollY > 16;
-      setScrolled((prev) => (prev === next ? prev : next));
+      const pos = y();
+      // Hysteresis so Lenis interpolation + GSAP pin spacers don't
+      // flicker the glass treatment at the 16px threshold.
+      setScrolled((prev) => (prev ? pos > 8 : pos > 24));
       ticking = false;
     };
     const onScroll = () => {
@@ -26,7 +30,7 @@ export function SiteHeader() {
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [pathname]);
 
   return (
     <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>

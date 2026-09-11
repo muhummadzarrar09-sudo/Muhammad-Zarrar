@@ -5876,7 +5876,8 @@ main {
 }
 
 /* The header must win visually over ScrollTrigger's fixed pin layer. Keep the
-   spacing tied to the header's real authored height (52px desktop, 56px phone). */
+   spacing tied to the header's real authored height (52px desktop, 56px phone).
+   Do NOT put a transform on this node — it desyncs the fixed pill from Lenis. */
 body > .site-header {
   position: fixed !important;
   top: 0 !important;
@@ -5887,9 +5888,8 @@ body > .site-header {
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
-  transform: translate3d(0, 0, 0);
+  transform: none;
   isolation: isolate;
-  will-change: transform;
 }
 
 body > .site-header .header-inner,
@@ -7677,7 +7677,7 @@ html.has-motion .rv-in [data-stagger] > li {
 }
 
 .focus-veil-top {
-  top: 0;
+  top: var(--header-offset, 0px);
   mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
 }
@@ -9251,6 +9251,12 @@ body > .site-header {
   box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+  /* A transform here (the old pin-layer workaround) made this fixed bar
+     its own compositor layer. Lenis + GSAP pin then scrolled the layer
+     out of sync with the viewport — the pill jittered on every wheel. */
+  transform: none !important;
+  will-change: auto;
+  isolation: isolate;
   /* The shell is full-bleed; only the pill should catch clicks. */
   pointer-events: none;
 }
@@ -9283,7 +9289,9 @@ body > .site-header .header-inner {
 }
 
 body > .site-header.is-scrolled .header-inner {
-  background: rgba(247, 231, 211, 0.78) !important;
+  /* html/body use overflow-x: clip, which kills backdrop-filter in several
+     engines — bump the fill so page content can't read through the pill. */
+  background: rgba(247, 231, 211, 0.92) !important;
   box-shadow:
     0 14px 40px -14px rgba(36, 20, 15, 0.28),
     0 0 0 1px rgba(36, 20, 15, 0.08),

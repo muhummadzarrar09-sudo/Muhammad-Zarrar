@@ -167,14 +167,16 @@ export function playHero() {
     scrollTrigger: {
       id: "hero-converge",
       trigger: root,
-      start: () => {
-        const header = document.querySelector<HTMLElement>(".site-header");
-        return `top ${header?.offsetHeight ?? 68}px`;
-      },
+      // The header is a fixed overlay now; the hero is pulled under it
+      // with a negative margin. Pinning from `top ${header.offsetHeight}`
+      // treated the scene as already 64px into the scrub on load, so the
+      // first wheel tick jumped the pin-spacer — the navbar looked like
+      // it was sliding/resizing with the page.
+      start: "top top",
       end: window.matchMedia("(max-width: 760px)").matches ? "+=150%" : "+=220%",
       pin: true,
       pinSpacing: true,
-      anticipatePin: 1,
+      anticipatePin: 0,
       scrub: window.matchMedia("(max-width: 760px)").matches ? 0.5 : 0.9,
       invalidateOnRefresh: true,
       // F11 and mobile browser chrome can change both dimensions after the
