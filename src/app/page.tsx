@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { pageMeta } from "@/lib/seo";
 import {
   CONTRAST,
@@ -5,16 +6,14 @@ import {
   OUTCOMES,
   RECOGNITIONS,
 } from "@/content/qualify";
-import { QualifyForm } from "@/components/qualify-form";
 import { ScrambleText } from "@/components/scramble-text";
 import { Placard } from "@/components/placard";
-import { CrossIcon, SealCheckIcon } from "@/components/icons";
+import { CrossIcon, SealCheckIcon, WhatsAppIcon } from "@/components/icons";
 import { Scribble } from "@/components/scribble";
-import BorderGlow from "@/components/border-glow";
+import { JumpLink } from "@/components/jump-link";
 import { PinnedManifesto } from "@/components/pinned-manifesto";
 import { Marquee } from "@/components/marquee";
 import { ProofStrip } from "@/components/proof-strip";
-import { WhatsAppIcon } from "@/components/icons";
 import { CodeChevron } from "@/components/code-mark";
 import { waLink } from "@/lib/site";
 
@@ -72,14 +71,16 @@ export default function HomePage() {
         </div>
         <div className="hero-toolbar">
           <div className="hero-ctas">
-            <a href="#brief" className="btn btn-primary btn-star" data-magnetic>
+            <Link href="/brief" className="btn btn-primary btn-star" data-magnetic>
               <span className="btn-star-ring" aria-hidden="true" />
               Write your brief
-            </a>
+            </Link>
           </div>
         </div>
-        <p className="hero-floor">
-          <span className="sr-only">Scroll to continue</span>
+        {/* Not a scroll hint any more: a real skip. Pressing it loads the next
+            room behind the route curtain rather than fast-forwarding the
+            420vh diagnose scene, which used to read as the page sticking. */}
+        <JumpLink to="#after-hero" className="hero-floor" label="Skip to what happens next">
           <span className="crank" aria-hidden="true">
             <svg className="crank-ring" viewBox="0 0 100 100" focusable="false">
               <defs>
@@ -91,7 +92,7 @@ export default function HomePage() {
               </defs>
               <text className="crank-text">
                 <textPath href="#crank-orbit" textLength="231" lengthAdjust="spacingAndGlyphs">
-                  This way · Scroll · This way · Scroll ·
+                  Skip ahead · Skip ahead · Skip ahead ·
                 </textPath>
               </text>
             </svg>
@@ -99,7 +100,8 @@ export default function HomePage() {
               <span className="crank-arrow">↓</span>
             </span>
           </span>
-        </p>
+          <span className="hero-floor-label">Skip to what happens next</span>
+        </JumpLink>
       </section>
 
       <ProofStrip />
@@ -204,9 +206,9 @@ export default function HomePage() {
                 </span>
                 <span className="type-out" aria-hidden="true" />
               </p>
-              <a className="notch-scroll" href="#brief">
+              <Link className="notch-scroll" href="/brief">
                 Write the brief
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -323,15 +325,18 @@ export default function HomePage() {
 
       <PinnedManifesto />
 
+      {/* The close of the walk. The form itself lives at /brief — one
+          question per screen, its own link, shareable in a message. The
+          walk shouldn't end in a wall of fields. */}
       <section
-        className="section qualify-section"
+        className="section closer-section"
         id="brief"
         data-tl="Brief"
         data-motion
         aria-labelledby="brief-heading"
       >
-        <div className="container qualify-wrap">
-          <div className="qualify-intro">
+        <div className="container closer-wrap">
+          <div className="closer-copy">
             <div className="sec-head">
               <span className="sec-index">04</span>
               <ScrambleText className="sec-label" text="Your brief" />
@@ -342,38 +347,60 @@ export default function HomePage() {
               <em>Then the honest quote.</em>
             </h2>
             <p className="lede">
-              This is the last thing on the page on purpose. Fill it once.
-              We stop guessing in chat. You see the neighborhood of a real
-              quote before you send anything.
+              Seven questions, one at a time, about ninety seconds. You see the
+              neighborhood of a real quote before anything leaves your phone.
             </p>
-            <p className="qualify-aside">
+            <p className="closer-pledge">
               If your number is below what the work costs, we&apos;ll say so.
               If it isn&apos;t a fit, we&apos;ll say that too. Either way you
               leave with a straight answer.
             </p>
-            <a
-              href={waLink(
-                "Hello Zarrar — I came from the site. I'd rather talk than fill the brief."
-              )}
-              target="_blank"
-              rel="noopener"
-              className="qualify-hello"
-            >
-              <WhatsAppIcon size={16} /> Or just say hello
-            </a>
-          </div>
-          <BorderGlow
-            tone="glass"
-            className="qualify-card border-glow-card--form"
-            coneSpread={34}
-            glowIntensity={0.85}
-          >
-            <h3 className="form-title">The brief</h3>
-            <p className="form-sub">
-              Two minutes. Lands with the builder. Nothing is stored here.
+            <div className="closer-actions">
+              <Link href="/brief" className="btn btn-primary btn-star" data-magnetic>
+                <span className="btn-star-ring" aria-hidden="true" />
+                Write your brief
+              </Link>
+              <a
+                href={waLink(
+                  "Hello Zarrar — I came from the site. I'd rather talk than fill the brief."
+                )}
+                target="_blank"
+                rel="noopener"
+                className="closer-hello"
+              >
+                <WhatsAppIcon size={16} /> Or just say hello
+              </a>
+            </div>
+            <p className="closer-note">
+              Nothing stored. No trackers. It leaves as one WhatsApp message to
+              the person who writes the code.
             </p>
-            <QualifyForm />
-          </BorderGlow>
+          </div>
+
+          <div className="closer-aside" aria-hidden="true">
+            <ol className="closer-steps">
+              <li>
+                <span className="closer-no">01</span>
+                <span className="closer-q">What do you need?</span>
+              </li>
+              <li>
+                <span className="closer-no">02</span>
+                <span className="closer-q">The number you hoped for.</span>
+              </li>
+              <li>
+                <span className="closer-no">03</span>
+                <span className="closer-q">The honest neighborhood.</span>
+              </li>
+              <li>
+                <span className="closer-no">04</span>
+                <span className="closer-q">When, and in your words.</span>
+              </li>
+              <li>
+                <span className="closer-no">05</span>
+                <span className="closer-q">Who, and how to reach you.</span>
+              </li>
+            </ol>
+          </div>
         </div>
       </section>
     </>

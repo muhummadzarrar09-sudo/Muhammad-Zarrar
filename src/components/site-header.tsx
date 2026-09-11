@@ -59,7 +59,7 @@ export function SiteHeader() {
 
           <div className="header-actions">
             <Link
-              href="/#brief"
+              href="/brief"
               className="btn btn-primary btn-sm btn-star header-cta"
               data-magnetic
             >

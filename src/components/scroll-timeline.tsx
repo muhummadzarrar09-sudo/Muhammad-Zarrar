@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { wipeJump } from "@/lib/jump";
 
 type Marker = { id: string; label: string; top: number };
 
@@ -80,17 +81,11 @@ export function ScrollTimeline() {
     };
   }, [pathname, markers]);
 
+  /* Markers used to `motion:scrollTo`, which travelled the whole page at
+     speed and dragged every pinned scene along for the ride. A jump is a
+     load now: curtain down, teleport, curtain up. */
   function jump(id: string) {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduced && document.documentElement.classList.contains("has-lenis")) {
-      window.dispatchEvent(
-        new CustomEvent("motion:scrollTo", { detail: `#${id}` })
-      );
-      return;
-    }
-    document.getElementById(id)?.scrollIntoView({
-      behavior: reduced ? "auto" : "smooth",
-    });
+    wipeJump(`#${id}`);
   }
 
   return (

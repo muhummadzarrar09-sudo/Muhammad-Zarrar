@@ -59,8 +59,12 @@ Audited: `src/motion/*`, `src/components/*`, `src/app/globals.css`.
 - CSS sticky holds the folio; each line **typewrites sequentially** on the wheel (durations derived from text length), un-writes on scroll-back.
 - The write **owns the hold**: starts as the room settles into the pin, ends with a clay **sign-off rule** drawing under *"We'll meet you there."* — the closing beat — with ~25vh of settled hold left as a breath before release (v2 retiming; previously ~150vh of the hold was dead air).
 
-### `brief-last` — the last room
-- Intro + qualify card rise in (`y 32/40`, opacity fade).
+### `closer` — the end of the walk
+- The home walk no longer ends in a form. It ends in an invitation that
+  points at `/brief`. No GSAP scene: `.closer-section` is a plain room.
+- The brief itself is its own route (`components/brief-room.tsx`), one
+  question per screen. Its only motion is the progress hairline, the
+  slider spring, and the chip press — all input-driven, no ambient loop.
 
 ---
 
@@ -162,7 +166,8 @@ Seventeen more bits, one commit each (see history `v4: *`). Same v3 contract: ze
 26. **RotatingText, landed (React Bits, tailored)** — the services hero corrects itself once per entry (*hunches. → vibes. → evidence.*) and rests on the final. SSR/SEO see `evidence.`; reduced motion sees it statically.
 27. **Stepper (React Bits, tailored)** — the process page walks a sticky rail: fill + lit ticks derived from scroll progress (recognize-room pattern), past numbers clayed. Rail hides on mobile; steps never do.
 28. **ScrollStack (React Bits, tailored)** — the eight website-audit checks fan into sticky cards (30px seats, pure CSS so no-JS/reduced get the deck); covered cards settle to 0.93, scrubbed, desktop only.
-29. **ElasticSlider (React Bits, tailored)** — the brief's budget chips graduate to a five-stop PKR slider: spring fill (one overshoot), readout pop, tick scale. Native range (keyboard/touch/SR intact); `unsure` stays a chip because it is not a magnitude.
+29. **ElasticSlider (React Bits, tailored)** — the brief's budget is a five-stop PKR slider: spring fill (one overshoot), readout pop, tick scale. Native range (keyboard/touch/SR intact); `unsure` stays a chip because it is not a magnitude.
+30. **Curtain jumps (house pattern)** — "skip to next", the timeline rail markers and the footer's back-to-top no longer `scrollTo`. Travelling a 420vh pinned room at speed dragged every scene along and read as the page sticking. They now drop the route curtain, teleport underneath it with `lenis.scrollTo({immediate: true, force: true})`, lift, and replay a one-shot `roomArrive` on the landing room — fired 170ms *into* the lift, so the beat happens as the paper clears rather than beneath it. Reduced motion / no Lenis = a plain instant jump. See `src/lib/jump.ts`.
 
 Rules ledger for v4: `docs/MOTION-RULES.md` §2 (v4 rows). Still waiting on content: case-study galleries, honest metrics, the portrait, client logos (#18–21 in the v4 proposal).
 

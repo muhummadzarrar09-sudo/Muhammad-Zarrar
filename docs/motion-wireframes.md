@@ -35,7 +35,7 @@ The homepage is a gallery walk. Motion is tied to the wheel (`scrub`, ease none)
 | `contrast` | Usual vs here |
 | `next-steps` | After you send it |
 | `manifesto-write` | Folio holds (280vh / 200vh phone). The write starts as the room settles into the pin and spans the hold at a readable pace; after the final line, a clay sign-off rule draws beneath it — the note's definitive DONE — leaving ~25vh of settled hold as a breath before release |
-| `brief-last` | The last room |
+| `closer` | The walk ends in an invitation — the form itself lives at `/brief` |
 
 ## Every route
 

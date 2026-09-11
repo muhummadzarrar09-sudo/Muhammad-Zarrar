@@ -4594,7 +4594,8 @@ html.has-motion-reduced .hero-floor {
 }
 
 /* ==========================================================================
-   THE BRIEF — qualifying landing. Personal to them. Hoped-for vs quoted.
+   THE BRIEF — shared question furniture (chips, sliders, quotes) used by the
+   /brief room, plus the home closer's landing copy.
    ========================================================================== */
 
 .hero-welcome {
@@ -4671,28 +4672,14 @@ html.has-motion-reduced .hero-floor {
   grid-template-columns: repeat(3, 1fr) !important;
 }
 
-.qualify-wrap {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  gap: 64px;
-  align-items: start;
-}
 
-.qualify-intro .sec-title {
-  margin-bottom: 22px;
-}
 
-.qualify-aside {
+.closer-pledge {
   margin-top: 22px;
   max-width: 46ch;
   font-size: 15px;
   line-height: 1.6;
   color: var(--text-2);
-}
-
-.qualify-card {
-  position: sticky;
-  top: 72px;
 }
 
 .q-fieldset {
@@ -4711,7 +4698,7 @@ html.has-motion-reduced .hero-floor {
   gap: 8px;
 }
 
-/* Tight cut — the qualify form's secondary chip rows: denser grid,
+/* Tight cut — the brief room's secondary chip rows: denser grid,
    quieter targets, so the primary question keeps the visual focus. */
 .q-chips-tight {
   gap: 6px;
@@ -4793,34 +4780,19 @@ html.has-motion-reduced .hero-floor {
   border-left-color: var(--ember-500);
 }
 
-.qualify-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0 20px;
-}
 
-.qualify-form .btn-lg {
-  min-height: 44px;
-}
 
 html.has-motion-reduced .hero-welcome,
-html.has-motion-reduced .contrast-row,
-html.has-motion-reduced .qualify-intro,
-html.has-motion-reduced .qualify-card {
+html.has-motion-reduced .contrast-row {
   opacity: 1;
   transform: none;
 }
 
 @media (max-width: 1020px) {
-  .qualify-wrap,
   .contrast-row,
-  .qualify-grid,
   .next-grid {
     grid-template-columns: 1fr !important;
     gap: 28px;
-  }
-  .qualify-card {
-    position: static;
   }
 }
 
@@ -4900,13 +4872,8 @@ html.has-motion-reduced .qualify-card {
   padding: 112px 0 !important;
 }
 
-.qualify-section {
-  padding-top: 120px !important;
-  padding-bottom: 140px !important;
-  border-top: 1px solid rgba(17, 17, 16, 0.12);
-}
 
-.qualify-hello {
+.closer-hello {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -4916,7 +4883,7 @@ html.has-motion-reduced .qualify-card {
   font-size: 14px;
 }
 
-.qualify-hello:hover {
+.closer-hello:hover {
   color: var(--ember-500);
   opacity: 0.7;
 }
@@ -4950,10 +4917,6 @@ html.has-motion-reduced .qualify-card {
   }
   .section {
     padding: 80px 0 !important;
-  }
-  .qualify-section {
-    padding-top: 80px !important;
-    padding-bottom: 96px !important;
   }
 }
 
@@ -5190,7 +5153,6 @@ html.has-motion-reduced .notch-body {
 /* Each room is a solid wall again. */
 html.has-motion .hero,
 html.has-motion .section,
-html.has-motion .qualify-section,
 html.has-motion .proof-strip,
 html.has-motion .page-hero {
   background-color: var(--ground-700) !important;
@@ -9464,8 +9426,10 @@ main {
 .wordmark-tag {
   flex: none;
   font-weight: 500;
-  font-size: 0.26em;
-  letter-spacing: 0.32em;
+  /* Was a flat 0.26em, which fell to ~5px on a phone — a smudge of grey
+     under the name rather than a line anyone could read. Floors at 9px. */
+  font-size: max(9px, 0.16em);
+  letter-spacing: 0.26em;
   color: inherit;
 }
 
@@ -9477,19 +9441,40 @@ body > .site-header .wordmark {
   font-size: clamp(12px, 1.55vw, 15px);
 }
 
+/* The footer's full lockup.
+   `width: max-content` + `white-space: nowrap` meant the row sized itself to
+   the glyphs and ignored its box: on narrow phones it either overhung the
+   gutters or sat as a squeezed, off-centre sticker while the tagline
+   collapsed to a hairline. It now fills its measure and scales to fit.
+
+   The measure is expressed in em, not px, so the lockup is one self-scaling
+   object: at any font-size the name row occupies the same 11.3em, and the
+   tagline below it stretches to exactly that width instead of running out to
+   the container edges. Measured from the shipped Montserrat files —
+   ZARRAR 4.471em + SOLUTIONS 6.162em + 0.52em of gaps + 0.2em bead
+   + 15 x 0.035em tracking = 11.16em, plus a hair for rounding. */
 .wordmark-full {
   display: flex;
-  width: max-content;
-  max-width: min(920px, 94%);
+  width: min(100%, 11.3em);
+  max-width: 100%;
   margin: 12px auto 48px;
-  font-size: clamp(1.35rem, 5.2vw, 4.5rem);
+  /* 6vw keeps ~28% of the measure as breathing room at every width: it clears
+     the 248px gutter at 320px and tops out at the 4.5rem cap past 1200px. */
+  font-size: clamp(1.05rem, 6vw, 4.5rem);
   letter-spacing: 0.035em;
+}
+
+.wordmark-full .wordmark-row {
+  justify-content: center;
 }
 
 @media (max-width: 760px) {
   .wordmark-full {
-    width: min(100%, 94vw);
     margin: 8px auto 36px;
+  }
+
+  .wordmark-full .wordmark-tagline {
+    margin-top: 0.5em;
   }
 }
 
@@ -9591,9 +9576,6 @@ body > .site-header .wordmark {
   top: calc(var(--header-offset) + 36px + var(--stack-i, 0) * 30px);
 }
 
-.qualify-card {
-  top: calc(var(--header-offset) + 16px);
-}
 
 .reading-progress {
   top: var(--header-offset);
@@ -9674,4 +9656,482 @@ body > .site-header .wordmark {
   .notfound {
     padding-top: calc(var(--header-offset) + 56px);
   }
+}
+
+/* ==========================================================================
+   ARRIVAL — the one-shot landing beat for a curtain jump.
+   `from`-only + backwards fill: if JS dies mid-jump nothing stays hidden.
+   ========================================================================== */
+
+@keyframes roomArrive {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+.is-arriving {
+  animation: roomArrive 0.46s var(--ease-emphatic) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-arriving {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   THE BRIEF ROOM — /brief
+   Typeform-styled, first-party. One question per screen, own shareable URL.
+   Reuses the house chips (.q-chip), slider (.q-slider) and quote plate
+   (.q-quote) so the brief and the walk speak the same language.
+   ========================================================================== */
+
+.brief-room {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  /* Pulled up under the fixed pill, so its top edge sits at viewport y=0 —
+     full 100svh, not 100svh minus the offset. */
+  min-height: 100svh;
+  margin-top: calc(-1 * var(--header-offset));
+  padding: calc(var(--header-offset) + clamp(28px, 5vw, 56px)) 0
+    clamp(28px, 5vw, 56px);
+  background: var(--ground-700);
+}
+
+.brief-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 var(--sp-7);
+}
+
+/* ---- Head: plate + count + hairline progress ---- */
+
+.brief-head-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+
+.brief-plate {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  color: var(--text-2);
+}
+
+.brief-count {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.brief-progress {
+  display: block;
+  height: 2px;
+  background: rgba(17, 17, 16, 0.12);
+  overflow: hidden;
+}
+
+.brief-progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+  transform-origin: left center;
+  transition: transform 0.42s var(--ease-emphatic);
+}
+
+/* ---- Stage: kicker, question, answer, actions ---- */
+
+.brief-stage {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(28px, 6vh, 64px) 0;
+}
+
+.brief-kicker {
+  margin: 0 0 var(--sp-3);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.brief-q {
+  margin: 0;
+  max-width: 18ch;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6.2vw, 3.6rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.024em;
+}
+
+.brief-hint {
+  margin: var(--sp-4) 0 0;
+  max-width: 46ch;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.brief-answer {
+  margin-top: clamp(24px, 4vh, 40px);
+}
+
+.brief-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.brief-chips-tight {
+  gap: 6px;
+}
+
+.brief-chips .q-chip {
+  font-size: 0.95rem;
+  min-height: 48px;
+  padding: 10px 18px;
+}
+
+.brief-chips-tight .q-chip {
+  font-size: 0.9rem;
+  min-height: 44px;
+  padding: 8px 16px;
+}
+
+/* Text + inputs keep the house underline treatment. */
+
+.brief-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 var(--sp-6);
+}
+
+.brief-field {
+  display: block;
+  margin-bottom: var(--sp-5);
+}
+
+.brief-label {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.brief-optional {
+  font-size: 0.66rem;
+  font-weight: 520;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: var(--text-2);
+}
+
+.brief-field input {
+  width: 100%;
+  padding: var(--sp-3) var(--sp-1);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--hairline-strong);
+  border-radius: 0;
+  font-family: inherit;
+  font-size: 1.05rem;
+  color: var(--text);
+  transition: border-color var(--dur-2) var(--ease-standard);
+}
+
+.brief-field input::placeholder {
+  color: var(--text-3);
+}
+
+.brief-field input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.brief-text {
+  width: 100%;
+  min-height: 132px;
+  padding: var(--sp-4);
+  background: transparent;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text);
+  resize: vertical;
+  transition: border-color var(--dur-2) var(--ease-standard);
+}
+
+.brief-text::placeholder {
+  color: var(--text-3);
+}
+
+.brief-text:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.brief-error {
+  margin: var(--sp-4) 0 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+.brief-error::before {
+  content: "\25B2";
+  margin-right: var(--sp-2);
+  font-size: 0.7em;
+}
+
+/* ---- Actions ---- */
+
+.brief-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: clamp(24px, 4vh, 40px);
+}
+
+.brief-note {
+  font-size: 0.8rem;
+  color: var(--text-2);
+}
+
+.brief-back {
+  margin-right: auto;
+}
+
+.brief-next {
+  min-height: 48px;
+  padding-inline: var(--sp-8);
+}
+
+/* ---- Foot note ---- */
+
+.brief-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding-top: var(--sp-5);
+  border-top: 1px solid rgba(17, 17, 16, 0.12);
+}
+
+.brief-foot p {
+  max-width: 52ch;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.brief-hello {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--tap-min);
+  font-size: 0.88rem;
+  color: var(--ember-500);
+}
+
+.brief-hello:hover {
+  opacity: 0.7;
+}
+
+/* ---- Sent state ---- */
+
+.brief-done {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 46ch;
+}
+
+.brief-done-mark {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: var(--sp-5);
+  border: 1px solid var(--success);
+  background: var(--success-quiet);
+  border-radius: 50%;
+  color: var(--success);
+}
+
+.brief-done-note {
+  margin-top: var(--sp-4);
+  font-size: 0.85rem;
+  color: var(--text-2);
+}
+
+.brief-done-note a {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .brief-shell {
+    padding: 0 var(--sp-5);
+  }
+
+  .brief-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .brief-actions .btn {
+    flex: 1 1 auto;
+  }
+
+  .brief-back {
+    margin-right: 0;
+    order: 3;
+  }
+}
+
+/* ==========================================================================
+   HOME CLOSER — the walk ends in an invitation, not a wall of fields.
+   ========================================================================== */
+
+.closer-section {
+  border-top: 1px solid rgba(17, 17, 16, 0.12);
+}
+
+.closer-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: start;
+}
+
+.closer-copy .sec-title {
+  margin-bottom: var(--sp-5);
+}
+
+.closer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-6);
+}
+
+.closer-actions .closer-hello {
+  margin-top: 0;
+}
+
+.closer-note {
+  margin-top: var(--sp-5);
+  max-width: 44ch;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.closer-aside {
+  padding-top: var(--sp-3);
+}
+
+.closer-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(17, 17, 16, 0.12);
+}
+
+.closer-steps li {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: var(--sp-4);
+  align-items: baseline;
+  padding: var(--sp-4) 0;
+  border-bottom: 1px solid rgba(17, 17, 16, 0.12);
+}
+
+.closer-no {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--gold);
+}
+
+.closer-q {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+@media (max-width: 1020px) {
+  .closer-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   SKIP CONTROLS — hero floor and footer ring are buttons now.
+   ========================================================================== */
+
+button.hero-floor {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  color: var(--text-2);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  -webkit-tap-highlight-color: var(--tap-highlight);
+}
+
+.hero-floor-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Beats `.hero-minimal .hero-floor { gap: 0 }`, which was tuned for the old
+   crank-only hint and leaves the label welded to the ring. */
+.hero-minimal button.hero-floor {
+  gap: 14px;
+  text-align: center;
+}
+
+button.hero-floor:hover .hero-floor-label,
+button.hero-floor:focus-visible .hero-floor-label {
+  color: var(--text);
+}
+
+button.footer-top {
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: var(--tap-highlight);
 }

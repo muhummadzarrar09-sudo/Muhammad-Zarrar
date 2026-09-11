@@ -171,30 +171,8 @@ export const WIREFRAMES: WireframeScene[] = [
   },
   /* manifesto-write lives in ./manifesto.ts — letters start as the
      folio walks in. CSS sticky holds. No GSAP pin. */
-  {
-    id: "brief-last",
-    note: "The last room dissolves in. Intro, then the card they fill.",
-    page: "/",
-    trigger: "#brief",
-    start: "top 92%",
-    end: "top 22%",
-    scrub: 1.05,
-    tweens: [
-      {
-        target: "#brief .qualify-intro",
-        from: { y: 32 },
-        to: { y: 0, ease: "none" },
-        duration: 0.55,
-      },
-      {
-        target: "#brief .qualify-card",
-        from: { y: 40, opacity: 0.16 },
-        to: { y: 0, opacity: 1, ease: "none" },
-        at: 0.12,
-        duration: 0.55,
-      },
-    ],
-  },
+  /* The qualifying form now lives on its own route at /brief — see
+     components/brief-room.tsx. The home closer just points there. */
   {
     id: "page-leave",
     note: "Inner pages: already in the title. The hero thins as the walk starts.",
