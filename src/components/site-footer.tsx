@@ -1,13 +1,8 @@
 import Link from "next/link";
 import { LogoMark } from "./logo";
 import { Wordmark } from "./wordmark";
-import {
-  WhatsAppIcon,
-  ArrowUpRightIcon,
-  ArrowUpIcon,
-  MailIcon,
-  PinIcon,
-} from "./icons";
+import { WhatsAppIcon, ArrowUpRightIcon, MailIcon, PinIcon } from "./icons";
+import { BackToTop } from "./jump-link";
 import { StudioClock } from "./studio-clock";
 import { SERVICES } from "@/content/services";
 import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, EMAIL, POSITIONING, waLink, DEFAULT_WA_MESSAGE } from "@/lib/site";
@@ -35,6 +30,7 @@ export function SiteFooter() {
             <Link href="/process">Process</Link>
             <Link href="/about">About</Link>
             <Link href="/notes">Field Notes</Link>
+            <Link href="/brief">The Brief</Link>
             <Link href="/free-audit">Free 5-Point Audit</Link>
             <Link href="/contact">Contact</Link>
             <Link href="/privacy">Privacy</Link>
@@ -81,14 +77,7 @@ export function SiteFooter() {
           <p className="footer-colophon">
             Set in Fraunces &amp; Inter · Self-hosted type · Zero trackers · Static HTML
           </p>
-          <a
-            href="#top"
-            className="footer-top"
-            aria-label="Back to top"
-            title="Back to top"
-          >
-            <ArrowUpIcon size={18} />
-          </a>
+          <BackToTop />
         </div>
       </div>
     </footer>

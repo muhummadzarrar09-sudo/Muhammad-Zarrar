@@ -175,3 +175,93 @@ export function quoteFit(
   if (need.max > 0 && budget.min > need.max) return "high";
   return "fit";
 }
+
+export type BriefValues = {
+  name: string;
+  business: string;
+  url: string;
+  problem: string;
+  whatsapp: string;
+  needId: string;
+  budgetId: string;
+  when: string;
+};
+
+export function plateCopy(
+  need: NeedOption | undefined,
+  budget: BudgetOption | undefined,
+  fit: ReturnType<typeof quoteFit>
+) {
+  if (!need && !budget) {
+    return {
+      kicker: "Your number, then ours",
+      body: "Pick what you need and what you hoped to pay. We'll show the honest neighborhood — before you send anything.",
+    };
+  }
+  if (need && !budget) {
+    return {
+      kicker: "What you walk away with",
+      body: `${need.get} Honest quotes for this usually land at ${need.quote}.`,
+    };
+  }
+  if (!need && budget) {
+    return {
+      kicker: "What you hoped for",
+      body: `${budget.label}. Now pick what you need — we'll tell you if that number can carry the work.`,
+    };
+  }
+  if (fit === "low") {
+    return {
+      kicker: "That's below what this costs to do well",
+      body: `You hoped for ${budget!.label}. For this, honest work here quotes ${need!.quote}. Send the brief anyway — we'll name the smallest path, or say no.`,
+    };
+  }
+  if (fit === "high") {
+    return {
+      kicker: "There's room to do this properly",
+      body: `You hoped for ${budget!.label}. ${need!.quote} is the usual neighborhood. We'll quote the real scope — not spend up to the ceiling.`,
+    };
+  }
+  if (fit === "fit") {
+    return {
+      kicker: "Your number is in the neighborhood",
+      body: `You hoped for ${budget!.label}. ${need!.get} The exact quote comes after we see the site.`,
+    };
+  }
+  return {
+    kicker: "We'll name the path",
+    body: need
+      ? `${need.get} If the budget is still open, the brief is enough — we'll recommend the smallest honest next step.`
+      : "Tell us what's going on. We'll tell you what walking out with the fix actually costs.",
+  };
+}
+
+export function composeBrief(values: BriefValues) {
+  const need = NEEDS.find((n) => n.id === values.needId);
+  const budget = BUDGETS.find((b) => b.id === values.budgetId);
+  const fit = quoteFit(need, budget);
+  const hoped = budget?.label ?? "—";
+  const quoted = need?.quote ?? "we'll name it after we see the site";
+  const gap =
+    fit === "low"
+      ? "Their hoped-for number is below the usual quote for this work."
+      : fit === "high"
+        ? "Their hoped-for number is above the usual quote — quote the real scope."
+        : fit === "fit"
+          ? "Hoped-for number is in the neighborhood of an honest quote."
+          : "Need or budget still open — recommend the smallest honest path.";
+
+  return [
+    `Hello Zarrar — ${values.name.trim()} from ${values.business.trim()} filled the brief on the site.`,
+    ``,
+    `Website: ${values.url.trim() || "I don't have one yet"}`,
+    `WhatsApp: ${values.whatsapp.trim()}`,
+    `What they need: ${need?.label ?? "—"}`,
+    `What they walk away with: ${need?.get ?? "—"}`,
+    `Budget they hoped for: ${hoped}`,
+    `Honest quote neighborhood: ${quoted}`,
+    `Fit: ${gap}`,
+    `When: ${values.when || "not said"}`,
+    `In their words: ${values.problem.trim() || "—"}`,
+  ].join("\n");
+}

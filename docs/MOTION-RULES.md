@@ -61,7 +61,7 @@ cursor always wins.**
 | RotatingText landed (3 words, 450ms) | `components/rotating-text.tsx` + globals | One cycle per entry, rests on final | SSR final word; reduced = static; keyframe never fills forward |
 | Stepper rail (derived progress) | `motion/stepper.ts` + process page | Scroll-derived, both directions | Rail aria-hidden; steps semantic; mobile hides rail, keeps steps |
 | ScrollStack deck (8 cards, 0.93 settle) | `motion/stack.ts` + services/[slug] | Wheel-scrubbed settle | Pure-CSS sticky = no-JS/reduced get the deck; JS scale desktop-only |
-| ElasticSlider budget (spring fill) | `components/qualify-form.tsx` + globals | Spring 170/13, one overshoot; 280ms readout pop | Native range (keyboard/touch/SR); unsure stays a chip; reduced = dead-set fill, no pop |
+| ElasticSlider budget (spring fill) | `components/brief-room.tsx` + globals | Spring 170/13, one overshoot; 280ms readout pop | Native range (keyboard/touch/SR); unsure stays a chip; reduced = dead-set fill, no pop |
 
 ## 3 · The ambient quota (v2 amendment)
 

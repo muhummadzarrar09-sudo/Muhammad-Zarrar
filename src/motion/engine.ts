@@ -8,6 +8,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 export type MotionHandle = {
   scrollTo: (target: string | number, opts?: { offset?: number }) => void;
+  /** Teleport, don't travel — see src/lib/jump.ts. No easing, no scrub. */
+  jumpTo: (target: string | number) => void;
   destroy: () => void;
 };
 
@@ -25,6 +27,7 @@ const reduced = () =>
 function proxy(slot: Live): MotionHandle {
   return {
     scrollTo: (target, opts) => slot.handle.scrollTo(target, opts),
+    jumpTo: (target) => slot.handle.jumpTo(target),
     destroy: () => {
       slot.refs = Math.max(0, slot.refs - 1);
       const snapshot = slot;
@@ -66,6 +69,13 @@ function bootMotion(pathname: string): MotionHandle {
     html.classList.remove("has-motion", "has-lenis");
     return {
       scrollTo: (target) => {
+        if (typeof target === "string") {
+          document.querySelector(target)?.scrollIntoView({ behavior: "auto" });
+        } else {
+          window.scrollTo({ top: target, behavior: "auto" });
+        }
+      },
+      jumpTo: (target) => {
         if (typeof target === "string") {
           document.querySelector(target)?.scrollIntoView({ behavior: "auto" });
         } else {
@@ -127,6 +137,17 @@ function bootMotion(pathname: string): MotionHandle {
   };
   window.addEventListener("motion:scrollTo", onScrollTo);
 
+  /* A jump skips the travel entirely. `force` lets it fire even while Lenis
+     thinks a scroll is in flight (mid-scrub pin release), and `immediate`
+     writes the position in one frame — which is what stops every pinned
+     scene between here and there from playing out on the way past. */
+  const onJumpTo = (event: Event) => {
+    const detail = (event as CustomEvent<string | number>).detail;
+    if (detail == null) return;
+    lenis.scrollTo(detail, { offset: -8, immediate: true, force: true });
+  };
+  window.addEventListener("motion:jumpTo", onJumpTo);
+
   // App Router swaps the page subtree before passive effect cleanup runs.
   // A pinned ScrollTrigger must release its spacer *before* that swap, or
   // GSAP can attempt to remove a pin node React has already removed.
@@ -147,9 +168,13 @@ function bootMotion(pathname: string): MotionHandle {
     scrollTo: (target, opts) => {
       lenis.scrollTo(target, { offset: opts?.offset ?? -8, duration: 1.15 });
     },
+    jumpTo: (target) => {
+      lenis.scrollTo(target, { offset: -8, immediate: true, force: true });
+    },
     destroy: () => {
       window.removeEventListener("load", onRefresh);
       window.removeEventListener("motion:scrollTo", onScrollTo);
+      window.removeEventListener("motion:jumpTo", onJumpTo);
       document.removeEventListener("click", onBeforeNavigate, true);
       destroyPointer();
       killWireframes();

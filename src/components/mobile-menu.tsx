@@ -119,7 +119,7 @@ export function MobileMenu() {
           </Link>
         </nav>
         <Link
-          href="/#brief"
+          href="/brief"
           className="btn btn-primary"
           onClick={() => setOpen(false)}
           tabIndex={open ? 0 : -1}
