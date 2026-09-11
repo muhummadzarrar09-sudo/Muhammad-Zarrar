@@ -2,8 +2,8 @@
  * Generates the branded OG image set (home + per-page variants, 1200x630).
  *
  * Pure Node — each card is composed as SVG and rasterised with @resvg/resvg-js
- * using the site's REAL self-hosted fonts (Fraunces display + Inter utility),
- * so a share card is typeset like the site, not like a system fallback.
+ * using the site's REAL self-hosted fonts (Fraunces display + Inter utility +
+ * Montserrat ExtraBold for the ZARRAR · SOLUTIONS lockup).
  *
  * Palette mirrors src/app/globals.css tokens. If a token changes there,
  * change it here and re-run:  node scripts/generate-assets.mjs
@@ -17,14 +17,14 @@ import { Resvg } from "@resvg/resvg-js";
 const ROOT = process.cwd();
 
 /* ---- Palette (mirror of globals.css) ---- */
-const PUTTY = "#C4C3B6"; // --ground-700 · the canvas
-const INK = "#111110"; // --ember-500   · headline
-const GRAPHITE = "#3F3E3B"; // --ember-400   · support text
-const FRAME = "rgba(17,17,16,0.30)"; // museum plate edge
-const HATCH = "rgba(17,17,16,0.14)"; // corner hatch motif
+const PUTTY = "#f3e4c7"; // --ground-700 · the canvas
+const INK = "#1a1412"; // --text / --ember-500
+const GRAPHITE = "#5a3328"; // --text-2
+const FRAME = "rgba(36,20,15,0.30)"; // museum plate edge
+const HATCH = "rgba(36,20,15,0.14)"; // corner hatch motif
+const GOLD = "#a3492f"; // --gold · clay bead
 
 /* ---- Brand assets & fonts ---- */
-const LOGO_SVG = path.join(ROOT, "public/images/logo-mark.svg");
 const FRAUNCES = await readFile(
   path.join(ROOT, "src/fonts/fraunces-latin-wght-normal.woff2"),
 );
@@ -33,6 +33,9 @@ const FRAUNCES_ITALIC = await readFile(
 );
 const INTER = await readFile(
   path.join(ROOT, "src/fonts/inter-latin-wght-normal.woff2"),
+);
+const MONTSERRAT = await readFile(
+  path.join(ROOT, "src/fonts/montserrat-latin-800-normal.woff2"),
 );
 
 /* Supersampled canvas: 2400x1260, rendered to 1200x630. */
@@ -51,7 +54,7 @@ const esc = (t) =>
 const TEXT_MAX_X = 2240;
 const TEXT_MAX_W = TEXT_MAX_X - TX;
 
-const fontFiles = [FRAUNCES, FRAUNCES_ITALIC, INTER];
+const fontFiles = [FRAUNCES, FRAUNCES_ITALIC, INTER, MONTSERRAT];
 
 const measureCache = new Map();
 
@@ -81,6 +84,25 @@ function hash(s) {
   return h;
 }
 
+/** ZARRAR · SOLUTIONS — ExtraBold + clay bead. Letters in `fill`, bead in gold. */
+function lockupSvg(x, y, size, fill) {
+  const ls = Math.round(size * 0.045 * 10) / 10;
+  const spec = { family: "Montserrat", weight: 800, ls, size };
+  const zW = measureText("ZARRAR", spec);
+  const gap = size * 0.28;
+  const beadR = Math.max(4, size * 0.09);
+  const beadX = x + zW + gap;
+  const solX = beadX + beadR + gap;
+  const capMid = y - size * 0.32;
+  return (
+    `<g font-family="Montserrat" font-weight="800" font-size="${size}" letter-spacing="${ls}" fill="${fill}">` +
+    `<text x="${x}" y="${y}">ZARRAR</text>` +
+    `<circle cx="${beadX}" cy="${capMid}" r="${beadR}" fill="${GOLD}"/>` +
+    `<text x="${solX}" y="${y}">SOLUTIONS</text>` +
+    `</g>`
+  );
+}
+
 /** Largest size ≤ base that keeps every line inside TEXT_MAX_W. */
 function fitSize(lines, spec, base) {
   let size = base;
@@ -98,7 +120,7 @@ async function markInner() {
   return "data:image/png;base64," + png.toString("base64");
 }
 
-/** Branded OG card: putty gallery wall, framed, clay mark, Fraunces headline.
+/** Branded OG card: cream gallery wall, framed, clay mark, Fraunces headline.
  * Root carries width/height at FINAL size with a 2x viewBox — the supersample
  * is native SVG scaling (resvg ignores fitTo when fontFiles is set). */
 function ogSvg({ eyebrow, lines, sub }, mark) {
@@ -115,23 +137,28 @@ function ogSvg({ eyebrow, lines, sub }, mark) {
     parts.push(`<line x1="${x}" y1="${H}" x2="${x + 90}" y2="${H - 90}"/>`);
   }
   parts.push(`</g>`);
-  /* clay ZS monogram — the only colour on the card */
+  /* clay ZS monogram — the only colour on the card besides the bead */
   parts.push(
     `<g transform="translate(110 ${(H - MARK) / 2})">` +
       `<image href="${mark}" x="0" y="0" width="${MARK}" height="${MARK}"/>` +
       `</g>`,
   );
   /* fitted sizes — measured with the real fonts, never allowed to cross the frame */
-  const eyebrowSize = fitSize([eyebrow], { family: "Inter", weight: 600, ls: 10 }, 34);
   const headlineSize = fitSize(lines, { family: "Fraunces", weight: 620, ls: -1 }, 118);
   const subSize = fitSize(sub, { family: "Fraunces", weight: 400, italic: true, ls: 0 }, 54);
 
-  /* eyebrow — Inter caps label */
-  parts.push(
-    `<text x="${TX}" y="262" font-family="Inter" font-weight="600" font-size="${eyebrowSize}" letter-spacing="10" fill="${GRAPHITE}">${esc(eyebrow)}</text>`,
-  );
-  /* headline — Fraunces display, ink */
-  let y = 424;
+  /* brand lockup — live Montserrat ExtraBold, clay bead */
+  parts.push(lockupSvg(TX, 248, 42, INK));
+
+  /* page label — Inter caps, skipped on the home card (the lockup is the name) */
+  let y = 400;
+  if (eyebrow) {
+    const eyebrowSize = fitSize([eyebrow], { family: "Inter", weight: 600, ls: 10 }, 32);
+    parts.push(
+      `<text x="${TX}" y="318" font-family="Inter" font-weight="600" font-size="${eyebrowSize}" letter-spacing="10" fill="${GRAPHITE}">${esc(eyebrow)}</text>`,
+    );
+    y = 454;
+  }
   for (const line of lines) {
     parts.push(
       `<text x="${TX}" y="${y}" font-family="Fraunces" font-weight="620" font-size="${headlineSize}" letter-spacing="-1" fill="${INK}">${esc(line)}</text>`,
@@ -163,7 +190,7 @@ function ogSvg({ eyebrow, lines, sub }, mark) {
 const OG_PAGES = [
   {
     out: "og.png",
-    eyebrow: "ZARRAR.SOLUTIONS",
+    eyebrow: "",
     lines: ["We don't just make websites."],
     sub: ["We audit broken digital flows —", "and build the systems that fix them."],
   },

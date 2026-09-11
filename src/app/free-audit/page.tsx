@@ -7,10 +7,10 @@ import { Reveal } from "@/components/reveal";
 import { SelfCheck } from "@/components/self-check";
 import { DTag, GradeRing } from "@/components/diagram";
 import { Scribble } from "@/components/scribble";
-import { ScrambleText } from "@/components/scramble-text";
 import BorderGlow from "@/components/border-glow";
 import { JsonLd } from "@/components/jsonld";
 import { WhatsAppIcon } from "@/components/icons";
+import { PageHero, SectionIntro } from "@/components/page-hero";
 
 export const metadata = pageMeta({
   title: "Free 5-Point Website Audit — Findings in 24 Hours",
@@ -30,34 +30,34 @@ export default function FreeAuditPage() {
         ])}
       />
 
-      <section className="page-hero hero-blueprint" id="top" data-tl="Top">
-        <div className="container">
-          <p className="stamp" aria-hidden="true">24H REPLY</p>
-          <Reveal>
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <span aria-current="page">Free 5-Point Audit</span>
-            </nav>
-            <ScrambleText className="eyebrow" text="Free · replies within 24 hours" />
-            <h1>Free 5-Point <em><Scribble>Mini-Audit.</Scribble></em></h1>
-            <p className="lede">
-              Send us your website link — or tell us you don&rsquo;t have one
-              yet. Within 24 hours we reply with five findings about your
-              business&rsquo;s digital front door. No spam, no follow-up
-              sequence. You get findings, you decide.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        blueprint
+        crumbs={[
+          { href: "/", label: "Home" },
+          { label: "Free 5-Point Audit" },
+        ]}
+        kicker="The five-point"
+        stamp="24h reply"
+        title={
+          <>
+            Free 5-Point{" "}
+            <em>
+              <Scribble>Mini-Audit.</Scribble>
+            </em>
+          </>
+        }
+        lede="Send us your website link — or tell us you don’t have one yet. Within 24 hours we reply with five findings about your business’s digital front door. No spam, no follow-up sequence. You get findings, you decide."
+      />
 
       <section className="section">
         <div className="container service-detail-grid">
           <div>
             <Reveal>
-              <h2 className="subsection-title">
-                What we check
-              </h2>
+              <SectionIntro
+                index="01"
+                label="What we check"
+                title="Five things. In writing."
+              />
               <ol className="point-list" data-stagger>
                 {FREE_AUDIT_POINTS.map((point) => (
                   <li key={point.name}>
@@ -70,10 +70,8 @@ export default function FreeAuditPage() {
               </ol>
             </Reveal>
 
-            <Reveal className="inset-panel" >
-              <h2 className="panel-title">
-                Want the deep version?
-              </h2>
+            <Reveal className="inset-panel">
+              <h2 className="panel-title">Want the deep version?</h2>
               <p className="card-body">
                 The full{" "}
                 <Link href="/services/website-audit">
@@ -88,10 +86,13 @@ export default function FreeAuditPage() {
           </div>
 
           <Reveal id="request">
-            <BorderGlow tone="glass" className="border-glow-card--form" coneSpread={34} glowIntensity={0.85}>
-              <h2 className="form-title">
-                Request your mini-audit
-              </h2>
+            <BorderGlow
+              tone="glass"
+              className="border-glow-card--form"
+              coneSpread={34}
+              glowIntensity={0.85}
+            >
+              <h2 className="form-title">Request your mini-audit</h2>
               <p className="form-sub">
                 Fills in a WhatsApp message to us — nothing is stored anywhere.
               </p>
@@ -116,7 +117,8 @@ export default function FreeAuditPage() {
                 <div>
                   <p className="sample-finding">71 files block first paint</p>
                   <p className="sample-evidence">
-                    theme.css · builder-runtime.js · 3 font CDNs · slider.js · chat-widget.js
+                    theme.css · builder-runtime.js · 3 font CDNs · slider.js ·
+                    chat-widget.js
                   </p>
                 </div>
               </li>
@@ -127,7 +129,7 @@ export default function FreeAuditPage() {
                     Google receives an empty shell
                   </p>
                   <p className="sample-evidence">
-                    {"<div id=\"root\"></div> — 0 words in the raw HTML"}
+                    {'<div id="root"></div> — 0 words in the raw HTML'}
                   </p>
                 </div>
               </li>
@@ -150,16 +152,20 @@ export default function FreeAuditPage() {
         </div>
       </section>
 
-      <section className="section-tight" style={{ paddingTop: 0 }} aria-labelledby="selfcheck-heading">
+      <section
+        className="section-tight"
+        style={{ paddingTop: 0 }}
+        aria-labelledby="selfcheck-heading"
+      >
         <div className="container">
-          <Reveal className="section-head">
-            <h2 id="selfcheck-heading">
-              The 10-second self-check
-            </h2>
-            <p className="lede">
-              Tap what sounds familiar. No email, no score theater — just a
-              straight read on whether the mini-audit is worth your link.
-            </p>
+          <Reveal>
+            <SectionIntro
+              index="02"
+              label="Self-check"
+              title="The 10-second read"
+              lede="Tap what sounds familiar. No email, no score theater — just a straight read on whether the mini-audit is worth your link."
+              headingId="selfcheck-heading"
+            />
           </Reveal>
           <Reveal>
             <SelfCheck />
@@ -167,20 +173,34 @@ export default function FreeAuditPage() {
         </div>
       </section>
 
-      <section className="section-tight" style={{ paddingTop: 0 }} aria-hidden="true">
+      <section
+        className="section-tight"
+        style={{ paddingTop: 0 }}
+        aria-hidden="true"
+      >
         <div className="container">
           <p className="orn-asterism">&#10087;</p>
         </div>
       </section>
 
-      <section className="section-tight" style={{ paddingTop: 0 }} aria-label="Direct WhatsApp">
+      <section
+        className="section-tight"
+        style={{ paddingTop: 0 }}
+        aria-label="Direct WhatsApp"
+      >
         <div className="container">
-          <Reveal className="inset-panel" >
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 18, alignItems: "center", justifyContent: "space-between" }}>
+          <Reveal className="inset-panel">
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 18,
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
               <div>
-                <h2 className="panel-title">
-                  Or just WhatsApp us
-                </h2>
+                <h2 className="panel-title">Or just WhatsApp us</h2>
                 <p className="card-body">
                   No form needed. Say hello, send your link, we&rsquo;ll take
                   it from there. Number: {WHATSAPP_DISPLAY}

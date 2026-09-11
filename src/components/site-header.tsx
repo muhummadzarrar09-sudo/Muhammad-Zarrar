@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/content/site-content";
@@ -8,16 +9,31 @@ import { MobileMenu } from "./mobile-menu";
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    let ticking = false;
+    const update = () => {
+      const next = window.scrollY > 16;
+      setScrolled((prev) => (prev === next ? prev : next));
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="site-header">
+    <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="container">
         <div className="header-inner">
           <Link href="/" className="brand" aria-label="Zarrar.Solutions — home">
-            <LogoMark size={34} />
-            <span className="brand-name">
-              Zarrar<span className="brand-dot">.Solutions</span>
-            </span>
+            <LogoMark size={28} />
           </Link>
 
           <nav className="desktop-nav" aria-label="Primary">

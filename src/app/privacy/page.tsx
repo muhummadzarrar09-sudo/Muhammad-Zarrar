@@ -2,10 +2,10 @@ import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { EMAIL } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
-import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { PrivacyLive } from "@/components/privacy-live";
 import { ProofStrip } from "@/components/proof-strip";
+import { PageHero } from "@/components/page-hero";
 
 export const metadata = pageMeta({
   title: "Privacy Policy — No Trackers, No Nonsense. Verify it.",
@@ -23,27 +23,24 @@ export default function PrivacyPage() {
           { name: "Privacy", path: "/privacy" },
         ])}
       />
-      <section className="page-hero">
-        <div className="container">
-          <Reveal>
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <span aria-current="page">Privacy</span>
-            </nav>
-            <ScrambleText className="eyebrow" text="Plain language · last updated August 2026 · verifiable in DevTools" />
-            <h1>Privacy, the way we build: <em>nothing we don&apos;t need.</em></h1>
-            <p className="lede">
-              We sell sites that respect their visitors. Ours is built the
-              same way. Here&apos;s the entire data story — it&apos;s short,
-              because there&apos;s almost nothing to tell. And you can verify it live.
-            </p>
-            <div style={{ marginTop: 24, maxWidth: 560 }}>
-              <PrivacyLive />
-            </div>
-          </Reveal>
+      <PageHero
+        compact
+        crumbs={[
+          { href: "/", label: "Home" },
+          { label: "Privacy" },
+        ]}
+        kicker="Plain language · August 2026"
+        title={
+          <>
+            Privacy, the way we build: <em>nothing we don&apos;t need.</em>
+          </>
+        }
+        lede="We sell sites that respect their visitors. Ours is built the same way. Here’s the entire data story — it’s short, because there’s almost nothing to tell. And you can verify it live."
+      >
+        <div style={{ marginTop: 24, maxWidth: 560 }}>
+          <PrivacyLive />
         </div>
-      </section>
+      </PageHero>
 
       <ProofStrip />
 
@@ -58,8 +55,8 @@ export default function PrivacyPage() {
                 behind the forms. The forms on this site don&apos;t submit
                 your details to a server — they open WhatsApp on your own
                 device with a pre-filled message, and you press send. What you
-                type never touches our infrastructure. No service worker caches your form data.
-                No localStorage. Nothing.
+                type never touches our infrastructure. No service worker caches
+                your form data. No localStorage. Nothing.
               </p>
             </Reveal>
             <Reveal>
@@ -68,13 +65,16 @@ export default function PrivacyPage() {
                 Two, and only two. Our hosting provider sees standard access
                 logs (IP address, page requested, browser type) the way any
                 web server does — used to serve the page, not to profile you.
-                Logs rotate and are not mined. And if you contact us, WhatsApp or your email provider handles
-                that conversation under their policies. We keep our side of
-                those conversations as ordinary business correspondence.
+                Logs rotate and are not mined. And if you contact us, WhatsApp
+                or your email provider handles that conversation under their
+                policies. We keep our side of those conversations as ordinary
+                business correspondence.
               </p>
               <p className="muted" style={{ marginTop: 12 }}>
-                Open DevTools → Network → reload. You&apos;ll see 12 requests, all to this domain.
-                No google-analytics.com, no facebook.net, no doubleclick. That&apos;s not a claim — it&apos;s a network log you can screenshot.
+                Open DevTools → Network → reload. You&apos;ll see 12 requests,
+                all to this domain. No google-analytics.com, no facebook.net,
+                no doubleclick. That&apos;s not a claim — it&apos;s a network
+                log you can screenshot.
               </p>
             </Reveal>
             <Reveal>
@@ -94,16 +94,19 @@ export default function PrivacyPage() {
                 your hosting, your accounts. Access we&apos;re given for a
                 project is used for the project and handed back at the end.
                 Local-first ownership isn&apos;t a slogan — it&apos;s the
-                default. No rented themes, no per-seat fees, no lock-in. You own the code on full payment.
+                default. No rented themes, no per-seat fees, no lock-in. You
+                own the code on full payment.
               </p>
             </Reveal>
             <Reveal>
               <h2>Why no analytics? How do you improve?</h2>
               <p>
-                We audit with real devices, real Pakistani 4G, and real user flows — not with
-                dashboards. Analytics tells you what happened. An audit tells you why. We&apos;d rather
-                be accurate once than averaged forever. If you want analytics on your site, we&apos;ll
-                add privacy-respecting, self-hosted Plausible or no-analytics at all — your call, in writing.
+                We audit with real devices, real Pakistani 4G, and real user
+                flows — not with dashboards. Analytics tells you what happened.
+                An audit tells you why. We&apos;d rather be accurate once than
+                averaged forever. If you want analytics on your site, we&apos;ll
+                add privacy-respecting, self-hosted Plausible or no-analytics
+                at all — your call, in writing.
               </p>
             </Reveal>
             <Reveal>
@@ -111,8 +114,9 @@ export default function PrivacyPage() {
               <p>
                 Anything unclear, email{" "}
                 <Link href={`mailto:${EMAIL}`}>{EMAIL}</Link>. We&apos;ll
-                answer in the same plain language this page uses. And if you find a tracker we missed,
-                we&apos;ll fix it and credit you publicly.
+                answer in the same plain language this page uses. And if you
+                find a tracker we missed, we&apos;ll fix it and credit you
+                publicly.
               </p>
             </Reveal>
           </div>

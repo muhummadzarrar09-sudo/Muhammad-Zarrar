@@ -2,12 +2,11 @@ import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { PROCESS_STEPS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
-import { ScrambleText } from "@/components/scramble-text";
-import { Placard } from "@/components/placard";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { SealCheckIcon } from "@/components/icons";
 import { PhaseGlyph } from "@/components/phase-glyph";
+import { PageHero, SectionIntro } from "@/components/page-hero";
 
 export const metadata = pageMeta({
   title: "Our Process — Audit, Findings, Build, Launch",
@@ -27,30 +26,37 @@ export default function ProcessPage() {
         ])}
       />
 
-      <section className="page-hero" id="top" data-tl="Top">
-        <div className="container">
-          <p className="stamp" aria-hidden="true">EVIDENCE FIRST</p>
-          <Reveal>
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <span aria-current="page">Process</span>
-            </nav>
-            <ScrambleText className="eyebrow" text="Process" />
-            <h1>
-              Four phases. <em>Honest timelines.</em>
-            </h1>
-            <p className="lede">
-              No mystery phases, no &ldquo;we&rsquo;ll get back to you.&rdquo;
-              This is the whole pipeline, with the real numbers attached.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        crumbs={[
+          { href: "/", label: "Home" },
+          { label: "Process" },
+        ]}
+        kicker="The pipeline"
+        stamp="Evidence first"
+        title={
+          <>
+            Four phases. <em>Honest timelines.</em>
+          </>
+        }
+        lede="No mystery phases, no “we’ll get back to you.” This is the whole pipeline, with the real numbers attached."
+      />
 
-      <section className="section" id="phases" data-tl="Phases" aria-label="Process phases">
+      <section
+        className="section"
+        id="phases"
+        data-tl="Phases"
+        aria-label="Process phases"
+      >
         <div className="container">
-          <Placard no="A" title="The Pipeline" medium="Four phases, honest" />
+          <SectionIntro
+            index="01"
+            label="The pipeline"
+            title={
+              <>
+                Audit first. <em>Then we build.</em>
+              </>
+            }
+          />
           <div className="stepper">
             <div className="stepper-rail" aria-hidden="true">
               <span className="stepper-track">
@@ -75,13 +81,15 @@ export default function ProcessPage() {
                     </h3>
                     <span className="ph-time">{step.timeline}</span>
                     <p>{step.detail}</p>
-                    <ul className="checklist" data-stagger style={{ marginTop: 20 }}>
+                    <ul
+                      className="checklist"
+                      data-stagger
+                      style={{ marginTop: 20 }}
+                    >
                       {step.deliverables.map((d) => (
                         <li key={d}>
                           <SealCheckIcon size={16} />
-                          <span>
-                            {d}
-                          </span>
+                          <span>{d}</span>
                         </li>
                       ))}
                     </ul>
@@ -92,9 +100,7 @@ export default function ProcessPage() {
           </div>
 
           <Reveal className="inset-panel process-after">
-            <h2 className="panel-title">
-              After launch: optional care plan
-            </h2>
+            <h2 className="panel-title">After launch: optional care plan</h2>
             <p className="panel-body">
               Hosting, updates, small changes within 48 hours, and a
               plain-language monthly report — from PKR 20,000/month. Or
@@ -110,6 +116,7 @@ export default function ProcessPage() {
       </section>
 
       <CtaBand
+        plate="The pipeline"
         headline="Phase one starts with a link."
         body="Send your website and the free 5-point mini-audit lands within 24 hours. The paid audit follows in 48 — then you've seen the whole pipeline before spending a rupee on a build."
         primaryHref="/free-audit"

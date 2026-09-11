@@ -7,12 +7,12 @@ import { SERVICES, getService } from "@/content/services";
 import { FaqAccordion } from "@/components/faq";
 import { JsonLd } from "@/components/jsonld";
 import { Reveal } from "@/components/reveal";
-import { ScrambleText } from "@/components/scramble-text";
 import { CtaBand } from "@/components/cta-band";
 import { SealCheckIcon, ArrowRightIcon } from "@/components/icons";
 import { ServiceMotif } from "@/components/service-motif";
 import { ServiceFigure } from "@/components/diagram";
 import { SITE_URL } from "@/lib/site";
+import { PageHero, SectionIntro } from "@/components/page-hero";
 
 type RouteParams = { slug: string };
 
@@ -95,23 +95,18 @@ export default async function ServiceDetailPage({
         ])}
       />
 
-      <section className={slug === "website-audit" ? "page-hero hero-blueprint" : "page-hero"} id="top">
-        <div className="container">
-          <Reveal>
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <Link href="/services">Services</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <span aria-current="page">{service.name}</span>
-            </nav>
-            <ScrambleText className="eyebrow" text="Service" />
-            <h1>{service.name}</h1>
-            <p className="lede">{service.lead}</p>
-          </Reveal>
-          <ServiceMotif slug={slug} />
-        </div>
-      </section>
+      <PageHero
+        blueprint={slug === "website-audit"}
+        crumbs={[
+          { href: "/", label: "Home" },
+          { href: "/services", label: "Services" },
+          { label: service.name },
+        ]}
+        kicker="Service"
+        title={service.name}
+        lede={service.lead}
+        motif={<ServiceMotif slug={slug} />}
+      />
 
       <section className="section">
         <div className="container service-detail-grid">
@@ -203,13 +198,14 @@ export default async function ServiceDetailPage({
           aria-labelledby="deck-heading"
         >
           <div className="container">
-            <Reveal className="section-head">
-              <ScrambleText className="eyebrow" text="The full deck" />
-              <h2 id="deck-heading">What we check, in order.</h2>
-              <p className="lede">
-                Every audit walks the same deck, in the same order — so
-                nothing hides behind a summary paragraph.
-              </p>
+            <Reveal>
+              <SectionIntro
+                index="01"
+                label="The full deck"
+                title="What we check, in order."
+                lede="Every audit walks the same deck, in the same order — so nothing hides behind a summary paragraph."
+                headingId="deck-heading"
+              />
             </Reveal>
             <div className="stack-deck">
               {service.included.map((item, i) => (
@@ -230,6 +226,7 @@ export default async function ServiceDetailPage({
       )}
 
       <CtaBand
+        plate="The work"
         headline="Start with evidence, not a guess."
         body={`The audit tells us exactly what your business needs — then ${service.name.toLowerCase()} gets priced in writing. Any audit fee is credited toward the build.`}
         primaryHref="/free-audit"

@@ -2,12 +2,12 @@ import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { NOTES } from "@/content/notes";
 import { Reveal } from "@/components/reveal";
-import { ScrambleText } from "@/components/scramble-text";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { ArrowRightIcon } from "@/components/icons";
 import { Scribble } from "@/components/scribble";
-import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { SITE_URL } from "@/lib/site";
+import { PageHero } from "@/components/page-hero";
 
 export const metadata = pageMeta({
   title: "Field Notes — Short, Honest Write-ups From Real Audits",
@@ -45,24 +45,22 @@ export default function NotesIndexPage() {
         ])}
       />
 
-      <section className="page-hero" id="top" data-tl="Top">
-        <div className="container">
-          <Reveal>
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="sep" aria-hidden="true">/</span>
-              <span aria-current="page">Field Notes</span>
-            </nav>
-            <ScrambleText className="eyebrow" text="Field Notes" />
-            <h1>Evidence, <em><Scribble>written down.</Scribble></em></h1>
-            <p className="lede">
-              Short notes from real audits and real builds. No growth-hacking,
-              no listicles — what we found, what it cost the business, and
-              what the fix was.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        crumbs={[
+          { href: "/", label: "Home" },
+          { label: "Field Notes" },
+        ]}
+        kicker="Field notes"
+        title={
+          <>
+            Evidence,{" "}
+            <em>
+              <Scribble>written down.</Scribble>
+            </em>
+          </>
+        }
+        lede="Short notes from real audits and real builds. No growth-hacking, no listicles — what we found, what it cost the business, and what the fix was."
+      />
 
       <section className="section">
         <div className="container">
@@ -74,7 +72,9 @@ export default function NotesIndexPage() {
                   className="index-row"
                   data-spotlight
                 >
-                  <span className="idx-no">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="idx-no">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   <div>
                     <h3 className="idx-title">{note.title}</h3>
                     <p className="idx-sub">{note.excerpt}</p>
@@ -93,7 +93,8 @@ export default function NotesIndexPage() {
       </section>
 
       <CtaBand
-        headline={`Recognize your site in these notes?`}
+        plate="Field notes"
+        headline="Recognize your site in these notes?"
         body="That's not a coincidence — these patterns repeat across Pakistani business sites. The free 5-point mini-audit tells you which ones are yours."
         primaryHref="/free-audit"
         primaryLabel="Get your free audit"
