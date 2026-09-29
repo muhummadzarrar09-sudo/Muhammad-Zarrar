@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { pageMeta } from "@/lib/seo";
 import {
   CONTRAST,
@@ -37,7 +38,7 @@ export default function HomePage() {
           </div>
           <div className="hero-promise hero-cluster">
             <h1 className="hero-promise-title">You leave <em><Scribble>understood</Scribble></em></h1>
-            <h3 className="hero-promise-subtitle">— not pitched.</h3>
+            <h2 className="hero-promise-subtitle">— not pitched.</h2>
           </div>
           <svg
             className="hero-code-slash"
@@ -180,14 +181,13 @@ export default function HomePage() {
         aria-label="A pause"
       >
         <div className="exhibit-stage">
-          <img
+          <Image
             src="/images/gallery/arch.jpg"
-            alt=""
+            alt="Zarrar.Solutions — audit-led digital systems studio"
             className="exhibit-canvas grade"
-            loading="lazy"
-            decoding="async"
             width={1920}
             height={1080}
+            priority
           />
           <div className="exhibit-copy">
             <Placard no="02" title="A Pause" medium="Breath on canvas" tone="dark" />
@@ -207,7 +207,7 @@ export default function HomePage() {
                 <span className="type-out" aria-hidden="true" />
               </p>
               <Link className="notch-scroll" href="/brief">
-                Write the brief
+                Start your brief
               </Link>
             </div>
           </div>
@@ -234,13 +234,11 @@ export default function HomePage() {
             {OUTCOMES.map((item) => (
               <figure className="vignette results-vignette" key={item.title}>
                 <div className="vignette-plaque results-vignette-plaque">
-                  <img
+                  <Image
                     src={item.src}
-                    alt=""
+                    alt={item.title}
                     width={400}
                     height={400}
-                    loading="lazy"
-                    decoding="async"
                     className="results-vignette-image"
                   />
                 </div>
@@ -358,7 +356,7 @@ export default function HomePage() {
             <div className="closer-actions">
               <Link href="/brief" className="btn btn-primary btn-star" data-magnetic>
                 <span className="btn-star-ring" aria-hidden="true" />
-                Write your brief
+                Start your brief
               </Link>
               <a
                 href={waLink(

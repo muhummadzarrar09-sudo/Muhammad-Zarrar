@@ -124,7 +124,7 @@ export function MobileMenu() {
           onClick={() => setOpen(false)}
           tabIndex={open ? 0 : -1}
         >
-          Write your brief
+          Start your brief
         </Link>
         <p className="mobile-panel-note">
           You talk to the builder · Islamabad &amp; Rawalpindi

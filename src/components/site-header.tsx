@@ -64,7 +64,7 @@ export function SiteHeader() {
               data-magnetic
             >
               <span className="btn-star-ring" aria-hidden="true" />
-              Write your brief
+              Start your brief
             </Link>
             <MobileMenu />
           </div>
