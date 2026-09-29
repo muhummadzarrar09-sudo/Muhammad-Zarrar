@@ -42,11 +42,11 @@ const montserrat = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — Audit-Led Digital Systems · Islamabad & Rawalpindi`,
+    default: "Audit-Led Digital Systems · Islamabad & Rawalpindi",
     template: `%s · ${SITE_NAME}`,
   },
   description:
-    "We don't just make websites. We audit broken digital flows — and build the systems that fix them. Serving Islamabad, Rawalpindi, and Pakistan-wide.",
+    "We audit broken digital flows and build systems that fix them. Serving Islamabad, Rawalpindi, Pakistan. Get your free audit.",
   applicationName: SITE_NAME,
   authors: [{ name: "Muhammad Zarrar" }],
   creator: "Muhammad Zarrar",
