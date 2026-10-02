@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
 
 /**
- * Static export → deployable to Cloudflare Pages with zero server cost.
- * `npm run build` produces a fully static site in ./out
+ * Static export → deployable to Vercel and Cloudflare Pages with zero server cost.
+ * `npm run build` produces a fully static site in ./out. With trailingSlash
+ * disabled, page routes are emitted as `.html`; Vercel's `cleanUrls` setting
+ * and Cloudflare Pages' built-in clean-URL handling map `/path` to that file.
  */
 const nextConfig: NextConfig = {
   // Next 16 protects dev-only client chunks by origin. Arena proxies the

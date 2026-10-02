@@ -1,6 +1,7 @@
 /**
- * Zero-dependency preview server for the static export in ./out
- * (mirrors how Cloudflare Pages resolves clean URLs).
+ * Zero-dependency preview server for the static export in ./out.
+ * Resolves extensionless `.html` routes and the public/_redirects rules so
+ * deep links behave like the Vercel and Cloudflare deployments.
  * Run after `npm run build`: node scripts/preview.mjs
  */
 import http from "node:http";
@@ -27,6 +28,21 @@ const MIME = {
   ".webmanifest": "application/manifest+json; charset=utf-8",
 };
 
+const redirectText = await readFile(path.join(ROOT, "_redirects"), "utf8").catch(
+  () => "",
+);
+const redirects = redirectText
+  .split(/\r?\n/)
+  .map((line) => line.trim().split(/\s+/))
+  .filter(([source, destination, status]) =>
+    source && !source.startsWith("#") && destination && /^\d{3}$/.test(status),
+  )
+  .map(([source, destination, status]) => ({
+    source,
+    destination,
+    status: Number(status),
+  }));
+
 async function tryFile(filePath) {
   try {
     const s = await stat(filePath);
@@ -39,7 +55,18 @@ async function tryFile(filePath) {
 
 const server = http.createServer(async (req, res) => {
   try {
-    const urlPath = decodeURIComponent(new URL(req.url, "http://x").pathname);
+    const requestUrl = new URL(req.url, "http://x");
+    const urlPath = decodeURIComponent(requestUrl.pathname);
+    const redirect = redirects.find((rule) => rule.source === urlPath);
+    if (redirect) {
+      res.writeHead(redirect.status, {
+        Location: `${redirect.destination}${requestUrl.search}`,
+        "Cache-Control": "public, max-age=86400",
+      });
+      res.end();
+      return;
+    }
+
     const safePath = path.normalize(urlPath).replace(/^(\.\.[/\\])+/, "");
     const full = path.join(ROOT, safePath);
     if (!full.startsWith(ROOT)) {
