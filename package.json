@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "check:routes": "node scripts/check-static-routes.mjs",
     "preview": "node scripts/preview.mjs",
     "assets": "node scripts/generate-assets.mjs",
     "deploy": "npm run build && wrangler pages deploy out"
