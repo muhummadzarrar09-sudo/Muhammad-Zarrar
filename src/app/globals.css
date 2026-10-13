@@ -5441,10 +5441,18 @@ html.has-motion-reduced .type-out {
     gap: 8px;
   }
 
+  /* Phone: the long label is zeroed and the short one is printed by ::after —
+     the full "Start your brief" stays in the DOM, so the link's accessible
+     name is unchanged and the desktop/mobile labels can never drift apart.
+     `gap: 0` is load-bearing: a zeroed text node is still an anonymous flex
+     item, so the button's 9.6px gap was still being counted around it and
+     pushed "Brief" ~5px right of the pill's centre. With the gap gone the
+     zero-width item contributes nothing and the word centres exactly. */
   .header-cta {
     min-width: 64px;
     padding-inline: 12px !important;
     font-size: 0 !important;
+    gap: 0;
   }
 
   .header-cta::after {
@@ -8189,8 +8197,8 @@ html.has-motion .rv-in [data-stagger] > li {
 }
 
 /* ---------- FOOTER JEWELRY ---------------------------------------------------
-   Giant outlined wordmark (transparent fill, ink stroke, low-key), colophon
-   line, tabular studio clock, and a Lenis-riding back-to-top. */
+   Giant outlined wordmark (transparent fill, ink stroke, low-key), tabular
+   studio clock, and a Lenis-riding back-to-top. */
 .footer-word {
   margin: 8px 0 48px;
   font-family: var(--font-display);
@@ -8208,12 +8216,6 @@ html.has-motion .rv-in [data-stagger] > li {
   .footer-word {
     color: var(--text-3);
   }
-}
-
-.footer-colophon {
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
-  color: var(--text-3);
 }
 
 .footer-top {
@@ -9321,10 +9323,22 @@ main {
 }
 
 /* Inner pages keep the offset. The home hero pulls back under the pill
-   so cream paints the slot — otherwise that gutter reads as a grey bar. */
+   so cream paints the slot — otherwise that gutter reads as a grey bar.
+
+   dvh, not svh. A phone's tool/search bar retracts as you start scrolling
+   and the screen gets ~60–90px taller. `svh` keeps resolving to the small
+   box, so the room stopped short of the bottom edge: the putty ground showed
+   through beneath the floor and the scene read as clipped exactly as the bar
+   disappeared. `dvh` tracks the live box, so the wall keeps painting under
+   the whole screen and the floor/CTA stay inside it. svh stays first as the
+   fallback for engines without dvh. ScrollTrigger cannot re-measure on that
+   resize (it treats it as browser chrome, correctly), so motion/hero.ts
+   re-fits the converge paths itself when the box really changes. */
 .hero.hero-minimal {
   height: 100svh !important;
+  height: 100dvh !important;
   min-height: 100svh !important;
+  min-height: 100dvh !important;
   margin-top: calc(-1 * var(--header-offset));
   background: var(--ground-700);
 }
