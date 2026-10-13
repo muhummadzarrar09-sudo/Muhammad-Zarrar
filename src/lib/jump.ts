@@ -28,8 +28,19 @@ function selector(hash: string) {
   return hash.startsWith("#") ? hash : `#${hash}`;
 }
 
-/** Replay the room's one-shot arrival. `from`-only keyframes: never hides. */
+/**
+ * Replay the room's one-shot arrival. `from`-only keyframes: never hides.
+ *
+ * Skipped for a pinned room. `roomArrive` animates `transform`, and on a
+ * ScrollTrigger-pinned element the transform belongs to the pin — the beat
+ * would out-rank GSAP's inline style for 460ms, so the room would refuse to
+ * travel with the scroll until it finished. It would also be the wrong beat:
+ * a fresh navigation to `/` lands the hero without one, and a jump is
+ * supposed to land the way a fresh route does. The curtain lift is the
+ * arrival.
+ */
 function land(el: HTMLElement) {
+  if (el.closest(".pin-spacer")) return;
   el.classList.remove("is-arriving");
   // Force a reflow so a repeat jump to the same room restarts the animation.
   void el.offsetWidth;

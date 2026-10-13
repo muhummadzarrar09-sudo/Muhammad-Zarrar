@@ -41,6 +41,32 @@ function proxy(slot: Live): MotionHandle {
   };
 }
 
+/*
+  Where a jump destination actually lives
+  ---------------------------------------
+  A ScrollTrigger-pinned room is `position: fixed` and translated while it is
+  pinned, so `getBoundingClientRect()` reports where the pin is *holding* it,
+  not where the room sits in the document. Lenis scrolls to `rect.top +
+  scroll`, which means asking it for a pinned room lands you somewhere inside
+  that room's own pin — the footer's back-to-top asked for the hero and
+  arrived at the end of its 220vh travel: the finished `</>` with the counter
+  stuck at ~98%, instead of the top of the page.
+
+  GSAP wraps every pinned element in a `.pin-spacer` that it never moves, so
+  the spacer is the honest answer to "where does this room start". Non-pinned
+  destinations return themselves, unchanged.
+*/
+function jumpTarget(destination: string | number): HTMLElement | number | null {
+  if (typeof destination === "number") return destination;
+
+  const el = document.querySelector<HTMLElement>(
+    destination.startsWith("#") ? destination : `#${destination}`
+  );
+  if (!el) return null;
+
+  return el.closest<HTMLElement>(".pin-spacer") ?? el;
+}
+
 /**
  * Boot Lenis + GSAP ScrollTrigger and play the wireframes.
  * Idempotent for the same pathname so React Strict Mode remounts
@@ -133,7 +159,10 @@ function bootMotion(pathname: string): MotionHandle {
 
   const onScrollTo = (event: Event) => {
     const detail = (event as CustomEvent<string>).detail;
-    if (detail) lenis.scrollTo(detail, { offset: -8, duration: 1.32 });
+    if (!detail) return;
+    const target = jumpTarget(detail);
+    if (target == null) return;
+    lenis.scrollTo(target, { offset: -8, duration: 1.32 });
   };
   window.addEventListener("motion:scrollTo", onScrollTo);
 
@@ -144,7 +173,9 @@ function bootMotion(pathname: string): MotionHandle {
   const onJumpTo = (event: Event) => {
     const detail = (event as CustomEvent<string | number>).detail;
     if (detail == null) return;
-    lenis.scrollTo(detail, { offset: -8, immediate: true, force: true });
+    const target = jumpTarget(detail);
+    if (target == null) return;
+    lenis.scrollTo(target, { offset: -8, immediate: true, force: true });
   };
   window.addEventListener("motion:jumpTo", onJumpTo);
 
@@ -166,10 +197,15 @@ function bootMotion(pathname: string): MotionHandle {
 
   return {
     scrollTo: (target, opts) => {
-      lenis.scrollTo(target, { offset: opts?.offset ?? -8, duration: 1.15 });
+      lenis.scrollTo(jumpTarget(target) ?? target, {
+        offset: opts?.offset ?? -8,
+        duration: 1.15,
+      });
     },
     jumpTo: (target) => {
-      lenis.scrollTo(target, { offset: -8, immediate: true, force: true });
+      const anchor = jumpTarget(target);
+      if (anchor == null) return;
+      lenis.scrollTo(anchor, { offset: -8, immediate: true, force: true });
     },
     destroy: () => {
       window.removeEventListener("load", onRefresh);

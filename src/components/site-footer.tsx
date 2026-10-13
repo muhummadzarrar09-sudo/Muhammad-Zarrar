@@ -74,9 +74,6 @@ export function SiteFooter() {
         <div className="footer-bottom">
           <p>© 2026 Zarrar.Solutions — all rights reserved.</p>
           <p className="footer-bottom-note">Built to the same standard we audit against.</p>
-          <p className="footer-colophon">
-            Set in Fraunces &amp; Inter · Self-hosted type · Zero trackers · Static HTML
-          </p>
           <BackToTop />
         </div>
       </div>

@@ -127,6 +127,34 @@ function refreshHeroPaths(
   }
 }
 
+/*
+  PHONE CHROME — why the opening scene re-fits itself
+  ---------------------------------------------------
+  A phone retracts its tool/search bar a moment after you start scrolling, and
+  the screen gets ~60–90px taller. Three things used to disagree about that:
+
+  1. the room was 100svh, so it went on resolving to the *small* box and
+     stopped short of the bottom edge — the ground showed through under the
+     floor and the hero read as clipped exactly as the bar disappeared
+     (fixed in globals.css: 100dvh, so the wall always paints under the whole
+     screen). ScrollTrigger cannot act on that resize either, so the pin
+     spacer would otherwise keep the exact distance the short box needed and
+     the lockup's final beat would spill into the proof rail;
+  2. the converge arc was measured against the taller box while the mark was
+     still positioned against the smaller one, so once the scrub started the
+     chevrons arrived below the slash and the </> lockup came up crooked;
+  3. ScrollTrigger deliberately ignores this resize (it is browser chrome, not
+     a page resize), so nothing ever re-measured.
+
+  Re-measuring is ours to do, and it has to be a real refresh: the pin's
+  distance is derived from the room's height, so only a refresh can re-derive
+  it (see `end` below). It runs once the bar has finished animating, which is
+  also the moment the layout stops moving — refreshing mid-slide would bake a
+  half-grown height into the spacer and leave a different overlap behind.
+*/
+const REFIT_SLOP = 8; // px — smaller than any toolbar step, larger than jitter
+const REFIT_SETTLE = 180; // ms — let the bar finish animating before measuring
+
 /**
  * A wheel-led opening scene:
  * 1. the promise dissolves;
@@ -162,6 +190,59 @@ export function playHero() {
     );
   };
 
+  /* The chevrons open rotated by CSS (`rotate(±45deg)`), so the rotation they
+     travel back from has to be in the tween — not read off the element. A
+     re-fit (or any F11 / rotation refresh) re-initialises these poses, and an
+     implicit "from" would lock in whatever the opening rotation had scrubbed
+     to. Same discipline for the toolbar, the floor and the counter below:
+     every pose states where it starts. */
+  const OPEN_ROTATION = { left: -45, right: 45 };
+
+  /* The scene is authored as a multiple of the room's own height — a device
+     whose screen is 844 tall gets an 844-tall room *and* the longer travel
+     that goes with it, rather than a 844-tall room pinned inside the 700px
+     journey the shorter screen asked for. Expressed as a function so a
+     refresh re-derives it. */
+  const PIN_SPAN = 1.5; // phone; 2.2 on desktop
+  const PIN_SPAN_WIDE = 2.2;
+
+  const pinLength = () =>
+    Math.round(
+      root.offsetHeight *
+        (window.matchMedia("(max-width: 760px)").matches
+          ? PIN_SPAN
+          : PIN_SPAN_WIDE)
+    );
+
+  let fittedHeight = root.offsetHeight;
+  let settleTimer = 0;
+
+  /**
+   * The bar has stopped moving: re-measure the room, its arcs and its pin.
+   * A refresh re-runs `onRefreshInit` (fresh motion paths) and re-inits every
+   * tween, which is only lossless because each pose below carries an explicit
+   * start value — a bare .to() would freeze at whatever the scrub had
+   * already reached.
+   */
+  const refit = () => {
+    // The route may have moved on while the bar was still animating.
+    if (!root.isConnected) return;
+    const height = root.offsetHeight;
+    if (Math.abs(height - fittedHeight) < REFIT_SLOP) return;
+    fittedHeight = height;
+    ScrollTrigger.refresh();
+  };
+
+  const onViewportResize = () => {
+    window.clearTimeout(settleTimer);
+    settleTimer = window.setTimeout(refit, REFIT_SETTLE);
+  };
+
+  const trackViewport = () => {
+    window.clearTimeout(settleTimer);
+    window.removeEventListener("resize", onViewportResize);
+  };
+
   const tl = gsap.timeline({
     defaults: { ease: "none" },
     scrollTrigger: {
@@ -173,7 +254,12 @@ export function playHero() {
       // first wheel tick jumped the pin-spacer — the navbar looked like
       // it was sliding/resizing with the page.
       start: "top top",
-      end: window.matchMedia("(max-width: 760px)").matches ? "+=150%" : "+=220%",
+      // Same distance the author wrote as `+=150%` / `+=220%`, but read off
+      // the live room every time the scene is measured — so a phone that grew
+      // a tool-bar's worth of screen (see PHONE CHROME above) gets the travel
+      // that matches it instead of the travel its first, shorter frame asked
+      // for. On an untouched load this is byte-for-byte the old value.
+      end: () => `+=${pinLength()}`,
       pin: true,
       pinSpacing: true,
       anticipatePin: 0,
@@ -187,6 +273,7 @@ export function playHero() {
         if (animation) refreshHeroPaths(animation, stage, slash, left, right);
       },
       onLeave: handOff,
+      onKill: trackViewport,
     },
   });
 
@@ -198,7 +285,14 @@ export function playHero() {
       0
     );
   }
-  if (bar) tl.to(bar, { opacity: 0, y: 14, duration: 0.18 }, 0);
+  if (bar) {
+    tl.fromTo(
+      bar,
+      { opacity: 1, y: 0 },
+      { opacity: 0, y: 14, duration: 0.18 },
+      0
+    );
+  }
   /* The scroll crank (React Bits CircularText, tailored) turns WITH the
      wheel — a reel, not a spinner — then bows out as the line completes. */
   if (crank) {
@@ -209,10 +303,18 @@ export function playHero() {
       0
     );
   }
-  if (floor) tl.to(floor, { opacity: 0, duration: 0.1, ease: "none" }, 0.9);
+  if (floor) {
+    tl.fromTo(
+      floor,
+      { opacity: 1 },
+      { opacity: 0, duration: 0.1, ease: "none" },
+      0.9
+    );
+  }
 
-  tl.to(
+  tl.fromTo(
     left,
+    { rotation: OPEN_ROTATION.left },
     {
       id: "hero-left-converge",
       rotation: 0,
@@ -225,8 +327,9 @@ export function playHero() {
     },
     0.2
   )
-    .to(
+    .fromTo(
       right,
+      { rotation: OPEN_ROTATION.right },
       {
         id: "hero-right-converge",
         rotation: 0,
@@ -257,11 +360,15 @@ export function playHero() {
       { scaleX: 1, duration: 0.2 },
       0.8
     )
-    .to(
+    .fromTo(
       progress,
+      { value: 0 },
       {
         value: 100,
         duration: 0.2,
+        /* The counter renders from the tween, not from whatever the DOM last
+           showed — a refresh mid-scrub would otherwise freeze the readout at
+           the value it happened to hold. */
         onUpdate: () => {
           if (loaderValue) loaderValue.textContent = `${Math.round(progress.value)}`;
         },
@@ -269,4 +376,8 @@ export function playHero() {
       0.8
     )
     .call(handOff, [], 1);
+
+  // The toolbar retracting is a resize ScrollTrigger will not act on, so the
+  // scene watches the box itself. See the PHONE CHROME note above.
+  window.addEventListener("resize", onViewportResize);
 }
