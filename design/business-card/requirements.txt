@@ -1,0 +1,7 @@
+# Separate from the website's Node dependencies. Python 3.11+.
+reportlab==4.5.1
+fonttools[woff]==4.67.0
+Pillow==12.3.0
+qrcode==8.2
+PyMuPDF==1.28.2
+zxing-cpp==2.3.0

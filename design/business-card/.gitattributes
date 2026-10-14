@@ -1,0 +1,3 @@
+# ReportLab PDFs may start with ASCII-encoded streams; always preserve them
+# as binary files rather than applying text diffs, merges, or line endings.
+exports/*.pdf binary
