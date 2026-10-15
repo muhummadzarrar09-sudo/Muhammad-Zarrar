@@ -34,10 +34,27 @@
     "size_mm": 23.0,
     "module_mm": 0.561,
     "quiet_zone_modules": 4,
-    "verified_from_both_pdfs_at_dpi": [
+    "verified_from_pdfs": [
+      "print",
+      "digital",
+      "clean"
+    ],
+    "verified_at_dpi": [
       150,
       300
     ]
+  },
+  "clean_pdf": {
+    "page_mm": [
+      114.30000000000001,
+      76.19999999999999
+    ],
+    "card_margin_mm": 12.7,
+    "page_backgrounds": [
+      "#1a1412",
+      "#f3e4c7"
+    ],
+    "content": "Only the original cards; no headings, captions, swatches, shadows, or crop marks."
   },
   "digital_links_verified": [
     "tel:+923335666050",

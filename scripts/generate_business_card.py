@@ -40,6 +40,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DESIGN = ROOT / "design/business-card"
 WIDTH, HEIGHT = 88.9, 50.8  # 3.5 x 2 inches, landscape
 BLEED, SAFE, MARK_SPACE = 3.0, 5.0, 3.0  # millimetres
+CLEAN_MARGIN = 12.7  # Half-inch surround for the card-only presentation PDF.
 DPI = 300
 PREFIX = "zarrar-business-card"
 LOGO = ROOT / "public/images/logo-mark-transparent-original.png"
@@ -387,6 +388,35 @@ def make_pdf(output: Path, data: dict, p: dict, fonts: dict, logo: Image.Image,
     return drawings, qr
 
 
+def make_clean_pdf(output: Path, data: dict, p: dict, fonts: dict, logo: Image.Image) -> None:
+    """Cards only: cream front on ink, ink reverse on cream. No page furniture.
+
+    Keep the cards at actual size and clip away their production bleed so the
+    opposite-colored surround starts exactly at the finished card edge.
+    """
+    page_w, page_h = WIDTH + 2 * CLEAN_MARGIN, HEIGHT + 2 * CLEAN_MARGIN
+    pdf = canvas.Canvas(str(output), pagesize=(page_w * mm, page_h * mm),
+                        pageCompression=1, invariant=1, initialFontName="Zarrar-body")
+    pdf.setTitle(f'{data["name"]} — {data["company"]}')
+    pdf.setAuthor(data["company"])
+    pdf.setSubject("Front and reverse on alternating brand-color backgrounds.")
+    pdf.setCreator("Zarrar.Solutions / scripts/generate_business_card.py")
+    for draw_side, background in ((contact_side, p["ink"]), (brand_side, p["cream"])):
+        pdf.setFillColor(HexColor(background))
+        # Overpaint page edges to avoid a white antialias fringe in PDF viewers.
+        pdf.rect(-mm, -mm, (page_w + 2) * mm, (page_h + 2) * mm, stroke=0, fill=1)
+        pdf.saveState()
+        clip = pdf.beginPath()
+        clip.rect(CLEAN_MARGIN * mm, CLEAN_MARGIN * mm, WIDTH * mm, HEIGHT * mm)
+        pdf.clipPath(clip, stroke=0, fill=0)
+        art = Artwork(pdf, fonts, page_h, CLEAN_MARGIN, live_links=True)
+        draw_side(art, data, p, logo)
+        art.validate_layout()
+        pdf.restoreState()
+        pdf.showPage()
+    pdf.save()
+
+
 def render_sides(pdf_path: Path, output: Path) -> list[Image.Image]:
     images = []
     with pymupdf.open(pdf_path) as doc:
@@ -452,7 +482,7 @@ def preflight(output: Path, data: dict, palette: dict, drawings: list[Artwork], 
                            contrast(palette["sand"], palette["ink"]))
     if minimum_contrast < 4.5:
         raise ValueError("The current website palette no longer gives sufficient text contrast.")
-    for suffix in ("print", "digital"):
+    for suffix in ("print", "digital", "clean"):
         with pymupdf.open(output / f"{PREFIX}-{suffix}.pdf") as document:
             if len(document) != 2:
                 raise ValueError("The card must contain exactly two pages.")
@@ -461,8 +491,12 @@ def preflight(output: Path, data: dict, palette: dict, drawings: list[Artwork], 
                 if value not in text:
                     raise ValueError(f"PDF text missing: {value}")
             for page in document:
-                close(page.trimbox.width / mm, WIDTH)
-                close(page.trimbox.height / mm, HEIGHT)
+                surround = 2 * CLEAN_MARGIN if suffix == "clean" else 0
+                close(page.trimbox.width / mm, WIDTH + surround)
+                close(page.trimbox.height / mm, HEIGHT + surround)
+                if suffix == "clean":
+                    close(page.mediabox.width / mm, WIDTH + surround)
+                    close(page.mediabox.height / mm, HEIGHT + surround)
                 if suffix == "print":
                     close(page.bleedbox.width / mm, WIDTH + 2 * BLEED)
                     close(page.bleedbox.height / mm, HEIGHT + 2 * BLEED)
@@ -471,10 +505,10 @@ def preflight(output: Path, data: dict, palette: dict, drawings: list[Artwork], 
                 for font in page.get_fonts():
                     if not document.extract_font(font[0])[3]:
                         raise ValueError(f"PDF font not embedded: {font[3]}")
-            if suffix == "digital":
+            if suffix in ("digital", "clean"):
                 links = {link.get("uri", "") for page in document for link in page.get_links()}
                 if not {data["phone_uri"], data["website"]}.issubset(links):
-                    raise ValueError("The digital card is missing its phone or website link.")
+                    raise ValueError(f"The {suffix} card is missing its phone or website link.")
             # Decode the QR from the ACTUAL PDF render, not just the input matrix.
             for dpi in (150, 300):
                 pix = document[1].get_pixmap(dpi=dpi, alpha=False, clip=document[1].trimbox)
@@ -497,7 +531,13 @@ def preflight(output: Path, data: dict, palette: dict, drawings: list[Artwork], 
         "minimum_label_type_pt": min(v for art in drawings for v in art.point_sizes),
         "minimum_contact_type_pt": 8,
         "minimum_text_contrast_ratio": round(minimum_contrast, 2),
-        "qr": {**qr, "verified_from_both_pdfs_at_dpi": [150, 300]},
+        "qr": {**qr, "verified_from_pdfs": ["print", "digital", "clean"], "verified_at_dpi": [150, 300]},
+        "clean_pdf": {
+            "page_mm": [WIDTH + 2 * CLEAN_MARGIN, HEIGHT + 2 * CLEAN_MARGIN],
+            "card_margin_mm": CLEAN_MARGIN,
+            "page_backgrounds": [palette["ink"], palette["cream"]],
+            "content": "Only the original cards; no headings, captions, swatches, shadows, or crop marks.",
+        },
         "digital_links_verified": [data["phone_uri"], data["website"]],
         "color_space": "Website RGB artwork; K-only crop marks. Not a certified PDF/X file.",
         "printer_note": "Convert with the printer's stock/press ICC profile if CMYK is required; approve a physical proof.",
@@ -508,7 +548,7 @@ def preflight(output: Path, data: dict, palette: dict, drawings: list[Artwork], 
 
 def package(output: Path) -> None:
     members = [
-        f"{PREFIX}-print.pdf", f"{PREFIX}-digital.pdf", f"{PREFIX}-preview.png",
+        f"{PREFIX}-print.pdf", f"{PREFIX}-digital.pdf", f"{PREFIX}-clean.pdf", f"{PREFIX}-preview.png",
         "front.svg", "back.svg", "front.png", "back.png", "preflight.json",
     ]
     with ZipFile(output / f"{PREFIX}-print-pack.zip", "w", ZIP_DEFLATED) as archive:
@@ -536,6 +576,7 @@ def main() -> None:
         fonts = prepare_fonts(Path(temporary))
         drawings, qr = make_pdf(output / f"{PREFIX}-print.pdf", data, p, fonts, logo, True)
         make_pdf(output / f"{PREFIX}-digital.pdf", data, p, fonts, logo, False)
+        make_clean_pdf(output / f"{PREFIX}-clean.pdf", data, p, fonts, logo)
         images = render_sides(output / f"{PREFIX}-digital.pdf", output)
         preview(images, data, p, fonts, output)
         report = preflight(output, data, p, drawings, qr)
@@ -544,7 +585,8 @@ def main() -> None:
             font.source.close()
     print(f"Created {output}")
     print(f"Preflight: {report['status']} — 2 pages, embedded fonts, 3 mm bleed, 5 mm safe zone.")
-    print("QR decoded from both PDFs at 150 and 300 dpi. Original logo exceeds 300 ppi.")
+    print("QR decoded from all three PDFs at 150 and 300 dpi. Original logo exceeds 300 ppi.")
+    print("Clean PDF: cards only, cream front on ink and ink reverse on cream.")
     print("Colour: RGB website palette. Ask the printer for their required CMYK profile/proof.")
 
 

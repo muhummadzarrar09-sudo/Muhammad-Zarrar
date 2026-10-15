@@ -11,6 +11,15 @@ ARTWORK
   Confirm the duplex orientation with your printer's proof/imposition.
 
 WHICH FILE TO USE
+  zarrar-business-card-clean.pdf
+    The card-only presentation PDF, with two pages:
+      1. Cream front centered on a dark-ink background (#1A1412).
+      2. Dark-ink reverse centered on a cream background (#F3E4C7).
+    No added headings, captions, swatches, shadows, or crop marks.
+    The original cards remain 88.9 x 50.8 mm, with a 12.7 mm surround.
+    Page size: 114.3 x 76.2 mm. Fonts and QR remain vector; links are live.
+    For viewing and sharing, not a substitute for the print master below.
+
   zarrar-business-card-print.pdf
     The production-layout master. Two pages with embedded, subset fonts,
     vector text/lines/QR, the original logo, crop marks, TrimBox and BleedBox.
@@ -58,7 +67,7 @@ QUALITY CHECKS
   No AI redraw or enlargement was used for the logo.
   The 23 mm QR uses error correction Q and a four-module quiet zone.
   Its payload is exactly: https://zarrarsolutions.vercel.app
-  It was decoded from both exported PDFs at 150 dpi and 300 dpi.
+  It was decoded from all three exported PDFs at 150 dpi and 300 dpi.
   Scan the actual printed proof before approving the run.
   See preflight.json for machine-checked dimensions, fonts and QR results.
 

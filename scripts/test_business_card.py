@@ -82,6 +82,45 @@ class CardTests(unittest.TestCase):
             self.assertEqual(links.count(self.data["website"]), 2)
             self.assertIn(self.data["phone_uri"], links)
 
+    def test_clean_pdf_contains_only_cards_on_opposite_backgrounds(self):
+        with pymupdf.open(OUTPUT / f"{card.PREFIX}-clean.pdf") as clean, \
+                pymupdf.open(OUTPUT / f"{card.PREFIX}-digital.pdf") as digital:
+            self.assertEqual(len(clean), 2)
+            for index, page in enumerate(clean):
+                self.assertAlmostEqual(page.rect.width / mm, 114.3, places=3)
+                self.assertAlmostEqual(page.rect.height / mm, 76.2, places=3)
+                # No titles, captions, dimension labels or other extra text.
+                self.assertEqual(page.get_text(), digital[index].get_text())
+                pix = page.get_pixmap(dpi=300, alpha=False)
+                image = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+                expected = ImageColor.getrgb(self.palette["ink" if index == 0 else "cream"])
+                margin = round(card.CLEAN_MARGIN / 25.4 * 300) - 1
+                w, h = image.size
+                # Each complete outside strip must be uniformly colored: no
+                # swatches, crop marks, shadows or production bleed in the surround.
+                for box in ((0, 0, w, margin), (0, h - margin, w, h),
+                            (0, 0, margin, h), (w - margin, 0, w, h)):
+                    extrema = image.crop(box).getextrema()
+                    for (minimum, maximum), channel in zip(extrema, expected):
+                        self.assertEqual(minimum, maximum)
+                        self.assertLessEqual(abs(minimum - channel), 1)
+                inside = round(card.CLEAN_MARGIN / 25.4 * 300) + 2
+                card_color = ImageColor.getrgb(self.palette["cream" if index == 0 else "ink"])
+                self.assertTrue(all(abs(a - b) <= 1 for a, b in
+                                    zip(image.getpixel((inside, inside)), card_color)))
+                for font in page.get_fonts():
+                    self.assertTrue(clean.extract_font(font[0])[3], font[3])
+
+    def test_clean_pdf_qr_and_links(self):
+        with pymupdf.open(OUTPUT / f"{card.PREFIX}-clean.pdf") as document:
+            links = [link.get("uri") for page in document for link in page.get_links()]
+            self.assertEqual(links.count(self.data["website"]), 2)
+            self.assertIn(self.data["phone_uri"], links)
+            for dpi in (150, 300):
+                pix = document[1].get_pixmap(dpi=dpi, alpha=False)
+                image = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+                self.assertIn(self.data["website"], [r.text for r in zxingcpp.read_barcodes(image)])
+
     def test_png_size_dpi_and_qr(self):
         for side, color in [("front", "cream"), ("back", "ink")]:
             with Image.open(OUTPUT / f"{side}.png") as image:
@@ -122,9 +161,12 @@ class CardTests(unittest.TestCase):
         self.assertGreaterEqual(report["minimum_original_logo_ppi"], 300)
         self.assertGreaterEqual(report["minimum_text_contrast_ratio"], 4.5)
         self.assertEqual(report["qr"]["quiet_zone_modules"], 4)
-        self.assertEqual(report["qr"]["verified_from_both_pdfs_at_dpi"], [150, 300])
+        self.assertEqual(report["qr"]["verified_from_pdfs"], ["print", "digital", "clean"])
+        self.assertEqual(report["qr"]["verified_at_dpi"], [150, 300])
+        self.assertEqual(report["clean_pdf"]["page_backgrounds"], [self.palette["ink"], self.palette["cream"]])
         with ZipFile(OUTPUT / f"{card.PREFIX}-print-pack.zip") as archive:
             self.assertIsNone(archive.testzip())
+            self.assertIn(f"{card.PREFIX}-clean.pdf", archive.namelist())
             for name in archive.namelist():
                 self.assertNotIn("..", name)
                 expected = card.DESIGN / name if name == "PRINT-README.txt" else OUTPUT / name

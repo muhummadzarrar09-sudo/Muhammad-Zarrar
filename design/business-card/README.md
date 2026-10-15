@@ -8,11 +8,16 @@ dark-ink reverse pairs the real ZS monogram with a website QR.
 
 ## Deliverables
 
+- **[Clean front/back PDF](exports/zarrar-business-card-clean.pdf)** — just the
+  cards: cream front on a dark-ink background, then dark-ink reverse on cream.
+  No headings, captions, swatches, shadows, or crop marks. Card artwork stays
+  at actual size, centered with a 12.7 mm surround; pages are 114.3 × 76.2 mm.
+  This is for presentation/sharing; use the print PDF for production.
 - [Print PDF](exports/zarrar-business-card-print.pdf) — two pages, 3 mm bleed,
   crop marks, explicit TrimBox/BleedBox, embedded fonts.
 - [Digital PDF](exports/zarrar-business-card-digital.pdf) — finished-size pages,
   clickable telephone and website links.
-- [Complete print pack](exports/zarrar-business-card-print-pack.zip) — both
+- [Complete print pack](exports/zarrar-business-card-print-pack.zip) — all three
   PDFs, self-contained SVGs, 300 dpi PNGs, preview, preflight report and notes.
 - [Front SVG](exports/front.svg) / [reverse SVG](exports/back.svg) — type and
   QR as vector paths, original logo embedded. Includes bleed, no crop marks.
@@ -74,9 +79,11 @@ out-of-safe-zone content instead of silently shrinking it or clipping it.
 
 Every run checks two-page PDF structure, trim/bleed/media dimensions,
 embedded fonts, extracted contact text, digital links, actual glyph safety,
-logo resolution and text contrast. It decodes the QR from **both exported
+logo resolution and text contrast. It decodes the QR from **all three exported
 PDFs**, at 150 and 300 dpi, and writes `exports/preflight.json`. The preview
 and PNGs are rendered from the actual finished-size PDF, not a parallel mockup.
+The clean PDF reuses the same vector card drawings, clipped to their finished
+edges, with only the opposite brand color outside each card.
 
 The print PDF is **RGB artwork with K-only crop marks**, not a certified
 CMYK/PDF-X file. This preserves the requested website colors without inventing
