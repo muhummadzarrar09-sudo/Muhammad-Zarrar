@@ -15,3 +15,8 @@ npm-debug.log*
 
 # typescript incremental build cache
 *.tsbuildinfo
+
+# Python business-card tooling (exports are intentionally retained)
+.venv/
+.cache/
+__pycache__/

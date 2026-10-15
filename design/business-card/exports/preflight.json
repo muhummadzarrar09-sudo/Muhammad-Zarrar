@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "trim_mm": [
+    88.9,
+    50.8
+  ],
+  "bleed_mm": 3.0,
+  "minimum_content_inset_mm": 5.0,
+  "sides": [
+    "front / contact",
+    "reverse / brand"
+  ],
+  "palette_source": "src/app/globals.css",
+  "palette": {
+    "cream": "#f3e4c7",
+    "ink": "#1a1412",
+    "walnut": "#5a3328",
+    "terracotta": "#a3492f",
+    "copper": "#e7925e",
+    "sand": "#d8b89a",
+    "paper": "#fbf1e2"
+  },
+  "logo_source": "public/images/logo-mark-transparent-original.png",
+  "minimum_original_logo_ppi": 307.62,
+  "pdf_text": "Selectable; true website fonts embedded and subset",
+  "svg_type": "Outlined paths; no external fonts or images",
+  "minimum_label_type_pt": 5.8,
+  "minimum_contact_type_pt": 8,
+  "minimum_text_contrast_ratio": 8.63,
+  "qr": {
+    "payload": "https://zarrarsolutions.vercel.app",
+    "error_correction": "Q",
+    "version": 4,
+    "size_mm": 23.0,
+    "module_mm": 0.561,
+    "quiet_zone_modules": 4,
+    "verified_from_pdfs": [
+      "print",
+      "digital",
+      "clean"
+    ],
+    "verified_at_dpi": [
+      150,
+      300
+    ]
+  },
+  "clean_pdf": {
+    "page_mm": [
+      114.30000000000001,
+      76.19999999999999
+    ],
+    "card_margin_mm": 12.7,
+    "page_backgrounds": [
+      "#1a1412",
+      "#f3e4c7"
+    ],
+    "content": "Only the original cards; no headings, captions, swatches, shadows, or crop marks."
+  },
+  "digital_links_verified": [
+    "tel:+923335666050",
+    "https://zarrarsolutions.vercel.app"
+  ],
+  "color_space": "Website RGB artwork; K-only crop marks. Not a certified PDF/X file.",
+  "printer_note": "Convert with the printer's stock/press ICC profile if CMYK is required; approve a physical proof."
+}
