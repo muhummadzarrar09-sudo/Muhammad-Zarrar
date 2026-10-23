@@ -37,7 +37,7 @@ The monogram card stays, and the site ships honest.
 
 ## Stack & architecture
 
-- **Next.js 15 (App Router)** · React 19 · TypeScript · **zero UI libraries**
+- **Next.js 16.4.2 (App Router)** · React 19 · TypeScript · **zero UI libraries**
 - **Static export** (`output: "export"`) → plain files in `./out`, deployable
   to Cloudflare Pages with zero server cost
 - **Server Components by default.** Client Components only: `mobile-menu`,
