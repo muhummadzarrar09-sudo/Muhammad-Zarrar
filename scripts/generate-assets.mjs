@@ -248,6 +248,12 @@ const OG_PAGES = [
     sub: ["Pricing. Google visibility.", "Speed. Ownership."],
   },
   {
+    out: "og-guides.png",
+    eyebrow: "GUIDES · LONG ANSWERS",
+    lines: ["Four questions,", "answered properly."],
+    sub: ["Cost, Google visibility, Facebook vs site,", "and how to audit your own site."],
+  },
+  {
     out: "og-notes.png",
     eyebrow: "FIELD NOTES",
     lines: ["Evidence, written down."],
@@ -338,6 +344,27 @@ for (const [slug, art] of Object.entries(NOTE_SOCIAL)) {
     new Resvg(faviconSvg(ordinal), RESVG_FONT).render().asPng()
   );
   console.log("✓", `public/social/notes/${slug}-icon.png`);
+}
+
+/* ---- Guides: one share card per guide (no tab icons — guides are not a feed) ---- */
+
+const GUIDE_SOCIAL = JSON.parse(
+  await readFile(path.join(ROOT, "src/content/guide-social.json"), "utf8"),
+).guides;
+
+const GUIDE_DIR = path.join(ROOT, "public", "social", "guides");
+await mkdir(GUIDE_DIR, { recursive: true });
+
+for (const [slug, art] of Object.entries(GUIDE_SOCIAL)) {
+  const card = ogSvg(
+    { eyebrow: art.eyebrow, lines: art.lines, sub: art.sub ?? [] },
+    mark
+  );
+  await writeFile(
+    path.join(GUIDE_DIR, `${slug}.png`),
+    new Resvg(card, RESVG_FONT).render().asPng()
+  );
+  console.log("✓", `public/social/guides/${slug}.png`);
 }
 
 console.log("\nAll assets generated.");

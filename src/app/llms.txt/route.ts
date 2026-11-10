@@ -1,5 +1,6 @@
 import { NOTES, readingMinutes, topicLabel, TOPICS } from "@/content/notes";
 import { SERVICES } from "@/content/services";
+import { GUIDES } from "@/content/guides";
 import { EMAIL, SITE_NAME, SITE_URL, WHATSAPP_DISPLAY } from "@/lib/site";
 
 /**
@@ -41,6 +42,10 @@ Language: English. Location served: Islamabad and Rawalpindi, Pakistan. Contact:
 ## Field notes
 
 ${notes}
+
+## Guides
+
+${GUIDES.map((guide) => `- [${guide.h1}](${SITE_URL}/guides/${guide.slug}): ${guide.answer}`).join("\n")}
 
 ## Pages
 

@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
 import { FAQ_GROUPS, ALL_FAQS } from "@/content/faq";
+import { GUIDES } from "@/content/guides";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { Scribble } from "@/components/scribble";
@@ -93,6 +95,26 @@ export default function FaqPage() {
                 ))}
               </div>
             ))}
+          </div>
+
+          <div className="faq-guides">
+            <div className="faq-group-head">
+              <span className="faq-group-no">→</span>
+              <h2 className="faq-group-title">The long answers</h2>
+              <span className="faq-group-note">When a paragraph isn&rsquo;t enough</span>
+            </div>
+            <ul className="faq-guides-list">
+              {GUIDES.map((guide) => (
+                <li key={guide.slug}>
+                  <Link href={`/guides/${guide.slug}`}>
+                    <span className="faq-guide-q">{guide.h1}</span>
+                    <span className="faq-guide-meta">
+                      Guide · {guide.updatedLabel}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div className="inset-panel faq-ask">

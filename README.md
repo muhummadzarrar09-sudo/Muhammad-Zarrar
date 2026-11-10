@@ -35,6 +35,28 @@ The monogram card stays, and the site ships honest.
 
 ---
 
+## ⚠️ Owner actions — waiting on you
+
+Code is done for these; they need a human with logins. Full instructions and
+copy-paste text live in `docs/DIRECTORY-LISTINGS.md`.
+
+| # | Action | Where | Time | Why it matters |
+|---|---|---|---|---|
+| 1 | **Google Business Profile** — category "Website designer", Rawalpindi + Islamabad | business.google.com | 20 min | The map box is the only local result above organic. Feeds Bing free |
+| 2 | **Bing Places** — import from GBP | bingplaces.com | 5 min | Near-zero competition locally |
+| 3 | **GoodFirms** — full profile, all fields, portfolio | goodfirms.co | 40 min | 1,078 PK firms listed; buyers shortlist from here |
+| 4 | **DesignRush** — listing + 3 portfolio items | designrush.com | 30 min | Ranks by rate, budget, portfolio count |
+| 5 | **Clutch** — claim, then wait for a first review | clutch.co | 20 min | Highest trust signal; empty profiles hurt |
+| 6 | **LinkedIn company page** — medium bio, pin the audit | linkedin.com | 20 min | Where B2B buyers check you're real |
+| 7 | **Domain swap** — one line in `src/lib/site.ts` | this repo | 2 min | Canonicals, sitemap, OG, schema all follow |
+| 8 | **Founder portrait** — drop `public/images/portrait.jpg` | this repo | 5 min | About page swaps automatically |
+| 9 | **Real case-study numbers** — 2–3 anonymised before/after | — | — | Blocks the proof strip. Nothing gets invented |
+
+**Order matters:** do 1 and 2 first (highest return per minute), then 3–4, then
+the rest. Nothing on this list touches code except 7 and 8.
+
+---
+
 ## Stack & architecture
 
 - **Next.js 16.4.2 (App Router)** · React 19 · TypeScript · **zero UI libraries**
@@ -173,6 +195,34 @@ they are built like a small publication rather than a blog afterthought:
   (Reddit, Quora, Google's "People also ask", and this studio's WhatsApp),
   answered plainly, with `FAQPage` schema.
 
+### Guides — the long answers
+
+Four canonical pages, one per question a buyer actually types before they
+message anyone:
+
+| Route | Query |
+|---|---|
+| `/guides/website-cost-pakistan` | How much does a website cost in Pakistan? |
+| `/guides/website-not-on-google` | Why isn't my website showing up on Google? |
+| `/guides/website-or-facebook-page` | Do I need a website if I already have a Facebook page? |
+| `/guides/audit-your-own-website` | How to audit your own website in 20 minutes |
+
+- **One question, one page.** Field Notes are the evidence; Guides are the
+  how-to. The FAQ hub answers in a paragraph and links here for the long
+  version, so nothing competes with itself for the same query.
+- **Answer first.** Every guide opens with a `.guide-answer` block that
+  answers the question in two sentences, then earns the rest of the page.
+- **Content model** — `src/content/guides.ts`. Sections, an optional table,
+  3–4 FAQs (`FAQPage` schema per guide, mirrored by the visible `<details>`),
+  and `related[]` links into notes, `/pricing`, `/compare` and the service
+  pages. Reading time is computed, not typed.
+- **Prices are quoted, never invented.** Every figure in a guide already
+  exists on `/pricing`; the index page says so, and `npm run check:routes`
+  fails if a guide loses its answer block, its share card, or its FAQ schema.
+- **Per-guide identity** — 1200×630 share cards from
+  `src/content/guide-social.json` (four or five words each), plus
+  `Article` + `FAQPage` + breadcrumb JSON-LD.
+
 ### SEO
 
 Unique title/description per page; OpenGraph + Twitter cards with the branded
@@ -272,6 +322,7 @@ src/
     services/           # /services and /services/[slug] (5 services)
     faq/                # /faq — the question hub, with FAQPage schema
     compare/            # /compare — the honest three-way comparison
+    guides/             # /guides + 4 long-answer guides
     pricing/ process/ about/ free-audit/ contact/
     layout.tsx          # fonts, metadata, JSON-LD, header/footer, PWA
     manifest.ts robots.ts sitemap.ts not-found.tsx

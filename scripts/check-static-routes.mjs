@@ -182,6 +182,52 @@ try {
     );
   }
 
+  // The guides cluster: every guide ships a share card, the answer-first block
+  // the snippet depends on, and FAQ schema that matches the questions actually
+  // printed on the page. A guide added without any of that fails the build.
+  const guideSocial = JSON.parse(
+    await readFile(path.join(ROOT, "src/content/guide-social.json"), "utf8"),
+  ).guides;
+  const guideRoutes = sitemapRoutes.filter((path) => path.startsWith("/guides/"));
+  assert(guideRoutes.length >= 4, `the guides cluster has only ${guideRoutes.length} routes`);
+
+  const guidesIndexHtml = await readFile(path.join(OUT, "guides.html"), "utf8");
+  for (const route of guideRoutes) {
+    const slug = route.slice("/guides/".length);
+    assert(
+      guideSocial[slug],
+      `guide has no share-card art in src/content/guide-social.json: ${slug}`,
+    );
+    assert(
+      await exists(path.join(OUT, "social", "guides", `${slug}.png`)),
+      `missing share card for guide ${slug}`,
+    );
+    assert(
+      guidesIndexHtml.includes(`href="${route}"`),
+      `the guides index does not link to ${route} in its pre-JS HTML`,
+    );
+
+    const html = await readFile(
+      path.join(OUT, "guides", `${slug}.html`),
+      "utf8",
+    );
+    assert(html.includes('class="guide-answer'), `guide ${slug} lost its answer block`);
+    assert(
+      html.includes(`${origin}/social/guides/${slug}.png`),
+      `guide ${slug} does not advertise its own share card`,
+    );
+    assert(
+      html.includes('"@type":"FAQPage"'),
+      `guide ${slug} is missing FAQPage schema`,
+    );
+    const questions = html.match(/"@type":"Question"/g)?.length ?? 0;
+    assert(questions >= 3, `guide ${slug} has only ${questions} schema questions`);
+    assert(
+      (html.match(/<details class="faq-entry"/g)?.length ?? 0) === questions,
+      `guide ${slug}: FAQ questions on the page and in schema disagree`,
+    );
+  }
+
   // The cost estimator is server-rendered, and it must quote the same prices
   // the pricing page publishes. If either drifts, the build fails.
   const pricingHtml = await readFile(path.join(OUT, "pricing.html"), "utf8");

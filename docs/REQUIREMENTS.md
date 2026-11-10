@@ -164,30 +164,57 @@ DesignRush → Clutch → LinkedIn). Owner action, not code.
 
 ---
 
+## 11. Guides cluster — SHIPPED 2026-11-10
+
+Four long-answer pages under `/guides`, one per question that precedes a
+WhatsApp message:
+
+| Route | Query it owns |
+|---|---|
+| `/guides/website-cost-pakistan` | How much does a website cost in Pakistan? |
+| `/guides/website-not-on-google` | Why isn't my website showing up on Google? |
+| `/guides/website-or-facebook-page` | Do I need a website if I already have a Facebook page? |
+| `/guides/audit-your-own-website` | How to audit your own website in 20 minutes |
+
+Each page: answer-first `.guide-answer` block, 4–5 sections, a comparison or
+price-band table where a table is genuinely clearer than prose, 3–4 FAQs with
+`FAQPage` schema mirrored by the visible `<details>`, computed reading time,
+and `related[]` links into Field Notes, `/pricing`, `/compare`, `/free-audit`
+and the service pages. Plus `Article` + `FAQPage` + `BreadcrumbList` JSON-LD,
+its own 1200×630 share card, and an entry in the sitemap, footer, `llms.txt`
+and the FAQ hub's "The long answers" block.
+
+The split is deliberate: **Field Notes are evidence, Guides are the how-to.**
+The FAQ answers in a paragraph and routes to the guide. One question, one
+canonical page — no two URLs competing for the same query.
+
+Rule enforced in code: every price in a guide must already be published on
+`/pricing`. `npm run check:routes` (now 30 direct routes) fails if a guide
+loses its answer block, its share card, or has FAQ schema that disagrees with
+the questions printed on the page.
+
+---
+
 ## Recommended next (in priority order)
 
 Each of these is on-brand, static, and needs no new dependency. Ordered by
 value per hour of work.
 
 1. **Case studies / "before → after" proof** — still gated on real numbers
-   (see item 4). The single biggest trust asset missing from the site.
-2. **Per-note OpenGraph cards** — `og-notes.png` is reused by every post, so
-   shares look identical. `scripts/generate-assets.mjs` already has the type
-   and colour system; ~40 lines adds a card per note, keyed by slug.
-3. **`/faq` hub with `FAQPage` schema** — the service FAQs exist as data in
-   `src/content/services.ts`; a consolidated page answers the questions people
-   actually search ("how much does a website cost in Pakistan") and gives
-   Google one canonical answer instead of five partial ones. Keep the FAQ
-   schema off the service pages if it moves, to avoid duplicates.
-4. **A real audit-sample page** — a redacted, reproduced finding report.
-   Free-audit already sketches one; a full specimen converts better than a
+   (see §1). The single biggest trust asset missing from the site.
+2. **A real audit-sample page** — a redacted, reproduced finding report.
+   `/free-audit` already sketches one; a full specimen converts better than a
    promise.
-5. **Notes topics as their own routes** (`/notes/topic/speed`) — only when the
+3. **Guides → screenshot evidence** — the guides argue from code and reflect
+   real audit patterns; two or three redacted screenshots per guide (a
+   `site:` result, a view-source `<div id="root">`) would make the argument
+   visible. Needs an image pipeline for figures first.
+4. **Notes topics as their own routes** (`/notes/topic/speed`) — only when the
    archive passes ~12 notes. Below that, filters are enough and topic pages
    would be thin.
-6. **Newsletter** — deliberately deferred. There is no backend by design, and
+5. **Newsletter** — deliberately deferred. There is no backend by design, and
    RSS + WhatsApp covers the same job without a third party holding the list.
-7. **Notes → service cross-links** — each note ends by pointing at the service
+6. **Notes → service cross-links** — each note ends by pointing at the service
    that fixes it (audit vs redesign vs storefront), not just at the audit CTA.
 
 ---
@@ -214,3 +241,7 @@ value per hour of work.
   notes, share row, `/feed.xml`, `/llms.txt`, Notes in the primary nav,
   feed link in the footer, richer `BlogPosting` schema, and route-check
   guards for the feed, the index markup and llms.txt.
+- 2026-11-10 — Guides cluster: 4 long-answer pages with answer-first
+  blocks, 3–4 FAQs each (`FAQPage` per guide), per-guide share cards,
+  `Article` + breadcrumb schema, FAQ-hub cross-links. `check:routes` → 30
+  routes and now asserts guide answer block / card / FAQ parity.

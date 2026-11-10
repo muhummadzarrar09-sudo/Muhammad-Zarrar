@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { SERVICES } from "@/content/services";
 import { NOTES } from "@/content/notes";
+import { GUIDES } from "@/content/guides";
 
 export const dynamic = "force-static";
 
@@ -16,6 +17,7 @@ const STATIC_ROUTES = [
   { path: "/about", priority: 0.7 },
   { path: "/contact", priority: 0.6 },
   { path: "/faq", priority: 0.75 },
+  { path: "/guides", priority: 0.85 },
   { path: "/notes", priority: 0.6 },
   { path: "/privacy", priority: 0.3 },
   { path: "/terms", priority: 0.3 },
@@ -45,6 +47,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: generatedAt,
       changeFrequency: "weekly" as const,
       priority: 0.85,
+    })),
+    ...GUIDES.map((guide) => ({
+      url: canonicalUrl(`/guides/${guide.slug}`),
+      lastModified: new Date(guide.updatedISO),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
     })),
     ...NOTES.map((note) => ({
       url: canonicalUrl(`/notes/${note.slug}`),

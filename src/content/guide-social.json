@@ -1,0 +1,25 @@
+{
+  "$comment": "Share cards for the guides cluster. Headlines 4-5 words MAX. Key order matches GUIDES in src/content/guides.ts.",
+  "guides": {
+    "website-cost-pakistan": {
+      "eyebrow": "GUIDE 01 · COST",
+      "lines": ["What a website", "really costs"],
+      "sub": ["Three years, not one invoice."]
+    },
+    "website-not-on-google": {
+      "eyebrow": "GUIDE 02 · VISIBILITY",
+      "lines": ["Why Google", "ignores your site"],
+      "sub": ["Ten minutes to find out."]
+    },
+    "website-or-facebook-page": {
+      "eyebrow": "GUIDE 03 · PRESENCE",
+      "lines": ["A page is not", "a website"],
+      "sub": ["The test that settles it."]
+    },
+    "audit-your-own-website": {
+      "eyebrow": "GUIDE 04 · METHOD",
+      "lines": ["Four tests,", "twenty minutes"],
+      "sub": ["No tools. No account."]
+    }
+  }
+}
