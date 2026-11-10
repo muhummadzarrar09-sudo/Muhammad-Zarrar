@@ -9,6 +9,7 @@ import { SealCheckIcon } from "@/components/icons";
 import { Scribble } from "@/components/scribble";
 import { FaqAccordion } from "@/components/faq";
 import { PageHero, SectionIntro } from "@/components/page-hero";
+import { CostEstimator } from "@/components/cost-estimator";
 
 export const metadata = pageMeta({
   title: "Pricing in PKR, in Writing — Website Packages & Add-ons",
@@ -81,6 +82,12 @@ export default function PricingPage() {
           </Link>
         </p>
       </PageHero>
+
+      <section className="section pricing-estimator-section" id="estimate-section">
+        <div className="container">
+          <CostEstimator />
+        </div>
+      </section>
 
       <section
         className="section pricing-rates-section"

@@ -182,6 +182,34 @@ try {
     );
   }
 
+  // The cost estimator is server-rendered, and it must quote the same prices
+  // the pricing page publishes. If either drifts, the build fails.
+  const pricingHtml = await readFile(path.join(OUT, "pricing.html"), "utf8");
+  assert(
+    pricingHtml.includes('id="estimate"'),
+    "the pricing page lost its cost estimator",
+  );
+  assert(
+    pricingHtml.includes('class="estimator-figure"'),
+    "the estimator has no server-rendered result",
+  );
+  assert(
+    pricingHtml.includes('aria-pressed="true"'),
+    "the estimator has no default selection in the pre-JS HTML",
+  );
+  for (const price of [
+    "PKR 35,000",
+    "PKR 150,000",
+    "PKR 200,000",
+    "PKR 250,000",
+    "PKR 300,000",
+  ]) {
+    assert(
+      pricingHtml.includes(price),
+      `pricing page no longer publishes ${price} — the estimator would drift`,
+    );
+  }
+
   // The FAQ hub must ship its questions in the HTML as well as in schema.
   const faqHtml = await readFile(path.join(OUT, "faq.html"), "utf8");
   assert(faqHtml.includes('"@type":"FAQPage"'), "the FAQ hub is missing FAQPage schema");

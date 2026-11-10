@@ -10864,3 +10864,251 @@ button.footer-top {
     font-size: 0.86rem;
   }
 }
+
+/* ---------- Cost estimator ------------------------------------------------ */
+
+.estimator {
+  border: 1px solid var(--hairline);
+  background: var(--surface);
+  padding: clamp(24px, 4vw, 44px);
+  margin-bottom: clamp(48px, 7vw, 80px);
+}
+
+.estimator-intro {
+  max-width: 58ch;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.estimator-kicker {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 12px;
+}
+
+.estimator-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.estimator-lede {
+  margin-top: 12px;
+  color: var(--text-2);
+  font-size: 0.97rem;
+  max-width: 52ch;
+}
+
+.estimator-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(28px, 4vw, 56px);
+  margin-top: 30px;
+  align-items: start;
+}
+
+.estimator-field {
+  border: 0;
+  padding: 0;
+  margin: 0 0 30px;
+}
+
+.estimator-field legend {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 0;
+  margin-bottom: 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.estimator-step {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  color: var(--gold);
+}
+
+.estimator-chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.estimator-chips-row {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.estimator-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  padding: 14px 16px;
+  background: var(--ground-400);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+  -webkit-tap-highlight-color: var(--tap-highlight);
+}
+
+.estimator-chip:hover {
+  border-color: var(--hairline-strong);
+}
+
+.estimator-chip[aria-pressed="true"] {
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.estimator-chip:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.estimator-chip-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--text);
+}
+
+.estimator-chip[aria-pressed="true"] .estimator-chip-label {
+  color: var(--accent-on-ink);
+}
+
+.estimator-chip-note {
+  font-size: 0.76rem;
+  line-height: 1.4;
+  color: var(--text-3);
+}
+
+.estimator-chip[aria-pressed="true"] .estimator-chip-note {
+  color: rgba(243, 228, 199, 0.78);
+}
+
+.estimator-chip-compact {
+  padding: 12px 14px;
+}
+
+.estimator-chip-compact .estimator-chip-label {
+  font-size: 0.88rem;
+}
+
+.estimator-result {
+  position: sticky;
+  top: calc(var(--header-offset) + 24px);
+  padding: 26px;
+  border: 1px solid var(--hairline);
+  border-top: 2px solid var(--gold);
+  background: var(--ground-750);
+}
+
+.estimator-result-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.estimator-figure {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 3.2vw, 2.3rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-top: 8px;
+}
+
+.estimator-monthly {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--text-2);
+}
+
+.estimator-lines {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 18px 0 0;
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.estimator-lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: var(--text-2);
+}
+
+.estimator-line-figure {
+  white-space: nowrap;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.estimator-caveat {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--text-3);
+}
+
+.estimator-cta {
+  width: 100%;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.estimator-alt {
+  display: block;
+  margin-top: 12px;
+  text-align: center;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  text-decoration: none;
+}
+
+.estimator-alt:hover {
+  text-decoration: underline;
+}
+
+.estimator-disclaimer {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline-soft);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--text-3);
+}
+
+@media (max-width: 900px) {
+  .estimator-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .estimator-result {
+    position: static;
+  }
+}

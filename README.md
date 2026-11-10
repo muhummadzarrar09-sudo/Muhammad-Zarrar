@@ -125,7 +125,8 @@ storyboarded as data in `src/motion/wireframes.ts`.
 - **Accessibility**: `prefers-reduced-motion` skips Lenis, every scene and
   the whole pointer layer; the marquee pauses on hover/focus (WCAG 2.2.2).
 - **Docs**: `docs/COMPETITOR-NOTES.md` (how the local market hooks buyers,
-  sourced) · `docs/PALETTE.md` (tokens, contrast, carousel recipe) ·
+  sourced) · `docs/DIRECTORY-LISTINGS.md` (profile copy + the listing
+  checklist) · `docs/PALETTE.md` (tokens, contrast, carousel recipe) ·
   `docs/ANIMATION-INVENTORY.md` (every animation, audited) ·
   `docs/MOTION-RULES.md` (NN/g / Material 3 / WCAG / HIG compliance ledger) ·
   `docs/motion-wireframes.md` (the storyboard).
@@ -161,6 +162,10 @@ they are built like a small publication rather than a blog afterthought:
   set rendered discreetly under the share row. Art direction lives in
   `src/content/note-social.json`; `npm run check:routes` fails if a note ships
   without a card or an icon.
+- **The estimator** (`/pricing`) — five needs, three sizes, five add-ons, and
+  a live PKR range built only from prices the site already publishes. The
+  default result is server-rendered, so it reads with JS off; the estimate
+  travels to WhatsApp in the pre-filled message.
 - **`/compare`** — freelancer vs agency vs this studio, with the rows where
   each option is the wrong choice (including ours). Price bands are stated as
   advertised market ranges, never as claims about a named company.

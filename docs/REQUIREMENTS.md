@@ -148,6 +148,22 @@ pricing, a "free website" offer, or any undisclosed ranking.
 
 ---
 
+## 10. Cost estimator + directory pack — SHIPPED 2026-11-10
+
+**Estimator** on `/pricing`: five needs, three sizes, five add-ons, live PKR
+range. Every figure comes from `src/content/estimate.ts`, which mirrors the
+published prices; `check:routes` now fails if the estimator or the pricing
+page loses one of the five service prices. Default result is server-rendered.
+The estimate is carried into the WhatsApp message so the first reply can be
+specific.
+
+**Directory pack** in `docs/DIRECTORY-LISTINGS.md`: four bio lengths, taglines,
+category choices, pricing-field guidance, an honest portfolio table, and a
+platform-by-platform checklist (Google Business Profile → Bing → GoodFirms →
+DesignRush → Clutch → LinkedIn). Owner action, not code.
+
+---
+
 ## Recommended next (in priority order)
 
 Each of these is on-brand, static, and needs no new dependency. Ordered by
@@ -184,6 +200,8 @@ value per hour of work.
 - 2026-08-21 — Sprint 3: Field Notes live (/notes, 2 posts, BlogPosting
   schema), per-service OG cards (12 total), humans.txt, security headers
   for Vercel (vercel.json) and Cloudflare Pages (public/_headers).
+- 2026-11-10 — Cost estimator on /pricing + directory listings pack
+  (docs/DIRECTORY-LISTINGS.md) with a drift guard in check:routes.
 - 2026-11-10 — Competitive response: `/compare`, two buyer-intent field
   notes, competitor teardown doc, pricing-page cross-link.
 - 2026-11-10 — Field Notes v3: per-note share cards + tab icons (4–5 word
