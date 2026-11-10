@@ -203,8 +203,11 @@ export function playHero() {
      that goes with it, rather than a 844-tall room pinned inside the 700px
      journey the shorter screen asked for. Expressed as a function so a
      refresh re-derives it. */
-  const PIN_SPAN = 1.5; // phone; 2.2 on desktop
-  const PIN_SPAN_WIDE = 2.2;
+  /* The opening scene is the first thing a stranger pays for in thumb-travel.
+     At 2.2 screens it cost more scroll than the entire proof section; 1.35
+     still resolves the converge without asking for a second flick. */
+  const PIN_SPAN = 1.05; // phone; 1.35 on desktop
+  const PIN_SPAN_WIDE = 1.35;
 
   const pinLength = () =>
     Math.round(

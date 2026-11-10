@@ -88,6 +88,44 @@ filters only narrow markup that is already on the page.
 
 ---
 
+## 6. Per-note SEO identity — SHIPPED 2026-11-10
+
+Every field note now has its own 1200×630 share card (headline capped at 4–5
+words), its own 96×96 tab icon, an `article` OpenGraph block (published time,
+section, tags), its own `BlogPosting.image`, and a hashtag set. Art direction
+is `src/content/note-social.json`; `check:routes` fails if a note lacks a card
+or an icon.
+
+**Also fixed in this pass:** the OG pipeline was silently wrong twice over —
+resvg cannot read woff2 (every card rendered in a system sans), and the option
+was passed as `fontFiles` instead of `font.fontFiles`. Fonts are now committed
+as TTF mirrors in `scripts/fonts/`, instanced at the weights the site uses.
+A third bug: `check-contrast.mjs` and `motion/walk.ts` were still carrying the
+superseded `#c4c3b6` palette.
+
+## 7. FAQ hub — SHIPPED 2026-11-10
+
+`/faq`: seventeen questions grouped into money & scope, Google & visibility,
+speed & the build, and ownership & aftercare — drawn from the questions owners
+actually post on r/smallbusiness, r/web_design, Quora and Google's "People also
+ask", answered in the studio's own voice with `FAQPage` schema. Zero-JS
+`<details>` accordions, so the answers are in the HTML and crawlable.
+
+## 8. Motion economy — SHIPPED 2026-11-10
+
+The opening converge pin was 2.2 screens and the manifesto 2.15 — between them,
+over four screens of thumb-travel before the proof. Hero pin is now 1.35
+(1.05 on phones), manifesto 160% (120% on phones). Timeline is scrubbed, so
+nothing re-times; the visitor simply gets there sooner.
+
+**Rejected on purpose:** turning the opening chevron into a full-screen
+"loading screen". This site sells *"the HTML arrives as the page, not as a
+promise of a page"* — a spinner that delays the first word contradicts the one
+thing we audit other people's sites for. A branded intro belongs on route
+transitions (already present), not in front of the LCP.
+
+---
+
 ## Recommended next (in priority order)
 
 Each of these is on-brand, static, and needs no new dependency. Ordered by
@@ -124,6 +162,11 @@ value per hour of work.
 - 2026-08-21 — Sprint 3: Field Notes live (/notes, 2 posts, BlogPosting
   schema), per-service OG cards (12 total), humans.txt, security headers
   for Vercel (vercel.json) and Cloudflare Pages (public/_headers).
+- 2026-11-10 — Field Notes v3: per-note share cards + tab icons (4–5 word
+  headlines), `article` OG metadata, hashtags, `/faq` hub with FAQPage schema,
+  palette documentation (`docs/PALETTE.md`) and a 1080×1350 palette card,
+  contrast gate re-pointed at the live palette, OG font pipeline fixed
+  (TTF mirrors + correct resvg options), motion pins trimmed.
 - 2026-11-10 — Field Notes v2: 3 new posts + "Check yours" on both originals,
   topics + search, reading time/word count, in-this-note contents, related
   notes, share row, `/feed.xml`, `/llms.txt`, Notes in the primary nav,

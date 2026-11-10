@@ -42,12 +42,38 @@ export async function generateMetadata({
   const { slug } = await params;
   const note = getNote(slug);
   if (!note) return {};
-  return pageMeta({
+
+  const base = pageMeta({
     title: `${note.title} — Field Notes`,
     description: note.excerpt,
     path: `/notes/${note.slug}`,
-    ogImage: "/og-notes.png",
+    ogImage: `/social/notes/${note.slug}.png`,
   });
+
+  return {
+    ...base,
+    /* An article is not a page: give share cards a publish date, a section
+       and the post's own tags. */
+    openGraph: {
+      ...base.openGraph,
+      type: "article",
+      publishedTime: note.dateISO,
+      modifiedTime: note.dateISO,
+      authors: ["Muhammad Zarrar"],
+      section: topicLabel(note.topics[0]),
+      tags: note.hashtags,
+    },
+    /* Each note carries its own tab icon — the ordinal in clay. */
+    icons: {
+      icon: [
+        {
+          url: `/social/notes/${note.slug}-icon.png`,
+          type: "image/png",
+          sizes: "96x96",
+        },
+      ],
+    },
+  };
 }
 
 /** Every figure in one place: label, honest caption, alt summary, art. */
@@ -112,10 +138,10 @@ export default async function NotePage({
     datePublished: note.dateISO,
     dateModified: note.dateISO,
     url: `${SITE_URL}/notes/${note.slug}`,
-    image: `${SITE_URL}/og-notes.png`,
+    image: `${SITE_URL}/social/notes/${note.slug}.png`,
     inLanguage: "en",
     articleSection: topics[0]?.label,
-    keywords: [...topics.map((t) => t.label), "website audit", "Pakistan"].join(", "),
+    keywords: [...note.hashtags.map((tag) => tag.slice(1)), ...topics.map((t) => t.label), "website audit", "Pakistan"].join(", "),
     wordCount: words,
     timeRequired: `PT${minutes}M`,
     author: { "@type": "Person", name: "Muhammad Zarrar" },
@@ -237,6 +263,13 @@ export default async function NotePage({
                     All field notes
                   </a>
                 </div>
+                <p className="note-tags" aria-label="Social tags">
+                  {note.hashtags.map((tag) => (
+                    <span key={tag} className="note-tag">
+                      {tag}
+                    </span>
+                  ))}
+                </p>
               </div>
             </div>
           </div>

@@ -9,7 +9,10 @@
     "check:routes": "node scripts/check-static-routes.mjs",
     "preview": "node scripts/preview.mjs",
     "assets": "node scripts/generate-assets.mjs",
-    "deploy": "npm run build && wrangler pages deploy out"
+    "deploy": "npm run build && wrangler pages deploy out",
+    "assets:palette": "node scripts/generate-palette-card.mjs",
+    "fonts:ttf": "bash scripts/fonts/build-ttf.sh",
+    "check:contrast": "node scripts/check-contrast.mjs"
   },
   "dependencies": {
     "gsap": "^3.15.0",

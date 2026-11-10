@@ -45,7 +45,7 @@ export function playManifesto() {
       id: "manifesto-write",
       trigger: root,
       start: mobile ? "top 70%" : "top 60%",
-      end: mobile ? "+=145%" : "+=215%",
+      end: mobile ? "+=120%" : "+=160%",
       scrub,
       invalidateOnRefresh: true,
     },

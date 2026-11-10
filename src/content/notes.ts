@@ -16,6 +16,8 @@ export type Note = {
   dateISO: string;
   excerpt: string;
   topics: TopicId[];
+  /** Social tags for the note — one unique per post, three standing. */
+  hashtags: string[];
   sections: { heading: string; body: string[] }[];
   takeaway: string;
   figure?: Figure;
@@ -28,6 +30,7 @@ export type Note = {
 export const NOTES: Note[] = [
   {
     slug: "menu-with-no-prices",
+    hashtags: ["#YourMenuHasNoPrices", "#ShowYourPrices", "#PakistanBusiness", "#WebsiteAudit"],
     figure: "price-gap",
     topics: ["conversion"],
     title: "Your menu has no prices",
@@ -74,6 +77,7 @@ export const NOTES: Note[] = [
   },
   {
     slug: "three-numbers-one-website",
+    hashtags: ["#OneNumber", "#WhatsAppBusiness", "#PakistanBusiness", "#WebsiteAudit"],
     topics: ["conversion", "trust"],
     title: "Three numbers, one website",
     date: "October 16, 2026",
@@ -119,6 +123,7 @@ export const NOTES: Note[] = [
   },
   {
     slug: "paying-for-a-dark-website",
+    hashtags: ["#DeadWebsite", "#DomainRenewal", "#PakistanBusiness", "#WebsiteAudit"],
     topics: ["trust"],
     title: "The website you're still paying for",
     date: "September 29, 2026",
@@ -163,6 +168,7 @@ export const NOTES: Note[] = [
   },
   {
     slug: "homepage-weighs-70-files",
+    hashtags: ["#PageSpeed", "#MobileData", "#PakistanBusiness", "#WebsiteAudit"],
     figure: "waterfall",
     topics: ["speed"],
     title: "Your homepage weighs seventy files",
@@ -205,6 +211,7 @@ export const NOTES: Note[] = [
   },
   {
     slug: "google-sees-a-blank-page",
+    hashtags: ["#GoogleIndexing", "#ViewSource", "#PakistanBusiness", "#WebsiteAudit"],
     figure: "render",
     topics: ["visibility"],
     title: "Google sees a blank page",

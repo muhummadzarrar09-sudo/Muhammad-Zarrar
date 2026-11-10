@@ -149,6 +149,49 @@ try {
   assert(llms.includes(`${origin}/feed.xml`), "llms.txt does not point at the feed");
   assert(llms.includes(`${origin}/sitemap.xml`), "llms.txt does not point at the sitemap");
 
+  // Every note needs its own share card and tab icon, and the exported post
+  // must actually point at them. A note added without art fails the build.
+  const noteSocial = JSON.parse(
+    await readFile(path.join(ROOT, "src/content/note-social.json"), "utf8"),
+  ).notes;
+
+  for (const route of sitemapRoutes.filter((path) => path.startsWith("/notes/"))) {
+    const slug = route.slice("/notes/".length);
+    assert(
+      noteSocial[slug],
+      `note has no share-card art in src/content/note-social.json: ${slug}`,
+    );
+
+    const card = path.join(OUT, "social", "notes", `${slug}.png`);
+    const icon = path.join(OUT, "social", "notes", `${slug}-icon.png`);
+    assert(await exists(card), `missing share card for ${slug}`);
+    assert(await exists(icon), `missing tab icon for ${slug}`);
+
+    const html = await readFile(path.join(OUT, "notes", `${slug}.html`), "utf8");
+    assert(
+      html.includes(`${origin}/social/notes/${slug}.png`),
+      `${slug} does not advertise its own share card`,
+    );
+    assert(
+      html.includes(`href="/social/notes/${slug}-icon.png"`),
+      `${slug} does not advertise its own tab icon`,
+    );
+    assert(
+      html.includes('property="og:type" content="article"'),
+      `${slug} is not declared as an article`,
+    );
+  }
+
+  // The FAQ hub must ship its questions in the HTML as well as in schema.
+  const faqHtml = await readFile(path.join(OUT, "faq.html"), "utf8");
+  assert(faqHtml.includes('"@type":"FAQPage"'), "the FAQ hub is missing FAQPage schema");
+  const faqQuestions = faqHtml.match(/"@type":"Question"/g)?.length ?? 0;
+  assert(faqQuestions >= 10, `the FAQ hub has only ${faqQuestions} schema questions`);
+  assert(
+    (faqHtml.match(/<details class="faq-entry"/g)?.length ?? 0) === faqQuestions,
+    "FAQ questions on the page and in schema disagree",
+  );
+
   const vercel = JSON.parse(await readFile(path.join(ROOT, "vercel.json"), "utf8"));
   assert(vercel.cleanUrls === true, "Vercel must map extensionless URLs to exported .html files");
   assert(

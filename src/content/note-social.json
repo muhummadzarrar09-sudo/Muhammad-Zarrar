@@ -1,0 +1,30 @@
+{
+  "$comment": "Art direction for per-note share cards. Headlines are 4-5 words MAX so the card never crowds. Keep slugs in sync with src/content/notes.ts — check:routes fails if a note has no card.",
+  "notes": {
+    "menu-with-no-prices": {
+      "eyebrow": "FIELD NOTE 01 · CONVERSION",
+      "lines": ["Your menu", "has no prices"],
+      "sub": ["The number is the answer."]
+    },
+    "three-numbers-one-website": {
+      "eyebrow": "FIELD NOTE 02 · TRUST",
+      "lines": ["Three numbers,", "one website"],
+      "sub": ["One of them answers."]
+    },
+    "paying-for-a-dark-website": {
+      "eyebrow": "FIELD NOTE 03 · TRUST",
+      "lines": ["Paying for a", "dead website"],
+      "sub": ["The invoice is not proof."]
+    },
+    "homepage-weighs-70-files": {
+      "eyebrow": "FIELD NOTE 04 · SPEED",
+      "lines": ["Your homepage", "weighs 70 files"],
+      "sub": ["Ten seconds on mobile data."]
+    },
+    "google-sees-a-blank-page": {
+      "eyebrow": "FIELD NOTE 05 · VISIBILITY",
+      "lines": ["Google sees", "a blank page"],
+      "sub": ["View source. Count the words."]
+    }
+  }
+}

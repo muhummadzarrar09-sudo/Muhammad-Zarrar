@@ -57,8 +57,9 @@ The monogram card stays, and the site ships honest.
 
 ### Design system ("Putty Gallery" · Structured spirit)
 
-`src/app/globals.css` is the single source of truth: putty `#C4C3B6`
-canvas, ink `#111110` type and buttons. The clay ZS mark is the only
+`src/app/globals.css` is the single source of truth: putty `#F3E4C7` canvas,
+soft ink `#1A1412` type and buttons. **The exact palette, with contrast ratios
+and an Instagram carousel recipe, is in [`docs/PALETTE.md`](docs/PALETTE.md).** The clay ZS mark is the only
 colour (rust/copper). Fraunces for display + Inter for utility.
 **Museum wall: oversized serif, hairline labels, warm clay accent, whisper
 glass.** No teal, no orbs, no cold black shadows — elevation is warm-tinted
@@ -152,6 +153,15 @@ they are built like a small publication rather than a blog afterthought:
   plus email and a link back to the archive.
 - **Feed** — `/feed.xml` (RSS 2.0, static, generated at build) advertised in
   the head of every page and linked from the footer.
+- **Per-note identity** — every post has its own 1200×630 share card (a
+  headline of four or five words, never more), its own 96×96 tab icon, its own
+  `article` OpenGraph block with publish date and tags, and its own hashtag
+  set rendered discreetly under the share row. Art direction lives in
+  `src/content/note-social.json`; `npm run check:routes` fails if a note ships
+  without a card or an icon.
+- **`/faq`** — seventeen questions collected from where owners actually ask them
+  (Reddit, Quora, Google's "People also ask", and this studio's WhatsApp),
+  answered plainly, with `FAQPage` schema.
 
 ### SEO
 
@@ -178,10 +188,18 @@ npm run preview    # serve ./out with clean URLs + redirects → http://localhos
 ```
 
 Regenerate brand assets (icons + OG image) after editing
-`scripts/generate-assets.mjs`:
+`scripts/generate-assets.mjs`. The rasteriser (resvg) reads **TTF only** — the
+site ships woff2, so `scripts/fonts/*.ttf` are committed mirrors, instanced at
+the weights the site uses (`npm run fonts:ttf` rebuilds them; needs
+`pip install fonttools brotli`). Pointing resvg at the woff2 files fails
+silently and renders the fallback system sans, which is exactly what happened
+before this was caught.
 
 ```bash
-npm run assets     # uses ImageMagick; only needed if you change the artwork
+npm run assets        # regenerate OG + note cards + note icons
+npm run assets:palette # regenerate palette/zarrar-palette-2026.png
+npm run fonts:ttf     # rebuild the TTF mirrors the rasteriser needs
+npm run check:contrast # WCAG gate for the live palette
 ```
 
 ---
@@ -242,6 +260,7 @@ src/
   app/                  # one folder per route; static export at build time
     page.tsx            # /
     services/           # /services and /services/[slug] (5 services)
+    faq/                # /faq — the question hub, with FAQPage schema
     pricing/ process/ about/ free-audit/ contact/
     layout.tsx          # fonts, metadata, JSON-LD, header/footer, PWA
     manifest.ts robots.ts sitemap.ts not-found.tsx
