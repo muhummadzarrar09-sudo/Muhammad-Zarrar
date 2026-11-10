@@ -128,6 +128,15 @@ for (const route of routes) {
     links: new Set(links).size,
     hasAnswerBlock: /class="(answer|guide-answer|note-takeaway)/.test(html),
     hasFaqSchema: types.has("FAQPage"),
+    hasVisibleCrumbs: /class="breadcrumb"/.test(html),
+    hasCrumbsSchema: types.has("BreadcrumbList"),
+    /* pageLd stamps every page node with `#webpage`, whatever its type
+       (WebPage, AboutPage, CollectionPage…). */
+    hasWebPage: /#webpage"/.test(html),
+    hasDateModified: /"dateModified"/.test(html),
+    faqEntries: (html.match(/<details class="faq-entry"/g) ?? []).length,
+    faqHeadings: (html.match(/class="faq-q-inline"/g) ?? []).length,
+    ratingMarkup: /aggregateRating|ratingValue|reviewCount/.test(html),
   });
 }
 
@@ -187,6 +196,27 @@ for (const p of real) {
 const lowLinks = real.filter((p) => p.links < 8);
 for (const p of lowLinks) warnings.push(`${p.route} has only ${p.links} internal links`);
 
+/* ---- 4b. Navigation + page-node structure (GEO / AEO) ---- */
+for (const p of real) {
+  if (p.route !== "/" && !p.hasVisibleCrumbs)
+    failures.push(`${p.route} shows no visible breadcrumb`);
+  if (p.route !== "/" && !p.hasCrumbsSchema)
+    failures.push(`${p.route} has no BreadcrumbList schema`);
+  if (!p.hasWebPage) failures.push(`${p.route} has no WebPage node`);
+  if (p.hasWebPage && !p.hasDateModified)
+    warnings.push(`${p.route} WebPage node carries no dateModified`);
+  if (p.faqEntries !== p.faqHeadings)
+    failures.push(
+      `${p.route} prints ${p.faqEntries} FAQ entries but only ${p.faqHeadings} question headings`,
+    );
+  /* House policy, not a preference: no review or rating markup until real
+     reviews exist. Fake ratings are the fastest way to lose an answer engine. */
+  if (p.ratingMarkup)
+    failures.push(
+      `${p.route} contains rating markup — the site publishes no reviews, so this is fabricated proof`,
+    );
+}
+
 /* ---- 5. Price questions: does any page answer one in the HTML? ---- */
 const pricePages = real.filter((p) => p.prices.length >= 3);
 if (!pricePages.length) failures.push("no page states three or more published prices in its HTML");
@@ -238,9 +268,16 @@ for (const p of [...real].sort((a, b) => b.words - a.words)) {
 }
 
 const faqCoverage = real.filter((p) => p.hasFaqSchema).length;
+const subpages = real.filter((p) => p.route !== "/");
+const crumbCoverage = subpages.filter((p) => p.hasVisibleCrumbs).length;
+const pageCoverage = real.filter((p) => p.hasWebPage && p.hasDateModified).length;
 console.log(
-  `\nFAQPage schema on ${faqCoverage}/${real.length} routes · ` +
-    `${pricePages.length} routes state 3+ prices · llms.txt ${llms ? `${words(llms)} words` : "missing"}`,
+  `\nBreadcrumbs visible on ${crumbCoverage}/${subpages.length} subpages · ` +
+    `dated WebPage nodes on ${pageCoverage}/${real.length} · ` +
+    `FAQPage schema on ${faqCoverage}/${real.length}`,
+);
+console.log(
+  `${pricePages.length} routes state 3+ prices · llms.txt ${llms ? `${words(llms)} words` : "missing"}`,
 );
 
 if (warnings.length) {

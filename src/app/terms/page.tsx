@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { EMAIL } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
 import { JsonLd } from "@/components/jsonld";
@@ -17,7 +17,7 @@ export default function TermsPage() {
   return (
     <>
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Terms", path: "/terms" },
         ])}
@@ -94,6 +94,20 @@ export default function TermsPage() {
                 hosting chosen outside our care plan — nor for business losses
                 that predate or lie outside the work. If a problem is ours,
                 we say so and we fix it.
+              </p>
+            </Reveal>
+            <Reveal>
+              <h2>Claims and proof</h2>
+              <p>
+                We do not fabricate proof. There are no invented clients,
+                invented project counts, purchased review scores, or
+                self-ranked &ldquo;top 10&rdquo; lists on this site — and no
+                review markup in our structured data, because there are no
+                reviews yet to mark up. Where a number appears, it is a
+                published price, a date, or something you can verify yourself
+                in the site&rsquo;s own source. When a client&rsquo;s results
+                are quoted, they are real, and they are quoted only with
+                permission.
               </p>
             </Reveal>
             <Reveal>

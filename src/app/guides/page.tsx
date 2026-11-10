@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { GUIDES, guideReadingMinutes } from "@/content/guides";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
@@ -39,7 +39,7 @@ export default function GuidesPage() {
     <>
       <JsonLd data={schema} />
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Guides", path: "/guides" },
         ])}

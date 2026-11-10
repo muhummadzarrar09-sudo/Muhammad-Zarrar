@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { FAQ_GROUPS, ALL_FAQS } from "@/content/faq";
 import { GUIDES } from "@/content/guides";
 import { JsonLd } from "@/components/jsonld";
@@ -39,7 +39,7 @@ export default function FaqPage() {
     <>
       <JsonLd data={faqSchema} />
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "FAQ", path: "/faq" },
         ])}
@@ -87,7 +87,7 @@ export default function FaqPage() {
                 {group.items.map((item) => (
                   <details key={item.q} className="faq-entry">
                     <summary>
-                      <span>{item.q}</span>
+                      <h3 className="faq-q-inline">{item.q}</h3>
                     </summary>
                     <div className="faq-a">
                       <p>{item.a}</p>

@@ -1,4 +1,4 @@
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { waLink, EMAIL, WHATSAPP_DISPLAY, DEFAULT_WA_MESSAGE } from "@/lib/site";
 import { ContactForm } from "@/components/contact-form";
 import { Reveal } from "@/components/reveal";
@@ -21,7 +21,7 @@ export default function ContactPage() {
   return (
     <>
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Contact", path: "/contact" },
         ])}

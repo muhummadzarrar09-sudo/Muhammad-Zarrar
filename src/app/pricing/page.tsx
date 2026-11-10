@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { SERVICES } from "@/content/services";
 import { ADDONS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
@@ -47,10 +47,10 @@ export default function PricingPage() {
   return (
     <>
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Pricing", path: "/pricing" },
-        ])}
+        ], { speakable: [".price-answer-lede"] })}
       />
       <JsonLd data={priceCatalogLd()} />
       <JsonLd

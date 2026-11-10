@@ -259,6 +259,19 @@ The audit is in `docs/SEO-AI-VISIBILITY.md`. What it enforces:
   price list, and a "How to cite this site" block with canonical sources and
   the verification date.
 - **`max-snippet:-1`** sitewide, so an engine may quote a whole paragraph.
+- **A dated page node per route.** `pageLd()` emits WebPage (or AboutPage /
+  CollectionPage) + BreadcrumbList in one graph, with `dateModified`,
+  `isPartOf`, `publisher`, and `speakable` on the pages that answer a pricing
+  question. `/about` carries a full `Person` node sharing the Organization's
+  `@id`. Sitemap `lastmod` comes from content dates, not the build clock.
+- **Breadcrumbs are structural,** not decoration: 29/29 subpages show a trail
+  (`/brief` included, above its full-screen form) and every route emits the
+  matching `BreadcrumbList`.
+- **FAQ questions are headings** (`<h3>`), so `h1 → h2 → question` is a real
+  outline an extractor can walk, and `FAQPage` mirrors it one-to-one.
+- **No fabricated proof, enforced.** `audit:seo` fails the build if any page
+  contains `aggregateRating`, `ratingValue` or `reviewCount`. The Terms page
+  has a "Claims and proof" clause that says the same thing in words.
 
 No rankings, reviews or invented clients anywhere — the only trust signal on
 offer is that the numbers are real and checkable.

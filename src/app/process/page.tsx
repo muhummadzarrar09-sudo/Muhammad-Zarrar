@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { PROCESS_STEPS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
 import { JsonLd } from "@/components/jsonld";
@@ -21,7 +21,7 @@ export default function ProcessPage() {
   return (
     <>
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Process", path: "/process" },
         ])}

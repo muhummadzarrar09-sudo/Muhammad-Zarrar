@@ -1,4 +1,4 @@
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import {
   NOTES,
   TOPICS,
@@ -53,7 +53,7 @@ export default function NotesIndexPage() {
     <>
       <JsonLd data={blogSchema} />
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Field Notes", path: "/notes" },
         ])}

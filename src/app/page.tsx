@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { pageMeta } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import {
   CONTRAST,
   NEXT_STEPS,
@@ -15,6 +15,7 @@ import { JumpLink } from "@/components/jump-link";
 import { PinnedManifesto } from "@/components/pinned-manifesto";
 import { Marquee } from "@/components/marquee";
 import { ProofStrip } from "@/components/proof-strip";
+import { JsonLd } from "@/components/jsonld";
 import { CodeChevron } from "@/components/code-mark";
 import { waLink } from "@/lib/site";
 
@@ -29,6 +30,11 @@ export const metadata = pageMeta({
 export default function HomePage() {
   return (
     <>
+      <JsonLd
+        data={pageLd([{ name: "Home", path: "/" }], {
+          speakable: [".hero-promise-title", ".lede"],
+        })}
+      />
       <section className="hero hero-minimal" id="top" data-tl="Welcome" data-motion>
         <div className="hero-stage">
           <div className="hero-sign hero-sign-l" aria-hidden="true">
@@ -318,6 +324,14 @@ export default function HomePage() {
               </article>
             ))}
           </div>
+          <p className="home-reading">
+            Before you send anything:{" "}
+            <Link href="/pricing">what a website costs in Pakistan, in PKR</Link>
+            <span aria-hidden="true"> · </span>
+            <Link href="/guides/website-cost-pakistan">
+              how that compares to the market
+            </Link>
+          </p>
         </div>
       </section>
 

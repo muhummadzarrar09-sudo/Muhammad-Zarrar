@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { waLink, WHATSAPP_DISPLAY } from "@/lib/site";
 import { FREE_AUDIT_POINTS } from "@/content/site-content";
 import { AuditForm } from "@/components/audit-form";
@@ -25,7 +25,7 @@ export default function FreeAuditPage() {
   return (
     <>
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Free 5-Point Audit", path: "/free-audit" },
         ])}

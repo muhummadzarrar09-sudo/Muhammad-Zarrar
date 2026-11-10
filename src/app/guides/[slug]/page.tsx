@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import {
   GUIDES,
   getGuide,
@@ -98,11 +98,14 @@ export default async function GuidePage({
       <JsonLd data={articleSchema} />
       <JsonLd data={faqSchema} />
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Guides", path: "/guides" },
           { name: guide.h1, path: `/guides/${guide.slug}` },
-        ])}
+        ], {
+          updated: guide.updatedISO,
+          speakable: [".guide-answer p:last-child"],
+        })}
       />
 
       <PageHero
@@ -200,7 +203,7 @@ export default async function GuidePage({
                 {guide.faqs.map((faq) => (
                   <details key={faq.q} className="faq-entry">
                     <summary>
-                      <span>{faq.q}</span>
+                      <h3 className="faq-q-inline">{faq.q}</h3>
                     </summary>
                     <div className="faq-a">
                       <p>{faq.a}</p>

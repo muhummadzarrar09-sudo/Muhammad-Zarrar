@@ -3,6 +3,7 @@ import { SITE_URL } from "@/lib/site";
 import { SERVICES } from "@/content/services";
 import { NOTES } from "@/content/notes";
 import { GUIDES } from "@/content/guides";
+import { CONTENT_UPDATED } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
@@ -33,18 +34,20 @@ const canonicalUrl = (path: string) =>
   path === "/" ? SITE_URL.replace(/\/+$/, "") : new URL(path, `${SITE_URL}/`).toString();
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const generatedAt = new Date();
+  /* Not the build time: a page changed when its content changed, and stamping
+     every deploy teaches crawlers to ignore lastmod. */
+  const contentDate = new Date(CONTENT_UPDATED);
 
   return [
     ...STATIC_ROUTES.map(({ path, priority }) => ({
       url: canonicalUrl(path),
-      lastModified: generatedAt,
+      lastModified: contentDate,
       changeFrequency: "weekly" as const,
       priority,
     })),
     ...SERVICES.map((service) => ({
       url: canonicalUrl(`/services/${service.slug}`),
-      lastModified: generatedAt,
+      lastModified: contentDate,
       changeFrequency: "weekly" as const,
       priority: 0.85,
     })),

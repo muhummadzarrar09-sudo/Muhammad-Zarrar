@@ -11354,3 +11354,75 @@ button.footer-top {
     gap: 2px;
   }
 }
+
+/* FAQ questions are real headings — answer engines parse Q&A structure, and a
+   <span> inside <summary> gives them nothing to attach to. */
+.faq-entry .faq-q-inline {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+/* /brief is the only route without PageHero; its trail parks above the room. */
+.brief-crumbs {
+  padding-top: clamp(96px, 14vh, 132px);
+}
+
+.brief-crumbs .breadcrumb {
+  margin-bottom: 0;
+}
+
+/* Contextual links into the price pages. Not nav labels — anchor text is the
+   only signal an engine has about what the destination is about. */
+.price-card-more {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-3);
+  margin: 10px 0 14px;
+}
+
+.price-card-more a {
+  color: var(--text-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--hairline-strong);
+}
+
+.price-card-more a:hover,
+.price-card-more a:focus-visible {
+  color: var(--gold-deep);
+  text-decoration-color: var(--gold-deep);
+}
+
+.compare-next-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  margin-top: 34px;
+}
+
+.compare-next-row .compare-next {
+  margin-top: 0;
+}
+
+.home-reading {
+  margin-top: 26px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-3);
+  max-width: var(--measure);
+}
+
+.home-reading a {
+  color: var(--text-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--hairline-strong);
+}
+
+.home-reading a:hover,
+.home-reading a:focus-visible {
+  color: var(--gold-deep);
+  text-decoration-color: var(--gold-deep);
+}

@@ -67,16 +67,73 @@ export function pageMeta({
   };
 }
 
-/** JSON-LD BreadcrumbList for subpages. */
-export function breadcrumbLd(items: { name: string; path: string }[]) {
+/**
+ * When the published content was last checked. Every evergreen page carries
+ * this date on its WebPage node — answer engines discount undated prices, and
+ * an undated page is indistinguishable from an abandoned one.
+ */
+export const CONTENT_UPDATED = "2026-11-10";
+
+type PageLdOptions = {
+  /** ISO date; defaults to CONTENT_UPDATED. Notes and guides pass their own. */
+  updated?: string;
+  /** extra schema.org type for the page node, e.g. "AboutPage" */
+  type?: string;
+  /** CSS selectors an assistant may read aloud (speakable spec) */
+  speakable?: string[];
+};
+
+/**
+ * The per-page JSON-LD graph: a dated WebPage + its BreadcrumbList.
+ *
+ * The last breadcrumb is the page itself, so the trail doubles as the
+ * canonical path — one argument, both nodes, and no chance of the breadcrumb
+ * and the WebPage disagreeing about where they are.
+ */
+export function pageLd(
+  items: { name: string; path: string }[],
+  { updated = CONTENT_UPDATED, type = "WebPage", speakable }: PageLdOptions = {},
+) {
+  const self = items[items.length - 1];
+  const url = `${SITE_URL}${self.path}`;
+  const hasTrail = items.length > 1;
+
   return {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: item.name,
-      item: `${SITE_URL}${item.path}`,
-    })),
+    "@graph": [
+      {
+        "@type": type,
+        "@id": `${url}#webpage`,
+        url,
+        name: self.name,
+        inLanguage: "en",
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        publisher: { "@id": `${SITE_URL}/#org` },
+        dateModified: updated,
+        ...(hasTrail ? { breadcrumb: { "@id": `${url}#breadcrumb` } } : {}),
+        ...(speakable
+          ? {
+              speakable: {
+                "@type": "SpeakableSpecification",
+                cssSelector: speakable,
+              },
+            }
+          : {}),
+      },
+      ...(hasTrail
+        ? [
+            {
+              "@type": "BreadcrumbList",
+              "@id": `${url}#breadcrumb`,
+              itemListElement: items.map((item, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                name: item.name,
+                item: `${SITE_URL}${item.path}`,
+              })),
+            },
+          ]
+        : []),
+    ],
   };
 }

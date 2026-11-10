@@ -118,9 +118,94 @@ difference between a source an assistant can trust and one it should discount.
 max-image-preview:large, max-video-preview:-1` — answer engines may quote a
 full paragraph rather than a truncated one.
 
+### 3.7 One dated page node per route, and a breadcrumb that matches it
+
+`pageLd()` (in `src/lib/seo.ts`) replaced the old breadcrumb-only helper. Every
+route now emits a `@graph` of **WebPage + BreadcrumbList**, where:
+
+- the **last crumb is the page**, so the trail and the page node cannot
+  disagree about the URL
+- the page node carries `dateModified`, `inLanguage`, `isPartOf` (→ `#website`)
+  and `publisher` (→ `#org`)
+- notes and guides pass their own date instead of the site-wide one, so a note
+  written in October does not claim to have changed in November
+- `/about` emits an `AboutPage` with a full `Person` node (`worksFor`,
+  `knowsAbout`, `email`, `areaServed`) sharing the `@id` the Organization
+  already points at
+- `/`, `/pricing` and every guide carry a `speakable` spec naming the CSS
+  selector of the answer paragraph
+
+Visible breadcrumbs were already on 29 routes; `/brief` was the exception
+because it opens with a full-screen form instead of `PageHero`. It now has a
+slim trail above the room. **29/29 subpages show a trail, 30/30 have a dated
+page node** — both asserted by `audit:seo`.
+
+### 3.8 FAQ questions are headings now
+
+`<summary><span>Question</span></summary>` gives an extractor a string with no
+structural meaning. Every FAQ entry on `/faq` and in the guides is now
+`<summary><h3>Question</h3></summary>`, which produces a real outline:
+`h1` → group `h2` → question `h3`. The `FAQPage` schema still mirrors them
+one-to-one, and `audit:seo` fails if the printed entries and the question
+headings ever disagree in number.
+
+Service pages and `/pricing` already used the `FaqAccordion` component, which
+was heading-based — that is why the audit shows 11 routes with `FAQPage` but
+only some needed fixing.
+
+### 3.9 The no-fabrication rule is now a build gate
+
+`src/app/terms/page.tsx` gained a **"Claims and proof"** clause: no invented
+clients, no invented project counts, no purchased review scores, no self-ranked
+"top 10" lists, and no review markup — *because there are no reviews yet to
+mark up*.
+
+That last part is enforced: `audit:seo` fails the build if any exported page
+contains `aggregateRating`, `ratingValue` or `reviewCount`. A future edit
+cannot quietly add star ratings to win a rich result.
+
+### 3.10 Anchor text that says what the destination is
+
+The audit counted anchors pointing at `/pricing`: **96 were the word
+"Pricing"** (nav and footer) and five were descriptive. Nav labels tell an
+engine nothing about the page they point to. Added:
+
+- home → "what a website costs in Pakistan, in PKR"
+- five service pages → "Every published price", "what the market charges"
+- `/compare` → "What a website costs in Pakistan"
+- five service pages → the cost guide, descriptively
+
+The cost page now has a real internal anchor profile instead of a menu link.
+
+### 3.11 Sitemap `lastmod` tells the truth
+
+Every static route used to be stamped with the **build time**, so a CSS tweak
+claimed all 30 pages had changed. `lastModified` now comes from
+`CONTENT_UPDATED` (or the note/guide's own date). A crawler that learns
+`lastmod` is meaningless stops reading it — which is exactly what happened
+before.
+
 ---
 
-## 4. The content split (and why there is no duplicate-answer risk)
+## 4. SEO vs GEO vs AEO — what each one actually needed here
+
+Three acronyms, three different jobs. The table is the short version of why
+the changes above look the way they do.
+
+| | Question it answers | What it needed on this site |
+|---|---|---|
+| **SEO** | Can a crawler find, read and rank the page? | Titles ≤ 60, descriptions ≤ 158, one `h1`, canonical, sitemap, internal links, no orphan routes, honest `lastmod`. |
+| **AEO** (answer engines) | Can a machine lift *one clean answer* out of the page? | Question-shaped `h2`s, an answer-first paragraph, `<h3>` per FAQ question, `FAQPage` that matches the visible questions, `<dl>` of prices, dates attached to every claim. |
+| **GEO** (generative engines) | Would a model *cite* this source? | A resolved entity (`Organization` + `WebSite` + `Person` with contact edges), machine-readable prices (`OfferCatalog` / `AggregateOffer`), `llms.txt` with the facts and a citation block, `max-snippet:-1`, and a policy that no proof is fabricated. |
+
+The overlap is the point: a page can rank and still be unciteable (prose
+prices), or be citeable and still unreadable (schema without visible text).
+Every claim in the structured data here also exists in the HTML a customer
+reads, and `check:routes` fails if the two diverge.
+
+---
+
+## 5. The content split (and why there is no duplicate-answer risk)
 
 | Page | Owns | Answers |
 |---|---|---|
@@ -134,7 +219,7 @@ has one canonical passage per query instead of three competing ones.
 
 ---
 
-## 5. Blocked — owner actions that raise ceiling, not floor
+## 6. Blocked — owner actions that raise ceiling, not floor
 
 These are in `README.md` under **Owner actions**. None of them is code:
 
@@ -154,7 +239,7 @@ These are in `README.md` under **Owner actions**. None of them is code:
 
 ---
 
-## 6. Rules for anything added later
+## 7. Rules for anything added later
 
 1. Title ≤ 60 characters, brand only if it fits. `pageMeta()` enforces.
 2. Description ≤ 158 characters, one sentence of substance. `pageMeta()` clamps.
@@ -163,6 +248,13 @@ These are in `README.md` under **Owner actions**. None of them is code:
    (project) or `SERVICES`/`ADDONS`. Never type a new number into JSX.
 5. Every page carries a date — `dateModified`, `updatedISO`, or a visible
    "verified November 2026" line. Answer engines discount undated prices.
+   `pageLd()` does this for you; pass `updated` when the content has its own
+   date.
+8. A page that is not `/` shows a breadcrumb and emits `BreadcrumbList`.
+9. FAQ questions are `<h3>` inside `<summary>` (or `FaqAccordion`), never a
+   bare `<span>`.
+10. Anchor text describes the destination. "Pricing" in the nav is fine;
+    "what a website costs in Pakistan" in body copy is the point.
 6. No `aggregateRating`, no invented reviews, no "top 10" self-listing. The
    only trust signal available here is that the numbers are real and checkable.
 7. Run `npm run check` before committing. It is the difference between a claim
@@ -170,7 +262,7 @@ These are in `README.md` under **Owner actions**. None of them is code:
 
 ---
 
-## 7. Measuring it at home (no third-party tools)
+## 8. Measuring it at home (no third-party tools)
 
 - **Google indexed?** `site:zarrarsolutions.vercel.app` — after the domain
   swap, `site:yourdomain.pk`.

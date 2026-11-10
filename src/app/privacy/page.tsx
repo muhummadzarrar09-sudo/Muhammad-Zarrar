@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { EMAIL } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
 import { JsonLd } from "@/components/jsonld";
@@ -19,7 +19,7 @@ export default function PrivacyPage() {
   return (
     <>
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Privacy", path: "/privacy" },
         ])}

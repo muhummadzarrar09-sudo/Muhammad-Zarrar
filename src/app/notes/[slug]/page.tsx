@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import {
   NOTES,
   getNote,
@@ -164,11 +164,11 @@ export default async function NotePage({
     <>
       <JsonLd data={postingSchema} />
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Field Notes", path: "/notes" },
           { name: note.title, path: `/notes/${note.slug}` },
-        ])}
+        ], { updated: note.dateISO })}
       />
 
       <PageHero

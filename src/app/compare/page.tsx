@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { COMPARE_ROWS, COLUMNS } from "@/content/compare";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
@@ -36,7 +36,7 @@ export default function ComparePage() {
     <>
       <JsonLd data={schema} />
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Compare", path: "/compare" },
         ])}
@@ -134,10 +134,16 @@ export default function ComparePage() {
             </div>
           </div>
 
-          <Link href="/pricing" className="compare-next">
-            See every published price
-            <ArrowRightIcon size={16} />
-          </Link>
+          <div className="compare-next-row">
+            <Link href="/pricing" className="compare-next">
+              See every published price
+              <ArrowRightIcon size={16} />
+            </Link>
+            <Link href="/guides/website-cost-pakistan" className="compare-next">
+              What a website costs in Pakistan
+              <ArrowRightIcon size={16} />
+            </Link>
+          </div>
         </div>
       </section>
 

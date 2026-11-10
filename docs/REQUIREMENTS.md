@@ -227,6 +227,29 @@ prices, and the entity graph had no contact edges.
   "no rankings, no reviews, no invented clients" line).
 - `robots` metadata sitewide: `max-snippet:-1, max-image-preview:large`.
 
+**Second pass (same day):** breadcrumbs + page nodes + anchor text.
+
+- `pageLd()` replaced `breadcrumbLd()`: one `@graph` of **WebPage +
+  BreadcrumbList** per route, with `dateModified`, `isPartOf`, `publisher`,
+  and `speakable` on `/`, `/pricing` and every guide. Notes and guides pass
+  their own date. `/about` is an `AboutPage` plus a full `Person` node sharing
+  the Organization's `@id`.
+- `/brief` was the only route without a visible trail (it opens with a
+  full-screen form); it now has a slim breadcrumb above the room. **29/29
+  subpages** show one, **30/30** routes have a dated page node.
+- FAQ questions on `/faq` and in guides are now `<h3>` inside `<summary>`
+  rather than `<span>`: `h1 → h2 → question` is a real outline.
+- `audit:seo` gained four gates: visible breadcrumb, `BreadcrumbList`, a
+  `#webpage` node with `dateModified`, and FAQ-entry/heading parity. It also
+  **fails on `aggregateRating` / `ratingValue` / `reviewCount`** — the
+  no-fabricated-proof rule is now enforced in code, matching the new
+  "Claims and proof" clause in the Terms.
+- Contextual anchor text into `/pricing` and the cost guide from the home page,
+  `/compare` and all five service pages (previously 96 of ~101 anchors to
+  `/pricing` were just the word "Pricing" in nav and footer).
+- Sitemap `lastModified` now comes from content dates (`CONTENT_UPDATED`,
+  note/guide dates) instead of the build timestamp.
+
 **Content split, deliberate:** `/pricing` answers *our* price;
 `/guides/website-cost-pakistan` answers the *market* band; `/faq` gives the
 paragraph and routes. One canonical passage per query.
@@ -293,3 +316,7 @@ value per hour of work.
   ≤ 60 and descriptions ≤ 158 sitewide via `pageMeta()`, `WebSite` + richer
   entity graph, `llms.txt` price list + citation block, `max-snippet:-1`, and
   a new `npm run audit:seo` gate. See `docs/SEO-AI-VISIBILITY.md`.
+- 2026-11-10 — Breadcrumbs + GEO/AEO second pass: `pageLd()` WebPage +
+  BreadcrumbList graph on all 30 routes, `/brief` trail, FAQ questions as
+  headings, contextual price anchors, honest sitemap `lastmod`, and audit
+  gates for breadcrumbs, page nodes, FAQ parity and fabricated ratings.
