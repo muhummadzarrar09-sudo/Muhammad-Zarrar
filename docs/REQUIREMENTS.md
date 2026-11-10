@@ -77,6 +77,45 @@ Never fabricate.
 
 ---
 
+## 5. Field Notes v2 — SHIPPED 2026-11-10
+
+Three new notes (missing prices, three numbers on one site, the website you're
+still paying for) plus the publication layer: topic filters, search, reading
+time, in-this-note contents, related notes, share row, `/feed.xml` RSS 2.0 and
+`/llms.txt`. The two original posts each gained a "Check yours" section so the
+archive is consistently actionable. Every post is server-rendered; search and
+filters only narrow markup that is already on the page.
+
+---
+
+## Recommended next (in priority order)
+
+Each of these is on-brand, static, and needs no new dependency. Ordered by
+value per hour of work.
+
+1. **Case studies / "before → after" proof** — still gated on real numbers
+   (see item 4). The single biggest trust asset missing from the site.
+2. **Per-note OpenGraph cards** — `og-notes.png` is reused by every post, so
+   shares look identical. `scripts/generate-assets.mjs` already has the type
+   and colour system; ~40 lines adds a card per note, keyed by slug.
+3. **`/faq` hub with `FAQPage` schema** — the service FAQs exist as data in
+   `src/content/services.ts`; a consolidated page answers the questions people
+   actually search ("how much does a website cost in Pakistan") and gives
+   Google one canonical answer instead of five partial ones. Keep the FAQ
+   schema off the service pages if it moves, to avoid duplicates.
+4. **A real audit-sample page** — a redacted, reproduced finding report.
+   Free-audit already sketches one; a full specimen converts better than a
+   promise.
+5. **Notes topics as their own routes** (`/notes/topic/speed`) — only when the
+   archive passes ~12 notes. Below that, filters are enough and topic pages
+   would be thin.
+6. **Newsletter** — deliberately deferred. There is no backend by design, and
+   RSS + WhatsApp covers the same job without a third party holding the list.
+7. **Notes → service cross-links** — each note ends by pointing at the service
+   that fixes it (audit vs redesign vs storefront), not just at the audit CTA.
+
+---
+
 ## Shipped
 
 - 2026-08-21 — Full site v1: 9 routes + 5 service pages, PWA, SEO suite,
@@ -85,3 +124,8 @@ Never fabricate.
 - 2026-08-21 — Sprint 3: Field Notes live (/notes, 2 posts, BlogPosting
   schema), per-service OG cards (12 total), humans.txt, security headers
   for Vercel (vercel.json) and Cloudflare Pages (public/_headers).
+- 2026-11-10 — Field Notes v2: 3 new posts + "Check yours" on both originals,
+  topics + search, reading time/word count, in-this-note contents, related
+  notes, share row, `/feed.xml`, `/llms.txt`, Notes in the primary nav,
+  feed link in the footer, richer `BlogPosting` schema, and route-check
+  guards for the feed, the index markup and llms.txt.

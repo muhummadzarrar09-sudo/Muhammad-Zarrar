@@ -30,6 +30,9 @@ export function SiteFooter() {
             <Link href="/process">Process</Link>
             <Link href="/about">About</Link>
             <Link href="/notes">Field Notes</Link>
+            <a href="/feed.xml" className="footer-rss">
+              Field Notes · RSS
+            </a>
             <Link href="/brief">The Brief</Link>
             <Link href="/free-audit">Free 5-Point Audit</Link>
             <Link href="/contact">Contact</Link>

@@ -1,18 +1,22 @@
-import Link from "next/link";
 import { pageMeta, breadcrumbLd } from "@/lib/seo";
-import { NOTES } from "@/content/notes";
-import { Reveal } from "@/components/reveal";
+import {
+  NOTES,
+  TOPICS,
+  readingMinutes,
+  topicLabel,
+  notesWithTopic,
+} from "@/content/notes";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
-import { ArrowRightIcon } from "@/components/icons";
 import { Scribble } from "@/components/scribble";
 import { SITE_URL } from "@/lib/site";
 import { PageHero } from "@/components/page-hero";
+import { NotesIndex } from "@/components/notes-index";
 
 export const metadata = pageMeta({
   title: "Field Notes — Short, Honest Write-ups From Real Audits",
   description:
-    "Plain-English field notes from real website audits in Pakistan: why homepages weigh 70 files, why Google sees blank pages, and what the fix actually is.",
+    "Plain-English field notes from real website audits in Pakistan: missing prices, three phone numbers, dead domains, 70-file homepages, and the client-side rendering tax. What we found and what the fix was.",
   path: "/notes",
   ogImage: "/og-notes.png",
 });
@@ -35,6 +39,15 @@ export default function NotesIndexPage() {
     })),
   };
 
+  const summaries = NOTES.map((note) => ({
+    slug: note.slug,
+    title: note.title,
+    excerpt: note.excerpt,
+    dateLabel: note.date,
+    minutes: readingMinutes(note),
+    topics: note.topics.map((id) => ({ id, label: topicLabel(id) })),
+  }));
+
   return (
     <>
       <JsonLd data={blogSchema} />
@@ -46,10 +59,7 @@ export default function NotesIndexPage() {
       />
 
       <PageHero
-        crumbs={[
-          { href: "/", label: "Home" },
-          { label: "Field Notes" },
-        ]}
+        crumbs={[{ href: "/", label: "Home" }, { label: "Field Notes" }]}
         kicker="Field notes"
         title={
           <>
@@ -60,35 +70,32 @@ export default function NotesIndexPage() {
           </>
         }
         lede="Short notes from real audits and real builds. No growth-hacking, no listicles — what we found, what it cost the business, and what the fix was."
-      />
+      >
+        <p className="notes-hero-meta">
+          <span>{NOTES.length} notes</span>
+          <span className="notes-hero-sep" aria-hidden="true">
+            /
+          </span>
+          {TOPICS.map((topic) => (
+            <span key={topic.id}>
+              {topic.label}{" "}
+              <span className="notes-hero-count">
+                {notesWithTopic(topic.id).length}
+              </span>
+            </span>
+          ))}
+          <span className="notes-hero-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/feed.xml" className="notes-rss">
+            RSS feed
+          </a>
+        </p>
+      </PageHero>
 
       <section className="section">
         <div className="container">
-          <div className="index-list">
-            {NOTES.map((note, i) => (
-              <Reveal key={note.slug}>
-                <Link
-                  href={`/notes/${note.slug}`}
-                  className="index-row"
-                  data-spotlight
-                >
-                  <span className="idx-no">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h3 className="idx-title">{note.title}</h3>
-                    <p className="idx-sub">{note.excerpt}</p>
-                  </div>
-                  <span className="idx-side">
-                    <span className="note-date">{note.date}</span>
-                    <span className="idx-arrow">
-                      <ArrowRightIcon size={20} />
-                    </span>
-                  </span>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
+          <NotesIndex notes={summaries} />
         </div>
       </section>
 

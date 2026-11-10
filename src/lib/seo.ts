@@ -20,7 +20,16 @@ export function pageMeta({
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      /* The feed is advertised in the head of every page, not just /notes,
+         so feed readers and crawlers can find it from anywhere. */
+      types: {
+        "application/rss+xml": [
+          { url: `${SITE_URL}/feed.xml`, title: `${SITE_NAME} — Field Notes` },
+        ],
+      },
+    },
     openGraph: {
       type: "website",
       url,

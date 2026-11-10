@@ -10149,3 +10149,443 @@ button.footer-top {
   cursor: pointer;
   -webkit-tap-highlight-color: var(--tap-highlight);
 }
+
+/* ==========================================================================
+   FIELD NOTES — the publication layer.
+   Search, topic filters, reading time, in-page contents, related notes and
+   the feed. Same wall-label grammar as the rest of the site: hairlines,
+   uppercase micro-labels, one clay accent, no new colours.
+   ========================================================================== */
+
+/* ---------- Index hero meta ---------------------------------------------- */
+
+.notes-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: 26px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.notes-hero-sep {
+  color: var(--text-3);
+  opacity: 0.5;
+}
+
+.notes-hero-count {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  color: var(--gold);
+  margin-left: 2px;
+}
+
+.notes-rss {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--hairline-strong);
+  padding-bottom: 2px;
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+
+.notes-rss:hover,
+.notes-rss:focus-visible {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+/* ---------- Search + filters --------------------------------------------- */
+
+.notes-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.notes-search {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
+.notes-search input {
+  width: 100%;
+  padding: 13px 16px;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+.notes-search input::placeholder {
+  color: var(--text-3);
+  opacity: 0.85;
+}
+
+.notes-search input:hover {
+  border-color: var(--hairline-strong);
+}
+
+.notes-search input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: var(--ground-500);
+}
+
+.notes-search input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.topic-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.topic-chip {
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  background: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  -webkit-tap-highlight-color: var(--tap-highlight);
+}
+
+.topic-chip:hover {
+  color: var(--text);
+  border-color: var(--hairline-strong);
+}
+
+.topic-chip[aria-pressed="true"] {
+  color: var(--accent-on-ink);
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.topic-chip:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.notes-count {
+  margin: 18px 0 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.notes-empty {
+  padding: 48px 0 56px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.notes-empty p {
+  max-width: 52ch;
+  color: var(--text-2);
+}
+
+.notes-empty-link {
+  font: inherit;
+  color: var(--gold);
+  background: none;
+  border: 0;
+  padding: 0;
+  border-bottom: 1px solid currentColor;
+  cursor: pointer;
+}
+
+/* ---------- Row meta ------------------------------------------------------ */
+
+.note-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 14px;
+}
+
+.note-topic {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  padding: 3px 8px;
+}
+
+.note-meta-item {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.note-hero-topics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 22px;
+}
+
+/* ---------- Article layout: plate + prose -------------------------------- */
+
+.note-layout {
+  display: grid;
+  grid-template-columns: 208px minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
+}
+
+.note-toc {
+  position: sticky;
+  top: calc(var(--header-offset) + 28px);
+  padding-left: 18px;
+  border-left: 1px solid var(--hairline);
+}
+
+.note-toc-label,
+.note-share-label,
+.note-related-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 14px;
+}
+
+.note-toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: toc;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.note-toc-list li {
+  counter-increment: toc;
+}
+
+.note-toc-list a {
+  display: flex;
+  gap: 10px;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.note-toc-list a::before {
+  content: counter(toc, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--ember-300);
+  flex: 0 0 auto;
+}
+
+.note-toc-list a:hover,
+.note-toc-list a:focus-visible {
+  color: var(--gold);
+}
+
+.note-toc-meta {
+  margin-top: 18px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.note-toc-rss {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+
+/* Anchored headings must clear the floating header. */
+.prose h2[id],
+.prose [id="takeaway"] {
+  scroll-margin-top: calc(var(--header-offset) + 32px);
+}
+
+/* ---------- Share row ----------------------------------------------------- */
+
+.note-share {
+  margin-top: 56px;
+  padding-top: 26px;
+  border-top: 1px solid var(--hairline);
+}
+
+.note-share-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.note-share-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  text-decoration: none;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.note-share-link:hover,
+.note-share-link:focus-visible {
+  color: var(--accent-on-ink);
+  background: var(--text);
+  border-color: var(--text);
+}
+
+/* ---------- Related notes ------------------------------------------------- */
+
+.note-related {
+  margin-top: clamp(56px, 8vw, 96px);
+  padding-top: 28px;
+  border-top: 1px solid var(--hairline);
+}
+
+.note-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.note-related-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 26px;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+}
+
+.note-related-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.note-related-card:hover .note-related-title {
+  color: var(--gold);
+}
+
+.note-related-card .idx-sub {
+  margin-top: 0;
+  font-size: 0.92rem;
+}
+
+/* ---------- Footer feed link --------------------------------------------- */
+
+.footer-rss {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.72;
+}
+
+.footer-rss:hover,
+.footer-rss:focus-visible {
+  opacity: 1;
+  color: var(--copper);
+}
+
+/* ---------- Narrow screens ------------------------------------------------ */
+
+@media (max-width: 1024px) {
+  .note-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .note-toc {
+    position: static;
+    padding: 18px 0 20px;
+    border-left: 0;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .note-toc-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+  }
+}
+
+@media (max-width: 760px) {
+  .notes-tools {
+    gap: 14px;
+  }
+
+  .notes-search {
+    flex: 1 1 100%;
+  }
+
+  .topic-chip {
+    padding: 8px 11px;
+    font-size: 0.64rem;
+  }
+
+  .note-hero-topics {
+    margin-top: 18px;
+  }
+
+  .note-related-card {
+    padding: 20px;
+  }
+}

@@ -115,6 +115,40 @@ try {
   const robots = await readFile(path.join(OUT, "robots.txt"), "utf8");
   assert(robots.includes(`Sitemap: ${origin}/sitemap.xml`), "robots.txt does not point to this sitemap");
 
+  // Field Notes must be followable: one static feed containing every note,
+  // advertised in the head of the index, plus an llms.txt that points at it.
+  const feed = await readFile(path.join(OUT, "feed.xml"), "utf8");
+  assert(feed.startsWith('<?xml version="1.0" encoding="UTF-8"?>'), "feed.xml is not XML");
+  assert(feed.includes('<rss version="2.0"'), "feed.xml is not an RSS 2.0 document");
+  for (const route of sitemapRoutes.filter((path) => path.startsWith("/notes/"))) {
+    assert(
+      feed.includes(`${origin}${route}<`),
+      `feed.xml is missing a note: ${route}`,
+    );
+  }
+
+  const notesIndexHtml = await readFile(path.join(OUT, "notes.html"), "utf8");
+  assert(
+    notesIndexHtml.includes('type="application/rss+xml"') &&
+      notesIndexHtml.includes(`${origin}/feed.xml`),
+    "the notes index does not advertise the RSS feed",
+  );
+  assert(
+    notesIndexHtml.includes('type="search"'),
+    "the notes index lost its search field",
+  );
+  for (const route of sitemapRoutes.filter((path) => path.startsWith("/notes/"))) {
+    assert(
+      notesIndexHtml.includes(`href="${route}"`),
+      `the notes index does not link to ${route} in its pre-JS HTML`,
+    );
+  }
+
+  const llms = await readFile(path.join(OUT, "llms.txt"), "utf8");
+  assert(llms.startsWith(`# `), "llms.txt is missing its H1");
+  assert(llms.includes(`${origin}/feed.xml`), "llms.txt does not point at the feed");
+  assert(llms.includes(`${origin}/sitemap.xml`), "llms.txt does not point at the sitemap");
+
   const vercel = JSON.parse(await readFile(path.join(ROOT, "vercel.json"), "utf8"));
   assert(vercel.cleanUrls === true, "Vercel must map extensionless URLs to exported .html files");
   assert(
