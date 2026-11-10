@@ -195,6 +195,49 @@ the questions printed on the page.
 
 ---
 
+## 12. SEO + answer-engine pass — SHIPPED 2026-11-10
+
+Full write-up: `docs/SEO-AI-VISIBILITY.md`. New gate: `npm run audit:seo`
+(`npm run check` runs build + routes + seo + contrast).
+
+**Found on the first run:** 19 of 30 titles over 60 characters (brand suffix
+was appended to every title, worst 91), 15 descriptions over 170, `/pricing`
+published prices in prose only with no structured data, `llms.txt` stated no
+prices, and the entity graph had no contact edges.
+
+**Shipped:**
+
+- `src/content/price-list.ts` — the published prices as one machine-readable
+  table (7 project offers, 5 add-ons, band, the citable sentence) feeding the
+  page, the JSON-LD and `llms.txt`.
+- `/pricing` — question-shaped `<h2>`, a self-contained cost paragraph, a
+  `<dl>` of every project price, a visible "verified November 2026" line, and
+  `Service` + `OfferCatalog` + `AggregateOffer` (`35000`–`500000`, `PKR`).
+  H1 changed to "What it costs, in writing." so the strongest heading carries
+  the query noun. `check:routes` fails if the catalogue quotes a string the
+  page does not show.
+- `pageMeta()` — brand suffix only when the title stays ≤ 60 characters;
+  descriptions clamped at 158. Every page rewritten to fit; `audit:seo` fails
+  above those limits.
+- Root JSON-LD — `WebSite` added; `Organization`/`ProfessionalService` gained
+  `email`, `telephone`, `founder@id`, `areaServed`, `knowsAbout`, `slogan`,
+  `currenciesAccepted`, `paymentAccepted`, `openingHours`.
+- `llms.txt` — cost paragraph, full price list, add-ons, and a "How to cite
+  this site" block (canonical sources, verification date, and an explicit
+  "no rankings, no reviews, no invented clients" line).
+- `robots` metadata sitewide: `max-snippet:-1, max-image-preview:large`.
+
+**Content split, deliberate:** `/pricing` answers *our* price;
+`/guides/website-cost-pakistan` answers the *market* band; `/faq` gives the
+paragraph and routes. One canonical passage per query.
+
+Still blocked on the owner: domain swap (citations currently point at a
+`vercel.app` host), Google Business Profile, and `sameAs` profiles — the schema
+fields exist but there are no real URLs to point at, and inventing them would
+be worse than omitting them.
+
+---
+
 ## Recommended next (in priority order)
 
 Each of these is on-brand, static, and needs no new dependency. Ordered by
@@ -245,3 +288,8 @@ value per hour of work.
   blocks, 3–4 FAQs each (`FAQPage` per guide), per-guide share cards,
   `Article` + breadcrumb schema, FAQ-hub cross-links. `check:routes` → 30
   routes and now asserts guide answer block / card / FAQ parity.
+- 2026-11-10 — SEO + answer-engine pass: price catalogue with
+  `OfferCatalog`/`AggregateOffer`, citable cost answer on `/pricing`, titles
+  ≤ 60 and descriptions ≤ 158 sitewide via `pageMeta()`, `WebSite` + richer
+  entity graph, `llms.txt` price list + citation block, `max-snippet:-1`, and
+  a new `npm run audit:seo` gate. See `docs/SEO-AI-VISIBILITY.md`.

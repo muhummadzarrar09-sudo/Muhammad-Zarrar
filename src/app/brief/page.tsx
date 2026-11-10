@@ -3,9 +3,10 @@ import { JsonLd } from "@/components/jsonld";
 import { BriefRoom } from "@/components/brief-room";
 
 export const metadata = pageMeta({
-  title: "Write the brief — seven questions, one honest quote",
+  title:
+    "Project brief — seven questions, one quote",
   description:
-    "One question at a time. What you need, the number you hoped for, and how to reach you. It leaves as a single WhatsApp message to the builder — nothing stored, no trackers. Replies within 24 hours.",
+    "Seven questions, two minutes, no sales call. Tell us what you need and what you hoped to pay; we reply within 24 hours with findings and a written quote.",
   path: "/brief",
   ogImage: "/og.png",
 });

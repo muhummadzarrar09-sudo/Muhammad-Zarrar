@@ -10,11 +10,20 @@ import { Scribble } from "@/components/scribble";
 import { FaqAccordion } from "@/components/faq";
 import { PageHero, SectionIntro } from "@/components/page-hero";
 import { CostEstimator } from "@/components/cost-estimator";
+import {
+  ADDON_PRICES,
+  PRICE_ANSWER,
+  PRICE_BAND,
+  PRICE_UPDATED,
+  SERVICE_PRICES,
+  priceCatalogLd,
+} from "@/content/price-list";
 
 export const metadata = pageMeta({
-  title: "Pricing in PKR, in Writing — Website Packages & Add-ons",
+  title:
+    "What a website costs in Pakistan — in PKR",
   description:
-    "Transparent web development pricing in Pakistan: audits from PKR 35,000, redesigns from PKR 150,000, catalogs, booking systems, dashboards and add-ons. Exact written quote after the audit.",
+    "Published prices, not teasers: audits from PKR 35,000, custom builds from PKR 150,000, catalogs from PKR 250,000. An exact written quote after the audit.",
   path: "/pricing",
   ogImage: "/og-pricing.png",
 });
@@ -43,6 +52,7 @@ export default function PricingPage() {
           { name: "Pricing", path: "/pricing" },
         ])}
       />
+      <JsonLd data={priceCatalogLd()} />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -64,7 +74,7 @@ export default function PricingPage() {
         stamp="In writing ✓"
         title={
           <>
-            In PKR,{" "}
+            What it costs,{" "}
             <em>
               <Scribble>in writing.</Scribble>
             </em>
@@ -82,6 +92,42 @@ export default function PricingPage() {
           </Link>
         </p>
       </PageHero>
+
+      <section
+        className="section section-tight price-answer-section"
+        aria-labelledby="cost-answer-heading"
+      >
+        <div className="container">
+          <Reveal>
+            <div className="price-answer">
+              <p className="note-takeaway-label">The short answer</p>
+              <h2 id="cost-answer-heading" className="price-answer-q">
+                What does a fully custom website cost?
+              </h2>
+              <p className="price-answer-lede">{PRICE_ANSWER}</p>
+
+              <dl className="price-facts">
+                {SERVICE_PRICES.map((row) => (
+                  <div className="price-fact" key={row.name}>
+                    <dt>{row.name}</dt>
+                    <dd>{row.display}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <p className="price-verified">
+                Published prices, verified {PRICE_UPDATED.label} · project work
+                runs PKR {PRICE_BAND.low.toLocaleString("en-PK")} to{" "}
+                {PRICE_BAND.high.toLocaleString("en-PK")} · read{" "}
+                <Link href="/guides/website-cost-pakistan">
+                  what the wider Pakistani market charges
+                </Link>{" "}
+                or use the estimator below.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
       <section className="section pricing-estimator-section" id="estimate-section">
         <div className="container">
@@ -144,6 +190,7 @@ export default function PricingPage() {
       </section>
 
       <section
+        id="addons"
         className="section-tight pricing-addons-section"
         aria-labelledby="addons-heading"
         style={{ paddingTop: 0 }}

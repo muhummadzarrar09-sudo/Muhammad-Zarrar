@@ -8,9 +8,10 @@ import { ProofStrip } from "@/components/proof-strip";
 import { PageHero } from "@/components/page-hero";
 
 export const metadata = pageMeta({
-  title: "Privacy Policy — No Trackers, No Nonsense. Verify it.",
+  title:
+    "Privacy — no trackers, verify it",
   description:
-    "Zarrar.Solutions collects nothing it doesn't need: no analytics, no trackers, no cookies, no stored form data. Open DevTools → Network and verify. 0 external requests.",
+    "No analytics, no cookies, no third-party scripts, no newsletter. What this site stores (nothing), and how to check that claim yourself in ten seconds.",
   path: "/privacy",
 });
 

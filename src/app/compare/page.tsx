@@ -9,9 +9,10 @@ import { ArrowRightIcon } from "@/components/icons";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata = pageMeta({
-  title: "Freelancer, Agency or Audit-First Studio? An Honest Comparison",
+  title:
+    "Freelancer, agency or audit-first studio?",
   description:
-    "A comparison table that includes where each option is the wrong choice — including ours. Advertised Pakistani price ranges, who actually does the work, who owns the domain, and what happens when it goes wrong.",
+    "Three ways to get a website in Pakistan, compared on cost, risk and who owns the code — including the projects where this studio is the wrong choice.",
   path: "/compare",
   ogImage: "/og-compare.png",
 });

@@ -9,9 +9,10 @@ import { PageHero } from "@/components/page-hero";
 import { SITE_URL, waLink } from "@/lib/site";
 
 export const metadata = pageMeta({
-  title: "Website Questions, Answered Honestly — Pricing, Google, Speed, Ownership",
+  title:
+    "Website questions, answered honestly",
   description:
-    "The questions business owners actually ask: what a website costs in Pakistan, why quotes differ, why Google ignores a site, whether you need a redesign, and who owns the code. Direct answers, no sales fog.",
+    "Seventeen real questions about cost, Google visibility, speed and code ownership — answered plainly, with the prices this studio actually charges.",
   path: "/faq",
   ogImage: "/og-faq.png",
 });

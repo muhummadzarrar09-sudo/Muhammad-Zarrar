@@ -44,9 +44,9 @@ export const GUIDES: Guide[] = [
   {
     slug: "website-cost-pakistan",
     h1: "How much does a website cost in Pakistan?",
-    metaTitle: "How Much Does a Website Cost in Pakistan? An Honest Answer",
+    metaTitle: "How much does a website cost in Pakistan?",
     description:
-      "Advertised website prices in Pakistan run from about PKR 20,000 to PKR 500,000+. What the quote leaves out, what three years actually costs, and the questions to ask before you transfer a deposit.",
+      "Advertised prices in Pakistan run from PKR 20,000 to PKR 500,000+. What a quote leaves out, what three years really costs, and what to ask before you pay a deposit.",
     answer:
       "Advertised prices in Pakistan start around PKR 20,000 for a template and run past PKR 500,000 for a custom system. The number worth comparing is the three-year cost — build, plus hosting and domain, plus any mandatory monthly retainer, plus the odds of a rebuild. Our published ranges: an audit from PKR 35,000, a rebuild from PKR 150,000, a catalog system from PKR 250,000, a booking system from PKR 200,000, and an internal dashboard from PKR 300,000.",
     updatedISO: "2026-11-10",
@@ -143,9 +143,9 @@ export const GUIDES: Guide[] = [
   {
     slug: "website-not-on-google",
     h1: "Why isn't my website showing up on Google?",
-    metaTitle: "Why Isn't My Website Showing Up on Google? A 10-Minute Diagnosis",
+    metaTitle: "Why your website isn't showing on Google",
     description:
-      "Not indexed, indexed but invisible, or the wrong system entirely. Four checks that tell you which problem you have — in about ten minutes, with no tools to install.",
+      "Not indexed, indexed but invisible, or the wrong system. Four checks that tell you which problem you have — in ten minutes, with no tools.",
     answer:
       "Three different failures get called the same thing: Google has not indexed the site, it has indexed it but ranks it too low to see, or the site is fine and the missing piece is the Google Business Profile. Start with one search — site:yourdomain.com. No results means nothing else matters until the site is indexed. Results but no traffic means you have a ranking problem, which is slower to fix and worth understanding before you spend anything.",
     updatedISO: "2026-11-10",
@@ -241,9 +241,9 @@ export const GUIDES: Guide[] = [
   {
     slug: "website-or-facebook-page",
     h1: "Do I need a website if I already have a Facebook page?",
-    metaTitle: "Website or Facebook Page for Your Pakistani Business?",
+    metaTitle: "Facebook page vs website: which one?",
     description:
-      "What a Facebook page does well, what it can't do, and the ten-minute test that tells you whether you need a website yet — or whether the page is genuinely enough for now.",
+      "What a Facebook page does well, what it can't do, and the ten-minute test that tells you whether you need a website yet.",
     answer:
       "A Facebook page reaches people who are already inside Facebook. A website is what shows up when a stranger searches Google, works without an account or an app, and is the only piece of your presence nobody else can switch off. Most businesses eventually need both — but a page is not a substitute for a site, and for a very small business running entirely on referrals it can be enough for a while.",
     updatedISO: "2026-11-10",
@@ -324,9 +324,9 @@ export const GUIDES: Guide[] = [
   {
     slug: "audit-your-own-website",
     h1: "How to audit your own website in 20 minutes",
-    metaTitle: "Audit Your Own Website in 20 Minutes — Four Tests",
+    metaTitle: "Audit your own website in 20 minutes",
     description:
-      "Four tests any owner can run without a tool, an account or a developer: mobile data, view-source, a site: search, and the stranger's walk. What each failure usually means.",
+      "Four tests any owner can run without a tool or a developer: mobile data, view-source, a site: search, and the stranger's walk.",
     answer:
       "Four tests cover most of what a paid audit finds: load the site on mobile data with the Wi-Fi off, view the source and look for your own words, search site:yourdomain.com, and try to enquire the way a stranger would. Twenty minutes, no tools to install, and each failure maps to a real finding.",
     updatedISO: "2026-11-10",

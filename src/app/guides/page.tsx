@@ -9,9 +9,10 @@ import { ArrowRightIcon } from "@/components/icons";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata = pageMeta({
-  title: "Guides — Straight Answers to the Four Questions Every Buyer Asks",
+  title:
+    "Guides — cost, Google, ownership",
   description:
-    "What a website costs in Pakistan, why Google ignores a site, whether a Facebook page is enough, and how to audit your own site in 20 minutes. Long answers, no fluff.",
+    "Four long answers: what a website really costs, why Google ignores a site, whether a Facebook page is enough, and how to audit your own site in 20 minutes.",
   path: "/guides",
   ogImage: "/og-guides.png",
 });

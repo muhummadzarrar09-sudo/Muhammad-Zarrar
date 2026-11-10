@@ -48,7 +48,7 @@ copy-paste text live in `docs/DIRECTORY-LISTINGS.md`.
 | 4 | **DesignRush** — listing + 3 portfolio items | designrush.com | 30 min | Ranks by rate, budget, portfolio count |
 | 5 | **Clutch** — claim, then wait for a first review | clutch.co | 20 min | Highest trust signal; empty profiles hurt |
 | 6 | **LinkedIn company page** — medium bio, pin the audit | linkedin.com | 20 min | Where B2B buyers check you're real |
-| 7 | **Domain swap** — one line in `src/lib/site.ts` | this repo | 2 min | Canonicals, sitemap, OG, schema all follow |
+| 7 | **Domain swap** — one line in `src/lib/site.ts` | this repo | 2 min | Canonicals, sitemap, OG, schema and every `llms.txt` citation follow. Do it **before** the guides earn citations |
 | 8 | **Founder portrait** — drop `public/images/portrait.jpg` | this repo | 5 min | About page swaps automatically |
 | 9 | **Real case-study numbers** — 2–3 anonymised before/after | — | — | Blocks the proof strip. Nothing gets invented |
 
@@ -235,6 +235,34 @@ single `h1` per page. `/feed.xml` is an RSS 2.0 feed of the field notes, and
 `/llms.txt` is a plain-text map of the site for answer engines — both static,
 both generated from the same content files the pages render.
 
+### Answer engines (being the source, not the summary)
+
+The audit is in `docs/SEO-AI-VISIBILITY.md`. What it enforces:
+
+- **One citable answer per question.** `/pricing` opens with a question-shaped
+  `<h2>` and a self-contained paragraph: *a fully custom website is
+  PKR 150,000 (5–8 pages), PKR 300,000 (8–12), PKR 500,000 (12+ with custom
+  modules); an audit is PKR 35,000–50,000, credited to the build.* Under it,
+  every project price as a `<dl>`, and a visible "verified November 2026" date.
+  `/guides/website-cost-pakistan` owns the *market* bands instead, so two pages
+  never answer the same question with the same sentences.
+- **Prices as structured data.** `src/content/price-list.ts` emits an
+  `OfferCatalog` + `AggregateOffer` (`lowPrice 35000`, `highPrice 500000`,
+  `PKR`) and one `Offer` per service. `check:routes` fails if the catalogue
+  quotes a string the page does not visibly show.
+- **Titles that fit.** `pageMeta()` appends the brand only when the title stays
+  ≤ 60 characters, and clamps descriptions at 158. Both limits are enforced by
+  `npm run audit:seo`, so a new page cannot regress them.
+- **A resolved entity.** Organization + WebSite + ProfessionalService with
+  `email`, `telephone`, `founder`, `knowsAbout`, `priceRange`, `areaServed`.
+- **`llms.txt` as a brief**, not a link dump: the cost paragraph, the full
+  price list, and a "How to cite this site" block with canonical sources and
+  the verification date.
+- **`max-snippet:-1`** sitewide, so an engine may quote a whole paragraph.
+
+No rankings, reviews or invented clients anywhere — the only trust signal on
+offer is that the numbers are real and checkable.
+
 ---
 
 ## Run locally
@@ -243,7 +271,9 @@ both generated from the same content files the pages render.
 npm install        # install dependencies
 npm run dev        # dev server → http://localhost:3000
 npm run build      # type-check + static export → ./out
-npm run check:routes # verify every sitemap URL, canonical, static HTML route, feed and llms.txt
+npm run check:routes # verify every sitemap URL, canonical, static route, schema + price parity
+npm run audit:seo    # titles, descriptions, H1s, orphans, schema, prices, llms.txt
+npm run check        # build + all three gates (routes, seo, contrast)
 npm run preview    # serve ./out with clean URLs + redirects → http://localhost:4173
 ```
 

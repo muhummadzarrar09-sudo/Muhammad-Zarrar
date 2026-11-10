@@ -9,9 +9,10 @@ import { Scribble } from "@/components/scribble";
 import { PageHero } from "@/components/page-hero";
 
 export const metadata = pageMeta({
-  title: "Contact — Talk to the Builder",
+  title:
+    "Contact — talk to the builder",
   description:
-    "Contact Zarrar.Solutions in Rawalpindi — direct WhatsApp or email, no support tickets. Serving Islamabad, Rawalpindi, and businesses across Pakistan. Replies within 24 hours.",
+    "One WhatsApp number and one email, answered by the person who writes the code. Replies within 24 hours, Islamabad and Rawalpindi, Pakistan-wide.",
   path: "/contact",
   ogImage: "/og-contact.png",
 });

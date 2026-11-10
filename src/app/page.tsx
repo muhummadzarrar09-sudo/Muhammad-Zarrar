@@ -20,9 +20,9 @@ import { waLink } from "@/lib/site";
 
 export const metadata = pageMeta({
   title:
-    "Zarrar.Solutions — Tell us what's leaking. Walk out with a written plan.",
+    "Web development in Islamabad & Rawalpindi",
   description:
-    "A qualifying brief for business owners in Islamabad & Rawalpindi. Say what you need and what you hoped to pay. We reply within 24 hours with findings — and an honest quote.",
+    "Audit-led websites for Pakistani businesses: what is broken, what it costs to fix, and a written quote. Audits from PKR 35,000, rebuilds from PKR 150,000.",
   path: "/",
 });
 

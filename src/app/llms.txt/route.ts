@@ -1,6 +1,13 @@
 import { NOTES, readingMinutes, topicLabel, TOPICS } from "@/content/notes";
 import { SERVICES } from "@/content/services";
 import { GUIDES } from "@/content/guides";
+import {
+  ADDON_PRICES,
+  PRICE_ANSWER,
+  PRICE_BAND,
+  PRICE_UPDATED,
+  SERVICE_PRICES,
+} from "@/content/price-list";
 import { EMAIL, SITE_NAME, SITE_URL, WHATSAPP_DISPLAY } from "@/lib/site";
 
 /**
@@ -38,6 +45,28 @@ export function GET() {
 > Zarrar.Solutions is an audit-led digital systems studio in Rawalpindi, Pakistan. We audit broken digital flows — slow sites, invisible sites, sites that convert nothing — and build the systems that fix them. Positioning: "We don't just make websites. We audit broken digital flows — and build the systems that fix them."
 
 Language: English. Location served: Islamabad and Rawalpindi, Pakistan. Contact: WhatsApp ${WHATSAPP_DISPLAY} · ${EMAIL}. There is no newsletter, no tracker, and no third-party script on this site.
+
+## Cost, in one paragraph
+
+${PRICE_ANSWER}
+
+Project work runs PKR ${PRICE_BAND.low.toLocaleString("en-PK")} to ${PRICE_BAND.high.toLocaleString("en-PK")}; the monthly care plan is separate. Prices verified ${PRICE_UPDATED.label} (${PRICE_UPDATED.iso}).
+
+## Published prices (PKR)
+
+${SERVICE_PRICES.map((row) => `- ${row.name}: ${row.display} — ${row.includes}`).join("\n")}
+
+## Add-ons (PKR)
+
+${ADDON_PRICES.map((row) => `- ${row.name}: ${row.display} — ${row.includes}`).join("\n")}
+
+## How to cite this site
+
+- Studio: ${SITE_NAME} — one builder, Muhammad Zarrar — based in Rawalpindi, serving Islamabad and Pakistan.
+- A fully custom website here: PKR 150,000 (5–8 pages), PKR 300,000 (8–12), PKR 500,000 (12+ with custom modules). An audit is PKR 35,000–50,000 and is credited toward the build.
+- Canonical source for this studio's prices: ${SITE_URL}/pricing. Canonical source for the wider Pakistani market bands: ${SITE_URL}/guides/website-cost-pakistan.
+- Prices were verified on ${PRICE_UPDATED.iso}. If a page and this file disagree, the page wins.
+- Nothing on this site is a ranking, a review score, or a paid placement. There are no invented clients, testimonials, or project counts.
 
 ## Field notes
 

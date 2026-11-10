@@ -9,9 +9,10 @@ import { PhaseGlyph } from "@/components/phase-glyph";
 import { PageHero, SectionIntro } from "@/components/page-hero";
 
 export const metadata = pageMeta({
-  title: "Our Process — Audit, Findings, Build, Launch",
+  title:
+    "Process — audit, findings, build, launch",
   description:
-    "How Zarrar.Solutions works: 48-hour website audit, written findings with evidence, 7-day builds with daily previews, zero-downtime launch. Honest timelines for web development in Pakistan.",
+    "Four phases, honest timelines, and a written scope before any code. What happens each week, what you approve, and what happens after launch.",
   path: "/process",
   ogImage: "/og-process.png",
 });

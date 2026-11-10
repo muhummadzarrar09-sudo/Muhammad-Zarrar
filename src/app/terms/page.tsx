@@ -6,9 +6,10 @@ import { JsonLd } from "@/components/jsonld";
 import { PageHero } from "@/components/page-hero";
 
 export const metadata = pageMeta({
-  title: "Terms of Work — Honest, Short, In Writing",
+  title:
+    "Terms of work — short and in writing",
   description:
-    "How Zarrar.Solutions works in plain language: written quotes, 40–50% deposit, full ownership on payment, no lock-in, and what we're responsible for.",
+    "Deposits, revisions, ownership, handover and the care plan, in plain English. The same terms every client gets, before anything is signed.",
   path: "/terms",
 });
 

@@ -11264,3 +11264,93 @@ button.footer-top {
   text-transform: uppercase;
   color: var(--text-3);
 }
+
+/* ---- Pricing: the citable answer block ---------------------------------- */
+
+.price-answer-section {
+  padding-top: clamp(8px, 2vw, 20px);
+}
+
+.price-answer {
+  border-left: 2px solid var(--gold);
+  padding: 4px 0 6px 24px;
+  max-width: 78ch;
+}
+
+.price-answer-q {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 6px 0 14px;
+}
+
+.price-answer-lede {
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  line-height: 1.62;
+  color: var(--text);
+  max-width: var(--measure);
+}
+
+.price-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 0 28px;
+  margin: 26px 0 18px;
+  border-top: 1px solid var(--hairline);
+}
+
+.price-fact {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.price-fact dt {
+  font-size: 0.9rem;
+  color: var(--text-2);
+}
+
+.price-fact dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.price-verified {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-3);
+  max-width: var(--measure);
+}
+
+.price-verified a {
+  color: var(--text-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--hairline-strong);
+}
+
+.price-verified a:hover,
+.price-verified a:focus-visible {
+  color: var(--gold-deep);
+  text-decoration-color: var(--gold-deep);
+}
+
+@media (max-width: 900px) {
+  .price-answer {
+    padding-left: 18px;
+  }
+
+  .price-fact {
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+}

@@ -14,9 +14,10 @@ import { PageHero } from "@/components/page-hero";
 import { NotesIndex } from "@/components/notes-index";
 
 export const metadata = pageMeta({
-  title: "Field Notes — Short, Honest Write-ups From Real Audits",
+  title:
+    "Field Notes — evidence from real audits",
   description:
-    "Plain-English field notes from real website audits in Pakistan: missing prices, three phone numbers, dead domains, 70-file homepages, and the client-side rendering tax. What we found and what the fix was.",
+    "Short write-ups from real website audits in Pakistan: missing prices, three phone numbers, 70-file homepages, and the fixes that followed. No listicles.",
   path: "/notes",
   ogImage: "/og-notes.png",
 });

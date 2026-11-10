@@ -13,9 +13,10 @@ import { WhatsAppIcon } from "@/components/icons";
 import { PageHero, SectionIntro } from "@/components/page-hero";
 
 export const metadata = pageMeta({
-  title: "Free 5-Point Website Audit — Findings in 24 Hours",
+  title:
+    "Free 5-point website audit, 24 hours",
   description:
-    "Send your website link and get five findings within 24 hours: speed on mobile data, Google visibility, mobile experience, conversion path, security. Free website audit for Islamabad, Rawalpindi & Pakistan.",
+    "Speed on mobile data, Google visibility, mobile experience, conversion path and security basics — checked by hand, answered in writing within 24 hours.",
   path: "/free-audit",
   ogImage: "/og-free-audit.png",
 });

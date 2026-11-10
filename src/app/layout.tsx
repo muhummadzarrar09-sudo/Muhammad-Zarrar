@@ -9,7 +9,7 @@ import { ScrollTimeline } from "@/components/scroll-timeline";
 import { MotionRoot } from "@/components/motion-root";
 import { RegisterSw } from "@/components/register-sw";
 import { JsonLd } from "@/components/jsonld";
-import { SITE_URL, SITE_NAME, POSITIONING } from "@/lib/site";
+import { SITE_URL, SITE_NAME, POSITIONING, EMAIL, WHATSAPP_DISPLAY } from "@/lib/site";
 
 /* Self-hosted fonts — zero CDN calls. Inter (variable) for body/UI,
    Fraunces (variable, optical editorial serif) for display headlines. */
@@ -41,13 +41,21 @@ const montserrat = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: "Audit-Led Digital Systems · Islamabad & Rawalpindi",
-    template: `%s · ${SITE_NAME}`,
-  },
+  /* No template on purpose: pageMeta owns the whole title and adds the brand
+     only when the result still fits inside 60 characters. */
+  title: "Audit-led web studio · Islamabad & Rawalpindi",
   description:
     "We audit broken digital flows and build systems that fix them. Serving Islamabad, Rawalpindi, Pakistan. Get your free audit.",
   applicationName: SITE_NAME,
+  /* max-snippet:-1 lets answer engines quote a full paragraph instead of a
+     truncated one; large image previews help the share cards. */
+  robots: {
+    index: true,
+    follow: true,
+    "max-snippet": -1,
+    "max-image-preview": "large",
+    "max-video-preview": -1,
+  },
   authors: [{ name: "Muhammad Zarrar" }],
   creator: "Muhammad Zarrar",
   keywords: [
@@ -56,7 +64,6 @@ export const metadata: Metadata = {
     "booking system Pakistan",
     "website design Pakistan",
   ],
-  robots: { index: true, follow: true },
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
@@ -82,7 +89,34 @@ const orgSchema = {
       url: SITE_URL,
       logo: `${SITE_URL}/icons/icon-192.png`,
       description: POSITIONING,
-      founder: { "@type": "Person", name: "Muhammad Zarrar" },
+      email: EMAIL,
+      telephone: WHATSAPP_DISPLAY,
+      founder: {
+        "@type": "Person",
+        "@id": `${SITE_URL}/about#person`,
+        name: "Muhammad Zarrar",
+        jobTitle: "Full-stack developer",
+        url: `${SITE_URL}/about`,
+      },
+      areaServed: ["Islamabad", "Rawalpindi", "Pakistan"],
+      knowsAbout: [
+        "website audits",
+        "web performance",
+        "technical SEO",
+        "Next.js development",
+        "e-commerce catalog systems",
+        "appointment booking systems",
+        "internal dashboards",
+      ],
+      slogan: POSITIONING,
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: SITE_NAME,
+      inLanguage: "en",
+      publisher: { "@id": `${SITE_URL}/#org` },
     },
     {
       "@type": "ProfessionalService",
@@ -92,6 +126,12 @@ const orgSchema = {
       image: `${SITE_URL}/og.png`,
       description: POSITIONING,
       priceRange: "PKR 35,000 – PKR 500,000",
+      email: EMAIL,
+      telephone: WHATSAPP_DISPLAY,
+      currenciesAccepted: "PKR",
+      paymentAccepted: "Bank transfer, cash",
+      openingHours: "Mo-Sa 10:00-19:00",
+      founder: { "@id": `${SITE_URL}/about#person` },
       address: {
         "@type": "PostalAddress",
         addressLocality: "Rawalpindi",

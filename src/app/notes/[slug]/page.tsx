@@ -44,7 +44,7 @@ export async function generateMetadata({
   if (!note) return {};
 
   const base = pageMeta({
-    title: `${note.title} — Field Notes`,
+    title: note.title,
     description: note.excerpt,
     path: `/notes/${note.slug}`,
     ogImage: `/social/notes/${note.slug}.png`,

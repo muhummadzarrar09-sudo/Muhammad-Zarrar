@@ -1,6 +1,23 @@
 import type { Metadata } from "next";
 import { SITE_NAME, SITE_URL } from "./site";
 
+const BRAND_SUFFIX = ` \u00b7 ${SITE_NAME}`;
+
+/** Google clips titles near 60 characters. Keep the brand only when it fits;
+ *  a clipped brand is worse than no brand, and the domain already carries it. */
+const withBrand = (title: string) =>
+  title.length + BRAND_SUFFIX.length <= 60 ? `${title}${BRAND_SUFFIX}` : title;
+
+const MAX_DESCRIPTION = 158;
+
+/** Google clips a description around 155–160 characters. Trim at a word
+ *  boundary rather than letting the snippet cut mid-word. */
+const clampDescription = (text: string) => {
+  if (text.length <= MAX_DESCRIPTION) return text;
+  const cut = text.slice(0, MAX_DESCRIPTION - 1);
+  return `${cut.slice(0, cut.lastIndexOf(" ")).replace(/[,;:—-]$/, "")}…`;
+};
+
 type PageMeta = {
   title: string;
   description: string;
@@ -17,9 +34,11 @@ export function pageMeta({
   ogImage = "/og.png",
 }: PageMeta): Metadata {
   const url = `${SITE_URL}${path}`;
+  const fullTitle = withBrand(title);
+  const finalDescription = clampDescription(description);
   return {
-    title,
-    description,
+    title: fullTitle,
+    description: finalDescription,
     alternates: {
       canonical: url,
       /* The feed is advertised in the head of every page, not just /notes,
@@ -35,13 +54,13 @@ export function pageMeta({
       url,
       siteName: SITE_NAME,
       locale: "en_US",
-      title,
-      description,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+      title: fullTitle,
+      description: finalDescription,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: fullTitle }],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: fullTitle,
       description,
       images: [ogImage],
     },

@@ -10,9 +10,10 @@ import { Scribble } from "@/components/scribble";
 import { PageHero, SectionIntro } from "@/components/page-hero";
 
 export const metadata = pageMeta({
-  title: "About — Muhammad Zarrar, Senior Full-Stack Builder",
+  title:
+    "About — the builder, the standard",
   description:
-    "Zarrar.Solutions is one senior full-stack builder in Rawalpindi with an audit-first system. When you call, you talk to the person who writes the code. No fake teams, no account managers.",
+    "One builder, no account managers. How this studio works, what it refuses to do, and why every project starts with an audit instead of a design mockup.",
   path: "/about",
   ogImage: "/og-about.png",
 });

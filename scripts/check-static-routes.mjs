@@ -148,6 +148,14 @@ try {
   assert(llms.startsWith(`# `), "llms.txt is missing its H1");
   assert(llms.includes(`${origin}/feed.xml`), "llms.txt does not point at the feed");
   assert(llms.includes(`${origin}/sitemap.xml`), "llms.txt does not point at the sitemap");
+  assert(
+    llms.includes("PKR 150,000"),
+    "llms.txt states no prices — an answer engine summarizing cost has nothing to quote",
+  );
+  assert(
+    llms.includes("How to cite this site"),
+    "llms.txt lost its citation guidance",
+  );
 
   // Every note needs its own share card and tab icon, and the exported post
   // must actually point at them. A note added without art fails the build.
@@ -253,6 +261,37 @@ try {
     assert(
       pricingHtml.includes(price),
       `pricing page no longer publishes ${price} — the estimator would drift`,
+    );
+  }
+
+  // The published price catalogue (src/content/price-list.ts) is what the
+  // JSON-LD and llms.txt quote. Each display string must also be visible on
+  // the page a customer reads, or the structured data is lying.
+  assert(
+    pricingHtml.includes('"@type":"OfferCatalog"'),
+    "the pricing page lost its OfferCatalog",
+  );
+  assert(
+    pricingHtml.includes('"@type":"AggregateOffer"'),
+    "the pricing page lost its AggregateOffer price band",
+  );
+  const offerCount = (pricingHtml.match(/"@type":"Offer"/g) ?? []).length;
+  assert(
+    offerCount === 7,
+    `the OfferCatalog lists ${offerCount} offers, expected 7`,
+  );
+  for (const display of [
+    "PKR 35,000–50,000",
+    "PKR 150,000",
+    "PKR 300,000",
+    "PKR 500,000",
+    "from PKR 250,000",
+    "from PKR 200,000",
+    "from PKR 300,000",
+  ]) {
+    assert(
+      pricingHtml.includes(display),
+      `the price catalogue quotes "${display}" but the page does not show it`,
     );
   }
 
