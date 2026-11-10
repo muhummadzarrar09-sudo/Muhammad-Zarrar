@@ -10732,3 +10732,135 @@ button.footer-top {
   max-width: 30ch;
   margin-bottom: 20px;
 }
+
+/* ---------- Comparison table --------------------------------------------- */
+
+.compare-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-top: 1px solid var(--hairline);
+}
+
+.compare-table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.compare-table th,
+.compare-table td {
+  padding: 18px 20px 18px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+  vertical-align: top;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+.compare-table thead th {
+  padding-top: 22px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--hairline-strong);
+  vertical-align: bottom;
+}
+
+.compare-head-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.compare-head-note {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--text-3);
+}
+
+.compare-table tbody th {
+  width: 20%;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.compare-table .is-here {
+  background: var(--surface-2);
+  color: var(--text);
+  padding-left: 20px;
+  border-left: 2px solid var(--gold);
+}
+
+.compare-table thead .is-here {
+  border-left: 2px solid var(--gold);
+}
+
+.compare-caveat {
+  max-width: var(--measure);
+  margin-top: 26px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-3);
+}
+
+.compare-fork {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  margin-top: clamp(40px, 6vw, 64px);
+  padding-top: 30px;
+  border-top: 1px solid var(--hairline);
+}
+
+.compare-fork-col p:last-child {
+  color: var(--text-2);
+  max-width: 46ch;
+}
+
+.compare-fork-col a {
+  color: var(--gold-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.compare-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 44px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--hairline-strong);
+  padding-bottom: 4px;
+}
+
+.compare-next:hover {
+  color: var(--gold-deep);
+  border-bottom-color: var(--gold-deep);
+}
+
+@media (max-width: 760px) {
+  .compare-table {
+    min-width: 720px;
+  }
+
+  .compare-table th,
+  .compare-table td {
+    padding: 14px 14px 14px 0;
+    font-size: 0.86rem;
+  }
+}

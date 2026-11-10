@@ -236,6 +236,12 @@ const OG_PAGES = [
     sub: ["No account managers. No ticket queues.", "Replies within 24 hours."],
   },
   {
+    out: "og-compare.png",
+    eyebrow: "COMPARE",
+    lines: ["Three ways to", "get a site."],
+    sub: ["Only one of them is us —", "and it is not always right."],
+  },
+  {
     out: "og-faq.png",
     eyebrow: "FAQ · STRAIGHT ANSWERS",
     lines: ["Straight answers,", "no sales fog."],

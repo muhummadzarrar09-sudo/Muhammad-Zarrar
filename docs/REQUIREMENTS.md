@@ -126,6 +126,28 @@ transitions (already present), not in front of the LCP.
 
 ---
 
+## 9. Competitive response — SHIPPED 2026-11-10
+
+Research pass in `docs/COMPETITOR-NOTES.md`. The market's two hooks are
+self-published "top software houses in [city]" listicles (usually with the
+publisher first) and low price anchors (PKR 20,000 packages + retainers).
+
+Shipped against both:
+
+1. **Field note: "Seven questions before you hire a builder"** — opens by
+   explaining the listicle trick, then gives seven questions that actually
+   predict outcomes. The one move no competitor in this market can copy.
+2. **Field note: "The cheapest website costs the most"** — reframes the
+   PKR 20,000 anchor into a three-year total-cost number.
+3. **`/compare`** — freelancer vs agency vs studio, including the rows where
+   each is the wrong choice. No competitor publishes a table that undercuts
+   its own column.
+
+Deliberately **not** done: a self-ranked "top software houses" list, hourly
+pricing, a "free website" offer, or any undisclosed ranking.
+
+---
+
 ## Recommended next (in priority order)
 
 Each of these is on-brand, static, and needs no new dependency. Ordered by
@@ -162,6 +184,8 @@ value per hour of work.
 - 2026-08-21 — Sprint 3: Field Notes live (/notes, 2 posts, BlogPosting
   schema), per-service OG cards (12 total), humans.txt, security headers
   for Vercel (vercel.json) and Cloudflare Pages (public/_headers).
+- 2026-11-10 — Competitive response: `/compare`, two buyer-intent field
+  notes, competitor teardown doc, pricing-page cross-link.
 - 2026-11-10 — Field Notes v3: per-note share cards + tab icons (4–5 word
   headlines), `article` OG metadata, hashtags, `/faq` hub with FAQPage schema,
   palette documentation (`docs/PALETTE.md`) and a 1080×1350 palette card,

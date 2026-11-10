@@ -124,7 +124,9 @@ storyboarded as data in `src/motion/wireframes.ts`.
 - Section entry: IntersectionObserver fade/slide (reversible).
 - **Accessibility**: `prefers-reduced-motion` skips Lenis, every scene and
   the whole pointer layer; the marquee pauses on hover/focus (WCAG 2.2.2).
-- **Docs**: `docs/ANIMATION-INVENTORY.md` (every animation, audited) ·
+- **Docs**: `docs/COMPETITOR-NOTES.md` (how the local market hooks buyers,
+  sourced) · `docs/PALETTE.md` (tokens, contrast, carousel recipe) ·
+  `docs/ANIMATION-INVENTORY.md` (every animation, audited) ·
   `docs/MOTION-RULES.md` (NN/g / Material 3 / WCAG / HIG compliance ledger) ·
   `docs/motion-wireframes.md` (the storyboard).
 - GSAP + Lenis are dynamically imported so only pages that need them load
@@ -159,6 +161,9 @@ they are built like a small publication rather than a blog afterthought:
   set rendered discreetly under the share row. Art direction lives in
   `src/content/note-social.json`; `npm run check:routes` fails if a note ships
   without a card or an icon.
+- **`/compare`** — freelancer vs agency vs this studio, with the rows where
+  each option is the wrong choice (including ours). Price bands are stated as
+  advertised market ranges, never as claims about a named company.
 - **`/faq`** — seventeen questions collected from where owners actually ask them
   (Reddit, Quora, Google's "People also ask", and this studio's WhatsApp),
   answered plainly, with `FAQPage` schema.
@@ -261,6 +266,7 @@ src/
     page.tsx            # /
     services/           # /services and /services/[slug] (5 services)
     faq/                # /faq — the question hub, with FAQPage schema
+    compare/            # /compare — the honest three-way comparison
     pricing/ process/ about/ free-audit/ contact/
     layout.tsx          # fonts, metadata, JSON-LD, header/footer, PWA
     manifest.ts robots.ts sitemap.ts not-found.tsx

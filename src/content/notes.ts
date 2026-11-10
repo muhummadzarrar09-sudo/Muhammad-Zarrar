@@ -29,6 +29,98 @@ export type Note = {
    feed, the sitemap and the "keep reading" chain all read this order. */
 export const NOTES: Note[] = [
   {
+    slug: "seven-questions-before-you-hire",
+    topics: ["trust"],
+    hashtags: ["#HireBetter", "#WebAgencyPakistan", "#PakistanBusiness", "#WebsiteAudit"],
+    title: "Seven questions before you hire a builder",
+    date: "November 9, 2026",
+    dateISO: "2026-11-09",
+    excerpt:
+      "Every “top software houses in Pakistan” list ranks a different company first — usually the one that wrote the list. Here are the seven questions that actually predict whether a build will go well.",
+    sections: [
+      {
+        heading: "The symptom",
+        body: [
+          "You search for a software house, and get eleven lists. Each one ranks a different company first. Each one has a neat table, a paragraph of praise, and a phone number at the bottom. It reads like a ranking. It isn't one.",
+          "So you shortlist whoever appeared twice, and you have no idea whether you picked the best builder in the city or the best marketer.",
+        ],
+      },
+      {
+        heading: "The finding",
+        body: [
+          "Most of those lists are published by the companies on them. Some disclose it in a footnote; most don't. The company that paid for an SEO retainer appears in three of them, which a buyer reads as three independent votes.",
+          "The questions buyers ask at this stage don't help either. “How many projects have you done?” “How many years of experience?” “What's your hourly rate?” Every builder has a good answer ready, because these are the questions they are asked every week. Practised answers don't predict outcomes.",
+          "Seven questions do. They're uncomfortable, they're specific, and almost nobody asks them.",
+        ],
+      },
+      {
+        heading: "The fix",
+        body: [
+          "1. Who writes the code, by name? Agencies win pitches with senior people and staff juniors after signature. Ask for the name and title of every person who will touch the project, and ask whether that person will still be there in month two. If the answer is “the team”, that's a no.",
+          "2. What is not included? Every quote has a scope. Ask for the exclusions in writing — copywriting, mobile testing, SEO setup, image licensing, third-party fees. What's out of scope today becomes a change order tomorrow.",
+          "3. Who owns the domain and hosting on day one? Ask for the registrar login before any deposit. If the answer is “we'll manage it for you”, you're renting your own name, and the renewal date will arrive as leverage.",
+          "4. Show me one site you built that loads in under three seconds on mobile data. Then open it, on your phone, with the Wi-Fi off, in front of them. Not the portfolio screenshot — the site.",
+          "5. What happens to the site if I stop paying you? The honest answer is “it keeps running, it's yours”. Any other answer is a subscription with a website attached to it.",
+          "6. What did your last three projects cost, and what changed the number? Look for a real story, not a price. A builder who can't describe why a project overran has never looked.",
+          "7. Have you had a project go badly? What did you do? Nobody prepares for this one. The answer tells you more than the portfolio does.",
+        ],
+      },
+      {
+        heading: "Check yours",
+        body: [
+          "Send the seven questions by email and ask for written answers before any deposit. A builder who won't put answers in writing before money is a builder who will put excuses in writing after it.",
+          "And re-read any list you're using. Look for a line that says who published it. If there isn't one, assume the first company paid for the position.",
+        ],
+      },
+    ],
+    takeaway:
+      "A builder who can't answer these in writing is telling you something. Believe them.",
+  },
+  {
+    slug: "cheapest-website-costs-most",
+    topics: ["trust", "conversion"],
+    hashtags: ["#WebsiteCost", "#PakistanBusiness", "#TotalCostOfOwnership", "#WebsiteAudit"],
+    title: "The cheapest website costs the most",
+    date: "November 5, 2026",
+    dateISO: "2026-11-05",
+    excerpt:
+      "Quotes in Pakistan run from PKR 20,000 to several lakh for the same five pages. The invoice isn't the price. Here's the three-year number nobody puts in the proposal.",
+    sections: [
+      {
+        heading: "The symptom",
+        body: [
+          "The quote arrives at PKR 20,000. Five pages, hosting included, “fully responsive”. Against it sits a quote ten times larger for a site that looks, to an untrained eye, like the same five pages.",
+          "The cheap quote isn't lying about the price. It's just quoting one year of a three-year decision.",
+        ],
+      },
+      {
+        heading: "The finding",
+        body: [
+          "Add the parts that aren't on the invoice. The domain and hosting, if they're in the vendor's name, renew at the vendor's pace. The maintenance retainer — the market advertises these from PKR 7,500 to PKR 14,000 a month — starts immediately and never ends, because a site built on a pile of plugins needs somebody to keep the pile standing.",
+          "Then add the rebuild. Sites sold at that price are usually replaced within two years, often by the same buyer who now needs it to be fast and to rank. The second invoice is bigger than the first, and the first wasn't saved — it was spent.",
+          "Then add the inquiries that never arrived. On mobile data a builder-built site takes ten seconds to paint. Most visitors are gone by second four. Those are real customers, and they were never billed to anybody.",
+          "“Free website” offers work the same way, with the whole cost moved into a retainer you can't cancel and a site you can't take with you.",
+        ],
+      },
+      {
+        heading: "The fix",
+        body: [
+          "Price the three-year number, not the invoice. Build cost, plus hosting and domain for three years, plus any mandatory retainer for three years, plus the likelihood of a rebuild inside that window. Put it in one column per quote and the cheap one usually stops being cheap.",
+          "Then insist on five things in writing: the domain and hosting in your name, code you can export and hand to another developer, no mandatory retainer, pages that arrive as real HTML, and a named person who fixes what breaks.",
+          "A higher price is only justified when the scope explains it: original design, real testing on real devices, structured data, and someone accountable after launch. A high number with no explanation is as bad as a low one.",
+        ],
+      },
+      {
+        heading: "Check yours",
+        body: [
+          "Take the last quote you were given and multiply the monthly line by 36. Add the likely rebuild. That's the number you're actually deciding on — and the only one worth comparing.",
+        ],
+      },
+    ],
+    takeaway:
+      "A website isn't cheap or expensive. It's cheap or expensive per year of use.",
+  },
+  {
     slug: "menu-with-no-prices",
     hashtags: ["#YourMenuHasNoPrices", "#ShowYourPrices", "#PakistanBusiness", "#WebsiteAudit"],
     figure: "price-gap",

@@ -11,6 +11,7 @@ const STATIC_ROUTES = [
   { path: "/free-audit", priority: 0.95 },
   { path: "/services", priority: 0.9 },
   { path: "/pricing", priority: 0.9 },
+  { path: "/compare", priority: 0.85 },
   { path: "/process", priority: 0.7 },
   { path: "/about", priority: 0.7 },
   { path: "/contact", priority: 0.6 },

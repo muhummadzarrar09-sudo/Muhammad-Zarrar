@@ -70,7 +70,17 @@ export default function PricingPage() {
           </>
         }
         lede="Prices are ranges because scope varies — you get an exact written quote after the audit, and you can add or remove modules to fit your budget."
-      />
+      >
+        <p className="notes-hero-meta">
+          <span>Comparing builders?</span>
+          <span className="notes-hero-sep" aria-hidden="true">
+            /
+          </span>
+          <Link href="/compare" className="notes-rss">
+            Freelancer, agency or here — the honest table
+          </Link>
+        </p>
+      </PageHero>
 
       <section
         className="section pricing-rates-section"
