@@ -345,9 +345,10 @@ value per hour of work.
   verified (30/30 resolve, valid XML, honest lastmod); `docs/BLOG-PLAN.md`
   with the next five questions, the SERP-screenshot workflow and the
   will-not-write list.
-- 2026-11-10 — `/brief` rebuilt as a proper Typeform-grade flow:
-  welcome/resume screen, A–Z and 1–9 choice shortcuts with visible key
-  badges, ↓/↑ step navigation, Cmd+Enter from the textarea, per-step enter
-  transition (reduced-motion aware), invalid fields focused and
-  aria-describedby-linked, progressbar semantics, and a completion screen
-  with a recap plus the three next steps.
+- 2026-11-10 — `/brief` rebuilt as a fixed-viewport Typeform-grade project
+  room: no site chrome, footer or document scrolling; one persistent Home
+  breadcrumb; welcome/resume screen; concrete project, current-site, customer
+  outcome, scope, material-readiness, launch, budget and contact questions;
+  A–Z and 1–9 shortcuts; ↓/↑ navigation; reduced-motion-aware transitions;
+  field-focused accessible errors; progressbar semantics; concise recap plus
+  next steps; and a fixed no-JS WhatsApp/email fallback.

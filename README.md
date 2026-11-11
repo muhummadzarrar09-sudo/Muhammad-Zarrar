@@ -202,20 +202,25 @@ they are built like a small publication rather than a blog afterthought:
 One question per screen, no embed and no third-party script, and no server to
 store anything on. What makes it feel like a form people finish:
 
-- **A welcome screen** that sets the length before asking anything
-  ("Seven questions. Ninety seconds. No sales call.") — and turns into
-  "Continue the brief" when a draft is waiting in the tab.
-- **Choosing is answering.** Need and timing advance on selection after ~360ms
-  so the click lands visually before the screen moves.
+- **A locked, full-viewport room** — no normal site header, footer or page
+  scroll. The only exit is the small Home breadcrumb; short screens compact
+  the supporting copy rather than clipping or becoming scrollable.
+- **A welcome screen** that sets the expectation before asking anything
+  ("Eight practical questions. Around two minutes. No sales call.") — and
+  turns into "Continue the brief" when a draft is waiting in the tab.
+- **Concrete scoping questions:** project type, current site, the customer
+  action, likely size, material readiness, launch deadline, approved budget
+  and contact. No vague "tell us what you need" discovery screen.
+- **Choosing is answering.** Each concrete choice advances after ~280ms so the
+  click lands visually before the screen moves.
 - **Keyboard-first.** `A`–`Z` or `1`–`9` pick a choice (the chips show the
   letter), `↓` continues, `↑` goes back, `Enter` submits the step, and
-  `Cmd/Ctrl+Enter` advances even from the textarea where `Enter` must still
-  make a new line.
+  `Cmd/Ctrl+Enter` advances even while a text field has focus.
 - **Errors move the cursor**, not just print a message: the field gets
   `aria-invalid`, the error is `aria-describedby`-linked, and focus lands on
   what needs fixing.
-- **A real ending** — what you sent, then the three things that happen next,
-  with a manual WhatsApp link in case the handoff was blocked.
+- **A real ending** — a compact recap of the project facts, the two next
+  steps, and a manual WhatsApp link in case the handoff was blocked.
 - Mobile keyboards get `enterKeyHint` (`next` / `send`), and the whole thing
   runs on `prefers-reduced-motion` rules.
 

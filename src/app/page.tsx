@@ -355,12 +355,13 @@ export default function HomePage() {
               <span className="sec-rule" />
             </div>
             <h2 className="sec-title" id="brief-heading" data-pressure>
-              What you need. What you hoped to pay.{" "}
-              <em>Then the honest quote.</em>
+              A practical brief. A clear scope.{" "}
+              <em>Then an honest reply.</em>
             </h2>
             <p className="lede">
-              Seven questions, one at a time, about ninety seconds. You see the
-              neighborhood of a real quote before anything leaves your phone.
+              Eight practical questions, one at a time, in around two minutes.
+              We ask about the current setup, scope, readiness, deadline and
+              budget before anything leaves your phone.
             </p>
             <p className="closer-pledge">
               If your number is below what the work costs, we&apos;ll say so.
@@ -393,23 +394,23 @@ export default function HomePage() {
             <ol className="closer-steps">
               <li>
                 <span className="closer-no">01</span>
-                <span className="closer-q">What do you need?</span>
+                <span className="closer-q">The project and current site.</span>
               </li>
               <li>
                 <span className="closer-no">02</span>
-                <span className="closer-q">The number you hoped for.</span>
+                <span className="closer-q">The customer action and scope.</span>
               </li>
               <li>
                 <span className="closer-no">03</span>
-                <span className="closer-q">The honest neighborhood.</span>
+                <span className="closer-q">What is ready to work with.</span>
               </li>
               <li>
                 <span className="closer-no">04</span>
-                <span className="closer-q">When, and in your words.</span>
+                <span className="closer-q">The deadline and approved budget.</span>
               </li>
               <li>
                 <span className="closer-no">05</span>
-                <span className="closer-q">Who, and how to reach you.</span>
+                <span className="closer-q">Where to send the written plan.</span>
               </li>
             </ol>
           </div>
