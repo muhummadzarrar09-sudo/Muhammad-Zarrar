@@ -261,6 +261,27 @@ be worse than omitting them.
 
 ---
 
+## 13. Terms "Limitations" + blog plan — SHIPPED 2026-11-10
+
+**Terms.** "What we're responsible for" and "Claims and proof" merged into a
+single **Limitations** section: no guaranteed rankings or sales, no control
+over third-party platforms, no invented proof (clients, counts, review scores,
+self-ranked lists), every number checkable, and no liability for losses outside
+the work. The honest disclosures live in one place instead of being scattered
+through the page.
+
+**Sitemap verified end to end:** 200, valid XML, root `<urlset>`, 30 entries,
+one host, no `.html`, no trailing slashes, **30/30 resolve**, `lastmod` from
+content dates. `check:routes` asserts this every build.
+
+**`docs/BLOG-PLAN.md`** — the five questions worth a post, what to screenshot
+from each SERP, the anatomy-extraction workflow (fetch top 3 → word count,
+H2 outline, table?, FAQ?, schema, date, site type → find the gap → brief), the
+post template, the cadence (one per 10–14 days), and the list of posts we will
+not write because the Terms forbid them.
+
+---
+
 ## Recommended next (in priority order)
 
 Each of these is on-brand, static, and needs no new dependency. Ordered by
@@ -320,3 +341,7 @@ value per hour of work.
   BreadcrumbList graph on all 30 routes, `/brief` trail, FAQ questions as
   headings, contextual price anchors, honest sitemap `lastmod`, and audit
   gates for breadcrumbs, page nodes, FAQ parity and fabricated ratings.
+- 2026-11-10 — Terms consolidated under **Limitations**; sitemap
+  verified (30/30 resolve, valid XML, honest lastmod); `docs/BLOG-PLAN.md`
+  with the next five questions, the SERP-screenshot workflow and the
+  will-not-write list.

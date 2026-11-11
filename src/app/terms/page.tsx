@@ -85,29 +85,46 @@ export default function TermsPage() {
               </p>
             </Reveal>
             <Reveal>
-              <h2>What we&rsquo;re responsible for</h2>
+              <h2>Limitations</h2>
               <p>
-                We build carefully, test like customers, and fix our own
-                mistakes promptly after launch. We are not responsible for
-                third-party platforms we don&rsquo;t control — WhatsApp,
-                Google&rsquo;s ranking decisions, payment providers, or
-                hosting chosen outside our care plan — nor for business losses
-                that predate or lie outside the work. If a problem is ours,
-                we say so and we fix it.
+                What follows is the short list of things this studio does not
+                promise, so nobody has to find them in a contract later.
               </p>
-            </Reveal>
-            <Reveal>
-              <h2>Claims and proof</h2>
+              <ul className="terms-list">
+                <li>
+                  <strong>No guaranteed rankings, traffic or sales.</strong>{" "}
+                  Google&rsquo;s results are not ours to control, and a proposal
+                  that promises positions is worth reading twice.
+                </li>
+                <li>
+                  <strong>No control over platforms we don&rsquo;t run.</strong>{" "}
+                  WhatsApp, Google, payment providers and hosting chosen
+                  outside our care plan can change their rules whenever they
+                  like.
+                </li>
+                <li>
+                  <strong>No invented proof.</strong> No invented clients,
+                  project counts, purchased review scores, or self-ranked
+                  &ldquo;top 10&rdquo; lists — and no review markup in our
+                  structured data, because there are no reviews yet to mark up.
+                </li>
+                <li>
+                  <strong>Every number is checkable.</strong> Where a figure
+                  appears it is a published price, a date, or something you can
+                  verify yourself in the site&rsquo;s own source. When a
+                  client&rsquo;s results are quoted, they are real, and quoted
+                  only with permission.
+                </li>
+                <li>
+                  <strong>Not responsible for losses outside the work.</strong>{" "}
+                  Business results that predate the project, or that come from
+                  decisions made elsewhere, are not ours to carry.
+                </li>
+              </ul>
               <p>
-                We do not fabricate proof. There are no invented clients,
-                invented project counts, purchased review scores, or
-                self-ranked &ldquo;top 10&rdquo; lists on this site — and no
-                review markup in our structured data, because there are no
-                reviews yet to mark up. Where a number appears, it is a
-                published price, a date, or something you can verify yourself
-                in the site&rsquo;s own source. When a client&rsquo;s results
-                are quoted, they are real, and they are quoted only with
-                permission.
+                What we are responsible for: building carefully, testing like
+                customers, and fixing our own mistakes promptly after launch.
+                If a problem is ours, we say so and we fix it.
               </p>
             </Reveal>
             <Reveal>

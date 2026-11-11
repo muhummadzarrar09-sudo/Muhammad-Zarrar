@@ -151,7 +151,9 @@ storyboarded as data in `src/motion/wireframes.ts`.
   checklist) · `docs/PALETTE.md` (tokens, contrast, carousel recipe) ·
   `docs/ANIMATION-INVENTORY.md` (every animation, audited) ·
   `docs/MOTION-RULES.md` (NN/g / Material 3 / WCAG / HIG compliance ledger) ·
-  `docs/motion-wireframes.md` (the storyboard).
+  `docs/motion-wireframes.md` (the storyboard) · `docs/SEO-AI-VISIBILITY.md`
+  (the audit and its gates) · `docs/BLOG-PLAN.md` (the next five questions,
+  what to search, and what each post ships with).
 - GSAP + Lenis are dynamically imported so only pages that need them load
   them.
 
