@@ -153,7 +153,9 @@ storyboarded as data in `src/motion/wireframes.ts`.
   `docs/MOTION-RULES.md` (NN/g / Material 3 / WCAG / HIG compliance ledger) ·
   `docs/motion-wireframes.md` (the storyboard) · `docs/SEO-AI-VISIBILITY.md`
   (the audit and its gates) · `docs/BLOG-PLAN.md` (the next five questions,
-  what to search, and what each post ships with).
+  what to search, and what each post ships with) · `docs/brief-flow.html`
+  (a standalone, printable map of every `/brief` screen, option and WhatsApp
+  handoff).
 - GSAP + Lenis are dynamically imported so only pages that need them load
   them.
 

@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A standalone map of the Zarrar.Solutions project-brief flow." />
+    <title>Project brief — flow map</title>
+    <style>
+      :root {
+        --paper: #f3e4c7;
+        --paper-light: #fff7ee;
+        --paper-dark: #f0ccb7;
+        --ink: #1a1412;
+        --ink-muted: #5a3328;
+        --ink-quiet: #8a4733;
+        --accent: #a3492f;
+        --accent-deep: #723021;
+        --line: rgba(36, 20, 15, 0.2);
+        --line-quiet: rgba(36, 20, 15, 0.12);
+        --success: #14532d;
+        --radius: 12px;
+        --shadow: 0 14px 36px -26px rgba(36, 20, 15, 0.55);
+      }
+
+      * { box-sizing: border-box; }
+      html { background: var(--paper); }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 85% -10%, rgba(231, 146, 94, 0.28), transparent 27rem),
+          var(--paper);
+        font: 16px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      button { font: inherit; }
+      a { color: var(--accent-deep); }
+      a:focus-visible, button:focus-visible, summary:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .page {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 54px 0 80px;
+      }
+      .masthead {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 28px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid var(--line);
+      }
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--accent-deep);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+      h1, h2, h3, p { margin-top: 0; }
+      h1 {
+        max-width: 15ch;
+        margin-bottom: 14px;
+        font: 500 clamp(2.25rem, 5vw, 4.6rem)/0.98 Georgia, "Times New Roman", serif;
+        letter-spacing: -0.045em;
+      }
+      h2 {
+        margin-bottom: 4px;
+        font: 500 clamp(1.45rem, 2.5vw, 2rem)/1.08 Georgia, "Times New Roman", serif;
+        letter-spacing: -0.025em;
+      }
+      h3 {
+        margin-bottom: 9px;
+        font-size: 0.82rem;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+      .lede {
+        max-width: 64ch;
+        margin: 0;
+        color: var(--ink-muted);
+        font-size: 1.06rem;
+      }
+      .print {
+        flex: 0 0 auto;
+        min-height: 44px;
+        padding: 10px 16px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--ink);
+        background: transparent;
+        cursor: pointer;
+      }
+      .print:hover { border-color: var(--accent); background: var(--paper-light); }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 22px;
+        margin: 22px 0 38px;
+        color: var(--ink-muted);
+        font-size: 0.85rem;
+      }
+      .legend span { display: inline-flex; align-items: center; gap: 8px; }
+      .key {
+        width: 12px;
+        height: 12px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: var(--paper-light);
+      }
+      .key.auto { border-color: var(--accent); background: var(--accent); }
+      .key.manual { border-radius: 2px; background: var(--paper-dark); }
+      .key.required { border-color: var(--success); background: var(--success); }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 310px;
+        gap: clamp(28px, 6vw, 80px);
+        align-items: start;
+      }
+      .flow { min-width: 0; }
+      .connector {
+        display: grid;
+        justify-items: center;
+        gap: 5px;
+        min-height: 48px;
+        padding: 10px 0;
+        color: var(--ink-quiet);
+        font-size: 0.72rem;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .connector::after {
+        content: "↓";
+        color: var(--accent);
+        font-size: 1.2rem;
+        line-height: 1;
+      }
+
+      .stage {
+        position: relative;
+        padding: clamp(20px, 3vw, 30px);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 247, 238, 0.58);
+        box-shadow: var(--shadow);
+      }
+      .stage::before {
+        content: attr(data-step);
+        position: absolute;
+        top: -13px;
+        left: 22px;
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        border: 1px solid var(--accent);
+        border-radius: 50%;
+        color: var(--paper-light);
+        background: var(--accent);
+        font-size: 0.73rem;
+        font-weight: 800;
+      }
+      .stage-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin: 0 0 14px;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 24px;
+        padding: 3px 8px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--ink-muted);
+        background: var(--paper-light);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .pill::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--ink-quiet);
+      }
+      .pill.auto::before { background: var(--accent); }
+      .pill.manual::before { border-radius: 1px; background: var(--ink-muted); }
+      .pill.required::before { background: var(--success); }
+      .question { margin-bottom: 5px; }
+      .instruction {
+        max-width: 67ch;
+        margin-bottom: 18px;
+        color: var(--ink-muted);
+        font-size: 0.94rem;
+      }
+      .options {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .option {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        min-height: 48px;
+        padding: 11px 12px;
+        border: 1px solid var(--line-quiet);
+        border-radius: 8px;
+        background: var(--paper-light);
+        font-size: 0.9rem;
+        line-height: 1.3;
+      }
+      .option-key {
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        width: 19px;
+        height: 19px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        color: var(--ink-muted);
+        font-size: 0.64rem;
+        font-weight: 800;
+      }
+      .input-demo {
+        display: block;
+        width: min(100%, 580px);
+        padding: 12px 0;
+        border-bottom: 2px solid var(--line);
+        color: var(--ink-quiet);
+        font-size: 0.95rem;
+      }
+      .branch {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 16px;
+      }
+      .branch span {
+        padding: 7px 10px;
+        border-radius: 7px;
+        background: var(--paper-dark);
+        color: var(--ink-muted);
+        font-size: 0.82rem;
+      }
+      .budget-track {
+        position: relative;
+        width: min(100%, 650px);
+        height: 6px;
+        margin: 28px 4px 16px;
+        border-radius: 999px;
+        background: var(--line);
+      }
+      .budget-track::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 49%;
+        border-radius: inherit;
+        background: var(--accent);
+      }
+      .budget-stops {
+        display: flex;
+        justify-content: space-between;
+        width: min(100%, 660px);
+        color: var(--ink-muted);
+        font-size: 0.68rem;
+        font-weight: 750;
+        line-height: 1.2;
+        text-align: center;
+      }
+      .budget-stops span { max-width: 7.5ch; }
+      .budget-stops span::before {
+        content: "";
+        display: block;
+        width: 9px;
+        height: 9px;
+        margin: -23px auto 9px;
+        border: 2px solid var(--paper-light);
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent);
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .field-label {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--ink-muted);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .field-line {
+        display: block;
+        padding: 8px 0;
+        border-bottom: 2px solid var(--line);
+        color: var(--ink-quiet);
+        font-size: 0.9rem;
+      }
+      .end {
+        border-color: rgba(20, 83, 45, 0.4);
+        background: rgba(20, 83, 45, 0.08);
+      }
+      .end::before { border-color: var(--success); background: var(--success); }
+      .end h2 { color: #123b22; }
+
+      .aside {
+        position: sticky;
+        top: 26px;
+        display: grid;
+        gap: 18px;
+      }
+      .aside-card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 247, 238, 0.66);
+      }
+      .aside-card p { color: var(--ink-muted); font-size: 0.9rem; }
+      .packet { margin: 0; padding: 0; list-style: none; }
+      .packet li {
+        padding: 9px 0;
+        border-bottom: 1px solid var(--line-quiet);
+        color: var(--ink-muted);
+        font-size: 0.83rem;
+      }
+      .packet li:last-child { border-bottom: 0; }
+      .packet b { color: var(--ink); }
+      .privacy { color: var(--ink-quiet) !important; font-size: 0.8rem !important; }
+
+      .notes {
+        margin-top: 40px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
+        color: var(--ink-muted);
+        font-size: 0.84rem;
+      }
+      .notes strong { color: var(--ink); }
+
+      @media (max-width: 900px) {
+        .layout { grid-template-columns: 1fr; }
+        .aside { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      @media (max-width: 620px) {
+        .page { width: min(100% - 28px, 1180px); padding-top: 30px; }
+        .masthead { align-items: flex-start; flex-direction: column; }
+        .print { width: 100%; }
+        .options, .form-grid, .aside { grid-template-columns: 1fr; }
+        .budget-stops { font-size: 0.58rem; }
+        .stage { padding: 22px 16px 18px; }
+      }
+      @media print {
+        body { background: #fff; font-size: 11px; }
+        .page { width: 100%; padding: 0; }
+        .print { display: none; }
+        .layout { display: block; }
+        .aside { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; }
+        .stage, .aside-card { box-shadow: none; break-inside: avoid; }
+        .connector { min-height: 26px; padding: 4px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="masthead">
+        <div>
+          <p class="eyebrow">Zarrar.Solutions · standalone reference</p>
+          <h1>Project brief flow map</h1>
+          <p class="lede">
+            This is the exact eight-screen flow on <strong>/brief</strong>. It is a
+            fixed, no-scroll Typeform-style room: one useful project fact per screen,
+            then one prepared WhatsApp message.
+          </p>
+        </div>
+        <button class="print" type="button" onclick="window.print()">Print / save as PDF</button>
+      </header>
+
+      <div class="legend" aria-label="Flow legend">
+        <span><i class="key auto" aria-hidden="true"></i>Choice moves forward automatically</span>
+        <span><i class="key manual" aria-hidden="true"></i>Visitor presses Continue</span>
+        <span><i class="key required" aria-hidden="true"></i>Required before the WhatsApp handoff</span>
+      </div>
+
+      <div class="layout">
+        <section class="flow" aria-label="Eight-step project brief flow">
+          <article class="stage" data-step="START">
+            <p class="stage-meta"><span class="pill manual">Start screen</span></p>
+            <h2 class="question">Eight practical questions. Around two minutes. No sales call.</h2>
+            <p class="instruction">
+              Sets the expectation before asking anything. A returning visitor sees
+              <em>Continue the brief</em> when this browser tab still has a draft.
+            </p>
+            <div class="branch"><span>Start the brief →</span><span>Or just say hello on WhatsApp</span></div>
+          </article>
+
+          <div class="connector">Start</div>
+
+          <article class="stage" data-step="01">
+            <p class="stage-meta"><span class="pill auto">Pick one · auto-advance</span></p>
+            <h2 class="question">What would you like us to work on?</h2>
+            <p class="instruction">This identifies the kind of work to inspect before replying.</p>
+            <ul class="options">
+              <li class="option"><b class="option-key">A</b>Fix or improve an existing website</li>
+              <li class="option"><b class="option-key">B</b>Build a new business website</li>
+              <li class="option"><b class="option-key">C</b>Create an online catalogue or shop</li>
+              <li class="option"><b class="option-key">D</b>Set up appointments or bookings</li>
+              <li class="option"><b class="option-key">E</b>Build an internal tool or dashboard</li>
+              <li class="option"><b class="option-key">F</b>Not sure — I need a recommendation</li>
+            </ul>
+          </article>
+
+          <div class="connector">Chosen project type</div>
+
+          <article class="stage" data-step="02">
+            <p class="stage-meta"><span class="pill manual">Optional link · Continue</span></p>
+            <h2 class="question">Where can we see what exists today?</h2>
+            <p class="instruction">A current site or Instagram is useful, but not required.</p>
+            <span class="input-demo">yourbusiness.pk or instagram.com/yourbusiness</span>
+            <div class="branch">
+              <span>Enter a link, then Continue →</span>
+              <span>Starting from scratch → moves forward</span>
+            </div>
+          </article>
+
+          <div class="connector">Current starting point</div>
+
+          <article class="stage" data-step="03">
+            <p class="stage-meta"><span class="pill auto">Pick one · auto-advance</span></p>
+            <h2 class="question">What should a customer be able to do?</h2>
+            <p class="instruction">The primary conversion action; it gives the project a clear job.</p>
+            <ul class="options">
+              <li class="option"><b class="option-key">A</b>Send a WhatsApp enquiry</li>
+              <li class="option"><b class="option-key">B</b>Understand services and pricing</li>
+              <li class="option"><b class="option-key">C</b>Browse products and place an order</li>
+              <li class="option"><b class="option-key">D</b>Book an appointment or consultation</li>
+              <li class="option"><b class="option-key">E</b>Find the business on Google</li>
+              <li class="option"><b class="option-key">F</b>Give the team one place to work</li>
+            </ul>
+          </article>
+
+          <div class="connector">Chosen customer action</div>
+
+          <article class="stage" data-step="04">
+            <p class="stage-meta"><span class="pill auto">Pick one · auto-advance</span></p>
+            <h2 class="question">What is the likely size of the job?</h2>
+            <p class="instruction">A best estimate is enough. Scope affects effort, timing and price.</p>
+            <ul class="options">
+              <li class="option"><b class="option-key">A</b>One focused landing page</li>
+              <li class="option"><b class="option-key">B</b>A 5–8 page business site</li>
+              <li class="option"><b class="option-key">C</b>An 8–12 page site</li>
+              <li class="option"><b class="option-key">D</b>A catalogue with products or services</li>
+              <li class="option"><b class="option-key">E</b>A custom system with more moving parts</li>
+            </ul>
+          </article>
+
+          <div class="connector">Likely scope</div>
+
+          <article class="stage" data-step="05">
+            <p class="stage-meta"><span class="pill auto">Pick one · auto-advance</span></p>
+            <h2 class="question">How much is ready to work with?</h2>
+            <p class="instruction">Readiness tells us whether copy, structure, images or data need to be included.</p>
+            <ul class="options">
+              <li class="option"><b class="option-key">A</b>Brand, copy and images are ready</li>
+              <li class="option"><b class="option-key">B</b>Some material is ready; we need help filling gaps</li>
+              <li class="option"><b class="option-key">C</b>We need help with copy, structure or both</li>
+              <li class="option"><b class="option-key">D</b>We are starting with almost nothing</li>
+            </ul>
+          </article>
+
+          <div class="connector">Material readiness</div>
+
+          <article class="stage" data-step="06">
+            <p class="stage-meta"><span class="pill auto">Pick one · auto-advance</span></p>
+            <h2 class="question">When does it need to be live?</h2>
+            <p class="instruction">A real deadline makes it possible to say early whether the work can be done well.</p>
+            <ul class="options">
+              <li class="option"><b class="option-key">A</b>Within the next two weeks</li>
+              <li class="option"><b class="option-key">B</b>This month</li>
+              <li class="option"><b class="option-key">C</b>Within the next three months</li>
+              <li class="option"><b class="option-key">D</b>No fixed date yet</li>
+            </ul>
+          </article>
+
+          <div class="connector">Target launch window</div>
+
+          <article class="stage" data-step="07">
+            <p class="stage-meta"><span class="pill manual">Range slider · Continue</span></p>
+            <h2 class="question">What budget is approved for this project?</h2>
+            <p class="instruction">A range is enough. It prevents a recommendation that cannot actually be delivered.</p>
+            <div class="budget-track" aria-hidden="true"></div>
+            <div class="budget-stops" aria-label="Budget range choices">
+              <span>Under<br />PKR 50k</span>
+              <span>PKR<br />50–150k</span>
+              <span>PKR<br />150–300k</span>
+              <span>PKR<br />300–500k</span>
+              <span>PKR<br />500k+</span>
+            </div>
+            <div class="branch"><span>Choose a range, then Continue →</span><span>No confirmed budget yet → moves forward</span></div>
+          </article>
+
+          <div class="connector">Approved range</div>
+
+          <article class="stage" data-step="08">
+            <p class="stage-meta"><span class="pill required">All required · Send</span></p>
+            <h2 class="question">Where should we send the plan?</h2>
+            <p class="instruction">No email list and no calendar chase. These details make the written reply possible.</p>
+            <div class="form-grid">
+              <div><span class="field-label">Your name</span><span class="field-line">e.g. Ahmed</span></div>
+              <div><span class="field-label">Business</span><span class="field-line">e.g. Al-Noor Furniture</span></div>
+              <div><span class="field-label">WhatsApp</span><span class="field-line">0300 1234567</span></div>
+            </div>
+          </article>
+
+          <div class="connector">Send the brief</div>
+
+          <article class="stage end" data-step="✓">
+            <p class="stage-meta"><span class="pill required">Client-controlled handoff</span></p>
+            <h2 class="question">One pre-filled WhatsApp message opens.</h2>
+            <p class="instruction">
+              Nothing is posted to a server. The visitor explicitly opens WhatsApp with the project
+              facts pre-filled, then sends it themselves. The promised response is a written reply
+              within 24 hours: recommended work, timing and an honest range — or an honest no.
+            </p>
+          </article>
+        </section>
+
+        <aside class="aside" aria-label="What the brief sends and does not collect">
+          <section class="aside-card">
+            <h3>WhatsApp packet</h3>
+            <p>These are the exact categories prepared for the builder.</p>
+            <ul class="packet">
+              <li><b>Contact</b> — name, business, WhatsApp</li>
+              <li><b>Starting point</b> — current website / Instagram, or starting fresh</li>
+              <li><b>Project</b> — selected project type</li>
+              <li><b>Outcome</b> — the customer action that matters</li>
+              <li><b>Scope</b> — likely size of the job</li>
+              <li><b>Readiness</b> — content / asset situation</li>
+              <li><b>Timing</b> — launch window</li>
+              <li><b>Budget</b> — approved range or not confirmed</li>
+            </ul>
+          </section>
+
+          <section class="aside-card">
+            <h3>Deliberately not collected</h3>
+            <p class="privacy">
+              No account, no email-marketing opt-in, no payment information, no invisible server
+              submission and no third-party form embed. The temporary draft stays in the current
+              browser tab until the visitor sends the WhatsApp message.
+            </p>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="notes">
+        <strong>How to use this file:</strong> download it and open it in any modern browser. It is
+        self-contained, works offline and includes a Print / save as PDF control. It maps the live
+        `/brief` flow; it is a reference diagram, not the public form itself.
+      </footer>
+    </main>
+  </body>
+</html>
