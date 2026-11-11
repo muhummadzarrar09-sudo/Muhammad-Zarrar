@@ -197,6 +197,28 @@ they are built like a small publication rather than a blog afterthought:
   (Reddit, Quora, Google's "People also ask", and this studio's WhatsApp),
   answered plainly, with `FAQPage` schema.
 
+### The brief (`/brief`) — Typeform, first-party
+
+One question per screen, no embed and no third-party script, and no server to
+store anything on. What makes it feel like a form people finish:
+
+- **A welcome screen** that sets the length before asking anything
+  ("Seven questions. Ninety seconds. No sales call.") — and turns into
+  "Continue the brief" when a draft is waiting in the tab.
+- **Choosing is answering.** Need and timing advance on selection after ~360ms
+  so the click lands visually before the screen moves.
+- **Keyboard-first.** `A`–`Z` or `1`–`9` pick a choice (the chips show the
+  letter), `↓` continues, `↑` goes back, `Enter` submits the step, and
+  `Cmd/Ctrl+Enter` advances even from the textarea where `Enter` must still
+  make a new line.
+- **Errors move the cursor**, not just print a message: the field gets
+  `aria-invalid`, the error is `aria-describedby`-linked, and focus lands on
+  what needs fixing.
+- **A real ending** — what you sent, then the three things that happen next,
+  with a manual WhatsApp link in case the handoff was blocked.
+- Mobile keyboards get `enterKeyHint` (`next` / `send`), and the whole thing
+  runs on `prefers-reduced-motion` rules.
+
 ### Guides — the long answers
 
 Four canonical pages, one per question a buyer actually types before they

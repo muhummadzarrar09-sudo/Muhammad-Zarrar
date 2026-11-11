@@ -33,6 +33,21 @@ export default function BriefPage() {
           <span aria-current="page">The brief</span>
         </nav>
       </div>
+      {/* The brief is a client flow; WhatsApp is not. Say so plainly rather
+          than showing someone a button that does nothing. */}
+      <noscript>
+        <p className="container brief-noscript">
+          The step-by-step brief needs JavaScript. The one-tap route does not:{" "}
+          <a
+            href="https://wa.me/923335666050?text=Hello%20Zarrar%20%E2%80%94%20I%20came%20from%20the%20site.%20I%27d%20rather%20talk%20than%20fill%20the%20brief."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            message on WhatsApp
+          </a>{" "}
+          or email muhummadzarrar09@gmail.com.
+        </p>
+      </noscript>
       <BriefRoom />
     </>
   );

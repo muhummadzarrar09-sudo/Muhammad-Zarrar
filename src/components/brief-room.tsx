@@ -89,11 +89,29 @@ const COPY: Record<Step, { kicker: string; question: string; hint: string }> = {
 
 const OPTIONAL: Step[] = ["when", "words"];
 
+/** A, B, C… shown on the choices, and accepted as keyboard shortcuts. Letter
+ *  keys are how Typeform made a form feel like typing rather than clicking. */
+const letterFor = (i: number) => String.fromCharCode(65 + i);
+
+/** What the screen is for, in the user's words, once they're done. */
+function recapRows(values: BriefValues) {
+  const need = NEEDS.find((n) => n.id === values.needId)?.label;
+  const budget = BUDGETS.find((b) => b.id === values.budgetId)?.label;
+  return [
+    { label: "Need", value: need },
+    { label: "Budget", value: values.budgetId === UNSURE_ID ? "Not sure yet" : budget },
+    { label: "Timing", value: values.when || undefined },
+    { label: "Business", value: [values.name, values.business].filter(Boolean).join(" · ") || undefined },
+  ].filter((row) => row.value);
+}
+
 export function BriefRoom() {
   const [step, setStep] = useState<Step>("need");
   const [values, setValues] = useState<BriefValues>(empty);
   const [error, setError] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [started, setStarted] = useState(false);
+  const [resumed, setResumed] = useState(false);
 
   const [pos, setPos] = useState(2);
   const sliderRef = useRef<HTMLInputElement>(null);
@@ -116,6 +134,9 @@ export function BriefRoom() {
       if (!raw) return;
       const saved = JSON.parse(raw) as Partial<BriefValues>;
       setValues((v) => ({ ...v, ...saved }));
+      /* A draft means someone already started. Offer to continue rather than
+         making them begin again — the welcome screen becomes a resume. */
+      if (saved.needId || saved.name || saved.whatsapp) setResumed(true);
       if (saved.budgetId && saved.budgetId !== UNSURE_ID) {
         const i = RANGES.findIndex((r) => r.id === saved.budgetId);
         if (i >= 0) setPos(i);
@@ -167,6 +188,61 @@ export function BriefRoom() {
 
   useEffect(() => () => window.clearTimeout(autoAdvance.current), []);
 
+  /**
+   * Keyboard-first navigation. A–Z and 1–9 pick choices, ↓ continues, ↑ goes
+   * back, and Cmd/Ctrl+Enter always moves on — including from inside the
+   * textarea, where plain Enter has to keep making new lines.
+   */
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (status === "sent" || !started) return;
+      const target = event.target as HTMLElement | null;
+      const typing =
+        !!target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable);
+
+      if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+        event.preventDefault();
+        if (step === "reach") submit();
+        else advance();
+        return;
+      }
+      if (typing) return;
+
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        back();
+        return;
+      }
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        advance();
+        return;
+      }
+
+      const key = event.key.toUpperCase();
+      const index = /^[1-9]$/.test(key)
+        ? Number(key) - 1
+        : key.length === 1 && /[A-Z]/.test(key)
+          ? key.charCodeAt(0) - 65
+          : -1;
+      if (index < 0) return;
+
+      if (step === "need" && NEEDS[index]) {
+        event.preventDefault();
+        pickNeed(NEEDS[index].id);
+      } else if (step === "when" && TIMELINES[index]) {
+        event.preventDefault();
+        pickWhen(TIMELINES[index]);
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
   /* Focus the first control on each new screen so the keyboard is already
      inside the room. `preventScroll` — the curtain owns the scroll, not us. */
   useEffect(() => {
@@ -176,7 +252,7 @@ export function BriefRoom() {
     if (node && !window.matchMedia("(max-width: 760px)").matches) {
       node.focus({ preventScroll: true });
     }
-  }, [step]);
+  }, [step, started]);
 
   const set = useCallback((patch: Partial<BriefValues>) => {
     setValues((v) => ({ ...v, ...patch }));
@@ -231,6 +307,14 @@ export function BriefRoom() {
     const message = validate();
     if (message) {
       setError(message);
+      /* Send the cursor to the thing that needs fixing. A message alone leaves
+         the visitor hunting for which underline is wrong. */
+      window.setTimeout(() => {
+        const field = stageRef.current?.querySelector<HTMLInputElement>(
+          ".brief-answer input, .brief-answer textarea"
+        );
+        field?.focus({ preventScroll: true });
+      }, 0);
       return;
     }
     const next = STEPS[index + 1];
@@ -290,6 +374,7 @@ export function BriefRoom() {
       ? "Not sure yet"
       : (RANGES[pos].label ?? "");
 
+  const recap = recapRows(values);
   const progress = (index + 1) / STEPS.length;
   const copy = COPY[step];
   const optional = OPTIONAL.includes(step);
@@ -308,11 +393,92 @@ export function BriefRoom() {
               today and reply within 24 hours — five findings, or an honest
               "this isn't a fit, and here's why."
             </p>
+
+            {recap.length ? (
+              <dl className="brief-recap">
+                {recap.map((row) => (
+                  <div key={row.label} className="brief-recap-row">
+                    <dt>{row.label}</dt>
+                    <dd>{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
+
+            <ol className="brief-nextsteps">
+              <li>
+                <span className="brief-nextsteps-no">01</span>
+                <span>We read the whole thing today — a human, not a queue.</span>
+              </li>
+              <li>
+                <span className="brief-nextsteps-no">02</span>
+                <span>
+                  You get a written reply within 24 hours: what we'd do first,
+                  what it costs, and what we'd skip.
+                </span>
+              </li>
+              <li>
+                <span className="brief-nextsteps-no">03</span>
+                <span>
+                  If it's a fit, the free five-point audit comes next. If it
+                  isn't, you'll hear that too.
+                </span>
+              </li>
+            </ol>
             <p className="brief-done-note">
               <a href={waLink(composeBrief(values))} target="_blank" rel="noopener">
                 Open it manually
               </a>{" "}
               if nothing happened.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!started) {
+    return (
+      <section className="brief-room" id="brief-room">
+        <div className="brief-shell">
+          <div className="brief-welcome">
+            <p className="brief-kicker">Before we talk</p>
+            <h1 className="brief-q brief-welcome-q">
+              Seven questions.
+              <br />
+              Ninety seconds.
+              <br />
+              No sales call.
+            </h1>
+            <p className="brief-hint">
+              Answer what you like, skip what you don&rsquo;t. It leaves as one
+              WhatsApp message, and you get a written reply within 24 hours —
+              not a calendar invite.
+            </p>
+            <div className="brief-welcome-actions">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => setStarted(true)}
+              >
+                {resumed ? "Continue the brief" : "Start the brief"}{" "}
+                <ArrowRightIcon size={14} />
+              </button>
+              <a
+                className="brief-hello"
+                href={waLink(
+                  "Hello Zarrar — I came from the site. I'd rather talk than fill the brief.",
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <WhatsAppIcon size={14} /> Or just say hello
+              </a>
+            </div>
+            <p className="brief-welcome-note">
+              Nothing is stored on a server — there isn&rsquo;t one. Your
+              answers live in this tab, you can go back at any point, and
+              nothing sends until the last screen.
             </p>
           </div>
         </div>
@@ -330,7 +496,14 @@ export function BriefRoom() {
               {String(index + 1).padStart(2, "0")} / {String(STEPS.length).padStart(2, "0")}
             </span>
           </div>
-          <div className="brief-progress" aria-hidden="true">
+          <div
+            className="brief-progress"
+            role="progressbar"
+            aria-valuemin={1}
+            aria-valuemax={STEPS.length}
+            aria-valuenow={index + 1}
+            aria-label={`Question ${index + 1} of ${STEPS.length}`}
+          >
             <span className="brief-progress-fill" style={{ transform: `scaleX(${progress})` }} />
           </div>
         </header>
@@ -341,14 +514,17 @@ export function BriefRoom() {
               hear the answer field but never the new question. */}
           <div aria-live="polite" aria-atomic="true">
             <p className="brief-kicker">{copy.kicker}</p>
-            <h1 className="brief-q">{copy.question}</h1>
+            <h2 className="brief-q">{copy.question}</h2>
           </div>
           <p className="brief-hint">{copy.hint}</p>
 
-          <div className="brief-answer">
+          {/* keyed by step: remounting is what replays the enter transition,
+              and the controls inside are all controlled inputs, so nothing
+              is lost by it. */}
+          <div className="brief-answer" key={step}>
             {step === "need" && (
               <div className="brief-chips" role="group" aria-label="What do you need">
-                {NEEDS.map((item) => (
+                {NEEDS.map((item, i) => (
                   <button
                     key={item.id}
                     type="button"
@@ -356,6 +532,9 @@ export function BriefRoom() {
                     aria-pressed={values.needId === item.id}
                     onClick={() => pickNeed(item.id)}
                   >
+                    <span className="brief-chip-key" aria-hidden="true">
+                      {letterFor(i)}
+                    </span>
                     {item.label}
                   </button>
                 ))}
@@ -395,7 +574,13 @@ export function BriefRoom() {
                   type="button"
                   className={`q-chip${unsure ? " is-on" : ""}`}
                   aria-pressed={unsure}
-                  onClick={() => set({ budgetId: UNSURE_ID })}
+                  onClick={() => {
+                    set({ budgetId: UNSURE_ID });
+                    autoAdvance.current = window.setTimeout(
+                      () => go("quote"),
+                      300,
+                    );
+                  }}
                 >
                   I don&apos;t know yet
                 </button>
@@ -411,7 +596,7 @@ export function BriefRoom() {
 
             {step === "when" && (
               <div className="brief-chips brief-chips-tight" role="group" aria-label="When">
-                {TIMELINES.map((item) => (
+                {TIMELINES.map((item, i) => (
                   <button
                     key={item}
                     type="button"
@@ -419,6 +604,9 @@ export function BriefRoom() {
                     aria-pressed={values.when === item}
                     onClick={() => pickWhen(item)}
                   >
+                    <span className="brief-chip-key" aria-hidden="true">
+                      {letterFor(i)}
+                    </span>
                     {item}
                   </button>
                 ))}
@@ -433,6 +621,7 @@ export function BriefRoom() {
                 onChange={(e) => set({ problem: e.target.value })}
                 placeholder="What's actually going on…"
                 aria-label="In your own words"
+                enterKeyHint="enter"
               />
             )}
 
@@ -446,6 +635,9 @@ export function BriefRoom() {
                     value={values.name}
                     onChange={(e) => set({ name: e.target.value })}
                     placeholder="e.g. Ahmed"
+                    enterKeyHint="next"
+                    aria-invalid={!!error && !values.name.trim()}
+                    aria-describedby={error ? "brief-error" : undefined}
                   />
                 </label>
                 <label className="brief-field">
@@ -456,6 +648,9 @@ export function BriefRoom() {
                     value={values.business}
                     onChange={(e) => set({ business: e.target.value })}
                     placeholder="e.g. Al-Noor Furniture"
+                    enterKeyHint="next"
+                    aria-invalid={!!error && !values.business.trim()}
+                    aria-describedby={error ? "brief-error" : undefined}
                   />
                 </label>
               </div>
@@ -473,16 +668,21 @@ export function BriefRoom() {
                     value={values.url}
                     onChange={(e) => set({ url: e.target.value })}
                     placeholder="yoursite.pk"
+                    enterKeyHint="next"
                   />
                 </label>
                 <label className="brief-field">
                   <span className="brief-label">WhatsApp</span>
                   <input
                     type="tel"
+                    inputMode="tel"
                     autoComplete="tel"
                     value={values.whatsapp}
                     onChange={(e) => set({ whatsapp: e.target.value })}
                     placeholder="0300 1234567"
+                    enterKeyHint="send"
+                    aria-invalid={!!error && !values.whatsapp.trim()}
+                    aria-describedby={error ? "brief-error" : undefined}
                   />
                 </label>
               </div>
@@ -490,7 +690,7 @@ export function BriefRoom() {
           </div>
 
           {error ? (
-            <p className="brief-error" role="alert">
+            <p className="brief-error" id="brief-error" role="alert">
               {error}
             </p>
           ) : null}
@@ -501,7 +701,9 @@ export function BriefRoom() {
                 <ArrowLeftIcon size={14} /> Back
               </button>
             ) : (
-              <span className="brief-note">Takes about 90 seconds.</span>
+              <span className="brief-note">
+                Takes about 90 seconds. Nothing sends until the last screen.
+              </span>
             )}
 
             {optional ? (
@@ -531,6 +733,16 @@ export function BriefRoom() {
                 {step === "quote" ? "Continue" : "Next"} <ArrowRightIcon size={14} />
               </button>
             )}
+
+            <span className="brief-keyhint" aria-hidden="true">
+              {step === "need" || step === "when" ? (
+                <>
+                  {`A–${letterFor((step === "need" ? NEEDS : TIMELINES).length - 1)} to pick`}
+                  <span className="brief-keyhint-sep"> · </span>
+                </>
+              ) : null}
+              <kbd>Enter ↵</kbd>
+            </span>
           </div>
         </form>
 
