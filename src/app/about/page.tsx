@@ -1,18 +1,20 @@
 import Image from "next/image";
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { Reveal } from "@/components/reveal";
 import { JsonLd } from "@/components/jsonld";
 import { CtaBand } from "@/components/cta-band";
 import { CrossIcon } from "@/components/icons";
 import { Scribble } from "@/components/scribble";
 import { PageHero, SectionIntro } from "@/components/page-hero";
+import { EMAIL, SITE_URL, WHATSAPP_DISPLAY } from "@/lib/site";
 
 export const metadata = pageMeta({
-  title: "About — Muhammad Zarrar, Senior Full-Stack Builder",
+  title:
+    "About — the builder, the standard",
   description:
-    "Zarrar.Solutions is one senior full-stack builder in Rawalpindi with an audit-first system. When you call, you talk to the person who writes the code. No fake teams, no account managers.",
+    "One builder, no account managers. How this studio works, what it refuses to do, and why every project starts with an audit instead of a design mockup.",
   path: "/about",
   ogImage: "/og-about.png",
 });
@@ -49,10 +51,35 @@ export default function AboutPage() {
   return (
     <>
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "About", path: "/about" },
-        ])}
+        ], { type: "AboutPage" })}
+      />
+      {/* The founder as a resolvable entity, not a name in a paragraph. Same
+          @id the Organization node points at, so the two never disagree. */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "@id": `${SITE_URL}/about#person`,
+          name: "Muhammad Zarrar",
+          jobTitle: "Full-stack developer",
+          url: `${SITE_URL}/about`,
+          email: EMAIL,
+          telephone: WHATSAPP_DISPLAY,
+          worksFor: { "@id": `${SITE_URL}/#org` },
+          knowsAbout: [
+            "web performance",
+            "technical SEO",
+            "Next.js",
+            "website audits",
+            "e-commerce catalog systems",
+            "appointment booking systems",
+          ],
+          areaServed: ["Islamabad", "Rawalpindi", "Pakistan"],
+          nationality: { "@type": "Country", name: "Pakistan" },
+        }}
       />
 
       <PageHero

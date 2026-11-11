@@ -25,18 +25,19 @@ const HATCH = "rgba(36,20,15,0.14)"; // corner hatch motif
 const GOLD = "#a3492f"; // --gold · clay bead
 
 /* ---- Brand assets & fonts ---- */
-const FRAUNCES = await readFile(
-  path.join(ROOT, "src/fonts/fraunces-latin-wght-normal.woff2"),
-);
-const FRAUNCES_ITALIC = await readFile(
-  path.join(ROOT, "src/fonts/fraunces-latin-wght-italic.woff2"),
-);
-const INTER = await readFile(
-  path.join(ROOT, "src/fonts/inter-latin-wght-normal.woff2"),
-);
-const MONTSERRAT = await readFile(
-  path.join(ROOT, "src/fonts/montserrat-latin-800-normal.woff2"),
-);
+/* resvg's font database reads TTF/OTF, NOT woff2 — loading the woff2 files
+   here silently fell back to a system sans, so every generated card shipped
+   in the wrong typeface. scripts/fonts/*.ttf are the same faces decompressed
+   (see `npm run fonts:ttf`); the site keeps shipping the small woff2. */
+const FONT_DIR = path.join(ROOT, "scripts/fonts");
+/* Variable fonts default to their HEAVIEST instance in resvg (Fraunces'
+   default wght is 900 — the cards came out as a blackletter slab), so the
+   faces below are pre-instanced statics at the weights the site uses. */
+const FRAUNCES = path.join(FONT_DIR, "fraunces-500.ttf");
+const FRAUNCES_ITALIC = path.join(FONT_DIR, "fraunces-italic-400.ttf");
+const INTER = path.join(FONT_DIR, "inter-400.ttf");
+const INTER_600 = path.join(FONT_DIR, "inter-600.ttf");
+const MONTSERRAT = path.join(FONT_DIR, "montserrat-latin-800-normal.ttf");
 
 /* Supersampled canvas: 2400x1260, rendered to 1200x630. */
 const W = 2400;
@@ -54,7 +55,11 @@ const esc = (t) =>
 const TEXT_MAX_X = 2240;
 const TEXT_MAX_W = TEXT_MAX_X - TX;
 
-const fontFiles = [FRAUNCES, FRAUNCES_ITALIC, INTER, MONTSERRAT];
+/* resvg takes PATHS and only under `font`. Both of these were wrong before:
+   a top-level `fontFiles` array of Buffers is silently ignored, so every
+   card rendered in the fallback system sans instead of the brand faces. */
+const fontFiles = [FRAUNCES, FRAUNCES_ITALIC, INTER, INTER_600, MONTSERRAT];
+const RESVG_FONT = { font: { fontFiles, loadSystemFonts: false } };
 
 const measureCache = new Map();
 
@@ -68,7 +73,7 @@ function measureText(text, { family, weight, italic, size, ls }) {
     `<rect width="3600" height="${h}" fill="#ffffff"/>` +
     `<text x="10" y="${Math.ceil(h * 0.72)}" font-family="${family}" font-weight="${weight}"` +
     `${italic ? ` font-style="italic"` : ""} font-size="${size}" letter-spacing="${ls}" fill="#000000">${esc(text)}</text></svg>`;
-  const png = new Resvg(svg, { fontFiles }).render().asPng();
+  const png = new Resvg(svg, RESVG_FONT).render().asPng();
   const tmp = path.join("/tmp", `og-measure-${Math.abs(hash(key))}.png`);
   fs.writeFileSync(tmp, png);
   execFileSync("convert", [tmp, "-colorspace", "gray", "-threshold", "50%", "-negate", tmp]);
@@ -144,7 +149,7 @@ function ogSvg({ eyebrow, lines, sub }, mark) {
       `</g>`,
   );
   /* fitted sizes — measured with the real fonts, never allowed to cross the frame */
-  const headlineSize = fitSize(lines, { family: "Fraunces", weight: 620, ls: -1 }, 118);
+  const headlineSize = fitSize(lines, { family: "Fraunces", weight: 500, ls: -1 }, 118);
   const subSize = fitSize(sub, { family: "Fraunces", weight: 400, italic: true, ls: 0 }, 54);
 
   /* brand lockup — live Montserrat ExtraBold, clay bead */
@@ -161,7 +166,7 @@ function ogSvg({ eyebrow, lines, sub }, mark) {
   }
   for (const line of lines) {
     parts.push(
-      `<text x="${TX}" y="${y}" font-family="Fraunces" font-weight="620" font-size="${headlineSize}" letter-spacing="-1" fill="${INK}">${esc(line)}</text>`,
+      `<text x="${TX}" y="${y}" font-family="Fraunces" font-weight="500" font-size="${headlineSize}" letter-spacing="-1" fill="${INK}">${esc(line)}</text>`,
     );
     y += 152;
   }
@@ -231,6 +236,24 @@ const OG_PAGES = [
     sub: ["No account managers. No ticket queues.", "Replies within 24 hours."],
   },
   {
+    out: "og-compare.png",
+    eyebrow: "COMPARE",
+    lines: ["Three ways to", "get a site."],
+    sub: ["Only one of them is us —", "and it is not always right."],
+  },
+  {
+    out: "og-faq.png",
+    eyebrow: "FAQ · STRAIGHT ANSWERS",
+    lines: ["Straight answers,", "no sales fog."],
+    sub: ["Pricing. Google visibility.", "Speed. Ownership."],
+  },
+  {
+    out: "og-guides.png",
+    eyebrow: "GUIDES · LONG ANSWERS",
+    lines: ["Four questions,", "answered properly."],
+    sub: ["Cost, Google visibility, Facebook vs site,", "and how to audit your own site."],
+  },
+  {
     out: "og-notes.png",
     eyebrow: "FIELD NOTES",
     lines: ["Evidence, written down."],
@@ -273,12 +296,75 @@ await mkdir(path.join(ROOT, "public"), { recursive: true });
 const mark = await markInner();
 
 for (const page of OG_PAGES) {
-  const resvg = new Resvg(ogSvg(page, mark), { fontFiles });
+  const resvg = new Resvg(ogSvg(page, mark), RESVG_FONT);
   await writeFile(
     path.join(ROOT, "public", page.out),
     resvg.render().asPng(),
   );
   console.log("✓", `public/${page.out}`);
+}
+
+/* ---- Field Notes: one share card + one tab icon per note ---- */
+
+const NOTE_SOCIAL = JSON.parse(
+  await readFile(path.join(ROOT, "src/content/note-social.json"), "utf8"),
+).notes;
+
+/** 96×96 tab icon: paper tile, clay foot, the note's ordinal in the display face.
+ *  Reads as a distinct clay mark at 16px, which is all a favicon can do. */
+function faviconSvg(ordinal) {
+  return [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">`,
+    `<rect width="96" height="96" fill="${PUTTY}"/>`,
+    `<rect x="7" y="7" width="82" height="82" fill="none" stroke="${FRAME}" stroke-width="2"/>`,
+    `<text x="48" y="62" text-anchor="middle" font-family="Fraunces" font-weight="500" font-size="46" fill="${INK}">${esc(ordinal)}</text>`,
+    `<rect x="24" y="72" width="48" height="7" fill="${GOLD}"/>`,
+    `</svg>`,
+  ].join("");
+}
+
+const NOTE_DIR = path.join(ROOT, "public", "social", "notes");
+await mkdir(NOTE_DIR, { recursive: true });
+
+let noteIndex = 0;
+for (const [slug, art] of Object.entries(NOTE_SOCIAL)) {
+  noteIndex += 1;
+  const card = ogSvg(
+    { eyebrow: art.eyebrow, lines: art.lines, sub: art.sub ?? [] },
+    mark
+  );
+  const png = path.join(NOTE_DIR, `${slug}.png`);
+  await writeFile(png, new Resvg(card, RESVG_FONT).render().asPng());
+  console.log("✓", `public/social/notes/${slug}.png`);
+
+  const ordinal = String(noteIndex).padStart(2, "0");
+  const icon = path.join(NOTE_DIR, `${slug}-icon.png`);
+  await writeFile(
+    icon,
+    new Resvg(faviconSvg(ordinal), RESVG_FONT).render().asPng()
+  );
+  console.log("✓", `public/social/notes/${slug}-icon.png`);
+}
+
+/* ---- Guides: one share card per guide (no tab icons — guides are not a feed) ---- */
+
+const GUIDE_SOCIAL = JSON.parse(
+  await readFile(path.join(ROOT, "src/content/guide-social.json"), "utf8"),
+).guides;
+
+const GUIDE_DIR = path.join(ROOT, "public", "social", "guides");
+await mkdir(GUIDE_DIR, { recursive: true });
+
+for (const [slug, art] of Object.entries(GUIDE_SOCIAL)) {
+  const card = ogSvg(
+    { eyebrow: art.eyebrow, lines: art.lines, sub: art.sub ?? [] },
+    mark
+  );
+  await writeFile(
+    path.join(GUIDE_DIR, `${slug}.png`),
+    new Resvg(card, RESVG_FONT).render().asPng()
+  );
+  console.log("✓", `public/social/guides/${slug}.png`);
 }
 
 console.log("\nAll assets generated.");

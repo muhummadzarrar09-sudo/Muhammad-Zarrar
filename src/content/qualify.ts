@@ -1,13 +1,11 @@
-/** Homepage qualifying brief — what they need, what they hoped to pay, what we quote. */
+/** Project-brief choices and the first-party WhatsApp handoff. */
 
-export type NeedOption = {
+export type BriefChoice = {
   id: string;
   label: string;
-  get: string;
-  quote: string;
-  min: number;
-  max: number;
 };
+
+export type NeedOption = BriefChoice;
 
 export type BudgetOption = {
   id: string;
@@ -16,55 +14,45 @@ export type BudgetOption = {
   max: number;
 };
 
+/**
+ * Every question earns a practical piece of scope. The option questions are
+ * intentionally checklists: a business can need a catalogue and bookings, or
+ * a redesign plus a dashboard. The budget remains one range by definition.
+ */
 export const NEEDS: NeedOption[] = [
-  {
-    id: "audit",
-    label: "I need to know what's broken",
-    get: "A written diagnosis — evidence, not a sales call — in 48 hours.",
-    quote: "PKR 35,000–50,000",
-    min: 35000,
-    max: 50000,
-  },
-  {
-    id: "redesign",
-    label: "I need the site rebuilt",
-    get: "A mobile-first site that fixes what the audit measured. You own it.",
-    quote: "PKR 150,000–500,000",
-    min: 150000,
-    max: 500000,
-  },
-  {
-    id: "retail",
-    label: "I need a catalog that takes orders",
-    get: "Customers browse, tap, and WhatsApp you a pre-filled order.",
-    quote: "from PKR 250,000",
-    min: 250000,
-    max: 600000,
-  },
-  {
-    id: "booking",
-    label: "I need people to book themselves",
-    get: "A live calendar. WhatsApp confirms and reminds. Fewer no-shows.",
-    quote: "from PKR 200,000",
-    min: 200000,
-    max: 500000,
-  },
-  {
-    id: "dashboard",
-    label: "I need one place for the team",
-    get: "Leads, orders, the day — on a tool you own, not a rented seat.",
-    quote: "from PKR 300,000",
-    min: 300000,
-    max: 800000,
-  },
-  {
-    id: "unsure",
-    label: "I'm not sure yet — just tell me",
-    get: "We'll read the brief and recommend the smallest honest path.",
-    quote: "We'll name it after we see the site",
-    min: 0,
-    max: 0,
-  },
+  { id: "audit", label: "Fix or improve an existing website" },
+  { id: "redesign", label: "Build a new business website" },
+  { id: "retail", label: "Create an online catalogue or shop" },
+  { id: "booking", label: "Set up appointments or bookings" },
+  { id: "dashboard", label: "Build an internal tool or dashboard" },
+  { id: "unsure", label: "Not sure — I need a recommendation" },
+];
+
+export const GOALS: BriefChoice[] = [
+  { id: "whatsapp", label: "Send a WhatsApp enquiry" },
+  { id: "pricing", label: "Understand services and pricing" },
+  { id: "order", label: "Browse products and place an order" },
+  { id: "book", label: "Book an appointment or consultation" },
+  { id: "search", label: "Find the business on Google" },
+  { id: "internal", label: "Give the team one place to work" },
+];
+
+export const SCOPES: BriefChoice[] = [
+  { id: "landing", label: "One focused landing page" },
+  { id: "small-site", label: "A 5–8 page business site" },
+  { id: "medium-site", label: "An 8–12 page site" },
+  { id: "catalogue", label: "A catalogue with products or services" },
+  { id: "custom", label: "A custom system with more moving parts" },
+];
+
+/** These are individual materials, not a vague readiness score, so selecting
+ * several is both useful and expected. */
+export const READINESS: BriefChoice[] = [
+  { id: "brand", label: "A logo or visual identity" },
+  { id: "copy", label: "Service copy or product descriptions" },
+  { id: "images", label: "Photos, product images or video" },
+  { id: "prices", label: "A service or product list with prices" },
+  { id: "nothing", label: "Nothing is ready yet" },
 ];
 
 export const BUDGETS: BudgetOption[] = [
@@ -76,11 +64,11 @@ export const BUDGETS: BudgetOption[] = [
   { id: "unsure", label: "I don't know yet", min: 0, max: 0 },
 ];
 
-export const TIMELINES = [
-  "As soon as you can",
-  "This month",
-  "In the next 90 days",
-  "Just looking, honestly",
+export const TIMELINES: BriefChoice[] = [
+  { id: "two-weeks", label: "Within the next two weeks" },
+  { id: "this-month", label: "This month" },
+  { id: "three-months", label: "Within the next three months" },
+  { id: "no-date", label: "No fixed date yet" },
 ];
 
 export const OUTCOMES = [
@@ -165,103 +153,43 @@ export const NEXT_STEPS = [
   },
 ];
 
-export function quoteFit(
-  need: NeedOption | undefined,
-  budget: BudgetOption | undefined
-): "fit" | "low" | "high" | "ask" {
-  if (!need || !budget) return "ask";
-  if (need.id === "unsure" || budget.id === "unsure") return "ask";
-  if (budget.max > 0 && budget.max < need.min) return "low";
-  if (need.max > 0 && budget.min > need.max) return "high";
-  return "fit";
-}
-
 export type BriefValues = {
   name: string;
   business: string;
+  /** `existing` requires a URL. `new` sends a clear starting-from-scratch note. */
+  siteState: "" | "existing" | "new";
   url: string;
-  problem: string;
   whatsapp: string;
-  needId: string;
+  needIds: string[];
+  goalIds: string[];
+  scopeIds: string[];
+  readinessIds: string[];
+  timelineIds: string[];
   budgetId: string;
-  when: string;
 };
 
-export function plateCopy(
-  need: NeedOption | undefined,
-  budget: BudgetOption | undefined,
-  fit: ReturnType<typeof quoteFit>
-) {
-  if (!need && !budget) {
-    return {
-      kicker: "Your number, then ours",
-      body: "Pick what you need and what you hoped to pay. We'll show the honest neighborhood — before you send anything.",
-    };
-  }
-  if (need && !budget) {
-    return {
-      kicker: "What you walk away with",
-      body: `${need.get} Honest quotes for this usually land at ${need.quote}.`,
-    };
-  }
-  if (!need && budget) {
-    return {
-      kicker: "What you hoped for",
-      body: `${budget.label}. Now pick what you need — we'll tell you if that number can carry the work.`,
-    };
-  }
-  if (fit === "low") {
-    return {
-      kicker: "That's below what this costs to do well",
-      body: `You hoped for ${budget!.label}. For this, honest work here quotes ${need!.quote}. Send the brief anyway — we'll name the smallest path, or say no.`,
-    };
-  }
-  if (fit === "high") {
-    return {
-      kicker: "There's room to do this properly",
-      body: `You hoped for ${budget!.label}. ${need!.quote} is the usual neighborhood. We'll quote the real scope — not spend up to the ceiling.`,
-    };
-  }
-  if (fit === "fit") {
-    return {
-      kicker: "Your number is in the neighborhood",
-      body: `You hoped for ${budget!.label}. ${need!.get} The exact quote comes after we see the site.`,
-    };
-  }
-  return {
-    kicker: "We'll name the path",
-    body: need
-      ? `${need.get} If the budget is still open, the brief is enough — we'll recommend the smallest honest next step.`
-      : "Tell us what's going on. We'll tell you what walking out with the fix actually costs.",
-  };
+function selectedLabels(items: BriefChoice[], ids: string[]) {
+  return items
+    .filter((item) => ids.includes(item.id))
+    .map((item) => item.label)
+    .join("; ");
 }
 
 export function composeBrief(values: BriefValues) {
-  const need = NEEDS.find((n) => n.id === values.needId);
-  const budget = BUDGETS.find((b) => b.id === values.budgetId);
-  const fit = quoteFit(need, budget);
-  const hoped = budget?.label ?? "—";
-  const quoted = need?.quote ?? "we'll name it after we see the site";
-  const gap =
-    fit === "low"
-      ? "Their hoped-for number is below the usual quote for this work."
-      : fit === "high"
-        ? "Their hoped-for number is above the usual quote — quote the real scope."
-        : fit === "fit"
-          ? "Hoped-for number is in the neighborhood of an honest quote."
-          : "Need or budget still open — recommend the smallest honest path.";
+  const budget = BUDGETS.find((item) => item.id === values.budgetId);
 
   return [
-    `Hello Zarrar — ${values.name.trim()} from ${values.business.trim()} filled the brief on the site.`,
+    `Hello Zarrar — ${values.name.trim()} from ${values.business.trim()} filled the project brief.`,
     ``,
-    `Website: ${values.url.trim() || "I don't have one yet"}`,
     `WhatsApp: ${values.whatsapp.trim()}`,
-    `What they need: ${need?.label ?? "—"}`,
-    `What they walk away with: ${need?.get ?? "—"}`,
-    `Budget they hoped for: ${hoped}`,
-    `Honest quote neighborhood: ${quoted}`,
-    `Fit: ${gap}`,
-    `When: ${values.when || "not said"}`,
-    `In their words: ${values.problem.trim() || "—"}`,
+    `Current website / Instagram: ${
+      values.siteState === "new" ? "Starting from scratch" : values.url.trim() || "—"
+    }`,
+    `Projects selected: ${selectedLabels(NEEDS, values.needIds) || "—"}`,
+    `Customer outcomes selected: ${selectedLabels(GOALS, values.goalIds) || "—"}`,
+    `Likely scope selected: ${selectedLabels(SCOPES, values.scopeIds) || "—"}`,
+    `Materials ready: ${selectedLabels(READINESS, values.readinessIds) || "—"}`,
+    `Target launch: ${selectedLabels(TIMELINES, values.timelineIds) || "—"}`,
+    `Approved budget: ${budget?.label ?? "Not confirmed yet"}`,
   ].join("\n");
 }

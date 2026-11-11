@@ -288,3 +288,166 @@ export function RenderFigure() {
     </svg>
   );
 }
+
+/**
+ * The price gap: the same catalogue twice. Left, the page as most sites ship
+ * it — complete, tidy, and ending in a question mark. Right, the same rows
+ * with a range and the thing that moves it. Illustrative; the pattern is
+ * the point, not the rupee figures.
+ */
+export function PriceGapFigure() {
+  const ROWS = [
+    { y: 74, w: 152 },
+    { y: 108, w: 118 },
+    { y: 142, w: 164 },
+    { y: 176, w: 134 },
+  ];
+
+  const frame = (x: number, title: string) => (
+    <g key={title}>
+      <rect
+        x={x}
+        y={8}
+        width={296}
+        height={228}
+        rx={8}
+        style={{ fill: "var(--surface)", stroke: "var(--hairline-strong)" }}
+        strokeWidth={1}
+      />
+      <text
+        x={x + 20}
+        y={34}
+        fontSize={10}
+        letterSpacing={1.4}
+        style={{ fill: "var(--text-2)", textTransform: "uppercase" }}
+      >
+        {title}
+      </text>
+      <line
+        x1={x}
+        y1={50}
+        x2={x + 296}
+        y2={50}
+        style={{ stroke: "var(--hairline-strong)" }}
+        strokeWidth={1}
+      />
+    </g>
+  );
+
+  return (
+    <svg viewBox="0 0 640 288" aria-hidden="true" focusable="false">
+      {frame(8, "MENU")}
+      {frame(336, "MENU")}
+
+      {/* left: rows ending in a question mark — the customer has to ask */}
+      {ROWS.map((row) => (
+        <g key={`q-${row.y}`}>
+          <rect
+            x={28}
+            y={row.y}
+            width={row.w}
+            height={9}
+            rx={2}
+            style={{ fill: "var(--text)", fillOpacity: 0.6 }}
+          />
+          <line
+            x1={28 + row.w + 10}
+            y1={row.y + 8}
+            x2={272}
+            y2={row.y + 8}
+            strokeDasharray="2 5"
+            style={{ stroke: "var(--hairline-strong)" }}
+            strokeWidth={1}
+          />
+          <text
+            x={286}
+            y={row.y + 9}
+            textAnchor="end"
+            fontSize={13}
+            style={{ fill: "var(--danger)" }}
+          >
+            ?
+          </text>
+        </g>
+      ))}
+      <text
+        x={28}
+        y={214}
+        fontSize={11}
+        style={{ fill: "var(--text-2)" }}
+      >
+        the customer has to ask
+      </text>
+
+      {/* right: same rows, each with a range and what moves it */}
+      {ROWS.map((row, i) => (
+        <g key={`p-${row.y}`}>
+          <rect
+            x={356}
+            y={row.y}
+            width={row.w}
+            height={9}
+            rx={2}
+            style={{ fill: "var(--text)", fillOpacity: 0.6 }}
+          />
+          <line
+            x1={356 + row.w + 10}
+            y1={row.y + 8}
+            x2={552}
+            y2={row.y + 8}
+            strokeDasharray="2 5"
+            style={{ stroke: "var(--hairline-strong)" }}
+            strokeWidth={1}
+          />
+          <text
+            x={614}
+            y={row.y + 9}
+            textAnchor="end"
+            fontSize={11}
+            style={{ fill: "var(--gold)" }}
+          >
+            {["4,500–6k", "2,800–3.5k", "9,000+", "6,000–7.5k"][i]}
+          </text>
+        </g>
+      ))}
+      <text
+        x={356}
+        y={214}
+        fontSize={11}
+        style={{ fill: "var(--text-2)" }}
+      >
+        the customer places themselves
+      </text>
+
+      {/* the one question, answered on one side only */}
+      <text
+        x={320}
+        y={126}
+        textAnchor="middle"
+        fontSize={13}
+        style={{ fill: "var(--gold)" }}
+      >
+        →
+      </text>
+
+      <text
+        x={152}
+        y={264}
+        textAnchor="middle"
+        fontSize={11}
+        style={{ fill: "var(--text-2)" }}
+      >
+        a message to send, then wait
+      </text>
+      <text
+        x={488}
+        y={264}
+        textAnchor="middle"
+        fontSize={11}
+        style={{ fill: "var(--text-2)" }}
+      >
+        a decision to make
+      </text>
+    </svg>
+  );
+}

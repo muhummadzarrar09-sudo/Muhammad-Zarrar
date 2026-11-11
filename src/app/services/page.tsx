@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { SERVICES } from "@/content/services";
 import { ADDONS } from "@/content/site-content";
 import { Reveal } from "@/components/reveal";
@@ -10,9 +10,10 @@ import { ArrowRightIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 
 export const metadata = pageMeta({
-  title: "Web Development Services & Real Pricing, Rawalpindi & Islamabad",
+  title:
+    "Web development services & real pricing",
   description:
-    "Website audits, audit-led redesigns, RetailFlow catalogs, BookingFlow appointment systems, and custom dashboards — web development in Rawalpindi & Islamabad with PKR pricing in writing.",
+    "Five services with published PKR ranges: website audit, audit-led redesign, catalog systems, booking systems and internal dashboards. No hourly billing.",
   path: "/services",
   ogImage: "/og-services.png",
 });
@@ -21,7 +22,7 @@ export default function ServicesPage() {
   return (
     <>
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Services", path: "/services" },
         ])}

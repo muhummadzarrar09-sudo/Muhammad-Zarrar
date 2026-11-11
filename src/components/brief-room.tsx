@@ -1,127 +1,423 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { waLink } from "@/lib/site";
 import {
   BUDGETS,
+  GOALS,
   NEEDS,
+  READINESS,
+  SCOPES,
   TIMELINES,
   composeBrief,
-  plateCopy,
-  quoteFit,
+  type BriefChoice,
   type BriefValues,
 } from "@/content/qualify";
 import {
   ArrowLeftIcon,
-  ArrowRightIcon,
   CheckIcon,
+  ProceedIcon,
   SpinnerIcon,
   WhatsAppIcon,
 } from "./icons";
 
 /**
- * BriefRoom — the Typeform-styled brief at /brief.
+ * A fixed-viewport project brief.
  *
- * First-party. No embed, no iframe, no third-party script. One question per
- * screen, own shareable URL, and the same WhatsApp handoff the home form
- * used: the message is composed in the browser and handed to wa.me. Nothing
- * is stored server-side because there is no server-side.
- *
- * Answers survive a refresh in sessionStorage — deliberately session-scoped,
- * so a shared machine doesn't hand the next visitor someone else's numbers.
+ * This is not a page with a form at the end. It is a calm, no-scroll room:
+ * each screen collects one useful project fact, the visitor explicitly says
+ * Okay when they are ready, and the result becomes one prepared WhatsApp
+ * message. Checklist questions deliberately support several answers — most
+ * real projects do not fit a single neat category.
  */
 
 const STORE_KEY = "zs-brief-draft";
-const RANGES = BUDGETS.filter((b) => b.id !== "unsure");
+const RANGES = BUDGETS.filter((budget) => budget.id !== "unsure");
 const UNSURE_ID = "unsure";
 
-const STEPS = ["need", "budget", "quote", "when", "words", "who", "reach"] as const;
+const STEPS = [
+  "project",
+  "website",
+  "goal",
+  "scope",
+  "readiness",
+  "timeline",
+  "budget",
+  "contact",
+] as const;
 type Step = (typeof STEPS)[number];
+type ChoiceStep = Extract<Step, "project" | "goal" | "scope" | "readiness" | "timeline">;
+type MultiField = "needIds" | "goalIds" | "scopeIds" | "readinessIds" | "timelineIds";
+type SiteState = BriefValues["siteState"];
+
+type LegacyDraft = Record<string, unknown>;
 
 const empty: BriefValues = {
   name: "",
   business: "",
+  siteState: "",
   url: "",
-  problem: "",
   whatsapp: "",
-  needId: "",
+  needIds: [],
+  goalIds: [],
+  scopeIds: [],
+  readinessIds: [],
+  timelineIds: [],
   budgetId: "",
-  when: "",
 };
 
 const COPY: Record<Step, { kicker: string; question: string; hint: string }> = {
-  need: {
-    kicker: "First",
-    question: "What do you need?",
-    hint: "Pick the closest thing. We'll sharpen it together.",
+  project: {
+    kicker: "01 · Project",
+    question: "What would you like us to work on?",
+    hint: "Select every project type that applies. Most businesses need more than one thing to work together.",
+  },
+  website: {
+    kicker: "02 · Starting point",
+    question: "Where can we see what exists today?",
+    hint: "Tell us whether there is something to review first. Starting fresh is a valid answer.",
+  },
+  goal: {
+    kicker: "03 · Outcome",
+    question: "What should a customer be able to do?",
+    hint: "Select every action the finished experience needs to make easy.",
+  },
+  scope: {
+    kicker: "04 · Scope",
+    question: "What is the likely size of the job?",
+    hint: "Select the parts that belong in the first release. A best estimate is enough.",
+  },
+  readiness: {
+    kicker: "05 · Materials",
+    question: "What is ready to work with?",
+    hint: "Select every asset you already have. This tells us what needs to be created or organised.",
+  },
+  timeline: {
+    kicker: "06 · Deadline",
+    question: "What timing applies to this project?",
+    hint: "Select every true constraint. “No fixed date” stays separate from a deadline.",
   },
   budget: {
-    kicker: "Then",
-    question: "The number you hoped for.",
-    hint: "Honest is useful. If your number is below the work, we'll say so.",
+    kicker: "07 · Budget",
+    question: "What budget is approved for this project?",
+    hint: "Choose one range. The quiet range rail makes the choice clear without pretending it is a precise quote.",
   },
-  quote: {
-    kicker: "Straight",
-    question: "Here's the honest neighborhood.",
-    hint: "What you'd walk away with, and what it usually costs.",
-  },
-  when: {
-    kicker: "Timing",
-    question: "When do you need this?",
-    hint: "Optional. It changes the order, not the price.",
-  },
-  words: {
-    kicker: "Context",
-    question: "In your own words.",
-    hint: "Optional. The slow page. The quiet inbox. The quote that felt off.",
-  },
-  who: {
-    kicker: "You",
-    question: "Who are we talking to?",
-    hint: "A name and the business this is for.",
-  },
-  reach: {
-    kicker: "Last",
-    question: "How do we reach you?",
-    hint: "WhatsApp is the channel we actually answer on.",
+  contact: {
+    kicker: "08 · Reply",
+    question: "Where should we send the plan?",
+    hint: "Your name, business and WhatsApp. No email list and no calendar chase.",
   },
 };
 
-const OPTIONAL: Step[] = ["when", "words"];
+const letterFor = (index: number) => String.fromCharCode(65 + index);
+
+const MULTI_FIELD: Record<ChoiceStep, MultiField> = {
+  project: "needIds",
+  goal: "goalIds",
+  scope: "scopeIds",
+  readiness: "readinessIds",
+  timeline: "timelineIds",
+};
+
+function choicesFor(step: ChoiceStep): BriefChoice[] {
+  if (step === "project") return NEEDS;
+  if (step === "goal") return GOALS;
+  if (step === "scope") return SCOPES;
+  if (step === "readiness") return READINESS;
+  return TIMELINES;
+}
+
+function selectedLabels(items: BriefChoice[], ids: string[]) {
+  return items
+    .filter((item) => ids.includes(item.id))
+    .map((item) => item.label)
+    .join(", ");
+}
+
+function recapRows(values: BriefValues) {
+  const project = selectedLabels(NEEDS, values.needIds);
+  const goal = selectedLabels(GOALS, values.goalIds);
+  const scope = selectedLabels(SCOPES, values.scopeIds);
+  const budget = BUDGETS.find((item) => item.id === values.budgetId)?.label;
+
+  return [
+    { label: "Project", value: project },
+    { label: "Main outcome", value: goal },
+    { label: "Scope", value: scope },
+    { label: "Budget", value: values.budgetId === UNSURE_ID ? "Not confirmed yet" : budget },
+  ].filter((row): row is { label: string; value: string } => Boolean(row.value));
+}
+
+function BriefExit() {
+  return (
+    <div className="brief-exit">
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <Link href="/">Home</Link>
+        <span className="sep" aria-hidden="true">
+          /
+        </span>
+        <span aria-current="page">The brief</span>
+      </nav>
+    </div>
+  );
+}
+
+function MultiOptionGrid({
+  label,
+  options,
+  selected,
+  onToggle,
+}: {
+  label: string;
+  options: BriefChoice[];
+  selected: string[];
+  onToggle: (id: string) => void;
+}) {
+  return (
+    <>
+      <p className="brief-selection-note" id={`${label}-help`}>
+        <CheckIcon size={15} /> Select all that apply. Press <kbd>Okay</kbd> when you&rsquo;re done.
+      </p>
+      <div className="brief-chips brief-multi-grid" role="group" aria-label={label} aria-describedby={`${label}-help`}>
+        {options.map((item, itemIndex) => {
+          const chosen = selected.includes(item.id);
+          return (
+            <button
+              key={item.id}
+              type="button"
+              className={`q-chip ${chosen ? "is-on" : ""}`}
+              aria-pressed={chosen}
+              onClick={() => onToggle(item.id)}
+            >
+              <span className="brief-chip-key" aria-hidden="true">
+                {letterFor(itemIndex)}
+              </span>
+              <span className="brief-chip-label">{item.label}</span>
+              <span className="brief-chip-state" aria-hidden="true">
+                <CheckIcon size={13} />
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </>
+  );
+}
 
 export function BriefRoom() {
-  const [step, setStep] = useState<Step>("need");
+  const [step, setStep] = useState<Step>("project");
   const [values, setValues] = useState<BriefValues>(empty);
   const [error, setError] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [started, setStarted] = useState(false);
+  const [resumed, setResumed] = useState(false);
 
-  const [pos, setPos] = useState(2);
-  const sliderRef = useRef<HTMLInputElement>(null);
-  const readRef = useRef<HTMLOutputElement>(null);
-  const spring = useRef({ cur: 50, vel: 0, raf: 0 });
   const stageRef = useRef<HTMLFormElement>(null);
-  const autoAdvance = useRef<number>(0);
-
   const index = STEPS.indexOf(step);
-  const need = NEEDS.find((n) => n.id === values.needId);
-  const budget = BUDGETS.find((b) => b.id === values.budgetId);
-  const fit = useMemo(() => quoteFit(need, budget), [need, budget]);
-  const plate = useMemo(() => plateCopy(need, budget, fit), [need, budget, fit]);
   const unsure = values.budgetId === UNSURE_ID;
+  const copy = COPY[step];
+  const recap = recapRows(values);
+  const progress = (index + 1) / STEPS.length;
+  const choiceStep = ["project", "goal", "scope", "readiness", "timeline"].includes(step)
+    ? (step as ChoiceStep)
+    : null;
+  const activeChoices = choiceStep ? choicesFor(choiceStep) : [];
+  const activeField = choiceStep ? MULTI_FIELD[choiceStep] : null;
+  const activeSelection = activeField ? values[activeField] : [];
 
-  /* ---- Restore the draft once, client-side only ---- */
+  const set = useCallback((patch: Partial<BriefValues>) => {
+    setValues((current) => ({ ...current, ...patch }));
+    setError("");
+  }, []);
+
+  const go = (next: Step) => {
+    setStep(next);
+    setError("");
+  };
+
+  const nextStep = () => STEPS[index + 1];
+
+  const toggleMulti = useCallback((field: MultiField, id: string) => {
+    setValues((current) => {
+      const selected = current[field];
+      const isSelected = selected.includes(id);
+      let next = isSelected ? selected.filter((value) => value !== id) : [...selected, id];
+
+      /* “Not sure” and “No fixed date” are useful, but cannot honestly sit
+         beside a contradictory selection. All normal options remain multi. */
+      if (field === "needIds") {
+        if (id === "unsure") next = isSelected ? [] : ["unsure"];
+        else next = next.filter((value) => value !== "unsure");
+      }
+      if (field === "readinessIds") {
+        if (id === "nothing") next = isSelected ? [] : ["nothing"];
+        else next = next.filter((value) => value !== "nothing");
+      }
+      if (field === "timelineIds") {
+        if (id === "no-date") next = isSelected ? [] : ["no-date"];
+        else next = next.filter((value) => value !== "no-date");
+      }
+
+      return { ...current, [field]: next };
+    });
+    setError("");
+  }, []);
+
+  const setSiteState = (siteState: SiteState) => {
+    set({ siteState, url: siteState === "new" ? "" : values.url });
+    if (siteState === "existing") {
+      window.setTimeout(() => {
+        stageRef.current?.querySelector<HTMLInputElement>('input[type="url"]')?.focus({
+          preventScroll: true,
+        });
+      }, 0);
+    }
+  };
+
+  const validate = (): string => {
+    if (step === "project") return values.needIds.length ? "" : "Select at least one project type.";
+    if (step === "website") {
+      if (!values.siteState) return "Choose whether there is an existing site to review.";
+      if (values.siteState === "existing") {
+        const url = values.url.trim();
+        if (!url) return "Add the current website or Instagram link.";
+        if (!/^(https?:\/\/)?[\w-]+(\.[\w-]+)+([/?#].*)?$/i.test(url)) {
+          return "Enter a working link, such as yoursite.pk.";
+        }
+      }
+      return "";
+    }
+    if (step === "goal") return values.goalIds.length ? "" : "Select at least one customer action.";
+    if (step === "scope") return values.scopeIds.length ? "" : "Select at least one scope item.";
+    if (step === "readiness") return values.readinessIds.length ? "" : "Select what is ready so far.";
+    if (step === "timeline") return values.timelineIds.length ? "" : "Select the timing that applies.";
+    if (step === "budget") return values.budgetId ? "" : "Choose one approved budget range.";
+    if (step === "contact") {
+      if (!values.name.trim()) return "Add your name so we know who to reply to.";
+      if (!values.business.trim()) return "Add the business this project is for.";
+      if (!values.whatsapp.trim()) return "Add a WhatsApp number we can reply to.";
+      if (!/^[+\d][\d\s\-()]{7,}$/.test(values.whatsapp.trim())) {
+        return "Enter a valid number, for example 0300 1234567.";
+      }
+    }
+    return "";
+  };
+
+  const focusNeededAnswer = () => {
+    let selector = "button.q-chip";
+    if (step === "website") {
+      selector = values.siteState === "existing" ? 'input[type="url"]' : ".brief-site-options button";
+    }
+    if (step === "budget") selector = ".budget-rail-option";
+    if (step === "contact") {
+      selector = !values.name.trim()
+        ? 'input[autocomplete="name"]'
+        : !values.business.trim()
+          ? 'input[autocomplete="organization"]'
+          : 'input[type="tel"]';
+    }
+    window.setTimeout(() => {
+      stageRef.current?.querySelector<HTMLElement>(selector)?.focus({ preventScroll: true });
+    }, 0);
+  };
+
+  const advance = () => {
+    const message = validate();
+    if (message) {
+      setError(message);
+      focusNeededAnswer();
+      return;
+    }
+    const next = nextStep();
+    if (next) go(next);
+  };
+
+  const back = () => {
+    const previous = STEPS[index - 1];
+    if (previous) go(previous);
+    else {
+      setStarted(false);
+      setError("");
+    }
+  };
+
+  const submit = () => {
+    const message = validate();
+    if (message) {
+      setError(message);
+      focusNeededAnswer();
+      return;
+    }
+    setStatus("sending");
+    window.setTimeout(() => {
+      try {
+        sessionStorage.removeItem(STORE_KEY);
+      } catch {
+        /* A blocked storage API must not block the WhatsApp handoff. */
+      }
+      window.location.href = waLink(composeBrief(values));
+      setStatus("sent");
+    }, 280);
+  };
+
+  const onSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (step === "contact") submit();
+    else advance();
+  };
+
+  /* Lock the document itself as well as the room. :has() provides a no-JS
+     first paint; this class is the fallback for older browser engines. */
+  useEffect(() => {
+    document.documentElement.classList.add("brief-flow");
+    document.body.classList.add("brief-flow");
+    return () => {
+      document.documentElement.classList.remove("brief-flow");
+      document.body.classList.remove("brief-flow");
+    };
+  }, []);
+
+  /* Old single-answer drafts are quietly migrated into the new checklist
+     shape. A returning visitor never loses an answer because the form got
+     more capable. */
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem(STORE_KEY);
       if (!raw) return;
-      const saved = JSON.parse(raw) as Partial<BriefValues>;
-      setValues((v) => ({ ...v, ...saved }));
-      if (saved.budgetId && saved.budgetId !== UNSURE_ID) {
-        const i = RANGES.findIndex((r) => r.id === saved.budgetId);
-        if (i >= 0) setPos(i);
-      }
+      const saved = JSON.parse(raw) as LegacyDraft;
+      const text = (key: string) => (typeof saved[key] === "string" ? saved[key] : "");
+      const list = (key: string, oldKey: string) => {
+        const value = saved[key];
+        if (Array.isArray(value)) return value.filter((item): item is string => typeof item === "string");
+        const old = text(oldKey);
+        return old ? [old] : [];
+      };
+      const url = text("url");
+      const rawSiteState = text("siteState");
+      const siteState: SiteState =
+        rawSiteState === "existing" || rawSiteState === "new"
+          ? rawSiteState
+          : url
+            ? "existing"
+            : "";
+      const restored: BriefValues = {
+        name: text("name"),
+        business: text("business"),
+        siteState,
+        url,
+        whatsapp: text("whatsapp"),
+        needIds: list("needIds", "needId"),
+        goalIds: list("goalIds", "goalId"),
+        scopeIds: list("scopeIds", "scopeId"),
+        readinessIds: list("readinessIds", "readinessId"),
+        timelineIds: list("timelineIds", "when"),
+        budgetId: text("budgetId"),
+      };
+      setValues(restored);
+      if (restored.needIds.length || restored.name || restored.whatsapp) setResumed(true);
     } catch {
-      /* A corrupt draft is not worth a crash. */
+      /* A corrupt draft is less important than a working brief. */
     }
   }, []);
 
@@ -129,323 +425,329 @@ export function BriefRoom() {
     try {
       sessionStorage.setItem(STORE_KEY, JSON.stringify(values));
     } catch {
-      /* Private mode / quota. The brief still works; it just won't persist. */
+      /* Private mode and a full storage quota still leave the brief usable. */
     }
   }, [values]);
 
-  /* ---- Spring-fill slider (stiffness 170, damping 13) ---- */
   useEffect(() => {
-    const input = sliderRef.current;
-    if (!input) return;
-    const target = (pos / (RANGES.length - 1)) * 100;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      input.style.setProperty("--fill", `${target}%`);
-      spring.current.cur = target;
-      spring.current.vel = 0;
-      return;
-    }
-    const s = spring.current;
-    cancelAnimationFrame(s.raf);
-    let last = performance.now();
-    const tick = (now: number) => {
-      const dt = Math.min(0.05, (now - last) / 1000);
-      last = now;
-      s.vel += ((target - s.cur) * 170 - s.vel * 13) * dt;
-      s.cur += s.vel * dt;
-      input.style.setProperty("--fill", `${s.cur.toFixed(2)}%`);
-      if (Math.abs(target - s.cur) > 0.05 || Math.abs(s.vel) > 0.5) {
-        s.raf = requestAnimationFrame(tick);
-      } else {
-        input.style.setProperty("--fill", `${target}%`);
-        s.cur = target;
-        s.vel = 0;
-      }
-    };
-    s.raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(s.raf);
-  }, [pos]);
-
-  useEffect(() => () => window.clearTimeout(autoAdvance.current), []);
-
-  /* Focus the first control on each new screen so the keyboard is already
-     inside the room. `preventScroll` — the curtain owns the scroll, not us. */
-  useEffect(() => {
+    if (!started || status !== "idle") return;
     const node = stageRef.current?.querySelector<HTMLElement>(
-      "input:not([type=range]), textarea, button.q-chip"
+      "input:not([type=range]), button.q-chip, .budget-rail-option",
     );
     if (node && !window.matchMedia("(max-width: 760px)").matches) {
       node.focus({ preventScroll: true });
     }
-  }, [step]);
+  }, [started, status, step]);
 
-  const set = useCallback((patch: Partial<BriefValues>) => {
-    setValues((v) => ({ ...v, ...patch }));
-    setError("");
-  }, []);
+  /** Keyboard accelerates the same controls: letters/numbers toggle options;
+   * Ctrl/Cmd+Enter confirms; ↑ is the same back action as the visible arrow. */
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (status === "sent" || !started) return;
+      const target = event.target as HTMLElement | null;
+      const typing =
+        !!target &&
+        (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable);
 
-  const pickRange = (i: number) => {
-    setPos(i);
-    set({ budgetId: RANGES[i].id });
-    const read = readRef.current;
-    if (read && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      read.animate(
-        [
-          { transform: "scale(1)" },
-          { transform: "scale(1.06)", offset: 0.35 },
-          { transform: "scale(1)" },
-        ],
-        { duration: 280, easing: "cubic-bezier(0.2, 0.7, 0.3, 1)" }
-      );
-    }
-  };
-
-  const validate = (): string => {
-    if (step === "need") return values.needId ? "" : "Pick the closest thing to what you need.";
-    if (step === "budget") return values.budgetId ? "" : "Slide to your number — or say you don't know yet.";
-    if (step === "who") {
-      if (!values.name.trim()) return "A name, so we know who we're talking to.";
-      if (!values.business.trim()) return "The business this is for.";
-      return "";
-    }
-    if (step === "reach") {
-      if (!values.whatsapp.trim()) return "A WhatsApp we can actually reply on.";
-      if (!/^[+\d][\d\s\-()]{7,}$/.test(values.whatsapp.trim())) {
-        return "Enter a valid number, e.g. 0300 1234567.";
+      if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+        event.preventDefault();
+        if (step === "contact") submit();
+        else advance();
+        return;
       }
-      const url = values.url.trim();
-      if (url && !/^(https?:\/\/)?[\w-]+(\.[\w-]+)+([/?#].*)?$/i.test(url)) {
-        return "A real link, e.g. yoursite.pk — or leave it blank.";
+      if (typing) return;
+
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        back();
+        return;
       }
-      return "";
-    }
-    return "";
-  };
-
-  const go = (next: Step) => {
-    window.clearTimeout(autoAdvance.current);
-    setStep(next);
-    setError("");
-  };
-
-  const advance = () => {
-    const message = validate();
-    if (message) {
-      setError(message);
-      return;
-    }
-    const next = STEPS[index + 1];
-    if (next) go(next);
-  };
-
-  const back = () => {
-    const prev = STEPS[index - 1];
-    if (prev) go(prev);
-  };
-
-  /* Typeform behaviour: choosing an answer is the answer. */
-  const pickNeed = (id: string) => {
-    set({ needId: id });
-    autoAdvance.current = window.setTimeout(() => go("budget"), 360);
-  };
-
-  const pickWhen = (item: string) => {
-    set({ when: item });
-    autoAdvance.current = window.setTimeout(() => go("words"), 320);
-  };
-
-  const submit = () => {
-    const message = validate();
-    if (message) {
-      setError(message);
-      return;
-    }
-    setStatus("sending");
-    // A beat so the button reads as pressed before the handoff.
-    window.setTimeout(() => {
-      try {
-        sessionStorage.removeItem(STORE_KEY);
-      } catch {
-        /* nothing to clean */
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        advance();
+        return;
       }
-      window.location.href = waLink(composeBrief(values));
-      setStatus("sent");
-    }, 380);
-  };
+      if (!choiceStep || !activeField) return;
 
-  const onSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    if (step === "reach") submit();
-    else advance();
-  };
+      const key = event.key.toUpperCase();
+      const choiceIndex = /^[1-9]$/.test(key)
+        ? Number(key) - 1
+        : key.length === 1 && /[A-Z]/.test(key)
+          ? key.charCodeAt(0) - 65
+          : -1;
+      const choice = activeChoices[choiceIndex];
+      if (!choice) return;
 
-  const readText = !values.budgetId
-    ? "Slide to your number"
+      event.preventDefault();
+      toggleMulti(activeField, choice.id);
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
+  const budgetRead = !values.budgetId
+    ? "Choose the approved range"
     : unsure
-      ? "Not sure yet — we'll guide you"
-      : (budget?.label ?? "");
+      ? "Not confirmed yet"
+      : BUDGETS.find((item) => item.id === values.budgetId)?.label ?? "Choose the approved range";
+  const invalidWhatsapp =
+    Boolean(error) &&
+    (!values.whatsapp.trim() || !/^[+\d][\d\s\-()]{7,}$/.test(values.whatsapp.trim()));
+  const primaryLabel =
+    step === "contact"
+      ? "Send the brief"
+      : choiceStep
+        ? activeSelection.length
+          ? `Okay · ${activeSelection.length} selected`
+          : "Okay"
+        : "Proceed";
 
-  const sliderText = !values.budgetId
-    ? `No budget picked yet, slider parked at ${RANGES[pos].label}`
-    : unsure
-      ? "Not sure yet"
-      : (RANGES[pos].label ?? "");
-
-  const progress = (index + 1) / STEPS.length;
-  const copy = COPY[step];
-  const optional = OPTIONAL.includes(step);
+  let content: React.ReactNode;
 
   if (status === "sent") {
-    return (
-      <section className="brief-room">
-        <div className="brief-shell">
-          <div className="brief-done">
-            <span className="brief-done-mark" aria-hidden="true">
-              <CheckIcon size={22} />
-            </span>
-            <h1 className="brief-q">It's on its way.</h1>
-            <p className="brief-hint">
-              WhatsApp is opening with everything you just told us. We read it
-              today and reply within 24 hours — five findings, or an honest
-              "this isn't a fit, and here's why."
-            </p>
-            <p className="brief-done-note">
-              <a href={waLink(composeBrief(values))} target="_blank" rel="noopener">
-                Open it manually
-              </a>{" "}
-              if nothing happened.
-            </p>
-          </div>
-        </div>
-      </section>
+    content = (
+      <div className="brief-done" aria-live="polite">
+        <span className="brief-done-mark" aria-hidden="true">
+          <CheckIcon size={22} />
+        </span>
+        <h1 className="brief-q">It&rsquo;s ready to send.</h1>
+        <p className="brief-hint">
+          WhatsApp is opening with the practical details below. We read it today and reply within
+          24 hours with the next useful step — or an honest no.
+        </p>
+        {recap.length ? (
+          <dl className="brief-recap">
+            {recap.map((row) => (
+              <div key={row.label} className="brief-recap-row">
+                <dt>{row.label}</dt>
+                <dd>{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+        ) : null}
+        <ol className="brief-nextsteps">
+          <li>
+            <span className="brief-nextsteps-no">01</span>
+            <span>We review the current site and the scope you gave us.</span>
+          </li>
+          <li>
+            <span className="brief-nextsteps-no">02</span>
+            <span>You get a written reply: recommended work, timing and an honest range.</span>
+          </li>
+        </ol>
+        <p className="brief-done-note">
+          <a href={waLink(composeBrief(values))} target="_blank" rel="noopener noreferrer">
+            Open WhatsApp manually
+          </a>{" "}
+          if it did not open.
+        </p>
+      </div>
     );
-  }
-
-  return (
-    <section className="brief-room" id="brief-room">
-      <div className="brief-shell">
+  } else if (!started) {
+    content = (
+      <div className="brief-welcome">
+        <p className="brief-kicker">Before we talk</p>
+        <h1 className="brief-q brief-welcome-q">
+          Eight practical questions.
+          <br />
+          Around two minutes.
+          <br />
+          No sales call.
+        </h1>
+        <p className="brief-hint">
+          Select everything that applies, then confirm each screen when you are ready. We ask
+          about the project, setup, scope, assets, deadline and budget — not vague discovery questions.
+        </p>
+        <div className="brief-welcome-actions">
+          <button type="button" className="btn btn-primary" onClick={() => setStarted(true)}>
+            {resumed ? "Continue the brief" : "Start the brief"} <ProceedIcon size={16} />
+          </button>
+          <a
+            className="brief-hello"
+            href={waLink("Hello Zarrar — I came from the site. I'd rather talk than fill the brief.")}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <WhatsAppIcon size={14} /> Or just say hello
+          </a>
+        </div>
+        <p className="brief-welcome-note">
+          This page does not scroll. You can use the back arrow at any point, nothing sends until
+          the last screen, and answers stay in this browser tab until then.
+        </p>
+      </div>
+    );
+  } else {
+    content = (
+      <>
         <header className="brief-head">
           <div className="brief-head-row">
-            <span className="brief-plate">The brief</span>
+            <span className="brief-plate">Project brief</span>
             <span className="brief-count">
               {String(index + 1).padStart(2, "0")} / {String(STEPS.length).padStart(2, "0")}
             </span>
           </div>
-          <div className="brief-progress" aria-hidden="true">
+          <div
+            className="brief-progress"
+            role="progressbar"
+            aria-valuemin={1}
+            aria-valuemax={STEPS.length}
+            aria-valuenow={index + 1}
+            aria-label={`Question ${index + 1} of ${STEPS.length}`}
+          >
             <span className="brief-progress-fill" style={{ transform: `scaleX(${progress})` }} />
           </div>
         </header>
 
         <form className="brief-stage" ref={stageRef} onSubmit={onSubmit} noValidate>
-          {/* The whole screen is a text swap, not a navigation. Focus lands on
-              the first control (above), so without this a screen reader would
-              hear the answer field but never the new question. */}
           <div aria-live="polite" aria-atomic="true">
             <p className="brief-kicker">{copy.kicker}</p>
-            <h1 className="brief-q">{copy.question}</h1>
+            <h2 className="brief-q">{copy.question}</h2>
           </div>
           <p className="brief-hint">{copy.hint}</p>
 
-          <div className="brief-answer">
-            {step === "need" && (
-              <div className="brief-chips" role="group" aria-label="What do you need">
-                {NEEDS.map((item) => (
+          <div className="brief-answer" key={step}>
+            {step === "project" && (
+              <MultiOptionGrid
+                label="Project types"
+                options={NEEDS}
+                selected={values.needIds}
+                onToggle={(id) => toggleMulti("needIds", id)}
+              />
+            )}
+
+            {step === "website" && (
+              <div className="brief-one-field">
+                <div className="brief-chips brief-site-options" role="group" aria-label="Current site status">
                   <button
-                    key={item.id}
                     type="button"
-                    className={`q-chip ${values.needId === item.id ? "is-on" : ""}`}
-                    aria-pressed={values.needId === item.id}
-                    onClick={() => pickNeed(item.id)}
+                    className={`q-chip ${values.siteState === "existing" ? "is-on" : ""}`}
+                    aria-pressed={values.siteState === "existing"}
+                    onClick={() => setSiteState("existing")}
                   >
-                    {item.label}
+                    <span className="brief-chip-state" aria-hidden="true">
+                      <CheckIcon size={13} />
+                    </span>
+                    I have a website or Instagram
                   </button>
-                ))}
+                  <button
+                    type="button"
+                    className={`q-chip ${values.siteState === "new" ? "is-on" : ""}`}
+                    aria-pressed={values.siteState === "new"}
+                    onClick={() => setSiteState("new")}
+                  >
+                    <span className="brief-chip-state" aria-hidden="true">
+                      <CheckIcon size={13} />
+                    </span>
+                    I&rsquo;m starting from scratch
+                  </button>
+                </div>
+                {values.siteState === "existing" ? (
+                  <label className="brief-field brief-site-link">
+                    <span className="brief-label">Current website or Instagram</span>
+                    <input
+                      type="url"
+                      autoComplete="url"
+                      value={values.url}
+                      onChange={(event) => set({ url: event.target.value })}
+                      placeholder="yourbusiness.pk or instagram.com/yourbusiness"
+                      enterKeyHint="next"
+                      aria-invalid={Boolean(error && (!values.url.trim() || values.siteState === "existing"))}
+                      aria-describedby={error ? "brief-error" : undefined}
+                    />
+                  </label>
+                ) : null}
               </div>
             )}
 
+            {step === "goal" && (
+              <MultiOptionGrid
+                label="Customer outcomes"
+                options={GOALS}
+                selected={values.goalIds}
+                onToggle={(id) => toggleMulti("goalIds", id)}
+              />
+            )}
+
+            {step === "scope" && (
+              <MultiOptionGrid
+                label="Project scope"
+                options={SCOPES}
+                selected={values.scopeIds}
+                onToggle={(id) => toggleMulti("scopeIds", id)}
+              />
+            )}
+
+            {step === "readiness" && (
+              <MultiOptionGrid
+                label="Materials ready"
+                options={READINESS}
+                selected={values.readinessIds}
+                onToggle={(id) => toggleMulti("readinessIds", id)}
+              />
+            )}
+
+            {step === "timeline" && (
+              <MultiOptionGrid
+                label="Project timing"
+                options={TIMELINES}
+                selected={values.timelineIds}
+                onToggle={(id) => toggleMulti("timelineIds", id)}
+              />
+            )}
+
             {step === "budget" && (
-              <div className={`q-budget${unsure ? " is-unsure" : ""}`}>
-                <output ref={readRef} className="q-budget-read" htmlFor="brief-budget">
-                  {readText}
+              <div className={`brief-budget${unsure ? " is-unsure" : ""}`}>
+                <output className="brief-budget-read" aria-live="polite">
+                  {budgetRead}
                 </output>
-                <input
-                  ref={sliderRef}
-                  id="brief-budget"
-                  className="q-slider"
-                  type="range"
-                  min={0}
-                  max={RANGES.length - 1}
-                  step={1}
-                  value={pos}
-                  onChange={(e) => pickRange(Number(e.target.value))}
-                  aria-valuetext={sliderText}
-                />
-                <div className="q-slider-scale" aria-hidden="true">
-                  {RANGES.map((r, i) => (
-                    <span
-                      key={r.id}
-                      className={`q-tick${!unsure && values.budgetId && i <= pos ? " is-on" : ""}`}
-                    />
-                  ))}
-                </div>
-                <div className="q-slider-ends" aria-hidden="true">
-                  <span>{RANGES[0].label}</span>
-                  <span>{RANGES[RANGES.length - 1].label}</span>
+                <div className="budget-rail" role="radiogroup" aria-label="Approved project budget">
+                  {RANGES.map((item, itemIndex) => {
+                    const chosen = values.budgetId === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={chosen}
+                        className={`budget-rail-option ${chosen ? "is-on" : ""}`}
+                        onClick={() => set({ budgetId: item.id })}
+                      >
+                        <span className="budget-rail-dot" aria-hidden="true" />
+                        <span className="budget-rail-number">{String(itemIndex + 1).padStart(2, "0")}</span>
+                        <span className="budget-rail-label">{item.label}</span>
+                      </button>
+                    );
+                  })}
                 </div>
                 <button
                   type="button"
-                  className={`q-chip${unsure ? " is-on" : ""}`}
+                  className={`q-chip brief-budget-unsure${unsure ? " is-on" : ""}`}
                   aria-pressed={unsure}
                   onClick={() => set({ budgetId: UNSURE_ID })}
                 >
-                  I don&apos;t know yet
+                  <span className="brief-chip-state" aria-hidden="true">
+                    <CheckIcon size={13} />
+                  </span>
+                  I don&rsquo;t have a confirmed budget yet
                 </button>
               </div>
             )}
 
-            {step === "quote" && (
-              <aside className={`q-quote is-${fit}`} aria-live="polite">
-                <p className="q-quote-k">{plate.kicker}</p>
-                <p className="q-quote-b">{plate.body}</p>
-              </aside>
-            )}
-
-            {step === "when" && (
-              <div className="brief-chips brief-chips-tight" role="group" aria-label="When">
-                {TIMELINES.map((item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    className={`q-chip ${values.when === item ? "is-on" : ""}`}
-                    aria-pressed={values.when === item}
-                    onClick={() => pickWhen(item)}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {step === "words" && (
-              <textarea
-                className="brief-text"
-                rows={5}
-                value={values.problem}
-                onChange={(e) => set({ problem: e.target.value })}
-                placeholder="What's actually going on…"
-                aria-label="In your own words"
-              />
-            )}
-
-            {step === "who" && (
-              <div className="brief-grid">
+            {step === "contact" && (
+              <div className="brief-grid brief-contact-grid">
                 <label className="brief-field">
                   <span className="brief-label">Your name</span>
                   <input
                     type="text"
                     autoComplete="name"
                     value={values.name}
-                    onChange={(e) => set({ name: e.target.value })}
+                    onChange={(event) => set({ name: event.target.value })}
                     placeholder="e.g. Ahmed"
+                    enterKeyHint="next"
+                    aria-invalid={Boolean(error && !values.name.trim())}
+                    aria-describedby={error ? "brief-error" : undefined}
                   />
                 </label>
                 <label className="brief-field">
@@ -454,35 +756,25 @@ export function BriefRoom() {
                     type="text"
                     autoComplete="organization"
                     value={values.business}
-                    onChange={(e) => set({ business: e.target.value })}
+                    onChange={(event) => set({ business: event.target.value })}
                     placeholder="e.g. Al-Noor Furniture"
-                  />
-                </label>
-              </div>
-            )}
-
-            {step === "reach" && (
-              <div className="brief-grid">
-                <label className="brief-field">
-                  <span className="brief-label">
-                    Your website <span className="brief-optional">or leave blank</span>
-                  </span>
-                  <input
-                    type="url"
-                    autoComplete="url"
-                    value={values.url}
-                    onChange={(e) => set({ url: e.target.value })}
-                    placeholder="yoursite.pk"
+                    enterKeyHint="next"
+                    aria-invalid={Boolean(error && !values.business.trim())}
+                    aria-describedby={error ? "brief-error" : undefined}
                   />
                 </label>
                 <label className="brief-field">
                   <span className="brief-label">WhatsApp</span>
                   <input
                     type="tel"
+                    inputMode="tel"
                     autoComplete="tel"
                     value={values.whatsapp}
-                    onChange={(e) => set({ whatsapp: e.target.value })}
+                    onChange={(event) => set({ whatsapp: event.target.value })}
                     placeholder="0300 1234567"
+                    enterKeyHint="send"
+                    aria-invalid={invalidWhatsapp}
+                    aria-describedby={error ? "brief-error" : undefined}
                   />
                 </label>
               </div>
@@ -490,64 +782,59 @@ export function BriefRoom() {
           </div>
 
           {error ? (
-            <p className="brief-error" role="alert">
+            <p className="brief-error" id="brief-error" role="alert">
               {error}
             </p>
           ) : null}
 
           <div className="brief-actions">
-            {index > 0 ? (
-              <button type="button" className="btn btn-ghost brief-back" onClick={back}>
-                <ArrowLeftIcon size={14} /> Back
-              </button>
-            ) : (
-              <span className="brief-note">Takes about 90 seconds.</span>
-            )}
+            <button
+              type="button"
+              className="btn btn-ghost brief-back"
+              onClick={back}
+              aria-label={index === 0 ? "Back to the brief welcome screen" : "Back to the previous question"}
+            >
+              <ArrowLeftIcon size={17} /> <span>{index === 0 ? "Back to start" : "Back"}</span>
+            </button>
 
-            {optional ? (
-              <button type="button" className="btn btn-ghost" onClick={advance}>
-                Skip
-              </button>
-            ) : null}
-
-            {step === "reach" ? (
-              <button
-                type="submit"
-                className="btn btn-primary brief-next"
-                disabled={status === "sending"}
-              >
+            {step === "contact" ? (
+              <button type="submit" className="btn btn-primary brief-next" disabled={status === "sending"}>
                 {status === "sending" ? (
                   <>
                     <SpinnerIcon size={15} /> Opening WhatsApp…
                   </>
                 ) : (
                   <>
-                    <WhatsAppIcon size={15} /> Send the brief
+                    <WhatsAppIcon size={15} /> {primaryLabel}
                   </>
                 )}
               </button>
             ) : (
               <button type="submit" className="btn btn-primary brief-next">
-                {step === "quote" ? "Continue" : "Next"} <ArrowRightIcon size={14} />
+                {primaryLabel} <ProceedIcon size={17} />
               </button>
             )}
+
+            <span className="brief-keyhint" aria-hidden="true">
+              {choiceStep ? (
+                <>
+                  {`A–${letterFor(activeChoices.length - 1)} to select`}
+                  <span className="brief-keyhint-sep"> · </span>
+                </>
+              ) : null}
+              <kbd>Ctrl + Enter</kbd>
+            </span>
           </div>
         </form>
+      </>
+    );
+  }
 
-        <footer className="brief-foot">
-          <p>
-            Nothing is stored on a server — there isn't one. Your answers live in
-            this tab until you send them, and they leave as one WhatsApp message.
-          </p>
-          <a
-            className="brief-hello"
-            href={waLink("Hello Zarrar — I came from the site. I'd rather talk than fill the brief.")}
-            target="_blank"
-            rel="noopener"
-          >
-            <WhatsAppIcon size={14} /> Or just say hello
-          </a>
-        </footer>
+  return (
+    <section className="brief-room" id="brief-room">
+      <div className="brief-shell">
+        <BriefExit />
+        {content}
       </div>
     </section>
   );

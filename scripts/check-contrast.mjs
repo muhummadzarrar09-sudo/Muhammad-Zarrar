@@ -2,9 +2,20 @@
  * WCAG contrast gate for the Zarrar.Solutions palette.
  * Run: node scripts/check-contrast.mjs   (exits 1 on any failure)
  *
- * Every foreground/background pair the UI can actually produce is listed
- * here. Tokens are mirrored from src/app/globals.css :root — if you change a
- * token there, change it here and re-run.
+ * Tokens are mirrored from src/app/globals.css :root — the PUTTY GALLERY
+ * palette (cream paper, soft ink, one clay accent). This file used to mirror
+ * the superseded putty/#c4c3b6 scheme, so it was passing colours the site no
+ * longer shipped. If a token changes in globals.css, change it here and rerun.
+ *
+ * Tiers are the tier each pair is actually used at:
+ *   AAA 7    body and reading copy on paper
+ *   AA  4.5  large text, small caps, placeholders, secondary footer copy
+ *   LG  3    non-text UI (borders, input edges, markers)
+ *   DEC 1.2  purely decorative rules — sanity floor only
+ *
+ * --copper (#e7925e) is deliberately absent: at 1.93:1 on paper it is a
+ * decorative wash, never text. The footer hover that used it now uses
+ * --gold-deep.
  */
 
 const hex = (h) => {
@@ -26,83 +37,76 @@ const ratio = (a, b) => {
 const over = (f, a, b) => f.map((c, i) => c * a + b[i] * (1 - a));
 
 const T = {
-  canvas: hex("#c4c3b6"),
-  ground850: hex("#d4d2c6"),
-  ground900: hex("#b8b7aa"),
-  aura: hex("#dfdcd5"),
-  bone: hex("#e7e5e4"),
-  chalk: hex("#ebebeb"),
-  ink: hex("#111110"),
-  text: hex("#111110"),
-  text2: hex("#2a2926"),
-  text3: hex("#33322e"),
-  e400: hex("#3f3e3b"), // graphite ramp — big display numerals (large text tier)
-  e500: hex("#111110"),
-  e550: hex("#000000"),
-  e600: hex("#000000"),
-  onAccent: hex("#ffffff"),
-  gold: hex("#7a2e18"),
-  goldDeep: hex("#571f0c"),
-  rust: hex("#a84424"),
+  /* grounds */
+  canvas: hex("#f3e4c7"), // --ground-700
+  ground750: hex("#f7e7d3"), // --ground-750 raised card
+  ground800: hex("#f0ccb7"), // --ground-800 inset well / aura
+  ground850: hex("#e8b49d"), // --ground-850 mobile sheet
+  ground900: hex("#d8b89a"), // --ground-900 footer
+  ground400: hex("#fff7ee"), // --ground-400 brightest paper
+  /* ink */
+  text: hex("#1a1412"), // --text
+  text2: hex("#5a3328"), // --text-2
+  text3: hex("#8a4733"), // --text-3
+  /* clay */
+  gold: hex("#a3492f"), // --gold
+  goldDeep: hex("#723021"), // --gold-deep
+  /* semantic */
   danger: hex("#8b1e1e"),
   success: hex("#14532d"),
   warning: hex("#713f12"),
   info: hex("#1e3a8a"),
+  white: hex("#ffffff"),
+  cream: hex("#f3e4c7"), // --accent-on-ink
 };
 
-const AAA = 7;    // body/reading text — WCAG AAA
-const AA = 4.5;   // LARGE text (>=24px or >=18.66px bold) — this IS AAA for large
-const LG = 3;     // UI components / non-text — 3:1 (unchanged by AAA)
-const DEC = 1.2;  // purely decorative rules — no minimum, sanity floor only
+const AAA = 7;
+const AA = 4.5;
+const LG = 3;
+const DEC = 1.2;
 
 const CASES = [
+  /* ---- paper ---- */
   ["--text on --canvas", T.text, T.canvas, AAA],
   ["--text-2 on --canvas", T.text2, T.canvas, AAA],
-  ["--text-3 (placeholder) on --canvas", T.text3, T.canvas, AAA],
-  ["--accent on --canvas", T.e500, T.canvas, AAA],
-  ["--accent-2 on --canvas", T.e400, T.canvas, AA],
-  [".idx-no graphite on --canvas", T.e400, T.canvas, AA],
-  [".ph-no graphite on --canvas", T.e400, T.canvas, AA],
-  [".finding-line --text-2 on --canvas", T.text2, T.canvas, AAA],
-  ["--gold rust on --canvas (logo graphic, scan ticks/needle — UI/large tier)", T.gold, T.canvas, AA],
-  ["--gold-deep ACTIVE ordinal on --canvas (16.8px italic TEXT — AAA)", T.goldDeep, T.canvas, AAA],
+  ["--text-3 placeholders / micro-labels on --canvas", T.text3, T.canvas, AA],
+  ["--gold rules + large display accents on --canvas", T.gold, T.canvas, AA],
+  ["--gold-deep small caps on --canvas", T.goldDeep, T.canvas, AAA],
 
-  ["--text on --aura (vellum)", T.text, T.aura, AAA],
-  ["--text-2 on --aura", T.text2, T.aura, AAA],
-  ["--accent on --aura", T.e500, T.aura, AAA],
-  ["--text on --bone room", T.text, T.bone, AAA],
-  ["--text-2 on --bone room", T.text2, T.bone, AAA],
-  [".idx-mark --danger on --bone", T.danger, T.bone, AA],
+  /* ---- raised + inset ---- */
+  ["--text on --ground-750 (raised card)", T.text, T.ground750, AAA],
+  ["--text-2 on --ground-750", T.text2, T.ground750, AAA],
+  ["--text on --ground-400 (bleached paper)", T.text, T.ground400, AAA],
+  ["--text-2 on --ground-400", T.text2, T.ground400, AAA],
+  ["--text on --ground-800 (inset well)", T.text, T.ground800, AAA],
+  ["--text-2 on --ground-800", T.text2, T.ground800, AA],
+  ["--text-3 on --ground-800", T.text3, T.ground800, AA],
+  ["--gold-deep on --ground-800", T.goldDeep, T.ground800, AA],
 
+  /* ---- footer + mobile sheet ---- */
   ["--text on footer --ground-900", T.text, T.ground900, AAA],
-  ["--text-2 on footer --ground-900", T.text2, T.ground900, AAA],
-  ["--text-2 footer-bottom-note on --ground-900", T.text2, T.ground900, AAA],
-  ["--text on mobile panel --ground-850", T.text, T.ground850, AAA],
-  ["--text-2 on mobile panel --ground-850", T.text2, T.ground850, AAA],
-  ["--text on chalk footer", T.text, T.chalk, AAA],
-  ["--text-2 on chalk footer", T.text2, T.chalk, AAA],
+  ["--text-2 on footer --ground-900", T.text2, T.ground900, AA],
+  ["--gold-deep footer link hover", T.goldDeep, T.ground900, AA],
+  ["--text on mobile sheet --ground-850", T.text, T.ground850, AAA],
+  ["--text-2 on mobile sheet --ground-850", T.text2, T.ground850, AA],
 
+  /* ---- semantic ---- */
   ["--danger on --canvas", T.danger, T.canvas, AA],
   ["--success on --canvas", T.success, T.canvas, AA],
   ["--warning on --canvas", T.warning, T.canvas, AA],
   ["--info on --canvas", T.info, T.canvas, AA],
 
-  [".btn-primary label (default)", T.onAccent, T.e500, AA],
-  [".btn-primary label (hover)", T.onAccent, T.e600, AA],
-  [".btn-primary label (active)", T.onAccent, T.e550, AA],
-  [".btn-light label", T.ink, T.onAccent, AA],
-  [".btn-ghost label on --canvas", T.text, T.canvas, AA],
-  [".cta-full heading on ink", T.onAccent, T.e550, AA],
+  /* ---- buttons ---- */
+  [".btn-primary label on --gold", T.white, T.gold, AA],
+  [".btn-primary hover label on --gold-deep", T.white, T.goldDeep, AA],
+  ["ink button label (--accent-on-ink on --text)", T.cream, T.text, AAA],
 
-  ["--hairline-strong (inputs, ghost btn, toggle)", over(T.text, 0.52, T.canvas), T.canvas, LG],
-  [".tl-marker border --hairline-strong", over(T.text, 0.52, T.canvas), T.canvas, LG],
-  [".status-code border --danger", T.danger, T.canvas, LG],
-  [".why-check border --danger", T.danger, T.canvas, LG],
-  ["LogoMark Z rust on --canvas (large graphic)", T.rust, T.canvas, LG],
-  ["LogoMark clay rust token on --canvas", T.gold, T.canvas, AA],
-
-  ["--hairline (card frames, decorative)", over(T.text, 0.12, T.canvas), T.canvas, DEC],
-  ["--hairline-soft (section rules, decorative)", over(T.text, 0.10, T.canvas), T.canvas, DEC],
+  /* ---- non-text UI ---- */
+  ["--hairline-strong (inputs, ghost button, toggle)", over(T.text, 0.48, T.canvas), T.canvas, LG],
+  ["--gold focus ring on --canvas", T.gold, T.canvas, LG],
+  ["--danger border on --canvas", T.danger, T.canvas, LG],
+  ["--hairline (card frames, decorative)", over(T.text, 0.14, T.canvas), T.canvas, DEC],
+  ["--hairline-soft (section rules, decorative)", over(T.text, 0.1, T.canvas), T.canvas, DEC],
 ];
 
 let failed = 0;

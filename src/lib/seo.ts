@@ -1,6 +1,23 @@
 import type { Metadata } from "next";
 import { SITE_NAME, SITE_URL } from "./site";
 
+const BRAND_SUFFIX = ` \u00b7 ${SITE_NAME}`;
+
+/** Google clips titles near 60 characters. Keep the brand only when it fits;
+ *  a clipped brand is worse than no brand, and the domain already carries it. */
+const withBrand = (title: string) =>
+  title.length + BRAND_SUFFIX.length <= 60 ? `${title}${BRAND_SUFFIX}` : title;
+
+const MAX_DESCRIPTION = 158;
+
+/** Google clips a description around 155–160 characters. Trim at a word
+ *  boundary rather than letting the snippet cut mid-word. */
+const clampDescription = (text: string) => {
+  if (text.length <= MAX_DESCRIPTION) return text;
+  const cut = text.slice(0, MAX_DESCRIPTION - 1);
+  return `${cut.slice(0, cut.lastIndexOf(" ")).replace(/[,;:—-]$/, "")}…`;
+};
+
 type PageMeta = {
   title: string;
   description: string;
@@ -17,38 +34,106 @@ export function pageMeta({
   ogImage = "/og.png",
 }: PageMeta): Metadata {
   const url = `${SITE_URL}${path}`;
+  const fullTitle = withBrand(title);
+  const finalDescription = clampDescription(description);
   return {
-    title,
-    description,
-    alternates: { canonical: url },
+    title: fullTitle,
+    description: finalDescription,
+    alternates: {
+      canonical: url,
+      /* The feed is advertised in the head of every page, not just /notes,
+         so feed readers and crawlers can find it from anywhere. */
+      types: {
+        "application/rss+xml": [
+          { url: `${SITE_URL}/feed.xml`, title: `${SITE_NAME} — Field Notes` },
+        ],
+      },
+    },
     openGraph: {
       type: "website",
       url,
       siteName: SITE_NAME,
       locale: "en_US",
-      title,
-      description,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+      title: fullTitle,
+      description: finalDescription,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: fullTitle }],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: fullTitle,
       description,
       images: [ogImage],
     },
   };
 }
 
-/** JSON-LD BreadcrumbList for subpages. */
-export function breadcrumbLd(items: { name: string; path: string }[]) {
+/**
+ * When the published content was last checked. Every evergreen page carries
+ * this date on its WebPage node — answer engines discount undated prices, and
+ * an undated page is indistinguishable from an abandoned one.
+ */
+export const CONTENT_UPDATED = "2026-11-10";
+
+type PageLdOptions = {
+  /** ISO date; defaults to CONTENT_UPDATED. Notes and guides pass their own. */
+  updated?: string;
+  /** extra schema.org type for the page node, e.g. "AboutPage" */
+  type?: string;
+  /** CSS selectors an assistant may read aloud (speakable spec) */
+  speakable?: string[];
+};
+
+/**
+ * The per-page JSON-LD graph: a dated WebPage + its BreadcrumbList.
+ *
+ * The last breadcrumb is the page itself, so the trail doubles as the
+ * canonical path — one argument, both nodes, and no chance of the breadcrumb
+ * and the WebPage disagreeing about where they are.
+ */
+export function pageLd(
+  items: { name: string; path: string }[],
+  { updated = CONTENT_UPDATED, type = "WebPage", speakable }: PageLdOptions = {},
+) {
+  const self = items[items.length - 1];
+  const url = `${SITE_URL}${self.path}`;
+  const hasTrail = items.length > 1;
+
   return {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: item.name,
-      item: `${SITE_URL}${item.path}`,
-    })),
+    "@graph": [
+      {
+        "@type": type,
+        "@id": `${url}#webpage`,
+        url,
+        name: self.name,
+        inLanguage: "en",
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        publisher: { "@id": `${SITE_URL}/#org` },
+        dateModified: updated,
+        ...(hasTrail ? { breadcrumb: { "@id": `${url}#breadcrumb` } } : {}),
+        ...(speakable
+          ? {
+              speakable: {
+                "@type": "SpeakableSpecification",
+                cssSelector: speakable,
+              },
+            }
+          : {}),
+      },
+      ...(hasTrail
+        ? [
+            {
+              "@type": "BreadcrumbList",
+              "@id": `${url}#breadcrumb`,
+              itemListElement: items.map((item, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                name: item.name,
+                item: `${SITE_URL}${item.path}`,
+              })),
+            },
+          ]
+        : []),
+    ],
   };
 }

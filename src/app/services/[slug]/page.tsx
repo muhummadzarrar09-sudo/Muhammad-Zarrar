@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
-import { pageMeta, breadcrumbLd } from "@/lib/seo";
+import { pageMeta, pageLd } from "@/lib/seo";
 import { SERVICES, getService } from "@/content/services";
 import { FaqAccordion } from "@/components/faq";
 import { JsonLd } from "@/components/jsonld";
@@ -55,8 +55,10 @@ export default async function ServiceDetailPage({
     serviceType: service.name,
     areaServed: ["Islamabad", "Rawalpindi", "Pakistan"],
     provider: { "@id": `${SITE_URL}/#org` },
+    hasOfferCatalog: { "@id": `${SITE_URL}/pricing#catalog` },
     offers: {
       "@type": "Offer",
+      url: `${SITE_URL}/services/${service.slug}`,
       priceCurrency: "PKR",
       ...(service.offer.price !== undefined
         ? { price: service.offer.price }
@@ -88,7 +90,7 @@ export default async function ServiceDetailPage({
       <JsonLd data={serviceSchema} />
       <JsonLd data={faqSchema} />
       <JsonLd
-        data={breadcrumbLd([
+        data={pageLd([
           { name: "Home", path: "/" },
           { name: "Services", path: "/services" },
           { name: service.name, path: `/services/${service.slug}` },
@@ -173,6 +175,13 @@ export default async function ServiceDetailPage({
               <p className="price-note">
                 Exact written quote after the audit — no surprises, no
                 &ldquo;contact us for pricing&rdquo;.
+              </p>
+              <p className="price-card-more">
+                <Link href="/pricing">Every published price</Link>
+                <span aria-hidden="true"> · </span>
+                <Link href="/guides/website-cost-pakistan">
+                  what the market charges
+                </Link>
               </p>
               <Link href="/free-audit" className="btn btn-primary btn-block">
                 Start with the audit
