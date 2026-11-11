@@ -12032,3 +12032,359 @@ body.brief-flow > .scroll-timeline,
 body.brief-flow > .route-progress {
   display: none !important;
 }
+
+/* ---- Brief selection controls: choose deliberately, then confirm -------- */
+
+.brief-selection-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 11px;
+  color: var(--text-2);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.brief-selection-note svg {
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+
+.brief-selection-note kbd {
+  padding: 1px 5px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 3px;
+  color: var(--text-2);
+  background: var(--surface-2);
+  font-family: var(--font-body);
+  font-size: 0.67rem;
+  font-weight: 650;
+}
+
+/* Real buttons, not decorative cards. A selected state stays visible until
+   the visitor explicitly chooses Okay, so several answers can be collected. */
+.brief-multi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  max-width: none;
+}
+
+.brief-multi-grid .q-chip,
+.brief-site-options .q-chip {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 54px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  line-height: 1.28;
+}
+
+.brief-chip-label {
+  flex: 1 1 auto;
+}
+
+.brief-chip-state {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  margin-left: auto;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.3;
+  transition: opacity var(--dur-2) var(--ease-standard),
+    transform var(--dur-2) var(--ease-standard),
+    background-color var(--dur-2) var(--ease-standard);
+}
+
+.q-chip.is-on .brief-chip-state {
+  border-color: currentColor;
+  background: rgba(255, 255, 255, 0.16);
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+.brief-multi-grid .q-chip:not(.is-on):hover .brief-chip-state,
+.brief-site-options .q-chip:not(.is-on):hover .brief-chip-state {
+  opacity: 0.68;
+}
+
+.brief-site-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 650px;
+}
+
+.brief-site-options .brief-chip-state,
+.brief-budget-unsure .brief-chip-state {
+  order: -1;
+  margin-right: 3px;
+  margin-left: 0;
+}
+
+.brief-site-link {
+  max-width: 610px;
+  margin-top: clamp(14px, 2vh, 20px);
+  margin-bottom: 0;
+}
+
+/* ---- Budget rail ---------------------------------------------------------
+   One range is deliberately a single choice. The line is an orientation
+   device, not a fussy native slider: each marker is a proper radio button. */
+
+.brief-budget {
+  max-width: 760px;
+}
+
+.brief-budget-read {
+  display: block;
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+  font-weight: var(--fw-display);
+  letter-spacing: var(--ls-heading);
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.brief-budget.is-unsure .brief-budget-read {
+  color: var(--text-2);
+  font-style: italic;
+}
+
+.budget-rail {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  margin: 0 0 18px;
+}
+
+.budget-rail::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  right: 10%;
+  left: 10%;
+  z-index: 0;
+  height: 1px;
+  background: var(--hairline-strong);
+}
+
+.budget-rail-option {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 76px;
+  padding: 0 8px 0 0;
+  border: 0;
+  color: var(--text-2);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.budget-rail-option:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 4px;
+  border-radius: var(--r-sm);
+}
+
+.budget-rail-dot {
+  width: 19px;
+  height: 19px;
+  margin-bottom: 9px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 50%;
+  background: var(--ground-700);
+  box-shadow: 0 0 0 3px var(--ground-700);
+  transition: background-color var(--dur-2) var(--ease-standard),
+    border-color var(--dur-2) var(--ease-standard), transform var(--dur-2) var(--ease-standard);
+}
+
+.budget-rail-option:hover .budget-rail-dot {
+  border-color: var(--accent);
+  transform: scale(1.1);
+}
+
+.budget-rail-option.is-on {
+  color: var(--text);
+}
+
+.budget-rail-option.is-on .budget-rail-dot {
+  border: 5px solid var(--accent);
+  background: var(--ground-700);
+  transform: scale(1.13);
+}
+
+.budget-rail-number {
+  margin-bottom: 3px;
+  color: var(--text-3);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.budget-rail-option.is-on .budget-rail-number {
+  color: var(--accent-deep);
+}
+
+.budget-rail-label {
+  max-width: 10ch;
+  font-size: 0.79rem;
+  font-weight: 600;
+  line-height: 1.28;
+}
+
+.brief-budget-unsure {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  border-radius: 999px;
+}
+
+/* ---- Explicit actions and wayfinding ----------------------------------- */
+
+.brief-actions {
+  justify-content: flex-start;
+}
+
+.brief-back {
+  order: 0;
+  min-width: 48px;
+  min-height: 46px;
+  margin-right: 0;
+  padding-inline: 14px;
+  border-radius: 999px;
+}
+
+.brief-back svg {
+  transition: transform var(--dur-2) var(--ease-standard);
+}
+
+.brief-back:hover svg {
+  transform: translateX(-3px);
+}
+
+.brief-next {
+  order: 1;
+  min-height: 48px;
+  padding-inline: clamp(20px, 4vw, 30px);
+}
+
+.brief-next svg {
+  flex: 0 0 auto;
+}
+
+.brief-keyhint {
+  order: 2;
+  margin-left: auto;
+}
+
+@media (max-width: 760px) {
+  .brief-multi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .brief-multi-grid .q-chip,
+  .brief-site-options .q-chip {
+    min-height: 50px;
+    padding: 8px 9px;
+    font-size: 0.78rem;
+  }
+
+  .brief-site-options {
+    grid-template-columns: 1fr;
+  }
+
+  .brief-chip-state {
+    width: 18px;
+    height: 18px;
+  }
+
+  .budget-rail {
+    margin-right: -2px;
+    margin-left: -2px;
+  }
+
+  .budget-rail-option {
+    min-height: 74px;
+    padding-right: 4px;
+  }
+
+  .budget-rail-label {
+    max-width: 8ch;
+    font-size: 0.68rem;
+  }
+
+  .budget-rail-number {
+    font-size: 0.58rem;
+  }
+
+  .brief-actions {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .brief-actions .brief-back {
+    grid-column: 1;
+    width: 46px;
+    min-width: 46px;
+    padding: 0;
+  }
+
+  .brief-back span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+  }
+
+  .brief-actions .brief-next {
+    grid-column: 2;
+    width: 100%;
+    padding-inline: 15px;
+  }
+}
+
+@media (max-height: 640px) {
+  .brief-selection-note {
+    margin-bottom: 7px;
+    font-size: 0.72rem;
+  }
+
+  .brief-multi-grid .q-chip {
+    min-height: 46px;
+  }
+
+  .brief-budget-read {
+    margin-bottom: 10px;
+    font-size: 1.15rem;
+  }
+
+  .budget-rail-option {
+    min-height: 62px;
+  }
+
+  .budget-rail-label {
+    font-size: 0.7rem;
+  }
+}

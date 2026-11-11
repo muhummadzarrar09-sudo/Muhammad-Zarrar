@@ -14,31 +14,18 @@ export type BudgetOption = {
   max: number;
 };
 
+/**
+ * Every question earns a practical piece of scope. The option questions are
+ * intentionally checklists: a business can need a catalogue and bookings, or
+ * a redesign plus a dashboard. The budget remains one range by definition.
+ */
 export const NEEDS: NeedOption[] = [
-  {
-    id: "audit",
-    label: "Fix or improve an existing website",
-  },
-  {
-    id: "redesign",
-    label: "Build a new business website",
-  },
-  {
-    id: "retail",
-    label: "Create an online catalogue or shop",
-  },
-  {
-    id: "booking",
-    label: "Set up appointments or bookings",
-  },
-  {
-    id: "dashboard",
-    label: "Build an internal tool or dashboard",
-  },
-  {
-    id: "unsure",
-    label: "Not sure — I need a recommendation",
-  },
+  { id: "audit", label: "Fix or improve an existing website" },
+  { id: "redesign", label: "Build a new business website" },
+  { id: "retail", label: "Create an online catalogue or shop" },
+  { id: "booking", label: "Set up appointments or bookings" },
+  { id: "dashboard", label: "Build an internal tool or dashboard" },
+  { id: "unsure", label: "Not sure — I need a recommendation" },
 ];
 
 export const GOALS: BriefChoice[] = [
@@ -58,11 +45,14 @@ export const SCOPES: BriefChoice[] = [
   { id: "custom", label: "A custom system with more moving parts" },
 ];
 
+/** These are individual materials, not a vague readiness score, so selecting
+ * several is both useful and expected. */
 export const READINESS: BriefChoice[] = [
-  { id: "ready", label: "Brand, copy and images are ready" },
-  { id: "some", label: "Some material is ready; we need help filling gaps" },
-  { id: "copy", label: "We need help with copy, structure or both" },
-  { id: "start", label: "We are starting with almost nothing" },
+  { id: "brand", label: "A logo or visual identity" },
+  { id: "copy", label: "Service copy or product descriptions" },
+  { id: "images", label: "Photos, product images or video" },
+  { id: "prices", label: "A service or product list with prices" },
+  { id: "nothing", label: "Nothing is ready yet" },
 ];
 
 export const BUDGETS: BudgetOption[] = [
@@ -74,11 +64,11 @@ export const BUDGETS: BudgetOption[] = [
   { id: "unsure", label: "I don't know yet", min: 0, max: 0 },
 ];
 
-export const TIMELINES = [
-  "Within the next two weeks",
-  "This month",
-  "Within the next three months",
-  "No fixed date yet",
+export const TIMELINES: BriefChoice[] = [
+  { id: "two-weeks", label: "Within the next two weeks" },
+  { id: "this-month", label: "This month" },
+  { id: "three-months", label: "Within the next three months" },
+  { id: "no-date", label: "No fixed date yet" },
 ];
 
 export const OUTCOMES = [
@@ -166,33 +156,40 @@ export const NEXT_STEPS = [
 export type BriefValues = {
   name: string;
   business: string;
+  /** `existing` requires a URL. `new` sends a clear starting-from-scratch note. */
+  siteState: "" | "existing" | "new";
   url: string;
   whatsapp: string;
-  needId: string;
-  goalId: string;
-  scopeId: string;
-  readinessId: string;
+  needIds: string[];
+  goalIds: string[];
+  scopeIds: string[];
+  readinessIds: string[];
+  timelineIds: string[];
   budgetId: string;
-  when: string;
 };
 
+function selectedLabels(items: BriefChoice[], ids: string[]) {
+  return items
+    .filter((item) => ids.includes(item.id))
+    .map((item) => item.label)
+    .join("; ");
+}
+
 export function composeBrief(values: BriefValues) {
-  const need = NEEDS.find((item) => item.id === values.needId);
-  const goal = GOALS.find((item) => item.id === values.goalId);
-  const scope = SCOPES.find((item) => item.id === values.scopeId);
-  const readiness = READINESS.find((item) => item.id === values.readinessId);
   const budget = BUDGETS.find((item) => item.id === values.budgetId);
 
   return [
     `Hello Zarrar — ${values.name.trim()} from ${values.business.trim()} filled the project brief.`,
     ``,
     `WhatsApp: ${values.whatsapp.trim()}`,
-    `Current website / Instagram: ${values.url.trim() || "Starting from scratch"}`,
-    `Project: ${need?.label ?? "—"}`,
-    `Customer outcome: ${goal?.label ?? "—"}`,
-    `Likely scope: ${scope?.label ?? "—"}`,
-    `Material readiness: ${readiness?.label ?? "—"}`,
-    `Target launch: ${values.when || "—"}`,
+    `Current website / Instagram: ${
+      values.siteState === "new" ? "Starting from scratch" : values.url.trim() || "—"
+    }`,
+    `Projects selected: ${selectedLabels(NEEDS, values.needIds) || "—"}`,
+    `Customer outcomes selected: ${selectedLabels(GOALS, values.goalIds) || "—"}`,
+    `Likely scope selected: ${selectedLabels(SCOPES, values.scopeIds) || "—"}`,
+    `Materials ready: ${selectedLabels(READINESS, values.readinessIds) || "—"}`,
+    `Target launch: ${selectedLabels(TIMELINES, values.timelineIds) || "—"}`,
     `Approved budget: ${budget?.label ?? "Not confirmed yet"}`,
   ].join("\n");
 }

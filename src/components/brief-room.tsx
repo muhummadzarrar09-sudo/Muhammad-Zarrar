@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { waLink } from "@/lib/site";
 import {
   BUDGETS,
@@ -11,12 +11,13 @@ import {
   SCOPES,
   TIMELINES,
   composeBrief,
+  type BriefChoice,
   type BriefValues,
 } from "@/content/qualify";
 import {
   ArrowLeftIcon,
-  ArrowRightIcon,
   CheckIcon,
+  ProceedIcon,
   SpinnerIcon,
   WhatsAppIcon,
 } from "./icons";
@@ -24,13 +25,11 @@ import {
 /**
  * A fixed-viewport project brief.
  *
- * This deliberately is not a landing page with a form at the end. There is no
- * site header, footer, scroll, network submit or third-party embed: one useful
- * project question fills the screen, then the answers are handed to WhatsApp
- * as a single prepared message.
- *
- * Drafts only survive in this browser tab. On a shared phone, closing the tab
- * is enough to clear them.
+ * This is not a page with a form at the end. It is a calm, no-scroll room:
+ * each screen collects one useful project fact, the visitor explicitly says
+ * Okay when they are ready, and the result becomes one prepared WhatsApp
+ * message. Checklist questions deliberately support several answers — most
+ * real projects do not fit a single neat category.
  */
 
 const STORE_KEY = "zs-brief-draft";
@@ -49,57 +48,60 @@ const STEPS = [
 ] as const;
 type Step = (typeof STEPS)[number];
 type ChoiceStep = Extract<Step, "project" | "goal" | "scope" | "readiness" | "timeline">;
+type MultiField = "needIds" | "goalIds" | "scopeIds" | "readinessIds" | "timelineIds";
+type SiteState = BriefValues["siteState"];
 
-type Choice = { id: string; label: string };
+type LegacyDraft = Record<string, unknown>;
 
 const empty: BriefValues = {
   name: "",
   business: "",
+  siteState: "",
   url: "",
   whatsapp: "",
-  needId: "",
-  goalId: "",
-  scopeId: "",
-  readinessId: "",
+  needIds: [],
+  goalIds: [],
+  scopeIds: [],
+  readinessIds: [],
+  timelineIds: [],
   budgetId: "",
-  when: "",
 };
 
 const COPY: Record<Step, { kicker: string; question: string; hint: string }> = {
   project: {
     kicker: "01 · Project",
     question: "What would you like us to work on?",
-    hint: "Choose the closest project type. It tells us what to inspect before we reply.",
+    hint: "Select every project type that applies. Most businesses need more than one thing to work together.",
   },
   website: {
     kicker: "02 · Starting point",
     question: "Where can we see what exists today?",
-    hint: "Share the current site or Instagram if there is one. Starting fresh is completely fine.",
+    hint: "Tell us whether there is something to review first. Starting fresh is a valid answer.",
   },
   goal: {
     kicker: "03 · Outcome",
     question: "What should a customer be able to do?",
-    hint: "Pick the main action. A good site makes one next step obvious.",
+    hint: "Select every action the finished experience needs to make easy.",
   },
   scope: {
     kicker: "04 · Scope",
     question: "What is the likely size of the job?",
-    hint: "A best estimate is enough. It changes the work, time and price.",
+    hint: "Select the parts that belong in the first release. A best estimate is enough.",
   },
   readiness: {
     kicker: "05 · Materials",
-    question: "How much is ready to work with?",
-    hint: "Logos, words, product data and photos all change the plan.",
+    question: "What is ready to work with?",
+    hint: "Select every asset you already have. This tells us what needs to be created or organised.",
   },
   timeline: {
     kicker: "06 · Deadline",
-    question: "When does it need to be live?",
-    hint: "A real deadline helps us say whether we can meet it before anyone wastes time.",
+    question: "What timing applies to this project?",
+    hint: "Select every true constraint. “No fixed date” stays separate from a deadline.",
   },
   budget: {
     kicker: "07 · Budget",
     question: "What budget is approved for this project?",
-    hint: "A range is enough. We will recommend work that can actually be delivered inside it.",
+    hint: "Choose one range. The quiet range rail makes the choice clear without pretending it is a precise quote.",
   },
   contact: {
     kicker: "08 · Reply",
@@ -110,25 +112,40 @@ const COPY: Record<Step, { kicker: string; question: string; hint: string }> = {
 
 const letterFor = (index: number) => String.fromCharCode(65 + index);
 
-function choicesFor(step: ChoiceStep): Choice[] {
+const MULTI_FIELD: Record<ChoiceStep, MultiField> = {
+  project: "needIds",
+  goal: "goalIds",
+  scope: "scopeIds",
+  readiness: "readinessIds",
+  timeline: "timelineIds",
+};
+
+function choicesFor(step: ChoiceStep): BriefChoice[] {
   if (step === "project") return NEEDS;
   if (step === "goal") return GOALS;
   if (step === "scope") return SCOPES;
   if (step === "readiness") return READINESS;
-  return TIMELINES.map((label) => ({ id: label, label }));
+  return TIMELINES;
+}
+
+function selectedLabels(items: BriefChoice[], ids: string[]) {
+  return items
+    .filter((item) => ids.includes(item.id))
+    .map((item) => item.label)
+    .join(", ");
 }
 
 function recapRows(values: BriefValues) {
-  const project = NEEDS.find((item) => item.id === values.needId)?.label;
-  const goal = GOALS.find((item) => item.id === values.goalId)?.label;
-  const scope = SCOPES.find((item) => item.id === values.scopeId)?.label;
+  const project = selectedLabels(NEEDS, values.needIds);
+  const goal = selectedLabels(GOALS, values.goalIds);
+  const scope = selectedLabels(SCOPES, values.scopeIds);
   const budget = BUDGETS.find((item) => item.id === values.budgetId)?.label;
 
   return [
     { label: "Project", value: project },
     { label: "Main outcome", value: goal },
     { label: "Scope", value: scope },
-    { label: "Budget", value: values.budgetId === UNSURE_ID ? "Not sure yet" : budget },
+    { label: "Budget", value: values.budgetId === UNSURE_ID ? "Not confirmed yet" : budget },
   ].filter((row): row is { label: string; value: string } => Boolean(row.value));
 }
 
@@ -146,6 +163,48 @@ function BriefExit() {
   );
 }
 
+function MultiOptionGrid({
+  label,
+  options,
+  selected,
+  onToggle,
+}: {
+  label: string;
+  options: BriefChoice[];
+  selected: string[];
+  onToggle: (id: string) => void;
+}) {
+  return (
+    <>
+      <p className="brief-selection-note" id={`${label}-help`}>
+        <CheckIcon size={15} /> Select all that apply. Press <kbd>Okay</kbd> when you&rsquo;re done.
+      </p>
+      <div className="brief-chips brief-multi-grid" role="group" aria-label={label} aria-describedby={`${label}-help`}>
+        {options.map((item, itemIndex) => {
+          const chosen = selected.includes(item.id);
+          return (
+            <button
+              key={item.id}
+              type="button"
+              className={`q-chip ${chosen ? "is-on" : ""}`}
+              aria-pressed={chosen}
+              onClick={() => onToggle(item.id)}
+            >
+              <span className="brief-chip-key" aria-hidden="true">
+                {letterFor(itemIndex)}
+              </span>
+              <span className="brief-chip-label">{item.label}</span>
+              <span className="brief-chip-state" aria-hidden="true">
+                <CheckIcon size={13} />
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
 export function BriefRoom() {
   const [step, setStep] = useState<Step>("project");
   const [values, setValues] = useState<BriefValues>(empty);
@@ -153,14 +212,8 @@ export function BriefRoom() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [started, setStarted] = useState(false);
   const [resumed, setResumed] = useState(false);
-  const [pos, setPos] = useState(2);
 
-  const sliderRef = useRef<HTMLInputElement>(null);
-  const readRef = useRef<HTMLOutputElement>(null);
   const stageRef = useRef<HTMLFormElement>(null);
-  const autoAdvance = useRef<number>(0);
-  const spring = useRef({ cur: 50, vel: 0, raf: 0 });
-
   const index = STEPS.indexOf(step);
   const unsure = values.budgetId === UNSURE_ID;
   const copy = COPY[step];
@@ -170,6 +223,8 @@ export function BriefRoom() {
     ? (step as ChoiceStep)
     : null;
   const activeChoices = choiceStep ? choicesFor(choiceStep) : [];
+  const activeField = choiceStep ? MULTI_FIELD[choiceStep] : null;
+  const activeSelection = activeField ? values[activeField] : [];
 
   const set = useCallback((patch: Partial<BriefValues>) => {
     setValues((current) => ({ ...current, ...patch }));
@@ -177,27 +232,67 @@ export function BriefRoom() {
   }, []);
 
   const go = (next: Step) => {
-    window.clearTimeout(autoAdvance.current);
     setStep(next);
     setError("");
   };
 
   const nextStep = () => STEPS[index + 1];
 
+  const toggleMulti = useCallback((field: MultiField, id: string) => {
+    setValues((current) => {
+      const selected = current[field];
+      const isSelected = selected.includes(id);
+      let next = isSelected ? selected.filter((value) => value !== id) : [...selected, id];
+
+      /* “Not sure” and “No fixed date” are useful, but cannot honestly sit
+         beside a contradictory selection. All normal options remain multi. */
+      if (field === "needIds") {
+        if (id === "unsure") next = isSelected ? [] : ["unsure"];
+        else next = next.filter((value) => value !== "unsure");
+      }
+      if (field === "readinessIds") {
+        if (id === "nothing") next = isSelected ? [] : ["nothing"];
+        else next = next.filter((value) => value !== "nothing");
+      }
+      if (field === "timelineIds") {
+        if (id === "no-date") next = isSelected ? [] : ["no-date"];
+        else next = next.filter((value) => value !== "no-date");
+      }
+
+      return { ...current, [field]: next };
+    });
+    setError("");
+  }, []);
+
+  const setSiteState = (siteState: SiteState) => {
+    set({ siteState, url: siteState === "new" ? "" : values.url });
+    if (siteState === "existing") {
+      window.setTimeout(() => {
+        stageRef.current?.querySelector<HTMLInputElement>('input[type="url"]')?.focus({
+          preventScroll: true,
+        });
+      }, 0);
+    }
+  };
+
   const validate = (): string => {
-    if (step === "project") return values.needId ? "Choose the type of project first." : "";
+    if (step === "project") return values.needIds.length ? "" : "Select at least one project type.";
     if (step === "website") {
-      const url = values.url.trim();
-      if (url && !/^(https?:\/\/)?[\w-]+(\.[\w-]+)+([/?#].*)?$/i.test(url)) {
-        return "Enter a working link, such as yoursite.pk — or leave it blank.";
+      if (!values.siteState) return "Choose whether there is an existing site to review.";
+      if (values.siteState === "existing") {
+        const url = values.url.trim();
+        if (!url) return "Add the current website or Instagram link.";
+        if (!/^(https?:\/\/)?[\w-]+(\.[\w-]+)+([/?#].*)?$/i.test(url)) {
+          return "Enter a working link, such as yoursite.pk.";
+        }
       }
       return "";
     }
-    if (step === "goal") return values.goalId ? "Choose the main customer action." : "";
-    if (step === "scope") return values.scopeId ? "Choose the closest project size." : "";
-    if (step === "readiness") return values.readinessId ? "Choose what is ready so far." : "";
-    if (step === "timeline") return values.when ? "Choose the target launch window." : "";
-    if (step === "budget") return values.budgetId ? "Choose the approved budget range." : "";
+    if (step === "goal") return values.goalIds.length ? "" : "Select at least one customer action.";
+    if (step === "scope") return values.scopeIds.length ? "" : "Select at least one scope item.";
+    if (step === "readiness") return values.readinessIds.length ? "" : "Select what is ready so far.";
+    if (step === "timeline") return values.timelineIds.length ? "" : "Select the timing that applies.";
+    if (step === "budget") return values.budgetId ? "" : "Choose one approved budget range.";
     if (step === "contact") {
       if (!values.name.trim()) return "Add your name so we know who to reply to.";
       if (!values.business.trim()) return "Add the business this project is for.";
@@ -210,10 +305,11 @@ export function BriefRoom() {
   };
 
   const focusNeededAnswer = () => {
-    /* Validation should put the cursor on the one thing that needs fixing,
-       not make someone scan a static screen for the red underline. */
-    let selector = "input:not([type=range]), button.q-chip";
-    if (step === "website") selector = 'input[type="url"]';
+    let selector = "button.q-chip";
+    if (step === "website") {
+      selector = values.siteState === "existing" ? 'input[type="url"]' : ".brief-site-options button";
+    }
+    if (step === "budget") selector = ".budget-rail-option";
     if (step === "contact") {
       selector = !values.name.trim()
         ? 'input[autocomplete="name"]'
@@ -222,8 +318,7 @@ export function BriefRoom() {
           : 'input[type="tel"]';
     }
     window.setTimeout(() => {
-      const field = stageRef.current?.querySelector<HTMLElement>(selector);
-      field?.focus({ preventScroll: true });
+      stageRef.current?.querySelector<HTMLElement>(selector)?.focus({ preventScroll: true });
     }, 0);
   };
 
@@ -241,28 +336,9 @@ export function BriefRoom() {
   const back = () => {
     const previous = STEPS[index - 1];
     if (previous) go(previous);
-  };
-
-  const pickAndAdvance = (patch: Partial<BriefValues>) => {
-    window.clearTimeout(autoAdvance.current);
-    set(patch);
-    const next = nextStep();
-    if (next) autoAdvance.current = window.setTimeout(() => go(next), 280);
-  };
-
-  const pickRange = (rangeIndex: number) => {
-    setPos(rangeIndex);
-    set({ budgetId: RANGES[rangeIndex].id });
-    const read = readRef.current;
-    if (read && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      read.animate(
-        [
-          { transform: "scale(1)" },
-          { transform: "scale(1.045)", offset: 0.35 },
-          { transform: "scale(1)" },
-        ],
-        { duration: 240, easing: "cubic-bezier(0.2, 0.7, 0.3, 1)" },
-      );
+    else {
+      setStarted(false);
+      setError("");
     }
   };
 
@@ -302,19 +378,44 @@ export function BriefRoom() {
     };
   }, []);
 
-  /* Restore one in-tab draft. It is never sent anywhere until the visitor
-     presses the WhatsApp button themselves. */
+  /* Old single-answer drafts are quietly migrated into the new checklist
+     shape. A returning visitor never loses an answer because the form got
+     more capable. */
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem(STORE_KEY);
       if (!raw) return;
-      const saved = JSON.parse(raw) as Partial<BriefValues>;
-      setValues((current) => ({ ...current, ...saved }));
-      if (saved.needId || saved.name || saved.whatsapp) setResumed(true);
-      if (saved.budgetId && saved.budgetId !== UNSURE_ID) {
-        const savedIndex = RANGES.findIndex((item) => item.id === saved.budgetId);
-        if (savedIndex >= 0) setPos(savedIndex);
-      }
+      const saved = JSON.parse(raw) as LegacyDraft;
+      const text = (key: string) => (typeof saved[key] === "string" ? saved[key] : "");
+      const list = (key: string, oldKey: string) => {
+        const value = saved[key];
+        if (Array.isArray(value)) return value.filter((item): item is string => typeof item === "string");
+        const old = text(oldKey);
+        return old ? [old] : [];
+      };
+      const url = text("url");
+      const rawSiteState = text("siteState");
+      const siteState: SiteState =
+        rawSiteState === "existing" || rawSiteState === "new"
+          ? rawSiteState
+          : url
+            ? "existing"
+            : "";
+      const restored: BriefValues = {
+        name: text("name"),
+        business: text("business"),
+        siteState,
+        url,
+        whatsapp: text("whatsapp"),
+        needIds: list("needIds", "needId"),
+        goalIds: list("goalIds", "goalId"),
+        scopeIds: list("scopeIds", "scopeId"),
+        readinessIds: list("readinessIds", "readinessId"),
+        timelineIds: list("timelineIds", "when"),
+        budgetId: text("budgetId"),
+      };
+      setValues(restored);
+      if (restored.needIds.length || restored.name || restored.whatsapp) setResumed(true);
     } catch {
       /* A corrupt draft is less important than a working brief. */
     }
@@ -328,55 +429,18 @@ export function BriefRoom() {
     }
   }, [values]);
 
-  /* The fill has a small spring, but only after the visitor makes a deliberate
-     budget selection. */
-  useEffect(() => {
-    const input = sliderRef.current;
-    if (!input) return;
-    const target = (pos / (RANGES.length - 1)) * 100;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      input.style.setProperty("--fill", `${target}%`);
-      spring.current.cur = target;
-      spring.current.vel = 0;
-      return;
-    }
-
-    const state = spring.current;
-    cancelAnimationFrame(state.raf);
-    let last = performance.now();
-    const tick = (now: number) => {
-      const delta = Math.min(0.05, (now - last) / 1000);
-      last = now;
-      state.vel += ((target - state.cur) * 170 - state.vel * 13) * delta;
-      state.cur += state.vel * delta;
-      input.style.setProperty("--fill", `${state.cur.toFixed(2)}%`);
-      if (Math.abs(target - state.cur) > 0.05 || Math.abs(state.vel) > 0.5) {
-        state.raf = requestAnimationFrame(tick);
-      } else {
-        input.style.setProperty("--fill", `${target}%`);
-        state.cur = target;
-        state.vel = 0;
-      }
-    };
-    state.raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(state.raf);
-  }, [pos]);
-
-  useEffect(() => () => window.clearTimeout(autoAdvance.current), []);
-
   useEffect(() => {
     if (!started || status !== "idle") return;
     const node = stageRef.current?.querySelector<HTMLElement>(
-      "input:not([type=range]), button.q-chip",
+      "input:not([type=range]), button.q-chip, .budget-rail-option",
     );
     if (node && !window.matchMedia("(max-width: 760px)").matches) {
       node.focus({ preventScroll: true });
     }
   }, [started, status, step]);
 
-  /** Keyboard is an accelerator, never a replacement for clicking. Plain
-   * Enter inside an input keeps the browser's normal form behaviour; Cmd/Ctrl
-   * Enter always advances, including from a text field. */
+  /** Keyboard accelerates the same controls: letters/numbers toggle options;
+   * Ctrl/Cmd+Enter confirms; ↑ is the same back action as the visible arrow. */
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (status === "sent" || !started) return;
@@ -403,7 +467,7 @@ export function BriefRoom() {
         advance();
         return;
       }
-      if (!choiceStep) return;
+      if (!choiceStep || !activeField) return;
 
       const key = event.key.toUpperCase();
       const choiceIndex = /^[1-9]$/.test(key)
@@ -415,11 +479,7 @@ export function BriefRoom() {
       if (!choice) return;
 
       event.preventDefault();
-      if (choiceStep === "project") pickAndAdvance({ needId: choice.id });
-      if (choiceStep === "goal") pickAndAdvance({ goalId: choice.id });
-      if (choiceStep === "scope") pickAndAdvance({ scopeId: choice.id });
-      if (choiceStep === "readiness") pickAndAdvance({ readinessId: choice.id });
-      if (choiceStep === "timeline") pickAndAdvance({ when: choice.label });
+      toggleMulti(activeField, choice.id);
     };
 
     window.addEventListener("keydown", onKey);
@@ -431,15 +491,17 @@ export function BriefRoom() {
     : unsure
       ? "Not confirmed yet"
       : BUDGETS.find((item) => item.id === values.budgetId)?.label ?? "Choose the approved range";
-
-  const budgetAria = !values.budgetId
-    ? `No range selected; slider is parked at ${RANGES[pos].label}`
-    : unsure
-      ? "Budget not confirmed yet"
-      : RANGES[pos]?.label ?? "";
   const invalidWhatsapp =
     Boolean(error) &&
     (!values.whatsapp.trim() || !/^[+\d][\d\s\-()]{7,}$/.test(values.whatsapp.trim()));
+  const primaryLabel =
+    step === "contact"
+      ? "Send the brief"
+      : choiceStep
+        ? activeSelection.length
+          ? `Okay · ${activeSelection.length} selected`
+          : "Okay"
+        : "Proceed";
 
   let content: React.ReactNode;
 
@@ -494,12 +556,12 @@ export function BriefRoom() {
           No sales call.
         </h1>
         <p className="brief-hint">
-          We ask about the project, the current setup, what customers need to do, the scope,
-          readiness, deadline and budget — not vague discovery questions.
+          Select everything that applies, then confirm each screen when you are ready. We ask
+          about the project, setup, scope, assets, deadline and budget — not vague discovery questions.
         </p>
         <div className="brief-welcome-actions">
           <button type="button" className="btn btn-primary" onClick={() => setStarted(true)}>
-            {resumed ? "Continue the brief" : "Start the brief"} <ArrowRightIcon size={14} />
+            {resumed ? "Continue the brief" : "Start the brief"} <ProceedIcon size={16} />
           </button>
           <a
             className="brief-hello"
@@ -511,8 +573,8 @@ export function BriefRoom() {
           </a>
         </div>
         <p className="brief-welcome-note">
-          This page does not scroll. You can go back at any point, nothing sends until the last
-          screen, and answers stay in this browser tab until then.
+          This page does not scroll. You can use the back arrow at any point, nothing sends until
+          the last screen, and answers stay in this browser tab until then.
         </p>
       </div>
     );
@@ -547,162 +609,127 @@ export function BriefRoom() {
 
           <div className="brief-answer" key={step}>
             {step === "project" && (
-              <div className="brief-chips" role="group" aria-label="Project type">
-                {NEEDS.map((item, itemIndex) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`q-chip ${values.needId === item.id ? "is-on" : ""}`}
-                    aria-pressed={values.needId === item.id}
-                    onClick={() => pickAndAdvance({ needId: item.id })}
-                  >
-                    <span className="brief-chip-key" aria-hidden="true">
-                      {letterFor(itemIndex)}
-                    </span>
-                    {item.label}
-                  </button>
-                ))}
-              </div>
+              <MultiOptionGrid
+                label="Project types"
+                options={NEEDS}
+                selected={values.needIds}
+                onToggle={(id) => toggleMulti("needIds", id)}
+              />
             )}
 
             {step === "website" && (
               <div className="brief-one-field">
-                <label className="brief-field">
-                  <span className="brief-label">
-                    Current website or Instagram <span className="brief-optional">optional</span>
-                  </span>
-                  <input
-                    type="url"
-                    autoComplete="url"
-                    value={values.url}
-                    onChange={(event) => set({ url: event.target.value })}
-                    placeholder="yourbusiness.pk or instagram.com/yourbusiness"
-                    enterKeyHint="next"
-                    aria-invalid={Boolean(error && values.url.trim())}
-                    aria-describedby={error ? "brief-error" : undefined}
-                  />
-                </label>
-                <button
-                  type="button"
-                  className="q-chip brief-fresh-start"
-                  onClick={() => pickAndAdvance({ url: "" })}
-                >
-                  I&rsquo;m starting from scratch
-                </button>
+                <div className="brief-chips brief-site-options" role="group" aria-label="Current site status">
+                  <button
+                    type="button"
+                    className={`q-chip ${values.siteState === "existing" ? "is-on" : ""}`}
+                    aria-pressed={values.siteState === "existing"}
+                    onClick={() => setSiteState("existing")}
+                  >
+                    <span className="brief-chip-state" aria-hidden="true">
+                      <CheckIcon size={13} />
+                    </span>
+                    I have a website or Instagram
+                  </button>
+                  <button
+                    type="button"
+                    className={`q-chip ${values.siteState === "new" ? "is-on" : ""}`}
+                    aria-pressed={values.siteState === "new"}
+                    onClick={() => setSiteState("new")}
+                  >
+                    <span className="brief-chip-state" aria-hidden="true">
+                      <CheckIcon size={13} />
+                    </span>
+                    I&rsquo;m starting from scratch
+                  </button>
+                </div>
+                {values.siteState === "existing" ? (
+                  <label className="brief-field brief-site-link">
+                    <span className="brief-label">Current website or Instagram</span>
+                    <input
+                      type="url"
+                      autoComplete="url"
+                      value={values.url}
+                      onChange={(event) => set({ url: event.target.value })}
+                      placeholder="yourbusiness.pk or instagram.com/yourbusiness"
+                      enterKeyHint="next"
+                      aria-invalid={Boolean(error && (!values.url.trim() || values.siteState === "existing"))}
+                      aria-describedby={error ? "brief-error" : undefined}
+                    />
+                  </label>
+                ) : null}
               </div>
             )}
 
             {step === "goal" && (
-              <div className="brief-chips" role="group" aria-label="Main customer outcome">
-                {GOALS.map((item, itemIndex) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`q-chip ${values.goalId === item.id ? "is-on" : ""}`}
-                    aria-pressed={values.goalId === item.id}
-                    onClick={() => pickAndAdvance({ goalId: item.id })}
-                  >
-                    <span className="brief-chip-key" aria-hidden="true">
-                      {letterFor(itemIndex)}
-                    </span>
-                    {item.label}
-                  </button>
-                ))}
-              </div>
+              <MultiOptionGrid
+                label="Customer outcomes"
+                options={GOALS}
+                selected={values.goalIds}
+                onToggle={(id) => toggleMulti("goalIds", id)}
+              />
             )}
 
             {step === "scope" && (
-              <div className="brief-chips" role="group" aria-label="Project size">
-                {SCOPES.map((item, itemIndex) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`q-chip ${values.scopeId === item.id ? "is-on" : ""}`}
-                    aria-pressed={values.scopeId === item.id}
-                    onClick={() => pickAndAdvance({ scopeId: item.id })}
-                  >
-                    <span className="brief-chip-key" aria-hidden="true">
-                      {letterFor(itemIndex)}
-                    </span>
-                    {item.label}
-                  </button>
-                ))}
-              </div>
+              <MultiOptionGrid
+                label="Project scope"
+                options={SCOPES}
+                selected={values.scopeIds}
+                onToggle={(id) => toggleMulti("scopeIds", id)}
+              />
             )}
 
             {step === "readiness" && (
-              <div className="brief-chips" role="group" aria-label="Project material readiness">
-                {READINESS.map((item, itemIndex) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`q-chip ${values.readinessId === item.id ? "is-on" : ""}`}
-                    aria-pressed={values.readinessId === item.id}
-                    onClick={() => pickAndAdvance({ readinessId: item.id })}
-                  >
-                    <span className="brief-chip-key" aria-hidden="true">
-                      {letterFor(itemIndex)}
-                    </span>
-                    {item.label}
-                  </button>
-                ))}
-              </div>
+              <MultiOptionGrid
+                label="Materials ready"
+                options={READINESS}
+                selected={values.readinessIds}
+                onToggle={(id) => toggleMulti("readinessIds", id)}
+              />
             )}
 
             {step === "timeline" && (
-              <div className="brief-chips brief-chips-tight" role="group" aria-label="Target launch window">
-                {TIMELINES.map((item, itemIndex) => (
-                  <button
-                    key={item}
-                    type="button"
-                    className={`q-chip ${values.when === item ? "is-on" : ""}`}
-                    aria-pressed={values.when === item}
-                    onClick={() => pickAndAdvance({ when: item })}
-                  >
-                    <span className="brief-chip-key" aria-hidden="true">
-                      {letterFor(itemIndex)}
-                    </span>
-                    {item}
-                  </button>
-                ))}
-              </div>
+              <MultiOptionGrid
+                label="Project timing"
+                options={TIMELINES}
+                selected={values.timelineIds}
+                onToggle={(id) => toggleMulti("timelineIds", id)}
+              />
             )}
 
             {step === "budget" && (
-              <div className={`q-budget${unsure ? " is-unsure" : ""}`}>
-                <output ref={readRef} className="q-budget-read" htmlFor="brief-budget">
+              <div className={`brief-budget${unsure ? " is-unsure" : ""}`}>
+                <output className="brief-budget-read" aria-live="polite">
                   {budgetRead}
                 </output>
-                <input
-                  ref={sliderRef}
-                  id="brief-budget"
-                  className="q-slider"
-                  type="range"
-                  min={0}
-                  max={RANGES.length - 1}
-                  step={1}
-                  value={pos}
-                  onChange={(event) => pickRange(Number(event.target.value))}
-                  aria-valuetext={budgetAria}
-                />
-                <div className="q-slider-scale" aria-hidden="true">
-                  {RANGES.map((item, itemIndex) => (
-                    <span
-                      key={item.id}
-                      className={`q-tick${!unsure && values.budgetId && itemIndex <= pos ? " is-on" : ""}`}
-                    />
-                  ))}
-                </div>
-                <div className="q-slider-ends" aria-hidden="true">
-                  <span>{RANGES[0].label}</span>
-                  <span>{RANGES[RANGES.length - 1].label}</span>
+                <div className="budget-rail" role="radiogroup" aria-label="Approved project budget">
+                  {RANGES.map((item, itemIndex) => {
+                    const chosen = values.budgetId === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={chosen}
+                        className={`budget-rail-option ${chosen ? "is-on" : ""}`}
+                        onClick={() => set({ budgetId: item.id })}
+                      >
+                        <span className="budget-rail-dot" aria-hidden="true" />
+                        <span className="budget-rail-number">{String(itemIndex + 1).padStart(2, "0")}</span>
+                        <span className="budget-rail-label">{item.label}</span>
+                      </button>
+                    );
+                  })}
                 </div>
                 <button
                   type="button"
-                  className={`q-chip${unsure ? " is-on" : ""}`}
+                  className={`q-chip brief-budget-unsure${unsure ? " is-on" : ""}`}
                   aria-pressed={unsure}
-                  onClick={() => pickAndAdvance({ budgetId: UNSURE_ID })}
+                  onClick={() => set({ budgetId: UNSURE_ID })}
                 >
+                  <span className="brief-chip-state" aria-hidden="true">
+                    <CheckIcon size={13} />
+                  </span>
                   I don&rsquo;t have a confirmed budget yet
                 </button>
               </div>
@@ -761,13 +788,14 @@ export function BriefRoom() {
           ) : null}
 
           <div className="brief-actions">
-            {index > 0 ? (
-              <button type="button" className="btn btn-ghost brief-back" onClick={back}>
-                <ArrowLeftIcon size={14} /> Back
-              </button>
-            ) : (
-              <span className="brief-note">Nothing sends until the final screen.</span>
-            )}
+            <button
+              type="button"
+              className="btn btn-ghost brief-back"
+              onClick={back}
+              aria-label={index === 0 ? "Back to the brief welcome screen" : "Back to the previous question"}
+            >
+              <ArrowLeftIcon size={17} /> <span>{index === 0 ? "Back to start" : "Back"}</span>
+            </button>
 
             {step === "contact" ? (
               <button type="submit" className="btn btn-primary brief-next" disabled={status === "sending"}>
@@ -777,24 +805,24 @@ export function BriefRoom() {
                   </>
                 ) : (
                   <>
-                    <WhatsAppIcon size={15} /> Send the brief
+                    <WhatsAppIcon size={15} /> {primaryLabel}
                   </>
                 )}
               </button>
             ) : (
               <button type="submit" className="btn btn-primary brief-next">
-                Continue <ArrowRightIcon size={14} />
+                {primaryLabel} <ProceedIcon size={17} />
               </button>
             )}
 
             <span className="brief-keyhint" aria-hidden="true">
               {choiceStep ? (
                 <>
-                  {`A–${letterFor(activeChoices.length - 1)} to pick`}
+                  {`A–${letterFor(activeChoices.length - 1)} to select`}
                   <span className="brief-keyhint-sep"> · </span>
                 </>
               ) : null}
-              <kbd>Enter ↵</kbd>
+              <kbd>Ctrl + Enter</kbd>
             </span>
           </div>
         </form>

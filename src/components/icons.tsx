@@ -87,6 +87,24 @@ export function ArrowRightIcon({ size = 16, className }: Omit<IconProps, "childr
   );
 }
 
+/**
+ * The brief's confirmation mark: a forward arrow that turns into the next
+ * part of the flow. It is deliberately not the generic site arrow — this is
+ * the visual cue for “my selections are ready, proceed”.
+ */
+export function ProceedIcon({ size = 16, className }: Omit<IconProps, "children">) {
+  return (
+    <Icon size={size} className={className}>
+      <path
+        d="M4.5 5.5v6.2a4 4 0 0 0 4 4h10.7m-4.8-4.3 4.8 4.3-4.8 4.3"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Icon>
+  );
+}
+
 export function SpinnerIcon({ size = 16, className }: Omit<IconProps, "children">) {
   return (
     <Icon size={size} className={`spin${className ? ` ${className}` : ""}`}>

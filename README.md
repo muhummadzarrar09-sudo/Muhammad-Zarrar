@@ -120,7 +120,7 @@ storyboarded as data in `src/motion/wireframes.ts`.
   word-scrubbed prose, blueprint audit heroes, velocity-fed marquee, clay
   click-ticks, target brackets, hero crosshair, focus veils, pressure
   headlines, a landed RotatingText, the process stepper, the audit card
-  deck, and a spring-fill PKR budget slider.
+  deck, and a minimal PKR budget range rail.
 - **Beauty pass** (14 items, one commit each, same contract): editorial
   type, asterism ornaments, exhibit placards, footer jewelry with a live
   PKT clock, rubber stamps, a print stylesheet, reading-room notes,
@@ -213,14 +213,20 @@ store anything on. What makes it feel like a form people finish:
 - **Concrete scoping questions:** project type, current site, the customer
   action, likely size, material readiness, launch deadline, approved budget
   and contact. No vague "tell us what you need" discovery screen.
-- **Choosing is answering.** Each concrete choice advances after ~280ms so the
-  click lands visually before the screen moves.
-- **Keyboard-first.** `A`–`Z` or `1`–`9` pick a choice (the chips show the
-  letter), `↓` continues, `↑` goes back, `Enter` submits the step, and
-  `Cmd/Ctrl+Enter` advances even while a text field has focus.
+- **Checklist answers, not forced single picks.** Every multiple-choice screen
+  uses real selectable buttons, keeps each selection visible, and only moves
+  when the visitor chooses **Okay**. Contradictory “not sure / nothing ready /
+  no fixed date” choices clear the incompatible checklist items.
+- **A minimal range rail** replaces the native budget slider: five accessible
+  button markers choose one approved range, with a separate “not confirmed”
+  choice.
+- **Keyboard-first.** `A`–`Z` or `1`–`9` toggle choices (the chips show the
+  letter), `↓` confirms, `↑` follows the visible back arrow, and
+  `Cmd/Ctrl+Enter` confirms even while a text field has focus.
 - **Errors move the cursor**, not just print a message: the field gets
   `aria-invalid`, the error is `aria-describedby`-linked, and focus lands on
-  what needs fixing.
+  what needs fixing. Every question also has a clear back-arrow action — even
+  the first one can return to the welcome screen.
 - **A real ending** — a compact recap of the project facts, the two next
   steps, and a manual WhatsApp link in case the handoff was blocked.
 - Mobile keyboards get `enterKeyHint` (`next` / `send`), and the whole thing

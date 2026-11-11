@@ -348,7 +348,9 @@ value per hour of work.
 - 2026-11-10 — `/brief` rebuilt as a fixed-viewport Typeform-grade project
   room: no site chrome, footer or document scrolling; one persistent Home
   breadcrumb; welcome/resume screen; concrete project, current-site, customer
-  outcome, scope, material-readiness, launch, budget and contact questions;
-  A–Z and 1–9 shortcuts; ↓/↑ navigation; reduced-motion-aware transitions;
-  field-focused accessible errors; progressbar semantics; concise recap plus
-  next steps; and a fixed no-JS WhatsApp/email fallback.
+  outcome, scope, material-readiness, launch, budget and contact questions.
+  Each multiple-choice question is a multi-select checklist with explicit
+  **Okay** confirmation rather than auto-advance; the budget is a minimal
+  button-based range rail; every screen has a back arrow; A–Z/1–9 toggle
+  options and Ctrl/Cmd+Enter confirms; short viewport rules preserve the
+  complete screen; and the WhatsApp handoff includes every selected fact.

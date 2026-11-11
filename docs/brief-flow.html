@@ -395,8 +395,8 @@
       </header>
 
       <div class="legend" aria-label="Flow legend">
-        <span><i class="key auto" aria-hidden="true"></i>Choice moves forward automatically</span>
-        <span><i class="key manual" aria-hidden="true"></i>Visitor presses Continue</span>
+        <span><i class="key auto" aria-hidden="true"></i>Select one or several option buttons</span>
+        <span><i class="key manual" aria-hidden="true"></i>Visitor presses Okay / Proceed</span>
         <span><i class="key required" aria-hidden="true"></i>Required before the WhatsApp handoff</span>
       </div>
 
@@ -415,9 +415,9 @@
           <div class="connector">Start</div>
 
           <article class="stage" data-step="01">
-            <p class="stage-meta"><span class="pill auto">Pick one · auto-advance</span></p>
+            <p class="stage-meta"><span class="pill auto">Select any · then Okay</span></p>
             <h2 class="question">What would you like us to work on?</h2>
-            <p class="instruction">This identifies the kind of work to inspect before replying.</p>
+            <p class="instruction">Select every project type that applies, then press Okay. The builder sees the full combination rather than one forced category.</p>
             <ul class="options">
               <li class="option"><b class="option-key">A</b>Fix or improve an existing website</li>
               <li class="option"><b class="option-key">B</b>Build a new business website</li>
@@ -428,25 +428,26 @@
             </ul>
           </article>
 
-          <div class="connector">Chosen project type</div>
+          <div class="connector">Confirm selections with Okay</div>
 
           <article class="stage" data-step="02">
-            <p class="stage-meta"><span class="pill manual">Optional link · Continue</span></p>
+            <p class="stage-meta"><span class="pill manual">Choose a starting point · Proceed</span></p>
             <h2 class="question">Where can we see what exists today?</h2>
-            <p class="instruction">A current site or Instagram is useful, but not required.</p>
-            <span class="input-demo">yourbusiness.pk or instagram.com/yourbusiness</span>
+            <p class="instruction">Choose one starting point. An existing site requires a link; starting fresh does not.</p>
             <div class="branch">
-              <span>Enter a link, then Continue →</span>
-              <span>Starting from scratch → moves forward</span>
+              <span>I have a website or Instagram → enter its link</span>
+              <span>I&rsquo;m starting from scratch</span>
             </div>
+            <span class="input-demo">yourbusiness.pk or instagram.com/yourbusiness</span>
+            <div class="branch"><span>Proceed when ready →</span></div>
           </article>
 
-          <div class="connector">Current starting point</div>
+          <div class="connector">Confirm starting point</div>
 
           <article class="stage" data-step="03">
-            <p class="stage-meta"><span class="pill auto">Pick one · auto-advance</span></p>
+            <p class="stage-meta"><span class="pill auto">Select any · then Okay</span></p>
             <h2 class="question">What should a customer be able to do?</h2>
-            <p class="instruction">The primary conversion action; it gives the project a clear job.</p>
+            <p class="instruction">Select every action the finished experience needs to make easy, then press Okay.</p>
             <ul class="options">
               <li class="option"><b class="option-key">A</b>Send a WhatsApp enquiry</li>
               <li class="option"><b class="option-key">B</b>Understand services and pricing</li>
@@ -457,12 +458,12 @@
             </ul>
           </article>
 
-          <div class="connector">Chosen customer action</div>
+          <div class="connector">Confirm selections with Okay</div>
 
           <article class="stage" data-step="04">
-            <p class="stage-meta"><span class="pill auto">Pick one · auto-advance</span></p>
+            <p class="stage-meta"><span class="pill auto">Select any · then Okay</span></p>
             <h2 class="question">What is the likely size of the job?</h2>
-            <p class="instruction">A best estimate is enough. Scope affects effort, timing and price.</p>
+            <p class="instruction">Select the parts that belong in the first release. A best estimate is enough.</p>
             <ul class="options">
               <li class="option"><b class="option-key">A</b>One focused landing page</li>
               <li class="option"><b class="option-key">B</b>A 5–8 page business site</li>
@@ -472,26 +473,27 @@
             </ul>
           </article>
 
-          <div class="connector">Likely scope</div>
+          <div class="connector">Confirm selections with Okay</div>
 
           <article class="stage" data-step="05">
-            <p class="stage-meta"><span class="pill auto">Pick one · auto-advance</span></p>
-            <h2 class="question">How much is ready to work with?</h2>
-            <p class="instruction">Readiness tells us whether copy, structure, images or data need to be included.</p>
+            <p class="stage-meta"><span class="pill auto">Select any · then Okay</span></p>
+            <h2 class="question">What is ready to work with?</h2>
+            <p class="instruction">Select every asset already available. “Nothing is ready” remains separate from actual materials.</p>
             <ul class="options">
-              <li class="option"><b class="option-key">A</b>Brand, copy and images are ready</li>
-              <li class="option"><b class="option-key">B</b>Some material is ready; we need help filling gaps</li>
-              <li class="option"><b class="option-key">C</b>We need help with copy, structure or both</li>
-              <li class="option"><b class="option-key">D</b>We are starting with almost nothing</li>
+              <li class="option"><b class="option-key">A</b>A logo or visual identity</li>
+              <li class="option"><b class="option-key">B</b>Service copy or product descriptions</li>
+              <li class="option"><b class="option-key">C</b>Photos, product images or video</li>
+              <li class="option"><b class="option-key">D</b>A service or product list with prices</li>
+              <li class="option"><b class="option-key">E</b>Nothing is ready yet</li>
             </ul>
           </article>
 
-          <div class="connector">Material readiness</div>
+          <div class="connector">Confirm selections with Okay</div>
 
           <article class="stage" data-step="06">
-            <p class="stage-meta"><span class="pill auto">Pick one · auto-advance</span></p>
-            <h2 class="question">When does it need to be live?</h2>
-            <p class="instruction">A real deadline makes it possible to say early whether the work can be done well.</p>
+            <p class="stage-meta"><span class="pill auto">Select any · then Okay</span></p>
+            <h2 class="question">What timing applies to this project?</h2>
+            <p class="instruction">Select every true constraint. “No fixed date” stays separate from a deadline.</p>
             <ul class="options">
               <li class="option"><b class="option-key">A</b>Within the next two weeks</li>
               <li class="option"><b class="option-key">B</b>This month</li>
@@ -500,12 +502,12 @@
             </ul>
           </article>
 
-          <div class="connector">Target launch window</div>
+          <div class="connector">Confirm selections with Okay</div>
 
           <article class="stage" data-step="07">
-            <p class="stage-meta"><span class="pill manual">Range slider · Continue</span></p>
+            <p class="stage-meta"><span class="pill manual">One range button rail · Proceed</span></p>
             <h2 class="question">What budget is approved for this project?</h2>
-            <p class="instruction">A range is enough. It prevents a recommendation that cannot actually be delivered.</p>
+            <p class="instruction">Choose one range by pressing its marker. The rail is intentionally minimal: a direction, not a fake precise quote.</p>
             <div class="budget-track" aria-hidden="true"></div>
             <div class="budget-stops" aria-label="Budget range choices">
               <span>Under<br />PKR 50k</span>
@@ -514,15 +516,15 @@
               <span>PKR<br />300–500k</span>
               <span>PKR<br />500k+</span>
             </div>
-            <div class="branch"><span>Choose a range, then Continue →</span><span>No confirmed budget yet → moves forward</span></div>
+            <div class="branch"><span>Choose a range, then Proceed →</span><span>No confirmed budget yet → Proceed</span></div>
           </article>
 
-          <div class="connector">Approved range</div>
+          <div class="connector">Confirm range with Proceed</div>
 
           <article class="stage" data-step="08">
-            <p class="stage-meta"><span class="pill required">All required · Send</span></p>
+            <p class="stage-meta"><span class="pill required">All required · Send the brief</span></p>
             <h2 class="question">Where should we send the plan?</h2>
-            <p class="instruction">No email list and no calendar chase. These details make the written reply possible.</p>
+            <p class="instruction">No email list and no calendar chase. The back arrow remains available; Send the brief is the only final handoff.</p>
             <div class="form-grid">
               <div><span class="field-label">Your name</span><span class="field-line">e.g. Ahmed</span></div>
               <div><span class="field-label">Business</span><span class="field-line">e.g. Al-Noor Furniture</span></div>
@@ -550,11 +552,11 @@
             <ul class="packet">
               <li><b>Contact</b> — name, business, WhatsApp</li>
               <li><b>Starting point</b> — current website / Instagram, or starting fresh</li>
-              <li><b>Project</b> — selected project type</li>
-              <li><b>Outcome</b> — the customer action that matters</li>
-              <li><b>Scope</b> — likely size of the job</li>
-              <li><b>Readiness</b> — content / asset situation</li>
-              <li><b>Timing</b> — launch window</li>
+              <li><b>Projects</b> — every selected project type</li>
+              <li><b>Outcomes</b> — every selected customer action</li>
+              <li><b>Scope</b> — all selected first-release parts</li>
+              <li><b>Readiness</b> — every confirmed material</li>
+              <li><b>Timing</b> — every applicable launch constraint</li>
               <li><b>Budget</b> — approved range or not confirmed</li>
             </ul>
           </section>
